@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<edge_devices>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<costPerBw>0.1</costPerBw>
+		<costPerSec>3.0</costPerSec>
+		<costPerMem>0.05</costPerMem>
+		<costPerStorage>0.1</costPerStorage>
+		<location>
+			<x_pos>10</x_pos>
+			<y_pos>15</y_pos>
+			<wlan_id>0</wlan_id>
+			<level>2</level>
+			<attractiveness>1</attractiveness>
+			<wap>false</wap>
+			<moving>false</moving>
+		</location>
+		<hosts>
+			<host>
+				<core>800</core>
+				<mips>40000</mips>
+				<ram>80000</ram>
+				<storage>2000000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>800</core>
+						<mips>1000</mips>
+						<ram>20000</ram>
+						<storage>500000</storage>
+					</VM>
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<costPerBw>0.1</costPerBw>
+		<costPerSec>3.0</costPerSec>
+		<costPerMem>0.05</costPerMem>
+		<costPerStorage>0.1</costPerStorage>
+		<location>
+			<x_pos>60</x_pos>
+			<y_pos>15</y_pos>
+			<wlan_id>1</wlan_id>
+			<level>1</level>
+			<attractiveness>1</attractiveness>
+			<wap>false</wap>
+			<moving>false</moving>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>4000</mips>
+				<ram>8000</ram>
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>2</core>
+						<mips>1000</mips>
+						<ram>2000</ram>
+						<storage>50000</storage>
+					</VM>
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+	<datacenter arch="x86" os="Linux" vmm="Xen">
+		<costPerBw>0.1</costPerBw>
+		<costPerSec>3.0</costPerSec>
+		<costPerMem>0.05</costPerMem>
+		<costPerStorage>0.1</costPerStorage>
+		<location>
+			<x_pos>110</x_pos>
+			<y_pos>15</y_pos>
+			<wlan_id>2</wlan_id>
+			<level>0</level>
+			<attractiveness>1</attractiveness>
+			<wap>true</wap>
+			<moving>false</moving>
+		</location>
+		<hosts>
+			<host>
+				<core>8</core>
+				<mips>4000</mips>
+				<ram>8000</ram>
+				<storage>200000</storage>
+				<VMs>
+					<VM vmm="Xen">
+						<core>2</core>
+						<mips>1000</mips>
+						<ram>2000</ram>
+						<storage>50000</storage>
+					</VM>
+				</VMs>
+			</host>
+		</hosts>
+	</datacenter>
+</edge_devices>
