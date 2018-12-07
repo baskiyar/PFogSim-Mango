@@ -22,6 +22,7 @@ import edu.boun.edgecloudsim.utils.SimLogger;
 
 public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 
+	private static String node = "Datacenter_0";
 	
 	public CloudOnlyOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
@@ -48,8 +49,15 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(src, des);
 		task.setPath(path);
 		//Qian confirm the cloud level.
-		SimLogger.printLine("cloud level: "+((EdgeHost) cloud.getHostList().get(0)).getLevel());
+		//SimLogger.printLine("cloud level: "+((EdgeHost) cloud.getHostList().get(0)).getLevel());
 		return ((EdgeVM) cloud.getHostList().get(0).getVmList().get(0));
+	}
+	
+	@Override
+	public void setCloud(Datacenter _cloud ) {
+		if (_cloud.getName().equals(node)) {
+			cloud = _cloud;
+		}
 	}
 	
 }

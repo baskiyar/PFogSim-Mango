@@ -409,27 +409,27 @@ public class SimLogger {
 			if (fileLogEnabled)
 				appendToFile(vmLoadBW, entry.toString());
 		}
-		//Qian Write require data into file
-		//**********************************
-		//**********************************
-		PrintWriter netWritor = new PrintWriter(filePrefix + "_NetWorkDelay.txt", "UTF-8");
-		PrintWriter serviceWritor = new PrintWriter(filePrefix + "_ServiceTime.txt", "UTF-8");
-		PrintWriter processingWritor = new PrintWriter(filePrefix + "_ProcessingTime.txt", "UTF-8");
-		PrintWriter costWritor = new PrintWriter(filePrefix + "_Cost.txt", "UTF-8");
-		for (int i = 0; i < numOfAppTypes + 1; i++) {
-			double _serviceTime = (completedTask[i] == 0) ? 0.0 : (serviceTime[i] / (double) completedTask[i]);
-			double _networkDelay = (completedTask[i] == 0) ? 0.0 : (networkDelay[i] / (double) completedTask[i]);
-			double _processingTime = (completedTask[i] == 0) ? 0.0 : (processingTime[i] / (double) completedTask[i]);
-			double _cost = (completedTask[i] == 0) ? 0.0 : (cost[i] / (double) completedTask[i]);
-			netWritor.println("NetworkDelay=" + networkDelay[i] + "\t" + "TaskNumber=" + completedTask[i] + "\t" + "Average=" + _networkDelay);
-			serviceWritor.println("ServiceTime=" + serviceTime[i] + "\t" + "TaskNumber=" + completedTask[i] + "\t" + "Average=" + _serviceTime);
-			processingWritor.println("ProcessingTime=" + processingTime[i] + "\t" + "TaskNumber=" + completedTask[i] + "\t" + "Average=" + _processingTime);
-			costWritor.println("Cost=" + cost[i] + "\t" + "TaskNumber=" + completedTask[i] + "\t" + "Average=" + _cost);
-		}
-		netWritor.close();
-		serviceWritor.close();
-		processingWritor.close();
-		costWritor.close();
+//		//Qian Write require data into file
+//		//**********************************
+//		//**********************************
+//		PrintWriter netWritor = new PrintWriter(filePrefix + "_NetWorkDelay.txt", "UTF-8");
+//		PrintWriter serviceWritor = new PrintWriter(filePrefix + "_ServiceTime.txt", "UTF-8");
+//		PrintWriter processingWritor = new PrintWriter(filePrefix + "_ProcessingTime.txt", "UTF-8");
+//		PrintWriter costWritor = new PrintWriter(filePrefix + "_Cost.txt", "UTF-8");
+//		for (int i = 0; i < numOfAppTypes + 1; i++) {
+//			double _serviceTime = (completedTask[i] == 0) ? 0.0 : (serviceTime[i] / (double) completedTask[i]);
+//			double _networkDelay = (completedTask[i] == 0) ? 0.0 : (networkDelay[i] / (double) completedTask[i]);
+//			double _processingTime = (completedTask[i] == 0) ? 0.0 : (processingTime[i] / (double) completedTask[i]);
+//			double _cost = (completedTask[i] == 0) ? 0.0 : (cost[i] / (double) completedTask[i]);
+//			netWritor.println("NetworkDelay=" + networkDelay[i] + "\t" + "TaskNumber=" + completedTask[i] + "\t" + "Average=" + _networkDelay);
+//			serviceWritor.println("ServiceTime=" + serviceTime[i] + "\t" + "TaskNumber=" + completedTask[i] + "\t" + "Average=" + _serviceTime);
+//			processingWritor.println("ProcessingTime=" + processingTime[i] + "\t" + "TaskNumber=" + completedTask[i] + "\t" + "Average=" + _processingTime);
+//			costWritor.println("Cost=" + cost[i] + "\t" + "TaskNumber=" + completedTask[i] + "\t" + "Average=" + _cost);
+//		}
+//		netWritor.close();
+//		serviceWritor.close();
+//		processingWritor.close();
+//		costWritor.close();
 		//**********************************
 		//**********************************
 		if (fileLogEnabled) {
