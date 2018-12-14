@@ -18,7 +18,7 @@ public class Link {
 	private Location rightCoord;
 	private double leftLatency;
 	private double rightLatency;
-	private double LATENCY_MULTIPLIER = 0.01;//Qian data transfer at about 0.01 milliseconds per kilometer
+	private double LATENCY_MULTIPLIER = 0.01;//Qian data transfer at about 0.01 milliseconds per kilometer lalal
 	/**
 	 * Constructor<br>
 	 * Link cannot be circular, if left and right endpoints are the same throw IllegalArgumentException
