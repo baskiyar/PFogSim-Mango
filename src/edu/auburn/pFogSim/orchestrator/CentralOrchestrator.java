@@ -25,6 +25,7 @@ import edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.utils.Location;
+import edu.boun.edgecloudsim.utils.SimLogger;
 
 public class CentralOrchestrator extends EdgeOrchestrator {
 
@@ -94,15 +95,20 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 				cost = (task.getCloudletLength() / k.getVmList().get(0).getMips())* task.getCostPerSec() + (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW();
 			}
 			else {
+				SimLogger.getInstance().getCentralizeLogPrinter().println("**********Path From " + src.getWlanId() + " To " + des.getWlanId() + "**********");
 				for (NodeSim node: path) {
 					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos());
-					cost = cost + (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW();
+					double bwCost = (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW();
+					cost = cost + bwCost;
+					SimLogger.getInstance().getCentralizeLogPrinter().println("Level:\t" + node.getLevel() + "\tNode:\t" + node.getWlanId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
 				}
 				//des = path.peekLast();
-				cost = cost + task.getCostPerSec() * 
-					(task.getCloudletLength() / 
-							SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos())
-							.getVmList().get(0).getMips());
+				double exCost = task.getCostPerSec() * 
+						(task.getCloudletLength() / 
+								SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos())
+								.getVmList().get(0).getMips());
+				cost = cost + exCost;
+				SimLogger.getInstance().getCentralizeLogPrinter().println("Destiation:\t"+ des.getWlanId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
 			}
 			
 			if (costMap.containsKey(cost)) {
@@ -122,6 +128,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 				host = SimManager.getInstance().getLocalServerManager().findHostByLoc(desNode.getLocation().getXPos(), desNode.getLocation().getYPos());
 				try {
 					if(goodHost(host, task)) {
+						SimLogger.getInstance().getCentralizeLogPrinter().println("**********\n" + "\tExecute at Node " + desNode.getWlanId() + "with cost " + entry.getKey());
 						return host;
 					}
 				}

@@ -18,7 +18,7 @@ public class Link {
 	private Location rightCoord;
 	private double leftLatency;
 	private double rightLatency;
-	private double LATENCY_MULTIPLIER = 0.00000003;//data transfer at about 0.03 milliseconds per kilometer
+	private double LATENCY_MULTIPLIER = 0.01;//Qian data transfer at about 0.01 milliseconds per kilometer
 	/**
 	 * Constructor<br>
 	 * Link cannot be circular, if left and right endpoints are the same throw IllegalArgumentException
@@ -31,7 +31,7 @@ public class Link {
 		rightCoord = rLink;
 		leftCoord = lLink;
 		//double dist = Math.sqrt(Math.pow(rLink.getXPos() - lLink.getXPos(), 2) + Math.pow(rLink.getYPos() - lLink.getYPos(), 2));
-		double dist = DataInterpreter.measure(rLink.getYPos(), rLink.getXPos(), lLink.getYPos(), lLink.getXPos());
+		double dist = DataInterpreter.measure(rLink.getYPos(), rLink.getXPos(), lLink.getYPos(), lLink.getXPos()) / 1000;
 		rightLatency = dist * LATENCY_MULTIPLIER;
 		leftLatency = dist * LATENCY_MULTIPLIER;
 		/*rightLatency = rLat;

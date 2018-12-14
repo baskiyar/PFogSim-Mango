@@ -135,6 +135,8 @@ public class ESBModel extends NetworkModel {
 	    path = router.findPath(networkTopology, src, dest);
 	   // SimLogger.printLine(path.size() + "");
 		delay += getWlanUploadDelay(src.getLocation(), CloudSim.clock());
+		SimLogger.getInstance().printLine("**********Task Delay**********");
+		SimLogger.getInstance().printLine("Start node ID:\t" + src.getWlanId());
 		while (!path.isEmpty()) {
 			current = path.poll();
 			nextHop = path.peek();
@@ -144,10 +146,12 @@ public class ESBModel extends NetworkModel {
 			if (current.traverse(nextHop) < 0) {
 				SimLogger.printLine("not adjacent");
 			}
-			delay += current.traverse(nextHop);
-			delay += getWlanUploadDelay(nextHop.getLocation(), CloudSim.clock() + delay);
-			
+			double proDelay = current.traverse(nextHop);
+			double conDelay = getWlanUploadDelay(nextHop.getLocation(), CloudSim.clock() + delay);
+			delay += (proDelay + conDelay);
+			SimLogger.getInstance().printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
 		}
+		SimLogger.getInstance().printLine("Target Node ID:\t" + dest.getWlanId());
 		return delay;
 	}
 
@@ -178,7 +182,7 @@ public class ESBModel extends NetworkModel {
 		
 		return deviceCount;
 	}
-	
+	//calculate congestion delay.
 	private double calculateESB(double propogationDelay, double bandwidth /*Kbps*/, double PoissonMean, double avgTaskSize /*KB*/, int deviceCount){
 		double Bps=0;
 		

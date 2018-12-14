@@ -16,9 +16,11 @@ package edu.boun.edgecloudsim.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -47,6 +49,9 @@ public class SimLogger {
 	private String outputFolder;
 	private Map<Integer, LogItem> taskMap;
 	private LinkedList<VmLoadLogItem> vmLoadList;
+	private File centerLogFile;
+	PrintWriter centerFileW;
+	
 
 	private static SimLogger singleton = new SimLogger();
 	
@@ -101,6 +106,16 @@ public class SimLogger {
 		outputFolder = outFolder;
 		taskMap = new HashMap<Integer, LogItem>();
 		vmLoadList = new LinkedList<VmLoadLogItem>();
+		try {
+			centerLogFile = new File(outputFolder, filePrefix + "_Cost_Logger.txt");
+			centerFileW = new PrintWriter(centerLogFile);
+		} catch (Exception e) {
+			System.out.println("Centralize Logger File Cannot Find");
+		}
+	}
+	
+	public PrintWriter getCentralizeLogPrinter() {
+		return centerFileW;
 	}
 
 	public void addLog(double taskStartTime, int taskId, int taskType, int taskLenght, int taskInputType,
@@ -618,6 +633,7 @@ public class SimLogger {
 		// clear related collections (map list etc.)
 		taskMap.clear();
 		vmLoadList.clear();
+		centerFileW.close();
 	}
 	
 }

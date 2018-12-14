@@ -29,6 +29,7 @@ public class DataInterpreter {
 	private static String[][] nodeSpecs = new String[MAX_LEVELS][14];// the specs for all layers of the fog devices
 	private static ArrayList<Double[]> nodeList = new ArrayList<Double[]>();
 	private static ArrayList<Double[]> tempList = new ArrayList<Double[]>();
+	private static ArrayList<Double[]> universitiesCircle = new ArrayList<Double[]>();
 	
 	//This will return as height/y is LAT and width/x is LONG
 	private static double MIN_LAT = -100000, MAX_LAT = -100000, MIN_LONG = -100000, MAX_LONG = -100000; //Just instantiated so the first gps coord sets these
@@ -71,7 +72,7 @@ public class DataInterpreter {
 		int prevCounter = 0;
 		for(int i = 0; i < MAX_LEVELS; i++)
 		{
-			if(files[i].equals("Chicago_Universities.csv")) universitiesYet = true;
+			
 			try {
 				dataFR = new FileReader(files[i]);
 				dataBR = new BufferedReader(dataFR);
@@ -167,6 +168,15 @@ public class DataInterpreter {
 					nodeList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
 				}
 			}
+			if(i >= 2 && i <= 4) { // Qian create universities circle to let  Connects and schools to connect when file is Universities.csv, Ward.cvs, Libraries.cvs.
+				for(Double[] input : tempList)
+				{
+					universitiesCircle.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
+				}
+			}
+			if (i > 4) { //when the file is Connect.csv and Schools.csv use universities circle as upper layer.
+				nodeList = universitiesCircle;
+			}
 			if(!universitiesLinked)
 			{
 				for(Double[] input : nodeList)
@@ -178,7 +188,7 @@ public class DataInterpreter {
 					//Go through all nodes one level up and find the closest
 					for(int j = 0; j < nodeList.size(); j++)
 					{
-						////SimLogger.printLine("nodeList.size = " + nodeList.size());
+						//SimLogger.printLine("nodeList.size = " + nodeList.size());
 		
 						distance = measure(nodeList.get(j)[2], nodeList.get(j)[1], input[2], input[1]);
 						if(distance < secondminDistance && distance != 0)
@@ -198,6 +208,7 @@ public class DataInterpreter {
 					secondminDistance = Double.MAX_VALUE;
 					if(index1 >= 0)
 					{
+						//SimLogger.getInstance().print("Find first min index1: " + index1);
 						if(nodeList.get(index1).equals(temp)) 
 						{
 							//SimLogger.printLine("Yep, they're the same thing");
@@ -226,6 +237,7 @@ public class DataInterpreter {
 							//SimLogger.printLine("Yep, they're the same thing");
 							System.exit(0);
 						}
+						//SimLogger.getInstance().print("Find second min index2: " + index2);
 						double dis = measure(input[2], input[1], nodeList.get(index2)[2], nodeList.get(index2)[1]) / 1000;
 						double latency = dis * 0.01;
 						links.println("<link>\n" + 
@@ -245,7 +257,7 @@ public class DataInterpreter {
 				}
 			}
 			tempList.clear();
-			
+			if(files[i].equals("Chicago_Universities.csv")) universitiesYet = true;
 			////SimLogger.printLine("nodeList" + nodeList.toString());
 			////SimLogger.printLine("tempList" + tempList.toString());
 		}

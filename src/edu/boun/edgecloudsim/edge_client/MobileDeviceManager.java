@@ -288,7 +288,11 @@ public class MobileDeviceManager extends DatacenterBroker {
 			SimLogger.getInstance().rejectedDueToVMCapacity(task.getCloudletId(), CloudSim.clock());
 			return;
 		}
-		
+		//Qian put path to each task.
+		NodeSim des = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getLocalServerManager().findHostById(nextHopId).getLocation(), false);
+		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
+		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(src, des);
+		task.setPath(path);
 		if(nextHopId == SimSettings.CLOUD_DATACENTER_ID){
 			
 			double WanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false);
