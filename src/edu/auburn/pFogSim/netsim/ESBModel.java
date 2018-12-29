@@ -135,8 +135,10 @@ public class ESBModel extends NetworkModel {
 	    path = router.findPath(networkTopology, src, dest);
 	   // SimLogger.printLine(path.size() + "");
 		delay += getWlanUploadDelay(src.getLocation(), CloudSim.clock());
-		SimLogger.getInstance().printLine("**********Task Delay**********");
-		SimLogger.getInstance().printLine("Start node ID:\t" + src.getWlanId());
+		if (SimSettings.getInstance().traceEnalbe()) {
+			SimLogger.getInstance().printLine("**********Task Delay**********");
+			SimLogger.getInstance().printLine("Start node ID:\t" + src.getWlanId());
+		}
 		while (!path.isEmpty()) {
 			current = path.poll();
 			nextHop = path.peek();
@@ -149,9 +151,13 @@ public class ESBModel extends NetworkModel {
 			double proDelay = current.traverse(nextHop);
 			double conDelay = getWlanUploadDelay(nextHop.getLocation(), CloudSim.clock() + delay);
 			delay += (proDelay + conDelay);
-			SimLogger.getInstance().printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
+			if (SimSettings.getInstance().traceEnalbe()) {
+				SimLogger.getInstance().printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
+			}
 		}
-		SimLogger.getInstance().printLine("Target Node ID:\t" + dest.getWlanId());
+		if (SimSettings.getInstance().traceEnalbe()) {
+			SimLogger.getInstance().printLine("Target Node ID:\t" + dest.getWlanId());
+		}
 		return delay;
 	}
 

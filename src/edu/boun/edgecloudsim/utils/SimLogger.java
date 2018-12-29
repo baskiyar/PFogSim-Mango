@@ -21,7 +21,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.DoubleStream;
@@ -29,8 +31,11 @@ import java.util.stream.IntStream;
 
 import org.cloudbus.cloudsim.core.CloudSim;
 
+import edu.auburn.pFogSim.netsim.ESBModel;
+import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
+import edu.boun.edgecloudsim.edge_server.EdgeHost;
 //import edu.boun.edgecloudsim.edge_server.EdgeHost;
 //import edu.boun.edgecloudsim.utils.*;
 //import edu.auburn.pFogSim.Puddle.Puddle;
@@ -51,6 +56,8 @@ public class SimLogger {
 	private LinkedList<VmLoadLogItem> vmLoadList;
 	private File centerLogFile;
 	PrintWriter centerFileW;
+	private ArrayList<Integer> utlizationArray;
+	
 	
 
 	private static SimLogger singleton = new SimLogger();
@@ -106,6 +113,7 @@ public class SimLogger {
 		outputFolder = outFolder;
 		taskMap = new HashMap<Integer, LogItem>();
 		vmLoadList = new LinkedList<VmLoadLogItem>();
+		utlizationArray = new ArrayList<Integer>();
 		try {
 			centerLogFile = new File(outputFolder, filePrefix + "_Cost_Logger.txt");
 			centerFileW = new PrintWriter(centerLogFile);
@@ -170,6 +178,26 @@ public class SimLogger {
 	
 	public void addHops(int taskId, int hops) {
 		taskMap.get(taskId).setHops(hops);
+	}
+	
+	
+	
+	int[] totalNodesNmuberInEachLevel = {0, 0, 0, 0, 0, 0, 0};
+	private int[] levelFogNodeCount = {0, 0, 0, 0, 0, 0, 0};
+	
+	private void getTotalFogNodesCountInEachLevel() {
+		HashSet<NodeSim> nodes = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology().getNodes();
+		for (NodeSim node: nodes) {
+			totalNodesNmuberInEachLevel[node.getLevel() - 1]++;
+		}
+	}
+	
+	//Qian add method for counting fog nodes utilization
+	public void addNodeUtilization(int hostId, EdgeHost host) {
+		if (!utlizationArray.contains(hostId)) {
+			utlizationArray.add(hostId);
+			this.levelFogNodeCount[host.getLevel() - 1]++;
+		}
 	}
 	
 	private int[] levelCloudletCount = {0, 0, 0, 0, 0, 0, 0, 0};
@@ -379,8 +407,7 @@ public class SimLogger {
 					uncompletedTaskOnCloudlet[value.getTaskType()]++;
 			}
 		}
-		//Qian print warm up task
-		System.out.println("Warm up tasks: "+ warmUpTasks);
+		
 		// calculate total values
 		uncompletedTask[numOfAppTypes] = IntStream.of(uncompletedTask).sum();
 		uncompletedTaskOnCloud[numOfAppTypes] = IntStream.of(uncompletedTaskOnCloud).sum();
@@ -562,25 +589,16 @@ public class SimLogger {
 		}
 		printLine("Mobile Devices Moving? : " + SimSettings.getInstance().areMobileDevicesMoving());
 		// printout important results
-		printLine("# of tasks (Cloudlet/Cloud): "
-				+ (failedTask[numOfAppTypes] + completedTask[numOfAppTypes]) + "("
-				+ (failedTaskOnCloudlet[numOfAppTypes] + completedTaskOnCloudlet[numOfAppTypes]) + "/" 
-				+ (failedTaskOnCloud[numOfAppTypes]+ completedTaskOnCloud[numOfAppTypes]) + ")");
+		printLine("# of tasks: " + (failedTask[numOfAppTypes] + completedTask[numOfAppTypes]));
 		
-		printLine("# of failed tasks (Cloudlet/Cloud): "
-				+ failedTask[numOfAppTypes] + "("
-				+ failedTaskOnCloudlet[numOfAppTypes]
-				+ "/" + failedTaskOnCloud[numOfAppTypes] + ")");
+		//Qian print warm up task
+		printLine("# of warm up tasks: "+ warmUpTasks);
 		
-		printLine("# of completed tasks (Cloudlet/Cloud): "
-				+ completedTask[numOfAppTypes] + "("
-				+ completedTaskOnCloudlet[numOfAppTypes]
-				+ "/" + completedTaskOnCloud[numOfAppTypes] + ")");
+		printLine("# of failed tasks: " + failedTask[numOfAppTypes]);
 		
-		printLine("# of uncompleted tasks (Cloudlet/Cloud): "
-				+ uncompletedTask[numOfAppTypes] + "("
-				+ uncompletedTaskOnCloudlet[numOfAppTypes]
-				+ "/" + uncompletedTaskOnCloud[numOfAppTypes] + ")");
+		printLine("# of completed tasks: " + completedTask[numOfAppTypes]);
+		
+		printLine("# of uncompleted tasks: " + uncompletedTask[numOfAppTypes]);
 		
 		printLine("# of failed tasks due to vm capacity/LAN bw/WAN bw/mobility: "
 				+ rejectedTaskDoToVmCapacity[numOfAppTypes]
@@ -629,6 +647,13 @@ public class SimLogger {
 		printLine("CompletedTask: " + completedTask[numOfAppTypes]);
 		printLine("Average Distance from task to host: " + String.format("%.2f", totalDist[numOfAppTypes]/((double) taskMap.size())));
 		printLine("Average number of hops from task to host: " + String.format("%.2f",((double) totalHops[numOfAppTypes])/((double) taskMap.size())));
+		
+		//Qian print average fog nodes utilization in each level.
+		getTotalFogNodesCountInEachLevel();
+		printLine("average fog node utilization:");
+		for (int i = 0; i < 7; i++) {
+			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)levelFogNodeCount[i] / (double)totalNodesNmuberInEachLevel[i])));
+		}
 		
 		// clear related collections (map list etc.)
 		taskMap.clear();

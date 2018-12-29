@@ -288,6 +288,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 			SimLogger.getInstance().rejectedDueToVMCapacity(task.getCloudletId(), CloudSim.clock());
 			return;
 		}
+		//Qian add host to utilization map
+		SimLogger.getInstance().addNodeUtilization(nextHopId, SimManager.getInstance().getLocalServerManager().findHostById(nextHopId));
 		//Qian put path to each task.
 		NodeSim des = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getLocalServerManager().findHostById(nextHopId).getLocation(), false);
 		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);

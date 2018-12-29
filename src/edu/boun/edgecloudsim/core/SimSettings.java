@@ -64,6 +64,9 @@ public class SimSettings {
     private double INTERVAL_TO_GET_VM_LOCATION_LOG; //minutes unit in properties file
     private boolean FILE_LOG_ENABLED; //boolean to check file logging option
     private boolean DEEP_FILE_LOG_ENABLED; //boolean to check deep file logging option
+    
+    //Qian enable the trace
+    private boolean TRACE_ENABLED;
 
     private int MIN_NUM_OF_MOBILE_DEVICES;
     private int MAX_NUM_OF_MOBILE_DEVICES;
@@ -80,6 +83,10 @@ public class SimSettings {
     private int BANDWITH_GSM; //Mbps unit in properties file
 
     private int MIPS_FOR_CLOUD; //MIPS
+    
+    //Qian sslected nodes
+    private String[] SELECTED_NODES;
+    private int currentSelection = 0;
     
     private String[] SIMULATION_SCENARIOS;
     private String[] ORCHESTRATOR_POLICIES;
@@ -136,6 +143,8 @@ public class SimSettings {
 			INTERVAL_TO_GET_VM_LOCATION_LOG = (double)60 * Double.parseDouble(prop.getProperty("vm_location_check_interval")); //seconds
 			FILE_LOG_ENABLED = Boolean.parseBoolean(prop.getProperty("file_log_enabled"));
 			DEEP_FILE_LOG_ENABLED = Boolean.parseBoolean(prop.getProperty("deep_file_log_enabled"));
+			//Qian get trace enable property
+			TRACE_ENABLED = Boolean.parseBoolean(prop.getProperty("trace_enabled"));
 			
 			MIN_NUM_OF_MOBILE_DEVICES = Integer.parseInt(prop.getProperty("min_number_of_mobile_devices"));
 			MAX_NUM_OF_MOBILE_DEVICES = Integer.parseInt(prop.getProperty("max_number_of_mobile_devices"));
@@ -151,6 +160,9 @@ public class SimSettings {
 			//-Storage and RAM are unlimited in cloud
 			//-Each task is executed with maximum capacity (as if there is no task in the cloud) 
 			MIPS_FOR_CLOUD = Integer.parseInt(prop.getProperty("mips_for_cloud"));
+			
+			//Qian get selected nodes from conf file.
+			SELECTED_NODES = prop.getProperty("selected_nodes").split(",");
 
 			ORCHESTRATOR_POLICIES = prop.getProperty("orchestrator_policies").split(",");
 			
@@ -587,5 +599,18 @@ public class SimSettings {
 	
 	public boolean areMobileDevicesMoving() {
 		return this.mobileDevicesMoving;
+	}
+	//Qian get trace enabled infomation
+	public boolean traceEnalbe() {
+		return TRACE_ENABLED;
+	}
+	//Qian get next selected node number
+	public int nextSelectedNode() {
+		int nodeID = Integer.parseInt(SELECTED_NODES[currentSelection]);
+		currentSelection++;
+		if (currentSelection == SELECTED_NODES.length) {
+			currentSelection = 0;
+		}
+		return nodeID;
 	}
 }
