@@ -76,6 +76,11 @@ public class MobileDeviceManager extends DatacenterBroker {
 		Task task = (Task) ev.getData();
 
 		Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock());
+		//Qian added for sensor generated tasks getting download destination. 
+		if (task.sens) {
+			//Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileId(),CloudSim.clock());
+		}
+		
 		//if(task.getSubmittedLocation().equals(currentLocation))
 		//{
 			//SimLogger.printLine(CloudSim.clock() + ": " + getName() + ": Cloudlet " + task.getCloudletId() + " received");
@@ -364,6 +369,12 @@ public class MobileDeviceManager extends DatacenterBroker {
 		task.setTaskType(edgeTask.taskType);
 		task.setMaxDelay(SimSettings.getInstance().getTaskLookUpTable()[task.getTaskType().ordinal()][10]);
 		
+		
+		//Qian add for sensor generated task getting destination uncomment the code inside if statement.
+		//Also please uncomment the line 81.
+		if (edgeTask.sens) {
+			//task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
+		}
 		return task;
 	}
 

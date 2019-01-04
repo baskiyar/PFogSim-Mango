@@ -24,6 +24,7 @@ public class Task extends Cloudlet {
 	private SimSettings.APP_TYPES type;
 	private Location submittedLocation;
 	private int mobileDeviceId;
+	private int desMobileDeviceId;// added by Qian for indicating the destination of sensor generated tasks
 	private int hostIndex;
 	private double maxDelay;
 	private LinkedList<NodeSim> path; // Qian the path from start to destination  
@@ -104,5 +105,13 @@ public class Task extends Cloudlet {
 	 */
 	public LinkedList<NodeSim> getPath() {
 		return path;
+	}
+	
+	public void setDesMobileDeviceId(int deviceId) {
+		this.mobileDeviceId = deviceId;
+	}
+	
+	public int getDesMobileId() {
+		return this.mobileDeviceId;
 	}
 }	

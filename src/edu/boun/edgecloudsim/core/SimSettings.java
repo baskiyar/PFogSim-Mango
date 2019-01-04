@@ -84,9 +84,13 @@ public class SimSettings {
 
     private int MIPS_FOR_CLOUD; //MIPS
     
-    //Qian sslected nodes
+    //Qian selected nodes
     private String[] SELECTED_NODES;
     private int currentSelection = 0;
+    
+    //Qian added for selected Level
+    private String[] SELECTED_LEVELS;
+    private int currentLevelIndex = 0;
     
     private String[] SIMULATION_SCENARIOS;
     private String[] ORCHESTRATOR_POLICIES;
@@ -163,6 +167,8 @@ public class SimSettings {
 			
 			//Qian get selected nodes from conf file.
 			SELECTED_NODES = prop.getProperty("selected_nodes").split(",");
+			//Qian get selected levels from conf file
+			SELECTED_LEVELS = prop.getProperty("selected_levels").split(",");
 
 			ORCHESTRATOR_POLICIES = prop.getProperty("orchestrator_policies").split(",");
 			
@@ -612,5 +618,14 @@ public class SimSettings {
 			currentSelection = 0;
 		}
 		return nodeID;
+	}
+	//Qian get next selected level
+	public int nextSelectedLevel() {
+		int level = Integer.parseInt(SELECTED_LEVELS[currentLevelIndex]);
+		currentLevelIndex++;
+		if (currentLevelIndex == SELECTED_LEVELS.length) {
+			currentLevelIndex = 0;
+		}
+		return level;
 	}
 }

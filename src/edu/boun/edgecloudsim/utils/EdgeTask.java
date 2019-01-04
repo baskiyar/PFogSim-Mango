@@ -21,6 +21,7 @@ public class EdgeTask {
     public long length, inputFileSize, outputFileSize;
     public int pesNumber;
     public int mobileDeviceId;
+    public int desMobileDeviceId; // added by Qian for sperating data sources and consumers.
     public boolean wifi; //added by pFogSim for asking whether a task requires a wifi access point
     public boolean sens; //added by pFogSim to say whether a device is a sensor
     public boolean act;  //added by pFogSim to say whether a device is an actuator
@@ -41,4 +42,8 @@ public class EdgeTask {
     	sens =  _sens;
     	act = _act;
 	}
+    
+    public void setDesMobileDeviceId(int deviceId) {
+    	this.desMobileDeviceId = deviceId;
+    }
 }
