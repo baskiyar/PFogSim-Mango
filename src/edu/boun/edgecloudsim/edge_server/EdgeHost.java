@@ -23,7 +23,9 @@ import edu.boun.edgecloudsim.utils.Location;
 public class EdgeHost extends Host {
 	private Location location;
 	private int level;//puddle level
-	private double costPerBW;
+	private double costPerBW;// Qian added for centralOrchestrator
+	private double costPerSec;// Qian added for centralOrchestrator
+	
 	
 	public EdgeHost(int id, RamProvisioner ramProvisioner,
 			BwProvisioner bwProvisioner, long storage,
@@ -31,13 +33,13 @@ public class EdgeHost extends Host {
 		super(id, ramProvisioner, bwProvisioner, storage, peList, vmScheduler);
 
 	}
-	//Qian add one parameter for costPerBW
+	//Qian add two parameters for centralOrchestrator
 	public EdgeHost(int id, RamProvisioner ramProvisioner,
 			BwProvisioner bwProvisioner, long storage,
-			List<? extends Pe> peList, VmScheduler vmScheduler, double _costPerBW) {
+			List<? extends Pe> peList, VmScheduler vmScheduler, double _costPerBW, double _costPerSec) {
 		super(id, ramProvisioner, bwProvisioner, storage, peList, vmScheduler);
 		this.costPerBW = _costPerBW;
-
+		this.costPerSec = _costPerSec;
 	}
 	
 	public void setPlace(Location _location){
@@ -58,5 +60,9 @@ public class EdgeHost extends Host {
 	
 	public double getCostPerBW() {
 		return costPerBW;
+	}
+	
+	public double getCostPerSec() {
+		return costPerSec;
 	}
 }

@@ -262,6 +262,7 @@ public class EdgeServerManager {
 		List<EdgeHost> hostList = new ArrayList<EdgeHost>();
 		
 		double costPerBW = Double.parseDouble(datacenterElement.getElementsByTagName("costPerBw").item(0).getTextContent());
+		double costPerSec = Double.parseDouble(datacenterElement.getElementsByTagName("costPerSec").item(0).getTextContent());
 		
 		Element location = (Element)datacenterElement.getElementsByTagName("location").item(0);
 		//String attractiveness = location.getElementsByTagName("attractiveness").item(0).getTextContent();
@@ -324,7 +325,8 @@ public class EdgeServerManager {
 					storage,
 					peList,
 					new VmSchedulerSpaceShared(peList),
-					costPerBW
+					costPerBW,
+					costPerSec
 				);
 			Location loc = new Location(wlan_id, x_pos, y_pos);
 			loc.setBW(bw);
