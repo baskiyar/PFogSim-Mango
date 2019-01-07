@@ -409,8 +409,9 @@ public class EdgeServerManager {
 			}
 		}
 		
-		//Qian added for puddle id
+		//Qian added for puddle id and set parent and children for each node
 		for (int i = 0; i < results.size(); i++) {
+			results.get(i).setNodeParentAndChildern();
 			for (EdgeHost tempHost: results.get(i).getMembers()) {
 				tempHost.setPuddleId(i);
 			}

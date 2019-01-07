@@ -5,6 +5,7 @@ import edu.auburn.pFogSim.Exceptions.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_client.CpuUtilizationModel_Custom;
 import edu.boun.edgecloudsim.edge_client.Task;
@@ -12,6 +13,7 @@ import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.auburn.pFogSim.Radix.DistRadix;
+import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.util.DataInterpreter;
 
 import java.util.LinkedList;
@@ -264,7 +266,18 @@ public class Puddle {
 			}
 		}
 		else {
-			
+			if (this.up != null) {
+				for (EdgeHost node: members) {
+					double minLatency = Double.MAX_VALUE;
+					for (EdgeHost parentNode: up.getMembers()) {
+						double latency = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDelay(node, parentNode);
+						if (latency < minLatency) {
+							node.setParent(parentNode);
+						}
+					}
+					node.getParent().setChild(node);
+				}
+			}
 		}
 	}
 }
