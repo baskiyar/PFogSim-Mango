@@ -25,7 +25,7 @@ public class EdgeHost extends Host {
 	private int level;//puddle level
 	private double costPerBW;// Qian added for centralOrchestrator
 	private double costPerSec;// Qian added for centralOrchestrator
-	
+	private int puddleId;// Qian added for puddle
 	
 	public EdgeHost(int id, RamProvisioner ramProvisioner,
 			BwProvisioner bwProvisioner, long storage,
@@ -65,4 +65,15 @@ public class EdgeHost extends Host {
 	public double getCostPerSec() {
 		return costPerSec;
 	}
+	
+	//Qian added for puddle
+	public void setPuddleId(int id) {
+		this.puddleId = id;
+	} 
+	
+	//Qian added for puddle
+	public int getPuddleId() {
+		return this.puddleId;
+	}
+	
 }

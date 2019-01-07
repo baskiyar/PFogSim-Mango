@@ -204,6 +204,11 @@ public class ESBModel extends NetworkModel {
 		return calculateESB(0, loc.getBW(), WlanPoissonMean, avgTaskInputSize, getDeviceCount(loc, time));
 	}
 	
+	//Qian add for get congestion delay
+	public double getCongestionDelay(Location loc, double time) {
+		return getWlanUploadDelay(loc, time);
+	}
+	
 	public void setNetworkTopology(NetworkTopology _networkTopology) {
 		networkTopology = _networkTopology;
 	}

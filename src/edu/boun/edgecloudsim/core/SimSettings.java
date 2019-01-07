@@ -67,6 +67,8 @@ public class SimSettings {
     
     //Qian enable the trace
     private boolean TRACE_ENABLED;
+    //Qian added for select how to make puddle cluster. true - distance; false - latency
+    private boolean clusterType = true; 
 
     private int MIN_NUM_OF_MOBILE_DEVICES;
     private int MAX_NUM_OF_MOBILE_DEVICES;
@@ -204,6 +206,14 @@ public class SimSettings {
 		parseLinksXML(linksFile);
 		
 		return result;
+	}
+	
+	/**
+	 * @author Qian
+	 * @return cluster type distance base or latency base
+	 */
+	public boolean getClusterType() {
+		return this.clusterType;
 	}
 	
 	/**

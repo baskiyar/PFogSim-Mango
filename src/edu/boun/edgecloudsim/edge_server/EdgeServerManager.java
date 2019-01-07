@@ -408,6 +408,13 @@ public class EdgeServerManager {
 				results.add(puds[k][i]);//convert the 2D array to list
 			}
 		}
+		
+		//Qian added for puddle id
+		for (int i = 0; i < results.size(); i++) {
+			for (EdgeHost tempHost: results.get(i).getMembers()) {
+				tempHost.setPuddleId(i);
+			}
+		}
 		return results;
 	}
 	/**
