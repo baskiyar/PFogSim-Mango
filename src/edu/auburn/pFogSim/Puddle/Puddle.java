@@ -5,12 +5,15 @@ import edu.auburn.pFogSim.Exceptions.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_client.CpuUtilizationModel_Custom;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.auburn.pFogSim.Radix.DistRadix;
+import edu.auburn.pFogSim.util.DataInterpreter;
+
 import java.util.LinkedList;
 //import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
@@ -237,5 +240,31 @@ public class Puddle {
 	 */
 	public void setLevel(int lvl) {
 		level = lvl;
+	}
+	
+	/**
+	 * @author Qian
+	 * set parent and children list for every nodes 
+	 */
+	public void setNodeParentAndChildern() {
+		if (SimSettings.getInstance().getClusterType()) {
+			if (this.up != null) {
+				for (EdgeHost node: members) {
+					double minDistance = Double.MAX_VALUE;
+					for (EdgeHost parentNode: up.getMembers()) {
+						double distance = DataInterpreter.measure(
+								node.getLocation().getXPos(), node.getLocation().getYPos(), 
+									parentNode.getLocation().getXPos(), parentNode.getLocation().getYPos());
+						if (distance < minDistance) {
+							node.setParent(parentNode);
+						}
+					}
+					node.getParent().setChild(node);
+				}
+			}
+		}
+		else {
+			
+		}
 	}
 }

@@ -10,6 +10,7 @@
 
 package edu.boun.edgecloudsim.edge_server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.cloudbus.cloudsim.Host;
@@ -26,6 +27,9 @@ public class EdgeHost extends Host {
 	private double costPerBW;// Qian added for centralOrchestrator
 	private double costPerSec;// Qian added for centralOrchestrator
 	private int puddleId;// Qian added for puddle
+	private EdgeHost parent;//Qian: added for puddle
+	private ArrayList<EdgeHost> childern = null;//Qian: added for puddle
+	
 	
 	public EdgeHost(int id, RamProvisioner ramProvisioner,
 			BwProvisioner bwProvisioner, long storage,
@@ -74,6 +78,44 @@ public class EdgeHost extends Host {
 	//Qian added for puddle
 	public int getPuddleId() {
 		return this.puddleId;
+	}
+	
+	/**
+	 * @author Qian
+	 * Add for puddle
+	 * @param parent parent node in parent puddle
+	 */
+	public void setParent(EdgeHost _parent) {
+		this.parent = _parent;
+	}
+	
+	/**
+	 * @author Qian
+	 * added for puddle
+	 * @return parent node in parent puddle
+	 */
+	public EdgeHost getParent() {
+		return this.parent;
+	}
+	
+	/**
+	 * @author Qian
+	 * added for puddle
+	 * @param _child child node
+	 */
+	public void setChild(EdgeHost _child) {
+		if (childern == null) {
+			childern = new ArrayList<EdgeHost>();
+		}
+		childern.add(_child);
+	}
+	
+	/**
+	 * @author Qian
+	 * @return children get children list.
+	 */
+	public ArrayList<EdgeHost> getChildern() {
+		return this.childern;
 	}
 	
 }
