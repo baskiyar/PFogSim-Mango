@@ -248,7 +248,8 @@ public class EdgeServerManager {
 	
 		VmAllocationPolicy vm_policy = SimManager.getInstance().getScenarioFactory().getVmAllocationPolicy(hostList,index);
 		datacenter = new Datacenter(name, characteristics, vm_policy, storageList, 0);
-				
+		
+		
 		SimManager.getInstance().getEdgeOrchestrator().setCloud(datacenter);
 
 		return datacenter;
