@@ -13,6 +13,7 @@ import edu.auburn.pFogSim.util.DataInterpreter;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_client.Task;
+import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.network.NetworkModel;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
@@ -204,6 +205,11 @@ public class ESBModel extends NetworkModel {
 		return calculateESB(0, loc.getBW(), WlanPoissonMean, avgTaskInputSize, getDeviceCount(loc, time));
 	}
 	
+	//Qian add for get congestion delay
+	public double getCongestionDelay(Location loc, double time) {
+		return getWlanUploadDelay(loc, time);
+	}
+	
 	public void setNetworkTopology(NetworkTopology _networkTopology) {
 		networkTopology = _networkTopology;
 	}
@@ -278,6 +284,43 @@ public class ESBModel extends NetworkModel {
 	
 	public LinkedList<NodeSim> findPath(NodeSim src, NodeSim dec) {
 		return router.findPath(networkTopology, src, dec);
+	}
+	/**
+	 * @author Qian
+	 * added for get delay(Congestion + Propagation) between two nodes
+	 * @param one
+	 * @param two
+	 * @return
+	 */
+	public double getDelay(EdgeHost one, EdgeHost two) {
+		double delay = 0;
+		Location source;
+		Location destination;
+		NodeSim src;
+		NodeSim dest;
+		NodeSim current;
+		NodeSim nextHop;
+		LinkedList<NodeSim> path = null;
+		source = new Location(one.getLocation().getXPos(), one.getLocation().getYPos());
+		destination = new Location(two.getLocation().getXPos(), two.getLocation().getYPos());
+		src = networkTopology.findNode(source, false);
+		dest = networkTopology.findNode(destination, false);
+	    path = router.findPath(networkTopology, src, dest);
+	    delay += getWlanUploadDelay(src.getLocation(), CloudSim.clock());
+	    while (!path.isEmpty()) {
+			current = path.poll();
+			nextHop = path.peek();
+			if (nextHop == null) {
+				break;
+			}
+			if (current.traverse(nextHop) < 0) {
+				SimLogger.printLine("not adjacent");
+			}
+			double proDelay = current.traverse(nextHop);
+			double conDelay = getWlanUploadDelay(nextHop.getLocation(), CloudSim.clock() + delay);
+			delay += (proDelay + conDelay);
+	    }
+		return delay;
 	}
 	
 }

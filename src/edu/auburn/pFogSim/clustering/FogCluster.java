@@ -2,20 +2,28 @@ package edu.auburn.pFogSim.clustering;
 
 //import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
+import org.cloudbus.cloudsim.core.CloudSim;
+
 import javafx.util.Pair;
 //import java.util.HashMap;
 
 //import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.boun.edgecloudsim.core.SimManager;
+import edu.boun.edgecloudsim.core.SimSettings;
 //import edu.boun.edgecloudsim.utils.*;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.diagram.*;
+import edu.auburn.pFogSim.netsim.ESBModel;
+import edu.auburn.pFogSim.netsim.NodeSim;
 
 public class FogCluster {
 	private String[] lines = null;
 	private Double[][] points = null;
 	private double[][] proximityMatrix = null;
+	private double maxClusterHeight;// Qian: add for set max distance or latency for clustering.
 	private int clusterNumber;// = 20; // Defines number of clusters to generate.
 	private Double[][][] cluster = new Double[clusterNumber][][];
 	
@@ -92,6 +100,15 @@ public class FogCluster {
 	public void setClusterNumber(int clusterNumber) {
 		this.clusterNumber = clusterNumber;
 	}
+	
+	/**
+	 * @author Qian
+	 * set max distance or latency for cluster
+	 * @param max
+	 */
+	public void setClusterHeight(double max) {
+		this.maxClusterHeight = max;
+	}
 
 
 	/**
@@ -102,7 +119,10 @@ public class FogCluster {
 	void calcProximity(){
 		
 		double x1=0.0, y1=0.0, x2=0.0, y2=0.0;
-		double distance;
+		double distance, delay;
+		Location first;
+		Location second;
+		NodeSim firstNode, secondNode, current, nextHop;
 		
 		// assume n data points ; n = size
 		// declare an nxn array of double type
@@ -112,26 +132,60 @@ public class FogCluster {
 		
 		proximityMatrix = new double[n][n];
 		
-		for (int i=0; i<n; i++){
-			// First point
-			x1 = points[i][0];
-			y1 = points[i][1];
-			
-			for (int j=0; j<n; j++){
-				//Second point
-				x2 = points[j][0];
-				y2 = points[j][1];
+		if(SimSettings.getInstance().getClusterType()) {//Qian changed for cluster type.
+			for (int i=0; i<n; i++){// distance based
+				// First point
+				x1 = points[i][0];
+				y1 = points[i][1];
 				
-				//Calculate distance
-				distance = Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1)));
-				//System.out.println(distance);
-				
-				//Update entry in proximityMatrix
-				proximityMatrix[i][j] = distance;
-				
-			}// end for j
-				
-		}//end for i
+				for (int j=0; j<n; j++){
+					//Second point
+					x2 = points[j][0];
+					y2 = points[j][1];
+					
+					//Calculate distance
+					distance = Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1)));
+					//System.out.println(distance);
+					
+					//Update entry in proximityMatrix
+					proximityMatrix[i][j] = distance;
+					
+				}// end for j
+					
+			}//end for i
+		}
+		else {
+			// Qian added for cluster type
+			for (int i = 0; i < n; i++) {// latency based.
+				x1 = points[i][0];
+				y1 = points[i][1];
+				first = new Location(x1, y1);
+				firstNode = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(first, false);
+				delay = 0;
+				delay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getCongestionDelay(first, CloudSim.clock());
+				for (int j = 0; j < n; j++) {
+					x2 = points[j][0];
+					y2 = points[j][1];
+					second = new Location(x2, y2);
+					secondNode = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(second, false);
+					LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(firstNode, secondNode);
+					while (!path.isEmpty()) {
+						current = path.poll();
+						nextHop = path.peek();
+						if (nextHop == null) {
+							break;
+						}
+						if (current.traverse(nextHop) < 0) {
+							SimLogger.printLine("not adjacent");
+						}
+						double proDelay = current.traverse(nextHop);
+						double conDelay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getCongestionDelay(nextHop.getLocation(), CloudSim.clock() + delay);
+						delay += (proDelay + conDelay);
+						proximityMatrix[i][j] = delay;
+					}
+				}
+			}
+		}
 		
 	}//end calcProximity()
 
@@ -141,7 +195,8 @@ public class FogCluster {
 		//HierarchicalClustering hc = new HierarchicalClustering(new SingleLinkage(proximityMatrix));
 		HierarchicalClustering hc = new HierarchicalClustering(new CompleteLinkage(proximityMatrix));
 		//SimLogger.printLine("clusterNumber is: "+clusterNumber);
-		int[] membership = hc.partition(clusterNumber);
+		int[] membership = hc.partition(maxClusterHeight);
+		clusterNumber = membership.length;
 		//SimLogger.printLine("Membership : " + membership);
 		int[] clusterSize = new int[clusterNumber];
 		//SimLogger.printLine("ClusterSize : " + clusterSize);
@@ -231,6 +286,24 @@ public class FogCluster {
 			setClusterNumber(arrayList.size());
 		else
 			setClusterNumber(arrayList.size() / 4);
+		stdInput(arrayList);
+		calcProximity();
+		if(arrayList.size() > 0)
+			learn();
+		
+		//Make the voronoi diagram for that level and add it to the list
+		//PowerDiagram voronoi = new PowerDiagram(arrayList);
+		//SimLogger.printLine("ArrayList : " + arrayList);
+		SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
+		
+	}
+	
+	public FogCluster(ArrayList<Location> arrayList, double max) {
+		//arrayList is a list of all the Locations on the map a device exists
+		super();
+		//SimLogger.printLine("Blank constructor FogCluster() reached");
+		//SimLogger.printLine("LevelList size = " + levelList.size());
+		setClusterHeight(max);
 		stdInput(arrayList);
 		calcProximity();
 		if(arrayList.size() > 0)
