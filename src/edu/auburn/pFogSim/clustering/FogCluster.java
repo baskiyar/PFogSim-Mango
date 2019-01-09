@@ -23,6 +23,7 @@ public class FogCluster {
 	private String[] lines = null;
 	private Double[][] points = null;
 	private double[][] proximityMatrix = null;
+	private double maxClusterHeight;// Qian: add for set max distance or latency for clustering.
 	private int clusterNumber;// = 20; // Defines number of clusters to generate.
 	private Double[][][] cluster = new Double[clusterNumber][][];
 	
@@ -98,6 +99,15 @@ public class FogCluster {
 	 */
 	public void setClusterNumber(int clusterNumber) {
 		this.clusterNumber = clusterNumber;
+	}
+	
+	/**
+	 * @author Qian
+	 * set max distance or latency for cluster
+	 * @param max
+	 */
+	public void setClusterHeight(double max) {
+		this.maxClusterHeight = max;
 	}
 
 
@@ -185,7 +195,8 @@ public class FogCluster {
 		//HierarchicalClustering hc = new HierarchicalClustering(new SingleLinkage(proximityMatrix));
 		HierarchicalClustering hc = new HierarchicalClustering(new CompleteLinkage(proximityMatrix));
 		//SimLogger.printLine("clusterNumber is: "+clusterNumber);
-		int[] membership = hc.partition(clusterNumber);
+		int[] membership = hc.partition(maxClusterHeight);
+		clusterNumber = membership.length;
 		//SimLogger.printLine("Membership : " + membership);
 		int[] clusterSize = new int[clusterNumber];
 		//SimLogger.printLine("ClusterSize : " + clusterSize);
@@ -275,6 +286,24 @@ public class FogCluster {
 			setClusterNumber(arrayList.size());
 		else
 			setClusterNumber(arrayList.size() / 4);
+		stdInput(arrayList);
+		calcProximity();
+		if(arrayList.size() > 0)
+			learn();
+		
+		//Make the voronoi diagram for that level and add it to the list
+		//PowerDiagram voronoi = new PowerDiagram(arrayList);
+		//SimLogger.printLine("ArrayList : " + arrayList);
+		SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
+		
+	}
+	
+	public FogCluster(ArrayList<Location> arrayList, double max) {
+		//arrayList is a list of all the Locations on the map a device exists
+		super();
+		//SimLogger.printLine("Blank constructor FogCluster() reached");
+		//SimLogger.printLine("LevelList size = " + levelList.size());
+		setClusterHeight(max);
 		stdInput(arrayList);
 		calcProximity();
 		if(arrayList.size() > 0)
