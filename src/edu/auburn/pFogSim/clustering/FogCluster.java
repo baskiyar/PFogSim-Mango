@@ -179,8 +179,8 @@ public class FogCluster {
 							SimLogger.printLine("not adjacent");
 						}
 						double proDelay = current.traverse(nextHop);
-						double conDelay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getCongestionDelay(nextHop.getLocation(), CloudSim.clock() + delay);
-						delay += (proDelay + conDelay);
+						//double conDelay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getCongestionDelay(nextHop.getLocation(), CloudSim.clock() + delay);
+						delay += proDelay;
 						proximityMatrix[i][j] = delay;
 					}
 				}

@@ -19,8 +19,8 @@ public class FogHierCluster {
 		int level = 1000;
 		double x_pos = -1.0, y_pos = -1.0;
 		//ArrayList<Location> tempList;
-		for(int r = 0; r < 20; r++)
-			levelMap.put(r, new ArrayList<Location>());
+//		for(int r = 0; r < 20; r++)
+//			levelMap.put(r, new ArrayList<Location>()); //commented by Qian
 		//Add all nodes to levelMap based on their level values
 		for(NodeSim node : nodes)
 		{
@@ -28,7 +28,14 @@ public class FogHierCluster {
 			x_pos = node.getLocation().getXPos();
 			y_pos = node.getLocation().getYPos();
 			Location pair = new Location(x_pos, y_pos);
-			levelMap.get(level).add(pair);
+			if (levelMap.containsKey(level)) {
+				levelMap.get(level).add(pair);
+			}
+			else {
+				ArrayList<Location> newList = new ArrayList<>();
+				newList.add(pair);
+				levelMap.put(level, newList);
+			}
 			//SimLogger.printLine("node added!");
 			/*if(levelMap.size() != 0)
 			{
@@ -43,13 +50,13 @@ public class FogHierCluster {
 		}
 		int length = levelMap.size();
 		//SimLogger.printLine("Length = " + length);
-		int removed = 0;
-		for (int i = 1; i < length; i++) {
-			if(levelMap.get(i).size() == 0) {
-				levelMap.remove(i);
-				removed++;
-			}
-		}
+//		int removed = 0;//commented by Qian
+//		for (int i = 1; i < length; i++) {
+//			if(levelMap.get(i).size() == 0) {
+//				levelMap.remove(i);
+//				removed++;
+//			}
+//		}
 		//SimLogger.printLine("Removed = " + removed);
 		//Add all clusters we are making out of each layer to the clusterList
 		for(int leveliter = 1; leveliter < levelMap.size(); leveliter++)
