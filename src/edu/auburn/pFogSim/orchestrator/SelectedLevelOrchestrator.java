@@ -69,7 +69,7 @@ public class SelectedLevelOrchestrator extends EdgeOrchestrator {
 		int level = SimSettings.getInstance().nextSelectedLevel();
 		ArrayList<EdgeHost> hosts = hostLevelMap.get(level);
 		DistRadix sort = new DistRadix(hosts, task.getSubmittedLocation());//use radix sort based on distance from task
-		LinkedList<EdgeHost> nodes = sort.sortNodes();
+		LinkedList<EdgeHost> nodes = sort.sortNodesByLatency();
 		EdgeHost host = nodes.poll();
 		/*
 		 * for (int i = 0; !goodHost(host, task) && i < 10; i++) {
