@@ -76,7 +76,7 @@ public class EdgeOnlyOrchestrator extends EdgeOrchestrator {
 	 */
 	private EdgeHost getHost(Task task) {
 		DistRadix sort = new DistRadix(hosts, task.getSubmittedLocation());//use radix sort based on distance from task
-		LinkedList<EdgeHost> nodes = sort.sortNodes();
+		LinkedList<EdgeHost> nodes = sort.sortNodesByLatency();
 		EdgeHost host = nodes.poll();
 		/*
 		 * for (int i = 0; !goodHost(host, task) && i < 10; i++) {

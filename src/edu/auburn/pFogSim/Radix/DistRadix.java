@@ -25,7 +25,9 @@ import java.util.TreeMap;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.util.DataInterpreter;
+import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.utils.Location;
 /**
@@ -37,6 +39,7 @@ public class DistRadix {
 	private ArrayList<EdgeHost> input;
 	private TreeMap<Location, EdgeHost> coordMap;
 	private HashMap<Double, Location> distMap;
+	private HashMap<Double, Location> latencyMap;//Qian: added for sort node by latency.
 	private Location ref;
 	private ArrayList<Location> coords;
 	private ArrayList<Integer> distances;
@@ -50,6 +53,7 @@ public class DistRadix {
 		input = new ArrayList<EdgeHost>();
 		coordMap = new TreeMap<Location, EdgeHost>();
 		distMap = new HashMap<Double, Location>();
+		latencyMap = new HashMap<Double, Location>();//Qian added for latency
 		coords = new ArrayList<Location>();
 		distances = new ArrayList<Integer>();
 		for (EdgeHost node : in) {
@@ -80,6 +84,22 @@ public class DistRadix {
 			}
 			distMap.put(dist, loc);
 			distances.add((int) (dist * 1000));
+		}
+	}
+	/**
+	 * @author Qian
+	 * map latency to coords
+	 */
+	private void builtLatency() {
+		double latency = 0;
+		for (Location loc: coords) {
+			latency = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(ref, loc);
+			latency = Math.floor(latency);
+			while(latencyMap.containsKey(latency)) {
+				latency += 0.001;
+			}
+			latencyMap.put(latency, loc);
+			distances.add((int) (latency * 1000));
 		}
 	}
 	/**
@@ -167,6 +187,18 @@ public class DistRadix {
 	public LinkedList<EdgeHost> sortNodes() {
 		buildCoords();
 		buildDist();
+		setArrgs();
+		radixSort();
+		return getList();
+	}
+	/**
+	 * @author Qian
+	 * public method to get list of sorted nodes by latency
+	 * @return
+	 */
+	public LinkedList<EdgeHost> sortNodesByLatency() {
+		buildCoords();
+		builtLatency();
 		setArrgs();
 		radixSort();
 		return getList();

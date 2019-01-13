@@ -290,7 +290,7 @@ public class ESBModel extends NetworkModel {
 	 * added for get delay(Congestion + Propagation) between two nodes
 	 * @param one
 	 * @param two
-	 * @return
+	 * @return delaty between two EdgeNodes
 	 */
 	public double getDelay(EdgeHost one, EdgeHost two) {
 		double delay = 0;
@@ -305,6 +305,39 @@ public class ESBModel extends NetworkModel {
 		destination = new Location(two.getLocation().getXPos(), two.getLocation().getYPos());
 		src = networkTopology.findNode(source, false);
 		dest = networkTopology.findNode(destination, false);
+	    path = router.findPath(networkTopology, src, dest);
+	    delay += getWlanUploadDelay(src.getLocation(), CloudSim.clock());
+	    while (!path.isEmpty()) {
+			current = path.poll();
+			nextHop = path.peek();
+			if (nextHop == null) {
+				break;
+			}
+			if (current.traverse(nextHop) < 0) {
+				SimLogger.printLine("not adjacent");
+			}
+			double proDelay = current.traverse(nextHop);
+			double conDelay = getWlanUploadDelay(nextHop.getLocation(), CloudSim.clock() + delay);
+			delay += (proDelay + conDelay);
+	    }
+		return delay;
+	}
+	/**
+	 * @author Qian
+	 * added for get delay(Congestion + Propagation) between two nodes using two locations
+	 * @param one - first location
+	 * @param two - second location
+	 * @return delay between two locations
+	 */
+	public double getDleay(Location one, Location two) {
+		double delay = 0;
+		NodeSim src;
+		NodeSim dest;
+		NodeSim current;
+		NodeSim nextHop;
+		LinkedList<NodeSim> path = null;
+		src = networkTopology.findNode(one, false);
+		dest = networkTopology.findNode(two, false);
 	    path = router.findPath(networkTopology, src, dest);
 	    delay += getWlanUploadDelay(src.getLocation(), CloudSim.clock());
 	    while (!path.isEmpty()) {
