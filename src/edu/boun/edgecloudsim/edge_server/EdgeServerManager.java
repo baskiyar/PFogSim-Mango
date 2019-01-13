@@ -129,6 +129,11 @@ public class EdgeServerManager {
 		}
 		
 		((ESBModel) SimManager.getInstance().getNetworkModel()).setNetworkTopology(networkTopology);
+		
+		SimLogger.print("\n\tGet cluster matrix...");
+		FogHierCluster clusterObjectTest = new FogHierCluster((ArrayList<NodeSim>)nodesForTopography);
+		
+		
 		//((ESBModel) SimManager.getInstance().getNetworkModel()).gravityWell();
 		if (SimManager.getInstance().getEdgeOrchestrator() instanceof PuddleOrchestrator) {
 			SimLogger.print("\n\tMaking Cluster Object...");

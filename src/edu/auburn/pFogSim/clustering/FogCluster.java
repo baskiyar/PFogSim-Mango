@@ -1,5 +1,6 @@
 package edu.auburn.pFogSim.clustering;
 
+import java.io.PrintWriter;
 //import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -26,6 +27,7 @@ public class FogCluster {
 	private double maxClusterHeight;// Qian: add for set max distance or latency for clustering.
 	private int clusterNumber;// = 20; // Defines number of clusters to generate.
 	private Double[][][] cluster = new Double[clusterNumber][][];
+	private int level;
 	
 	/**
 	 * @return the cluster
@@ -162,7 +164,7 @@ public class FogCluster {
 				first = new Location(x1, y1);
 				firstNode = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(first, false);
 				delay = 0;
-				delay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getCongestionDelay(first, CloudSim.clock());
+				//delay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getCongestionDelay(first, CloudSim.clock());
 				for (int j = 0; j < n; j++) {
 					x2 = points[j][0];
 					y2 = points[j][1];
@@ -186,6 +188,7 @@ public class FogCluster {
 				}
 			}
 		}
+		writeMatricToFile(SimSettings.getInstance().getClusterType(), level, n);
 		
 	}//end calcProximity()
 
@@ -195,8 +198,9 @@ public class FogCluster {
 		//HierarchicalClustering hc = new HierarchicalClustering(new SingleLinkage(proximityMatrix));
 		HierarchicalClustering hc = new HierarchicalClustering(new CompleteLinkage(proximityMatrix));
 		//SimLogger.printLine("clusterNumber is: "+clusterNumber);
-		int[] membership = hc.partition(maxClusterHeight);
-		clusterNumber = membership.length;
+//		int[] membership = hc.partition(maxClusterHeight);//Qian commented for get matrix
+//		clusterNumber = membership.length;
+		int[] membership = hc.partition(clusterNumber);
 		//SimLogger.printLine("Membership : " + membership);
 		int[] clusterSize = new int[clusterNumber];
 		//SimLogger.printLine("ClusterSize : " + clusterSize);
@@ -297,6 +301,33 @@ public class FogCluster {
 		SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
 		
 	}
+	/**
+	 * @author Qian
+	 * add a new parameter to get level for print matrix 
+	 * @param arrayList
+	 * @param _level
+	 */
+	public FogCluster(ArrayList<Location> arrayList, int _level) {
+		//arrayList is a list of all the Locations on the map a device exists
+		super();
+		this.level = _level;
+		//SimLogger.printLine("Blank constructor FogCluster() reached");
+		//SimLogger.printLine("LevelList size = " + levelList.size());
+		if(arrayList.size() < 4)
+			setClusterNumber(arrayList.size());
+		else
+			setClusterNumber(arrayList.size() / 4);
+		stdInput(arrayList);
+		calcProximity();
+		if(arrayList.size() > 0)
+			learn();
+		
+		//Make the voronoi diagram for that level and add it to the list
+		//PowerDiagram voronoi = new PowerDiagram(arrayList);
+		//SimLogger.printLine("ArrayList : " + arrayList);
+		SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
+		
+	}
 	
 	public FogCluster(ArrayList<Location> arrayList, double max) {
 		//arrayList is a list of all the Locations on the map a device exists
@@ -343,6 +374,28 @@ public class FogCluster {
 		
 		
 	}// End main
+	
+	public void writeMatricToFile(boolean k, int level, int length) {
+		try {
+			PrintWriter matrixWriter;
+			if (k) {
+				matrixWriter = new PrintWriter("sim_results/DistanceAndLatenceMatrix/Distance_" + level + ".txt");
+			}
+			else {
+				matrixWriter = new PrintWriter("sim_results/DistanceAndLatenceMatrix/Latency_" + level + ".txt");
+			}
+			for (int i = 0; i < length; i++) {
+				for (int j = 0; j < length; j++) {
+					matrixWriter.print(proximityMatrix[i][j] + "\t");
+				}
+				matrixWriter.println();
+			}
+			matrixWriter.close();
+		}
+		catch (Exception e) {
+			
+		}
+	}
 
 }// end class FogCluster
 

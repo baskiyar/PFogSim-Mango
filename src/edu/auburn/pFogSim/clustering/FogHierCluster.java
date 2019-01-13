@@ -62,7 +62,8 @@ public class FogHierCluster {
 		for(int leveliter = 1; leveliter < levelMap.size(); leveliter++)
 		{
 			//SimLogger.printLine("Size = " + levelMap.get(leveliter));
-			FogCluster fc = new FogCluster(levelMap.get(leveliter));// Qian make FogCluster in every layer.
+			FogCluster fc = new FogCluster(levelMap.get(leveliter), leveliter);// Qian just for get matrix, remove it after get latency.
+			//FogCluster fc = new FogCluster(levelMap.get(leveliter));// Qian make FogCluster in every layer.
 			//FogCluster fc = new FogCluster(levelMap.get(leveliter), max); Qian switch to this method after we get max distance or latency
 			clusterList.add(fc);
 		}

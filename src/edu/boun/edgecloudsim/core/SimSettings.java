@@ -68,7 +68,7 @@ public class SimSettings {
     //Qian enable the trace
     private boolean TRACE_ENABLED;
     //Qian added for select how to make puddle cluster. true - distance; false - latency
-    private boolean clusterType = true; 
+    private boolean clusterType = false; 
 
     private int MIN_NUM_OF_MOBILE_DEVICES;
     private int MAX_NUM_OF_MOBILE_DEVICES;
