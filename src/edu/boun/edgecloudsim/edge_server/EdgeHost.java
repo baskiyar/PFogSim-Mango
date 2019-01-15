@@ -19,6 +19,7 @@ import org.cloudbus.cloudsim.VmScheduler;
 import org.cloudbus.cloudsim.provisioners.BwProvisioner;
 import org.cloudbus.cloudsim.provisioners.RamProvisioner;
 
+import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.utils.Location;
 
 public class EdgeHost extends Host {
@@ -29,12 +30,18 @@ public class EdgeHost extends Host {
 	private int puddleId;// Qian added for puddle
 	private EdgeHost parent;//Qian: added for puddle
 	private ArrayList<EdgeHost> childern = null;//Qian: added for puddle
+	private double reserveBW;//Qian: added for service replacement
+	private long reserveMips;//Qian: added for service replacement
+	private ArrayList<MobileDevice> customers;//Qian: added for service replacement 
 	
 	
 	public EdgeHost(int id, RamProvisioner ramProvisioner,
 			BwProvisioner bwProvisioner, long storage,
 			List<? extends Pe> peList, VmScheduler vmScheduler) {
 		super(id, ramProvisioner, bwProvisioner, storage, peList, vmScheduler);
+		this.reserveBW = 0;
+		this.reserveMips = 0;
+		this.customers = new ArrayList<>();
 
 	}
 	//Qian add two parameters for centralOrchestrator
@@ -44,6 +51,9 @@ public class EdgeHost extends Host {
 		super(id, ramProvisioner, bwProvisioner, storage, peList, vmScheduler);
 		this.costPerBW = _costPerBW;
 		this.costPerSec = _costPerSec;
+		this.reserveBW = 0;
+		this.reserveMips = 0;
+		this.customers = new ArrayList<>();
 	}
 	
 	public void setPlace(Location _location){
@@ -117,5 +127,53 @@ public class EdgeHost extends Host {
 	public ArrayList<EdgeHost> getChildern() {
 		return this.childern;
 	}
-	
+	/**
+	 * reserve Bandwith for certain mobile device
+	 * @author Qian
+	 *	@param mb
+	 *	@return
+	 */
+	private boolean reserveBW(MobileDevice mb) {
+		double maxBW = this.getBw();
+		double tempBW = reserveBW + mb.getBWRequirement();
+		if (tempBW < maxBW) {
+			reserveBW = tempBW;
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	/**
+	 * reserve Mips for certain mobile device
+	 * @author Qian
+	 *	@param mb
+	 *	@return
+	 */
+	private boolean reserveCPUResource(MobileDevice mb) {
+		long maxMips = this.getTotalMips();
+		long tempLength = reserveMips + mb.getTaskLengthRequirement();
+		if (tempLength < maxMips) {
+			reserveMips = tempLength;
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	/**
+	 * make a reservation for a certain mobile device 
+	 * @author Qian
+	 *	@param mb
+	 *	@return
+	 */
+	public boolean makeReservation(MobileDevice mb) {
+		if (reserveBW(mb) && reserveCPUResource(mb)) {
+			customers.add(mb);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }

@@ -15,6 +15,7 @@
 
 package edu.boun.edgecloudsim.edge_client;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
 
 import edu.auburn.pFogSim.netsim.*;
+import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
@@ -49,6 +51,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 	private static final int RESPONSE_RECEIVED_BY_MOBILE_DEVICE = BASE + 4;
 //	private static final int REQUEST_RECIVED_BY_EDGE_ORCHESTRATOR = BASE + 5;
 	private int taskIdCounter=0;
+	private ArrayList<MobileDevice> mobileDevices;
 	
 	public MobileDeviceManager() throws Exception {
 		super("Global_Broker");
@@ -388,5 +391,17 @@ public class MobileDeviceManager extends DatacenterBroker {
 		task.setAssociatedHostId(vm.getHost().getId());
 		bindCloudletToVm(task.getCloudletId(),vm.getId());
 		schedule(getVmsToDatacentersMap().get(task.getVmId()), 0, CloudSimTags.CLOUDLET_SUBMIT, task);
+	}
+	
+	public void creatMobileDeviceList(int number) {
+		mobileDevices = new ArrayList<>();
+		for (int i =0; i < number; i++) {
+			MobileDevice mb = new MobileDevice(i);
+			mobileDevices.add(mb);
+		}
+	}
+	
+	public ArrayList<MobileDevice> getMobileDevices() {
+		return this.mobileDevices;
 	}
 }

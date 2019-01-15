@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.cloudbus.cloudsim.Datacenter;
 //import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.core.CloudSim;
@@ -39,6 +40,7 @@ import edu.auburn.pFogSim.clustering.FogHierCluster;
 import edu.auburn.pFogSim.netsim.Link;
 import edu.auburn.pFogSim.netsim.NetworkTopology;
 import edu.auburn.pFogSim.netsim.NodeSim;
+import edu.auburn.pFogSim.util.MobileDevice;
 //import edu.auburn.pFogSim.netsim.Router;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.boun.edgecloudsim.edge_client.MobileDeviceManager;
@@ -124,7 +126,13 @@ public class SimManager extends SimEntity {
 		mobilityModel = scenarioFactory.getMobilityModel();
 		mobilityModel.initialize();
 		SimLogger.printLine("Done,");
-
+		
+		//Qian: added for service replacement
+		if (SimSettings.getInstance().getServiceReplacement()) {
+			mobileDeviceManager.creatMobileDeviceList(numOfMobileDevice);
+			assignHost();//uncomment it for service replacement.
+		}
+		
 		
 		CloudSim.startSimulation();
 	}
@@ -341,5 +349,20 @@ public class SimManager extends SimEntity {
 		// TODO Auto-generated method stub
 		return this.voronoiDiagramList;
 	}
-
+	
+	/**
+	 * make a reservation for every mobile devices
+	 * @author Qian
+	 */
+	public void assignHost() {
+		for (MobileDevice mobile: mobileDeviceManager.getMobileDevices()) {
+			for (Datacenter dc: edgeServerManager.getDatacenterList()) {
+				EdgeHost temp = (EdgeHost)dc.getHostList().get(0);
+				if (temp.makeReservation(mobile)) {
+					mobile.setHost(temp);
+					break;
+				}
+			}
+		}
+	}
 }

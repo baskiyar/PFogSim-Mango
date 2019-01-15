@@ -52,7 +52,7 @@ public class mainApp {
 		
 		//CJ added linksFile to supply the link xml file, had to adjust all constructors that
 		//	use these file to seamlessly use it
-		int iterationNumber = 3;
+		int iterationNumber = 2;
 		String configFile = "";
 		String outputFolder = "";
 		String edgeDevicesFile = "";

@@ -69,6 +69,8 @@ public class SimSettings {
     private boolean TRACE_ENABLED;
     //Qian added for select how to make puddle cluster. true - distance; false - latency
     private boolean clusterType = false; 
+    //Qian added for service replacement
+    private boolean serviceReplacement = false;
 
     private int MIN_NUM_OF_MOBILE_DEVICES;
     private int MAX_NUM_OF_MOBILE_DEVICES;
@@ -215,7 +217,13 @@ public class SimSettings {
 	public boolean getClusterType() {
 		return this.clusterType;
 	}
-	
+	/**
+	 * @author Qian
+	 *	@return
+	 */
+	public boolean getServiceReplacement() {
+		return this.serviceReplacement;
+	}
 	/**
 	 * returns the parsed XML document for edge_devices.xml
 	 */

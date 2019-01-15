@@ -19,6 +19,8 @@ import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.core.CloudSim;
 
+import edu.auburn.pFogSim.util.MobileDevice;
+import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_client.CpuUtilizationModel_Custom;
 import edu.boun.edgecloudsim.edge_client.Task;
 
@@ -61,5 +63,15 @@ public abstract class EdgeOrchestrator {
 	
 	public void setCloud(Datacenter _cloud ) {
 		cloud = _cloud;
+	}
+	/**
+	 * get host for service replacement function
+	 * @author Qian
+	 *	@param task
+	 *	@return
+	 */
+	protected static EdgeHost findHost(Task task) {
+		MobileDevice mb = SimManager.getInstance().getMobileDeviceManager().getMobileDevices().get(task.getMobileDeviceId());
+		return mb.getHost();
 	}
 }
