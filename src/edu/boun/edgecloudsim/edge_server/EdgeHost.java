@@ -128,52 +128,66 @@ public class EdgeHost extends Host {
 		return this.childern;
 	}
 	/**
-	 * reserve Bandwith for certain mobile device
+	 * Check if free Bandwidth available for certain mobile device
 	 * @author Qian
-	 *	@param mb
-	 *	@return
+	 * @param mb
+	 * @return boolean
 	 */
-	private boolean reserveBW(MobileDevice mb) {
+	public boolean isBWAvailable(MobileDevice mb) {
 		double maxBW = this.getBw();
 		double tempBW = reserveBW + mb.getBWRequirement();
 		if (tempBW < maxBW) {
-			reserveBW = tempBW;
 			return true;
 		}
 		else {
 			return false;
 		}
 	}
+	
+	/**
+	 * reserve Bandwith for certain mobile device
+	 * @author Qian
+	 *	@param mb
+	 */
+	public void reserveBW(MobileDevice mb) {
+		reserveBW = reserveBW + mb.getBWRequirement();
+	}
+	
+	/**
+	 * Check if free MIPS available for certain mobile device
+	 * @author Qian
+	 *	@param mb
+	 *	@return boolean
+	 */
+	public boolean isMIPSAvailable(MobileDevice mb) {
+		long maxMips = this.getTotalMips();
+		long tempLength = reserveMips + mb.getTaskLengthRequirement();
+		if (tempLength < maxMips) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	/**
 	 * reserve Mips for certain mobile device
 	 * @author Qian
 	 *	@param mb
-	 *	@return
 	 */
-	private boolean reserveCPUResource(MobileDevice mb) {
-		long maxMips = this.getTotalMips();
-		long tempLength = reserveMips + mb.getTaskLengthRequirement();
-		if (tempLength < maxMips) {
-			reserveMips = tempLength;
-			return true;
-		}
-		else {
-			return false;
-		}
+	private void reserveCPUResource(MobileDevice mb) {
+		reserveMips = reserveMips + mb.getTaskLengthRequirement(); 
 	}
+	
 	/**
 	 * make a reservation for a certain mobile device 
 	 * @author Qian
 	 *	@param mb
 	 *	@return
 	 */
-	public boolean makeReservation(MobileDevice mb) {
-		if (reserveBW(mb) && reserveCPUResource(mb)) {
-			customers.add(mb);
-			return true;
-		}
-		else {
-			return false;
-		}
+	public void  makeReservation(MobileDevice mb) {
+		reserveBW(mb);
+		reserveCPUResource(mb);
+		customers.add(mb);
 	}
 }

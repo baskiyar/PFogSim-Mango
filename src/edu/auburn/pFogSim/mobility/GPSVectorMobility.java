@@ -233,4 +233,13 @@ public class GPSVectorMobility extends MobilityModel {
 	{
 		return treeMapArray.get(1).size();
 	}
+	/**
+	 * get last location for a mobile device
+	 * @author Qian
+	 *	@param id
+	 *	@return
+	 */
+	public Location getLastMobileDeviceLocation(int id) {
+		return treeMapArray.get(id).lastEntry().getValue();
+	}
 }

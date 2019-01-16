@@ -10,6 +10,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 
 import edu.auburn.pFogSim.Exceptions.BlackHoleException;
 import edu.auburn.pFogSim.util.DataInterpreter;
+import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_client.Task;
@@ -281,9 +282,27 @@ public class ESBModel extends NetworkModel {
 			gravityWell();
 		}
 	}
-	
+	/**
+	 * find path between two NodeSim
+	 * @author Qian
+	 *	@param src
+	 *	@param dec
+	 *	@return
+	 */
 	public LinkedList<NodeSim> findPath(NodeSim src, NodeSim dec) {
 		return router.findPath(networkTopology, src, dec);
+	}
+	/**
+	 * find path from mobile device to host
+	 * @author Qian
+	 *	@param host
+	 *	@param task
+	 *	@return
+	 */
+	public LinkedList<NodeSim> findPath(EdgeHost host, MobileDevice task) {
+		NodeSim des = networkTopology.findNode(host.getLocation(), false);
+		NodeSim src = networkTopology.findNode(task.getLocation(), false);
+		return findPath(src, des);
 	}
 	/**
 	 * @author Qian

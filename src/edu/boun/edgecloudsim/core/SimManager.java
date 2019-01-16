@@ -128,11 +128,10 @@ public class SimManager extends SimEntity {
 		SimLogger.printLine("Done,");
 		
 		//Qian: added for service replacement
-		if (SimSettings.getInstance().getServiceReplacement()) {
-			mobileDeviceManager.creatMobileDeviceList(numOfMobileDevice);
-			assignHost();//uncomment it for service replacement.
+		mobileDeviceManager.creatMobileDeviceList(numOfMobileDevice);
+		for (MobileDevice mobile: mobileDeviceManager.getMobileDevices()) {
+			edgeOrchestrator.assignHost(mobile);
 		}
-		
 		
 		CloudSim.startSimulation();
 	}
@@ -151,6 +150,11 @@ public class SimManager extends SimEntity {
 	
 	public ScenarioFactory getScenarioFactory(){
 		return scenarioFactory;
+	}
+	
+	//Added by Qian
+	public LoadGeneratorModel getLoadGeneratorModel() {
+		return loadGeneratorModel;
 	}
 	
 	public int getNumOfMobileDevice(){
@@ -348,21 +352,5 @@ public class SimManager extends SimEntity {
 	public ArrayList<PowerDiagram> getVoronoiDiagram() {
 		// TODO Auto-generated method stub
 		return this.voronoiDiagramList;
-	}
-	
-	/**
-	 * make a reservation for every mobile devices
-	 * @author Qian
-	 */
-	public void assignHost() {
-		for (MobileDevice mobile: mobileDeviceManager.getMobileDevices()) {
-			for (Datacenter dc: edgeServerManager.getDatacenterList()) {
-				EdgeHost temp = (EdgeHost)dc.getHostList().get(0);
-				if (temp.makeReservation(mobile)) {
-					mobile.setHost(temp);
-					break;
-				}
-			}
-		}
 	}
 }

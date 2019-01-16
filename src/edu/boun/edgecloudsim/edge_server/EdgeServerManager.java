@@ -457,6 +457,21 @@ public class EdgeServerManager {
 		}
 		return null;
 	}
+	/**
+	 * find a EdgeHost by it's wlan_id
+	 * @author Qian
+	 *	@param id
+	 *	@return
+	 */
+	public EdgeHost findHostByWlanId(int id) {
+		for (Datacenter node: SimManager.getInstance().getLocalServerManager().getDatacenterList()) {
+			EdgeHost host = (EdgeHost) node.getHostList().get(0);
+			if (host.getLocation().getServingWlanId()== id) {
+				return host;
+			}
+		}
+		return null;
+	}
 	
 	public void setHosts(List<EdgeHost> hosts) {
 		hostList.addAll(hosts);

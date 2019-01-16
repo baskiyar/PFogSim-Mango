@@ -19,6 +19,7 @@ import edu.auburn.pFogSim.Radix.DistRadix;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NetworkTopology;
 import edu.auburn.pFogSim.netsim.NodeSim;
+import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator;
@@ -129,6 +130,73 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 					if(goodHost(host, task)) {
 						SimLogger.getInstance().getCentralizeLogPrinter().println("**********\n" + "\tExecute at Node " + desNode.getWlanId() + "with cost " + entry.getKey());
 						return host;
+					}
+				}
+				catch (NullPointerException e){//THE OTHER LEVER!!!!!!!!!!
+					//If there are no nodes in the list that can take the task, send to the cloud
+					host = (EdgeHost) cloud.getHostList().get(0);
+				}
+			}
+		}
+		if (host == null) {
+			host = (EdgeHost) cloud.getHostList().get(0);
+		}
+		return host;
+	}
+	/* (non-Javadoc)
+	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
+	 */
+	@Override
+	public void assignHost(MobileDevice mobile) {
+		// TODO Auto-generated method stub
+		Map<Double, List<NodeSim>> costMap = new HashMap<>();
+		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(mobile.getLocation(), false);
+		Map<NodeSim, LinkedList<NodeSim>> desMap = pathTable.get(src);
+		
+		for (Entry<NodeSim, LinkedList<NodeSim>> entry: desMap.entrySet()) {
+			double cost = 0;
+			NodeSim des = entry.getKey();
+			LinkedList<NodeSim> path = entry.getValue();
+			if (path == null || path.size() == 0) {
+				EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(mobile.getLocation().getXPos(), mobile.getLocation().getYPos());
+				//des = ((ESBModel)(SimManager.getInstance().getNetworkModel())).getNetworkTopology().findNode(task.getSubmittedLocation(), false);
+				cost = (task.getCloudletLength() / k.getVmList().get(0).getMips())* k.getCostPerSec() + (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW();
+			}
+			else {
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("**********Path From " + src.getWlanId() + " To " + des.getWlanId() + "**********");
+				for (NodeSim node: path) {
+					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos());
+					double bwCost = (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW();
+					cost = cost + bwCost;
+					//SimLogger.getInstance().getCentralizeLogPrinter().println("Level:\t" + node.getLevel() + "\tNode:\t" + node.getWlanId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
+				}
+				//des = path.peekLast();
+				EdgeHost desHost = SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos());
+				double exCost = desHost.getCostPerSec() * 
+						(task.getCloudletLength() / desHost.getVmList().get(0).getMips());
+				cost = cost + exCost;
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("Destiation:\t"+ des.getWlanId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
+			}
+			
+			if (costMap.containsKey(cost)) {
+				if (!costMap.get(cost).contains(des)) {
+					costMap.get(cost).add(des);
+				}
+			}
+			else {
+				ArrayList<NodeSim> desList = new ArrayList<>();
+				desList.add(des);
+				costMap.put(cost, desList);
+			}
+		}
+		EdgeHost host = null;
+		for (Map.Entry<Double, List<NodeSim>> entry: costMap.entrySet()) {
+			for(NodeSim desNode: entry.getValue()) {
+				host = SimManager.getInstance().getLocalServerManager().findHostByLoc(desNode.getLocation().getXPos(), desNode.getLocation().getYPos());
+				try {
+					if(goodHost(host, task)) {
+						SimLogger.getInstance().getCentralizeLogPrinter().println("**********\n" + "\tExecute at Node " + desNode.getWlanId() + "with cost " + entry.getKey());
+						//return host;
 					}
 				}
 				catch (NullPointerException e){//THE OTHER LEVER!!!!!!!!!!

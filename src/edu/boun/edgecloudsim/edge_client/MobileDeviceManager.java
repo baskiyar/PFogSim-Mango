@@ -28,6 +28,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
 
+import edu.auburn.pFogSim.mobility.GPSVectorMobility;
 import edu.auburn.pFogSim.netsim.*;
 import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
@@ -392,11 +393,18 @@ public class MobileDeviceManager extends DatacenterBroker {
 		bindCloudletToVm(task.getCloudletId(),vm.getId());
 		schedule(getVmsToDatacentersMap().get(task.getVmId()), 0, CloudSimTags.CLOUDLET_SUBMIT, task);
 	}
-	
+	/**
+	 * create mobile devices
+	 * @author Qian
+	 *	@param number
+	 */
 	public void creatMobileDeviceList(int number) {
 		mobileDevices = new ArrayList<>();
+		List<EdgeTask> taskList = SimManager.getInstance().getLoadGeneratorModel().getTaskList();
 		for (int i =0; i < number; i++) {
-			MobileDevice mb = new MobileDevice(i);
+			MobileDevice mb = new MobileDevice(i, taskList.get(i).taskType);
+			Location lc = ((GPSVectorMobility)SimManager.getInstance().getMobilityModel()).getLastMobileDeviceLocation(i);
+			mb.setLocation(lc);
 			mobileDevices.add(mb);
 		}
 	}

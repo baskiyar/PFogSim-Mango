@@ -3,6 +3,10 @@
  */
 package edu.auburn.pFogSim.util;
 
+import java.util.LinkedList;
+
+import edu.auburn.pFogSim.netsim.NodeSim;
+import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.utils.Location;
@@ -17,8 +21,22 @@ public class MobileDevice {
 	private int id;
 	private EdgeHost host = null;
 	private SimSettings.APP_TYPES appType;
-	private double inteArrTime;
+	private LinkedList<NodeSim> path;
 	
+	/**
+	 * @return the path
+	 */
+	public LinkedList<NodeSim> getPath() {
+		return path;
+	}
+
+	/**
+	 * @param path the path to set
+	 */
+	public void setPath(LinkedList<NodeSim> path) {
+		this.path = path;
+	}
+
 	/**
 	 * @author Qian
 	 * constructor
@@ -96,6 +114,7 @@ public class MobileDevice {
 	 *	@return
 	 */
 	public double getBWRequirement() {
+		double inteArrTime  = SimSettings.getInstance().getTaskLookUpTable()[appType.ordinal()][2];
 		double bw = SimSettings.getInstance().getTaskLookUpTable()[appType.ordinal()][5];
 		bw = bw + SimSettings.getInstance().getTaskLookUpTable()[appType.ordinal()][6];
 		bw = 1 / inteArrTime * bw;
@@ -107,10 +126,18 @@ public class MobileDevice {
 	 *	@return
 	 */
 	public long getTaskLengthRequirement() {
+		double inteArrTime  = SimSettings.getInstance().getTaskLookUpTable()[appType.ordinal()][2];
 		long length = (long) SimSettings.getInstance().getTaskLookUpTable()[appType.ordinal()][7];
 		length = (long) (1 / inteArrTime * length);
 		return length;
 	}
 	
+	public void makeReservation() {
+		host.makeReservation(this);
+		for (NodeSim node: path) {
+			EdgeHost interHost = SimManager.getInstance().getLocalServerManager().findHostByWlanId(node.getLocation().getServingWlanId());
+			interHost.reserveBW(this);
+		}
+	}
 	
 }

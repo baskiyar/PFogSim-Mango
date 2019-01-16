@@ -16,9 +16,13 @@ package edu.boun.edgecloudsim.edge_orchestrator;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
 
+import java.util.LinkedList;
+
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.core.CloudSim;
 
+import edu.auburn.pFogSim.netsim.ESBModel;
+import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_client.CpuUtilizationModel_Custom;
@@ -55,23 +59,28 @@ public abstract class EdgeOrchestrator {
 	 * @param task
 	 * @return
 	 */
-	protected static boolean goodHost(EdgeHost host, Task task) {
-		double hostCap = 100.0 - host.getVmList().get(0).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
-		double taskCap = ((CpuUtilizationModel_Custom)task.getUtilizationModelCpu()).predictUtilization(((EdgeVM) host.getVmList().get(0)).getVmType());
-		return hostCap >= taskCap;
+	protected static boolean goodHost(EdgeHost host, MobileDevice mb) {
+		if (!host.isMIPSAvailable(mb)) {
+			return false;
+		}
+		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mb);
+		for (NodeSim node: path) {
+			EdgeHost tempHost = SimManager.getInstance().getLocalServerManager().findHostByWlanId(node.getLocation().getServingWlanId());
+			if (!tempHost.isBWAvailable(mb)) {
+				return false;
+			}
+		}
+		return true;
+		
 	}
 	
 	public void setCloud(Datacenter _cloud ) {
 		cloud = _cloud;
 	}
+
 	/**
-	 * get host for service replacement function
 	 * @author Qian
-	 *	@param task
-	 *	@return
+	 *	@param mobile
 	 */
-	protected static EdgeHost findHost(Task task) {
-		MobileDevice mb = SimManager.getInstance().getMobileDeviceManager().getMobileDevices().get(task.getMobileDeviceId());
-		return mb.getHost();
-	}
+	public abstract void assignHost(MobileDevice mobile);
 }

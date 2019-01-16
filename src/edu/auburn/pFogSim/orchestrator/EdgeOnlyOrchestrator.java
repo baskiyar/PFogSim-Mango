@@ -17,6 +17,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import edu.auburn.pFogSim.Radix.DistRadix;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
+import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator;
@@ -75,8 +76,18 @@ public class EdgeOnlyOrchestrator extends EdgeOrchestrator {
 	 * @return
 	 */
 	private EdgeHost getHost(Task task) {
-		DistRadix sort = new DistRadix(hosts, task.getSubmittedLocation());//use radix sort based on distance from task
-		LinkedList<EdgeHost> nodes = sort.sortNodesByLatency();
+		MobileDevice mb = SimManager.getInstance().getMobileDeviceManager().getMobileDevices().get(task.getMobileDeviceId());
+		task.setPath(mb.getPath());
+		return mb.getHost();
+	}
+	/* (non-Javadoc)
+	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
+	 */
+	@Override
+	public void assignHost(MobileDevice mobile) {
+		// TODO Auto-generated method stub
+		DistRadix sort = new DistRadix(hosts, mobile.getLocation());//use radix sort based on distance from task
+		LinkedList<EdgeHost> nodes = sort.sortNodes();
 		System.out.println("nodes size:" + nodes.size());
 		EdgeHost host = nodes.poll();
 		/*
@@ -84,14 +95,13 @@ public class EdgeOnlyOrchestrator extends EdgeOrchestrator {
 		 *     host = nodes.poll();
 		 * }
 		 */
-		while(!goodHost(host, task)) {
+		while(!goodHost(host, mobile)) {
 			host = nodes.poll();//find the closest node capable of handling the task
 		}
-		NodeSim des = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getLocalServerManager().findHostById(host.getId()).getLocation(), false);
-		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
-		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(src, des);
-		task.setPath(path);
-		return host;
+		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mobile);
+		mobile.setPath(path);
+		mobile.setHost(host);
+		mobile.makeReservation();
 	}
 
 }
