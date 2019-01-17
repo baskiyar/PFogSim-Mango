@@ -176,19 +176,20 @@ public class ESBModel extends NetworkModel {
 	}
 	
 	private int getDeviceCount(Location deviceLocation, double time){
-		int deviceCount = 0;
+		/*int deviceCount = 0;
 		
 		for(int i=0; i<numberOfMobileDevices; i++) {
 			Location location = SimManager.getInstance().getMobilityModel().getLocation(i,time);
 			if(location.equals(deviceLocation))
 				deviceCount++;
-		}
-		
+		}*/
+		EdgeHost host = SimManager.getInstance().getLocalServerManager().findHostByLoc(deviceLocation.getXPos(), deviceLocation.getYPos());
+		return host.getCustomers().size();
 		//record max number of client just for debugging
-		if(maxNumOfClientsInPlace<deviceCount)
-			maxNumOfClientsInPlace = deviceCount;
-		
-		return deviceCount;
+//		if(maxNumOfClientsInPlace<deviceCount)
+//			maxNumOfClientsInPlace = deviceCount;
+//		
+//		return deviceCount;
 	}
 	//calculate congestion delay.
 	private double calculateESB(double propogationDelay, double bandwidth /*Kbps*/, double PoissonMean, double avgTaskSize /*KB*/, int deviceCount){
