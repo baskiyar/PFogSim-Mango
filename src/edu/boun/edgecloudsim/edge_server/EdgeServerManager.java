@@ -291,7 +291,8 @@ public class EdgeServerManager {
 			double mips = Double.parseDouble(hostElement.getElementsByTagName("mips").item(0).getTextContent());
 			double ram = Double.parseDouble(hostElement.getElementsByTagName("ram").item(0).getTextContent());
 			long storage = Long.parseLong(hostElement.getElementsByTagName("storage").item(0).getTextContent());
-			long bandwidth = (long) SimSettings.getInstance().getWlanBandwidth() / hostNodeList.getLength();
+			double bandwidth = Double.parseDouble(location.getElementsByTagName("bandwidth").item(0).getTextContent());
+			//long bandwidth = (long) SimSettings.getInstance().getWlanBandwidth() / hostNodeList.getLength();
 			
 			// 2. A Machine contains one or more PEs or CPUs/Cores. Therefore, should
 			//    create a list to store these PEs before creating
