@@ -13,6 +13,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
+import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator;
@@ -33,31 +34,63 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 
 	}
 
+	/**
+	 * get the id of the appropriate host
+	 */
 	@Override
 	public int getDeviceToOffload(Task task) {
-		NodeSim des = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getLocalServerManager().findHostById(cloud.getHostList().get(0).getId()).getLocation(), false);
-		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
-		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(src, des);
-		task.setPath(path);
-		return cloud.getHostList().get(0).getId();
+		try {
+			return getHost(task).getId();
+		}
+		catch (NullPointerException e) {
+			return -1;
+		}
 	}
-
+	/**
+	 * the the appropriate VM to run on
+	 */
 	@Override
 	public EdgeVM getVmToOffload(Task task) {
-		NodeSim des = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getLocalServerManager().findHostById(cloud.getHostList().get(0).getId()).getLocation(), false);
-		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
-		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(src, des);
-		task.setPath(path);
-		//Qian confirm the cloud level.
-		//SimLogger.printLine("cloud level: "+((EdgeHost) cloud.getHostList().get(0)).getLevel());
-		return ((EdgeVM) cloud.getHostList().get(0).getVmList().get(0));
+		try {
+			return ((EdgeVM) getHost(task).getVmList().get(0));
+		}
+		catch (NullPointerException e) {
+			return null;
+		}
 	}
-	
+	/**
+	 * find the host
+	 * @param task
+	 * @return
+	 */
+	private EdgeHost getHost(Task task) {
+		MobileDevice mb = SimManager.getInstance().getMobileDeviceManager().getMobileDevices().get(task.getMobileDeviceId());
+		task.setPath(mb.getPath());
+		return mb.getHost();
+	}
+	/**
+	 * set cloud
+	 * modified by Qian
+	 * @param Datacenter _cloud
+	 */
 	@Override
-	public void setCloud(Datacenter _cloud ) {
+	public void setCloud(Datacenter _cloud) {
 		if (_cloud.getName().equals(node)) {
 			cloud = _cloud;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
+	 */
+	@Override
+	public void assignHost(MobileDevice mobile) {
+		// TODO Auto-generated method stub
+		EdgeHost host = (EdgeHost) cloud.getHostList().get(0);
+		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mobile);
+		mobile.setPath(path);
+		mobile.setHost(host);
+		mobile.makeReservation();
 	}
 	
 }

@@ -190,4 +190,16 @@ public class EdgeHost extends Host {
 		reserveCPUResource(mb);
 		customers.add(mb);
 	}
+	/**
+	 * @return the customers
+	 */
+	public ArrayList<MobileDevice> getCustomers() {
+		return customers;
+	}
+	/**
+	 * @param customers the customers to set
+	 */
+	public void setCustomers(ArrayList<MobileDevice> customers) {
+		this.customers = customers;
+	}
 }

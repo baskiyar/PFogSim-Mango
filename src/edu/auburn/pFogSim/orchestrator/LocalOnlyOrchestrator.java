@@ -17,6 +17,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import edu.auburn.pFogSim.Radix.DistRadix;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
+import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator;
@@ -109,12 +110,27 @@ public class LocalOnlyOrchestrator extends EdgeOrchestrator {
 	 * @return the local host (as same as the submit host)
 	 */
 	private EdgeHost getHost(Task task) {
+		MobileDevice mb = SimManager.getInstance().getMobileDeviceManager().getMobileDevices().get(task.getMobileDeviceId());
+		task.setPath(mb.getPath());
+		return mb.getHost();
+	}
+	/* (non-Javadoc)
+	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
+	 */
+	@Override
+	public void assignHost(MobileDevice mobile) {
+		// TODO Auto-generated method stub
 		for (Datacenter node : SimManager.getInstance().getLocalServerManager().getDatacenterList()) {
-			if (((EdgeHost) node.getHostList().get(0)).getLocation().getXPos() == task.getSubmittedLocation().getXPos() 
-					&& ((EdgeHost) node.getHostList().get(0)).getLocation().getYPos() == task.getSubmittedLocation().getYPos()) {
-				return ((EdgeHost) node.getHostList().get(0));
+			EdgeHost host = (EdgeHost) node.getHostList().get(0);
+			if (host.getLocation().getXPos() == mobile.getLocation().getXPos()
+					&& host.getLocation().getYPos() == mobile.getLocation().getYPos()) {
+				if (goodHost(host, mobile)) {
+					LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mobile);
+					mobile.setPath(path);
+					mobile.setHost(host);
+					mobile.makeReservation();
+				}	
 			}
 		}
-		return null;
 	}
 }

@@ -97,11 +97,16 @@ public class EdgeOnlyOrchestrator extends EdgeOrchestrator {
 		 */
 		while(!goodHost(host, mobile)) {
 			host = nodes.poll();//find the closest node capable of handling the task
+			if (host == null) {
+				break;
+			}
 		}
-		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mobile);
-		mobile.setPath(path);
-		mobile.setHost(host);
-		mobile.makeReservation();
+		if (host != null) {
+			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mobile);
+			mobile.setPath(path);
+			mobile.setHost(host);
+			mobile.makeReservation();
+		}
 	}
 
 }
