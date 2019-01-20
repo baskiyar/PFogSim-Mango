@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -41,11 +42,12 @@ public class DistRadix {
 	private ArrayList<EdgeHost> input;
 	private TreeMap<Location, EdgeHost> coordMap;
 	private HashMap<Double, Location> distMap;
-	private HashMap<Double, Location> latencyMap;//Qian: added for sort node by latency.
+	//private HashMap<Double, Location> latencyMap;//Qian: added for sort node by latency.
+	private HashMap<Double, ArrayList<Location>> latencyMap; //Qian: modified for new requirement
 	private Location ref;
 	private ArrayList<Location> coords;
 	private ArrayList<Integer> distances;
-	private double[] latencies; // Shaik added
+	//private double[] latencies; // Shaik added
 	private int[] arrgs;
 	/**
 	 * constructor
@@ -56,7 +58,7 @@ public class DistRadix {
 		input = new ArrayList<EdgeHost>();
 		coordMap = new TreeMap<Location, EdgeHost>();
 		distMap = new HashMap<Double, Location>();
-		latencyMap = new HashMap<Double, Location>();//Qian added for latency
+		latencyMap = new HashMap<>();//Qian added for latency
 		coords = new ArrayList<Location>();
 		distances = new ArrayList<Integer>();
 		for (EdgeHost node : in) {
@@ -90,36 +92,28 @@ public class DistRadix {
 		}
 	}
 	/**
-	 * @author Qian
-	 * map latency to coords
-	 */
-	private void builtLatency() {
-		double latency = 0;
-		for (Location loc: coords) {
-			latency = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(ref, loc);
-			latency = Math.floor(latency);
-			while(latencyMap.containsKey(latency)) {
-				latency += 0.001;
-			}
-			latencyMap.put(latency, loc);
-			distances.add((int) (latency * 1000));
-		}
-	}
-	/**
 	 * @author Shaik
+	 * modified by Qian
 	 * map latency to coords
 	 */
 	private void buildLatencyMap() {
 		double latency = 0;
 		int index=0;
-		latencies = new double[coords.size()];
+		//latencies = new double[coords.size()];
 		for (Location loc: coords) {
 			//SimLogger.printLine("Loc: " + loc.getXPos()+"  "+loc.getYPos());
 			latency = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(ref, loc);
 			// Shaik *** this may overwrite the previous entry with same latency. hence, entry-value should be a list of locs(of nodes) with same latency, rather than a single loc.
 			//SimLogger.printLine("Latency: " + latency+"  Index: "+index);
-			latencyMap.put(latency, loc);
-			latencies[index++] = latency;
+			if (latencyMap.containsKey(latency)) {
+				latencyMap.get(latency).add(loc);
+			}
+			else {
+				ArrayList<Location> tempList = new ArrayList<>();
+				tempList.add(loc);
+				latencyMap.put(latency, tempList);
+			}
+			//latencies[index++] = latency;
 		}
 	}
 	/**
@@ -202,19 +196,24 @@ public class DistRadix {
 	}
 	/**
 	 * @author Shaik
+	 * modified by Qian
 	 * get the sorted list
 	 * @return
 	 */
 	private LinkedList<EdgeHost> getLatenciesList() {
 		LinkedList<EdgeHost> output = new LinkedList<EdgeHost>();
-		//double dist = 0.0;
-		Location loc;
 		EdgeHost node;
-		for (int i = 0; i < coords.size(); i++) {
-			loc = latencyMap.get(latencies[i]); // Shaik *** When the entry-value is implemented as a 'loc' list - ensure that this operation removes the element after reading the value, so that next request for same latency key will return a different node accessible at same latency. Otherwise, only the first node in list will be returned always and not all nodes will be considered in assignHost() method.  
-			node = coordMap.get(loc);   
-			output.add(node);
+		for (Map.Entry<Double, ArrayList<Location>> entry: latencyMap.entrySet()) {
+			for (Location loc: entry.getValue()) {
+				node = coordMap.get(loc);
+				output.add(node);
+			}
 		}
+//		for (int i = 0; i < coords.size(); i++) {
+//			loc = latencyMap.get(latencies[i]); // Shaik *** When the entry-value is implemented as a 'loc' list - ensure that this operation removes the element after reading the value, so that next request for same latency key will return a different node accessible at same latency. Otherwise, only the first node in list will be returned always and not all nodes will be considered in assignHost() method.  
+//			node = coordMap.get(loc);   
+//			output.add(node);
+//		}
 		return output;
 	}
 	/**
@@ -239,7 +238,7 @@ public class DistRadix {
 		buildLatencyMap(); // Shaik update
 		//setArrgs(); // Shaik update
 		// radixSort(); // Shaik update
-		Arrays.sort(latencies); // Shaik update
+		//Arrays.sort(latencies); // Shaik update
 		return getLatenciesList(); // Shaik update
 	}
 }
