@@ -99,7 +99,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 			if (path == null || path.size() == 0) {
 				EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(mobile.getLocation().getXPos(), mobile.getLocation().getYPos());
 				//des = ((ESBModel)(SimManager.getInstance().getNetworkModel())).getNetworkTopology().findNode(task.getSubmittedLocation(), false);
-				cost = (mobile.getTaskLengthRequirement() / k.getVmList().get(0).getMips())* k.getCostPerSec() + mobile.getBWRequirement() * k.getCostPerBW();
+				cost = (mobile.getTaskLengthRequirement() / k.getTotalMips() * k.getCostPerSec() + mobile.getBWRequirement() * k.getCostPerBW();
 			}
 			else {
 				//SimLogger.getInstance().getCentralizeLogPrinter().println("**********Path From " + src.getWlanId() + " To " + des.getWlanId() + "**********");
@@ -112,7 +112,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 				//des = path.peekLast();
 				EdgeHost desHost = SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos());
 				double exCost = desHost.getCostPerSec() * 
-						(mobile.getTaskLengthRequirement() / desHost.getVmList().get(0).getMips());
+						(mobile.getTaskLengthRequirement() / desHost.getTotalMips());
 				cost = cost + exCost;
 				//SimLogger.getInstance().getCentralizeLogPrinter().println("Destiation:\t"+ des.getWlanId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
 			}
