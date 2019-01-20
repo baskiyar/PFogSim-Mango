@@ -87,7 +87,7 @@ public class EdgeOnlyOrchestrator extends EdgeOrchestrator {
 	public void assignHost(MobileDevice mobile) {
 		// TODO Auto-generated method stub
 		DistRadix sort = new DistRadix(hosts, mobile.getLocation());//use radix sort based on distance from task
-		LinkedList<EdgeHost> nodes = sort.sortNodes();
+		LinkedList<EdgeHost> nodes = sort.sortNodesByLatency();
 		System.out.println("nodes size:" + nodes.size());
 		EdgeHost host = nodes.poll();
 		/*
