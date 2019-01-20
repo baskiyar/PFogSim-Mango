@@ -20,6 +20,7 @@ package edu.auburn.pFogSim.Radix;
  */
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import edu.auburn.pFogSim.util.DataInterpreter;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.utils.Location;
+import edu.boun.edgecloudsim.utils.SimLogger;
 /**
  * Class for implementing Radix sort for find the closest nodes
  * @author Jacob I Hall jih0007@auburn.edu
@@ -43,6 +45,7 @@ public class DistRadix {
 	private Location ref;
 	private ArrayList<Location> coords;
 	private ArrayList<Integer> distances;
+	private double[] latencies; // Shaik added
 	private int[] arrgs;
 	/**
 	 * constructor
@@ -100,6 +103,23 @@ public class DistRadix {
 			}
 			latencyMap.put(latency, loc);
 			distances.add((int) (latency * 1000));
+		}
+	}
+	/**
+	 * @author Shaik
+	 * map latency to coords
+	 */
+	private void buildLatencyMap() {
+		double latency = 0;
+		int index=0;
+		latencies = new double[coords.size()];
+		for (Location loc: coords) {
+			//SimLogger.printLine("Loc: " + loc.getXPos()+"  "+loc.getYPos());
+			latency = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(ref, loc);
+			// Shaik *** this may overwrite the previous entry with same latency. hence, entry-value should be a list of locs(of nodes) with same latency, rather than a single loc.
+			//SimLogger.printLine("Latency: " + latency+"  Index: "+index);
+			latencyMap.put(latency, loc);
+			latencies[index++] = latency;
 		}
 	}
 	/**
@@ -181,6 +201,23 @@ public class DistRadix {
 		return output;
 	}
 	/**
+	 * @author Shaik
+	 * get the sorted list
+	 * @return
+	 */
+	private LinkedList<EdgeHost> getLatenciesList() {
+		LinkedList<EdgeHost> output = new LinkedList<EdgeHost>();
+		//double dist = 0.0;
+		Location loc;
+		EdgeHost node;
+		for (int i = 0; i < coords.size(); i++) {
+			loc = latencyMap.get(latencies[i]); // Shaik *** When the entry-value is implemented as a 'loc' list - ensure that this operation removes the element after reading the value, so that next request for same latency key will return a different node accessible at same latency. Otherwise, only the first node in list will be returned always and not all nodes will be considered in assignHost() method.  
+			node = coordMap.get(loc);   
+			output.add(node);
+		}
+		return output;
+	}
+	/**
 	 * public facing method to get the list of sorted nodes
 	 * @return
 	 */
@@ -192,15 +229,17 @@ public class DistRadix {
 		return getList();
 	}
 	/**
-	 * @author Qian
+	 * @author Qian / Shaik
 	 * public method to get list of sorted nodes by latency
 	 * @return
 	 */
 	public LinkedList<EdgeHost> sortNodesByLatency() {
 		buildCoords();
-		builtLatency();
-		setArrgs();
-		radixSort();
-		return getList();
+		//builtLatency();
+		buildLatencyMap(); // Shaik update
+		//setArrgs(); // Shaik update
+		// radixSort(); // Shaik update
+		Arrays.sort(latencies); // Shaik update
+		return getLatenciesList(); // Shaik update
 	}
 }
