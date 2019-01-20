@@ -14,7 +14,9 @@ import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.auburn.pFogSim.Radix.DistRadix;
 import edu.auburn.pFogSim.netsim.ESBModel;
+import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.DataInterpreter;
+import edu.auburn.pFogSim.util.MobileDevice;
 
 import java.util.LinkedList;
 //import org.cloudbus.cloudsim.Vm;
@@ -203,6 +205,20 @@ public class Puddle {
 			return false;
 		}
 		return true;
+	}
+	/**
+	 * return whether this puddle can handle the mobile device
+	 * @author Qian
+	 *	@param mobile
+	 *	@return
+	 */
+	public boolean canHandle(MobileDevice mobile) {
+		for (EdgeHost host: members) {
+			if (host.canHandle(mobile)) {
+				return true;
+			}	
+		}
+		return false;
 	}
 	/**
 	 * update the total capacity and max single instance capacity for this puddle

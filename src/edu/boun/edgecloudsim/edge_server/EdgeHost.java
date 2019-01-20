@@ -11,6 +11,7 @@
 package edu.boun.edgecloudsim.edge_server;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.cloudbus.cloudsim.Host;
@@ -19,7 +20,10 @@ import org.cloudbus.cloudsim.VmScheduler;
 import org.cloudbus.cloudsim.provisioners.BwProvisioner;
 import org.cloudbus.cloudsim.provisioners.RamProvisioner;
 
+import edu.auburn.pFogSim.netsim.ESBModel;
+import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.MobileDevice;
+import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.utils.Location;
 
 public class EdgeHost extends Host {
@@ -201,5 +205,26 @@ public class EdgeHost extends Host {
 	 */
 	public void setCustomers(ArrayList<MobileDevice> customers) {
 		this.customers = customers;
+	}
+	/**
+	 * for puddle canHandle
+	 * @author Qian
+	 *	@param mb
+	 *	@return
+	 */
+	public boolean canHandle(MobileDevice mb) {
+		if (!isMIPSAvailable(mb) || !isBWAvailable(mb)) {
+			return false;
+		}
+		else {
+			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(this, mb);
+			for (NodeSim node: path) {
+				EdgeHost tempHost = SimManager.getInstance().getLocalServerManager().findHostByWlanId(node.getLocation().getServingWlanId());
+				if (!tempHost.isBWAvailable(mb)) {
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 }

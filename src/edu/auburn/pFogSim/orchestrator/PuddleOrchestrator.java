@@ -14,6 +14,7 @@ import edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.auburn.pFogSim.netsim.NetworkTopology;
+import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.DataInterpreter;
 import edu.auburn.pFogSim.util.MobileDevice;
 import edu.auburn.pFogSim.netsim.ESBModel;
@@ -51,35 +52,41 @@ public class PuddleOrchestrator extends EdgeOrchestrator {
 	public void initialize() {
 		
 	}
-
 	/**
-	 * Get the id of host to send the device to.<br>
-	 * Find the appropriate puddle, then ask the puddle for a host.
+	 * get the id of the appropriate host
 	 */
 	@Override
 	public int getDeviceToOffload(Task task) {
-		EdgeHost host = getHost(task);
-		double dist = DataInterpreter.measure(host.getLocation().getYPos(), host.getLocation().getXPos(), task.getSubmittedLocation().getYPos(), task.getSubmittedLocation().getXPos());
-		SimLogger.getInstance().addHostDistanceLog(task.getCloudletId(), dist);
-		return host.getId();
+		try {
+			return getHost(task).getId();
+		}
+		catch (NullPointerException e) {
+			return -1;
+		}
 	}
 	/**
-	 * get the VM to place the task on
+	 * the the appropriate VM to run on
 	 */
 	@Override
 	public EdgeVM getVmToOffload(Task task) {
-		return ((EdgeVM) getHost(task).getVmList().get(0));
+		try {
+			return ((EdgeVM) getHost(task).getVmList().get(0));
+		}
+		catch (NullPointerException e) {
+			return null;
+		}
 	}
 	/**
 	 * get the closest level 0 puddle as a staring point
+	 * modified by Qian
 	 * @param task
 	 * @return
 	 */
-	private Puddle getNearest0Pud(Task task) {
+	private Puddle getNearest0Pud(MobileDevice mb) {
 		NetworkTopology network = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology();
 		Puddle puddle = null;
 		EdgeHost host;
-		Location loc = task.getSubmittedLocation();
+		Location loc = mb.getLocation();
 		double distance = Double.MAX_VALUE;
 		double newDist;
 		ArrayList<Puddle> pud0s = new ArrayList<Puddle>();
@@ -105,21 +112,66 @@ public class PuddleOrchestrator extends EdgeOrchestrator {
 	 * @return
 	 */
 	private EdgeHost getHost(Task task) {
-		Puddle puddle = getNearest0Pud(task);//start with the closest level0 puddle
+		MobileDevice mb = SimManager.getInstance().getMobileDeviceManager().getMobileDevices().get(task.getMobileDeviceId());
+		task.setPath(mb.getPath());
+		return mb.getHost();		
+	}
+	/**
+	 * find an alternate puddle of a given level
+	 * modified by Qian
+	 * @param task
+	 * @param level
+	 * @return
+	 */
+	private Puddle nextBest(MobileDevice mb, int level) {
+		NetworkTopology network = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology();
+		Puddle puddle = null;
+		EdgeHost host;
+		Location loc = mb.getLocation();
+		double distance = Double.MAX_VALUE;
+		double newDist;
+		ArrayList<Puddle> pudis = new ArrayList<Puddle>();
+		for (Puddle pud : network.getPuddles()) {//search through the list of puddles and pull out all the layer i ones
+			if (pud.getLevel() == level) {
+				pudis.add(pud);
+			}
+		}
+		for (Puddle pud : pudis) {//choose the puddle whose head has the least distance to the task and can handle it
+			host = pud.getClosestNodes(loc).getFirst();
+			newDist = Math.sqrt((Math.pow(loc.getXPos() - host.getLocation().getXPos(), 2) + Math.pow(loc.getYPos() - host.getLocation().getYPos(), 2)));
+			if(newDist < distance && pud.canHandle(mb)) {
+				distance = newDist;
+				puddle = pud;
+			}
+		}
+		return puddle;
+	}
+	/* (non-Javadoc)
+	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
+	 */
+	@Override
+	public void assignHost(MobileDevice mobile) {
+		// TODO Auto-generated method stub
+		Puddle puddle = getNearest0Pud(mobile);//start with the closest level0 puddle
 		Puddle nextBestPuddle = null;
 		ArrayList<Puddle> puds = new ArrayList<Puddle>();
 		ArrayList<EdgeHost> hosts = new ArrayList<EdgeHost>();
 		LinkedList<EdgeHost> candidates;
 		EdgeHost host;
 		DistRadix radix;
-		while(!puddle.canHandle(task)) {//if that puddle can't handle the task ask try to find an alternate, then find the lowest level that can handle the task
-			nextBestPuddle = nextBest(task, puddle.getLevel());
+		while(!puddle.canHandle(mobile)) {//if that puddle can't handle the task ask try to find an alternate, then find the lowest level that can handle the task
+			nextBestPuddle = nextBest(mobile, puddle.getLevel());
 			if (nextBestPuddle != null) {
 				break;
 			}
 			if(puddle.getParent() == null)
 			{
-				return puddle.getHead();
+				EdgeHost cloudHost = puddle.getHead();
+				LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(cloudHost, mobile);
+				mobile.setPath(path);
+				mobile.setHost(cloudHost);
+				mobile.makeReservation();
+				return;
 				//throw new IllegalArgumentException();
 			}
 			puddle = puddle.getParent();
@@ -142,11 +194,11 @@ public class PuddleOrchestrator extends EdgeOrchestrator {
 		for (Puddle pud : puds) {
 			hosts.addAll(pud.getMembers());//get all of the nodes from those puddles
 		}
-		radix = new DistRadix(hosts, new Location(task.getSubmittedLocation().getXPos(), task.getSubmittedLocation().getYPos()));
-		candidates = radix.sortNodes();//sort those nodes by distance
+		radix = new DistRadix(hosts, mobile.getLocation());
+		candidates = radix.sortNodesByLatency();//sort those nodes by Latency
 		host = candidates.poll();
 		try {
-			while(!goodHost(host, task)) {
+			while(!goodHost(host, mobile)) {
 				host = candidates.poll();//find the closest node capable of handling the task
 			}
 		}
@@ -156,45 +208,11 @@ public class PuddleOrchestrator extends EdgeOrchestrator {
 		/*if (host.getLevel() == 4) {
 			SimLogger.printLine("lvl 4 assigned");
 		}*/
-		return host;
-		
-	}
-	/**
-	 * find an alternate puddle of a given level
-	 * @param task
-	 * @param level
-	 * @return
-	 */
-	private Puddle nextBest(Task task, int level) {
-		NetworkTopology network = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology();
-		Puddle puddle = null;
-		EdgeHost host;
-		Location loc = task.getSubmittedLocation();
-		double distance = Double.MAX_VALUE;
-		double newDist;
-		ArrayList<Puddle> pudis = new ArrayList<Puddle>();
-		for (Puddle pud : network.getPuddles()) {//search through the list of puddles and pull out all the layer i ones
-			if (pud.getLevel() == level) {
-				pudis.add(pud);
-			}
-		}
-		for (Puddle pud : pudis) {//choose the puddle whose head has the least distance to the task and can handle it
-			host = pud.getClosestNodes(loc).getFirst();
-			newDist = Math.sqrt((Math.pow(loc.getXPos() - host.getLocation().getXPos(), 2) + Math.pow(loc.getYPos() - host.getLocation().getYPos(), 2)));
-			if(newDist < distance && pud.canHandle(task)) {
-				distance = newDist;
-				puddle = pud;
-			}
-		}
-		return puddle;
-	}
-	/* (non-Javadoc)
-	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
-	 */
-	@Override
-	public void assignHost(MobileDevice mobile) {
-		// TODO Auto-generated method stub
-		
+		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mobile);
+		mobile.setPath(path);
+		mobile.setHost(host);
+		mobile.makeReservation();
+		return;
 	}
 	
 

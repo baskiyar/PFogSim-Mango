@@ -60,7 +60,7 @@ public abstract class EdgeOrchestrator {
 	 * @return
 	 */
 	protected static boolean goodHost(EdgeHost host, MobileDevice mb) {
-		if (!host.isMIPSAvailable(mb)) {
+		if (!host.isMIPSAvailable(mb) || !host.isBWAvailable(mb)) {
 			return false;
 		}
 		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mb);
