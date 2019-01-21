@@ -375,5 +375,89 @@ public class ESBModel extends NetworkModel {
 	    }
 		return delay;
 	}
+
+	/**
+	 * @return the wlanPoissonMean
+	 */
+	public double getWlanPoissonMean() {
+		return WlanPoissonMean;
+	}
+
+	/**
+	 * @param wlanPoissonMean the wlanPoissonMean to set
+	 */
+	public void setWlanPoissonMean(double wlanPoissonMean) {
+		WlanPoissonMean = wlanPoissonMean;
+	}
+
+	/**
+	 * @return the wanPoissonMean
+	 */
+	public double getWanPoissonMean() {
+		return WanPoissonMean;
+	}
+
+	/**
+	 * @param wanPoissonMean the wanPoissonMean to set
+	 */
+	public void setWanPoissonMean(double wanPoissonMean) {
+		WanPoissonMean = wanPoissonMean;
+	}
+
+	/**
+	 * @return the avgTaskInputSize
+	 */
+	public double getAvgTaskInputSize() {
+		return avgTaskInputSize;
+	}
+
+	/**
+	 * @param avgTaskInputSize the avgTaskInputSize to set
+	 */
+	public void setAvgTaskInputSize(double avgTaskInputSize) {
+		this.avgTaskInputSize = avgTaskInputSize;
+	}
+
+	/**
+	 * @return the avgTaskOutputSize
+	 */
+	public double getAvgTaskOutputSize() {
+		return avgTaskOutputSize;
+	}
+
+	/**
+	 * @param avgTaskOutputSize the avgTaskOutputSize to set
+	 */
+	public void setAvgTaskOutputSize(double avgTaskOutputSize) {
+		this.avgTaskOutputSize = avgTaskOutputSize;
+	}
+
+	/**
+	 * @return the router
+	 */
+	public Router getRouter() {
+		return router;
+	}
+
+	/**
+	 * @param router the router to set
+	 */
+	public void setRouter(Router router) {
+		this.router = router;
+	}
+
+	/**
+	 * @param maxNumOfClientsInPlace the maxNumOfClientsInPlace to set
+	 */
+	public void setMaxNumOfClientsInPlace(int maxNumOfClientsInPlace) {
+		this.maxNumOfClientsInPlace = maxNumOfClientsInPlace;
+	}
+
+	/**
+	 * @param instance the instance to set
+	 */
+	public static void setInstance(ESBModel instance) {
+		ESBModel.instance = instance;
+	}
 	
 }

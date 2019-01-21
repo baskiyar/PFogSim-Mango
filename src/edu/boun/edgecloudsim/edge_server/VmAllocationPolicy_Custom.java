@@ -164,4 +164,39 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 	protected void setVmTable(Map<String, Host> vmTable) {
 		this.vmTable = vmTable;
 	}
+
+	/**
+	 * @return the dataCenterIndex
+	 */
+	public int getDataCenterIndex() {
+		return DataCenterIndex;
+	}
+
+	/**
+	 * @param dataCenterIndex the dataCenterIndex to set
+	 */
+	public void setDataCenterIndex(int dataCenterIndex) {
+		DataCenterIndex = dataCenterIndex;
+	}
+
+	/**
+	 * @return the vmtotNUM
+	 */
+	public static int getVmtotNUM() {
+		return vmtotNUM;
+	}
+
+	/**
+	 * @param vmtotNUM the vmtotNUM to set
+	 */
+	public static void setVmtotNUM(int vmtotNUM) {
+		VmAllocationPolicy_Custom.vmtotNUM = vmtotNUM;
+	}
+
+	/**
+	 * @param createdVmNum the createdVmNum to set
+	 */
+	public static void setCreatedVmNum(int createdVmNum) {
+		VmAllocationPolicy_Custom.createdVmNum = createdVmNum;
+	}
 }

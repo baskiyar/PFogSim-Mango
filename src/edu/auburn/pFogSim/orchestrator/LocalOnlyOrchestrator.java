@@ -133,4 +133,16 @@ public class LocalOnlyOrchestrator extends EdgeOrchestrator {
 			}
 		}
 	}
+	/**
+	 * @return the hosts
+	 */
+	public ArrayList<EdgeHost> getHosts() {
+		return hosts;
+	}
+	/**
+	 * @param hosts the hosts to set
+	 */
+	public void setHosts(ArrayList<EdgeHost> hosts) {
+		this.hosts = hosts;
+	}
 }

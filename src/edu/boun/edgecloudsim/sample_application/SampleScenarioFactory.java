@@ -117,4 +117,60 @@ public class SampleScenarioFactory implements ScenarioFactory {
 	public UtilizationModel getCpuUtilizationModel(APP_TYPES _taskType) {
 		return new CpuUtilizationModel_Custom(_taskType);
 	}
+
+	/**
+	 * @return the numOfMobileDevice
+	 */
+	public int getNumOfMobileDevice() {
+		return numOfMobileDevice;
+	}
+
+	/**
+	 * @param numOfMobileDevice the numOfMobileDevice to set
+	 */
+	public void setNumOfMobileDevice(int numOfMobileDevice) {
+		this.numOfMobileDevice = numOfMobileDevice;
+	}
+
+	/**
+	 * @return the simulationTime
+	 */
+	public double getSimulationTime() {
+		return simulationTime;
+	}
+
+	/**
+	 * @param simulationTime the simulationTime to set
+	 */
+	public void setSimulationTime(double simulationTime) {
+		this.simulationTime = simulationTime;
+	}
+
+	/**
+	 * @return the orchestratorPolicy
+	 */
+	public String getOrchestratorPolicy() {
+		return orchestratorPolicy;
+	}
+
+	/**
+	 * @param orchestratorPolicy the orchestratorPolicy to set
+	 */
+	public void setOrchestratorPolicy(String orchestratorPolicy) {
+		this.orchestratorPolicy = orchestratorPolicy;
+	}
+
+	/**
+	 * @return the simScenario
+	 */
+	public String getSimScenario() {
+		return simScenario;
+	}
+
+	/**
+	 * @param simScenario the simScenario to set
+	 */
+	public void setSimScenario(String simScenario) {
+		this.simScenario = simScenario;
+	}
 }

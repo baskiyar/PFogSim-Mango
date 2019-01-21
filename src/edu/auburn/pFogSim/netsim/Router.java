@@ -278,6 +278,18 @@ public class Router {
 		
 		
 	}
+	/**
+	 * @return the database
+	 */
+	public HashMap<String, LinkedList<NodeSim>> getDatabase() {
+		return database;
+	}
+	/**
+	 * @param database the database to set
+	 */
+	public void setDatabase(HashMap<String, LinkedList<NodeSim>> database) {
+		this.database = database;
+	}
 }
 
 

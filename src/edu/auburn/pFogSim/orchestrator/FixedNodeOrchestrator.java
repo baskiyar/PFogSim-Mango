@@ -93,5 +93,19 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 			mobile.makeReservation();
 		}
 	}
+
+	/**
+	 * @return the node
+	 */
+	public static String getNode() {
+		return node;
+	}
+
+	/**
+	 * @param node the node to set
+	 */
+	public static void setNode(String node) {
+		FixedNodeOrchestrator.node = node;
+	}
 	
 }

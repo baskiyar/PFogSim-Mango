@@ -109,5 +109,17 @@ public class EdgeOnlyOrchestrator extends EdgeOrchestrator {
 			System.out.println("  Assigned host: " + host.getId());
 		}
 	}
+	/**
+	 * @return the hosts
+	 */
+	public ArrayList<EdgeHost> getHosts() {
+		return hosts;
+	}
+	/**
+	 * @param hosts the hosts to set
+	 */
+	public void setHosts(ArrayList<EdgeHost> hosts) {
+		this.hosts = hosts;
+	}
 
 }

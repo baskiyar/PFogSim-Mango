@@ -54,4 +54,18 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 			cloud = _cloud;
 		}
 	}
+
+	/**
+	 * @return the node
+	 */
+	public static String getNode() {
+		return node;
+	}
+
+	/**
+	 * @param node the node to set
+	 */
+	public static void setNode(String node) {
+		SelectedNodesOrchestrator.node = node;
+	}
 }

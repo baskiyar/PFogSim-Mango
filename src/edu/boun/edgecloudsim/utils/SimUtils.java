@@ -100,4 +100,10 @@ public class SimUtils {
 		
 		return placeType;
 	}
+	/**
+	 * @return the rng
+	 */
+	public static Random getRng() {
+		return RNG;
+	}
 }

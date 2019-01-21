@@ -83,4 +83,39 @@ public abstract class EdgeOrchestrator {
 	 *	@param mobile
 	 */
 	public abstract void assignHost(MobileDevice mobile);
+
+	/**
+	 * @return the policy
+	 */
+	public String getPolicy() {
+		return policy;
+	}
+
+	/**
+	 * @param policy the policy to set
+	 */
+	public void setPolicy(String policy) {
+		this.policy = policy;
+	}
+
+	/**
+	 * @return the simScenario
+	 */
+	public String getSimScenario() {
+		return simScenario;
+	}
+
+	/**
+	 * @param simScenario the simScenario to set
+	 */
+	public void setSimScenario(String simScenario) {
+		this.simScenario = simScenario;
+	}
+
+	/**
+	 * @return the cloud
+	 */
+	public Datacenter getCloud() {
+		return cloud;
+	}
 }

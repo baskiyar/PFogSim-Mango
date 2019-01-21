@@ -94,4 +94,60 @@ public class Location implements Comparable {
 	public double getBW() {
 		return bandwidth;
 	}
+
+	/**
+	 * @return the xPos
+	 */
+	public double getxPos() {
+		return xPos;
+	}
+
+	/**
+	 * @param xPos the xPos to set
+	 */
+	public void setxPos(double xPos) {
+		this.xPos = xPos;
+	}
+
+	/**
+	 * @return the yPos
+	 */
+	public double getyPos() {
+		return yPos;
+	}
+
+	/**
+	 * @param yPos the yPos to set
+	 */
+	public void setyPos(double yPos) {
+		this.yPos = yPos;
+	}
+
+	/**
+	 * @return the bandwidth
+	 */
+	public double getBandwidth() {
+		return bandwidth;
+	}
+
+	/**
+	 * @param bandwidth the bandwidth to set
+	 */
+	public void setBandwidth(double bandwidth) {
+		this.bandwidth = bandwidth;
+	}
+
+	/**
+	 * @param servingWlanId the servingWlanId to set
+	 */
+	public void setServingWlanId(int servingWlanId) {
+		this.servingWlanId = servingWlanId;
+	}
+
+	/**
+	 * @param placeType the placeType to set
+	 */
+	public void setPlaceType(SimSettings.PLACE_TYPES placeType) {
+		this.placeType = placeType;
+	}
 }

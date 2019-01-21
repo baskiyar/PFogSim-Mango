@@ -353,4 +353,165 @@ public class SimManager extends SimEntity {
 		// TODO Auto-generated method stub
 		return this.voronoiDiagramList;
 	}
+
+	/**
+	 * @return the edgeServerManager
+	 */
+	public EdgeServerManager getEdgeServerManager() {
+		return edgeServerManager;
+	}
+
+	/**
+	 * @param edgeServerManager the edgeServerManager to set
+	 */
+	public void setEdgeServerManager(EdgeServerManager edgeServerManager) {
+		this.edgeServerManager = edgeServerManager;
+	}
+
+	/**
+	 * @return the networkTopology
+	 */
+	public NetworkTopology getNetworkTopology() {
+		return networkTopology;
+	}
+
+	/**
+	 * @param networkTopology the networkTopology to set
+	 */
+	public void setNetworkTopology(NetworkTopology networkTopology) {
+		this.networkTopology = networkTopology;
+	}
+
+	/**
+	 * @return the voronoiDiagramList
+	 */
+	public ArrayList<PowerDiagram> getVoronoiDiagramList() {
+		return voronoiDiagramList;
+	}
+
+	/**
+	 * @param voronoiDiagramList the voronoiDiagramList to set
+	 */
+	public void setVoronoiDiagramList(ArrayList<PowerDiagram> voronoiDiagramList) {
+		this.voronoiDiagramList = voronoiDiagramList;
+	}
+
+	/**
+	 * @return the wapIdList
+	 */
+	public int[] getWapIdList() {
+		return wapIdList;
+	}
+
+	/**
+	 * @param wapIdList the wapIdList to set
+	 */
+	public void setWapIdList(int[] wapIdList) {
+		this.wapIdList = wapIdList;
+	}
+
+	/**
+	 * @return the createTask
+	 */
+	public static int getCreateTask() {
+		return CREATE_TASK;
+	}
+
+	/**
+	 * @return the checkAllVm
+	 */
+	public static int getCheckAllVm() {
+		return CHECK_ALL_VM;
+	}
+
+	/**
+	 * @return the getLoadLog
+	 */
+	public static int getGetLoadLog() {
+		return GET_LOAD_LOG;
+	}
+
+	/**
+	 * @return the printProgress
+	 */
+	public static int getPrintProgress() {
+		return PRINT_PROGRESS;
+	}
+
+	/**
+	 * @return the stopSimulation
+	 */
+	public static int getStopSimulation() {
+		return STOP_SIMULATION;
+	}
+
+	/**
+	 * @return the maxWidth
+	 */
+	public static int getMaxWidth() {
+		return MAX_WIDTH;
+	}
+
+	/**
+	 * @return the maxHeight
+	 */
+	public static int getMaxHeight() {
+		return MAX_HEIGHT;
+	}
+
+	/**
+	 * @param numOfMobileDevice the numOfMobileDevice to set
+	 */
+	public void setNumOfMobileDevice(int numOfMobileDevice) {
+		this.numOfMobileDevice = numOfMobileDevice;
+	}
+
+	/**
+	 * @param networkModel the networkModel to set
+	 */
+	public void setNetworkModel(NetworkModel networkModel) {
+		this.networkModel = networkModel;
+	}
+
+	/**
+	 * @param mobilityModel the mobilityModel to set
+	 */
+	public void setMobilityModel(MobilityModel mobilityModel) {
+		this.mobilityModel = mobilityModel;
+	}
+
+	/**
+	 * @param scenarioFactory the scenarioFactory to set
+	 */
+	public void setScenarioFactory(ScenarioFactory scenarioFactory) {
+		this.scenarioFactory = scenarioFactory;
+	}
+
+	/**
+	 * @param edgeOrchestrator the edgeOrchestrator to set
+	 */
+	public void setEdgeOrchestrator(EdgeOrchestrator edgeOrchestrator) {
+		this.edgeOrchestrator = edgeOrchestrator;
+	}
+
+	/**
+	 * @param loadGeneratorModel the loadGeneratorModel to set
+	 */
+	public void setLoadGeneratorModel(LoadGeneratorModel loadGeneratorModel) {
+		this.loadGeneratorModel = loadGeneratorModel;
+	}
+
+	/**
+	 * @param mobileDeviceManager the mobileDeviceManager to set
+	 */
+	public void setMobileDeviceManager(MobileDeviceManager mobileDeviceManager) {
+		this.mobileDeviceManager = mobileDeviceManager;
+	}
+
+	/**
+	 * @param instance the instance to set
+	 */
+	public static void setInstance(SimManager instance) {
+		SimManager.instance = instance;
+	}
 }

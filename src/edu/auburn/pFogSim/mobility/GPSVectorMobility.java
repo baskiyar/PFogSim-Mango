@@ -242,4 +242,88 @@ public class GPSVectorMobility extends MobilityModel {
 	public Location getLastMobileDeviceLocation(int id) {
 		return treeMapArray.get(id).lastEntry().getValue();
 	}
+
+	/**
+	 * @return the treeMapArray
+	 */
+	public List<TreeMap<Double, Location>> getTreeMapArray() {
+		return treeMapArray;
+	}
+
+	/**
+	 * @param treeMapArray the treeMapArray to set
+	 */
+	public void setTreeMapArray(List<TreeMap<Double, Location>> treeMapArray) {
+		this.treeMapArray = treeMapArray;
+	}
+
+	/**
+	 * @return the mAX_LAT
+	 */
+	public double getMAX_LAT() {
+		return MAX_LAT;
+	}
+
+	/**
+	 * @param mAX_LAT the mAX_LAT to set
+	 */
+	public void setMAX_LAT(double mAX_LAT) {
+		MAX_LAT = mAX_LAT;
+	}
+
+	/**
+	 * @return the mIN_LAT
+	 */
+	public double getMIN_LAT() {
+		return MIN_LAT;
+	}
+
+	/**
+	 * @param mIN_LAT the mIN_LAT to set
+	 */
+	public void setMIN_LAT(double mIN_LAT) {
+		MIN_LAT = mIN_LAT;
+	}
+
+	/**
+	 * @return the mAX_LONG
+	 */
+	public double getMAX_LONG() {
+		return MAX_LONG;
+	}
+
+	/**
+	 * @param mAX_LONG the mAX_LONG to set
+	 */
+	public void setMAX_LONG(double mAX_LONG) {
+		MAX_LONG = mAX_LONG;
+	}
+
+	/**
+	 * @return the mIN_LONG
+	 */
+	public double getMIN_LONG() {
+		return MIN_LONG;
+	}
+
+	/**
+	 * @param mIN_LONG the mIN_LONG to set
+	 */
+	public void setMIN_LONG(double mIN_LONG) {
+		MIN_LONG = mIN_LONG;
+	}
+
+	/**
+	 * @return the network
+	 */
+	public NetworkTopology getNetwork() {
+		return network;
+	}
+
+	/**
+	 * @param network the network to set
+	 */
+	public void setNetwork(NetworkTopology network) {
+		this.network = network;
+	}
 }

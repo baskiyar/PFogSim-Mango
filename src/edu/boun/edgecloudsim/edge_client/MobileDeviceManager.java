@@ -412,4 +412,60 @@ public class MobileDeviceManager extends DatacenterBroker {
 	public ArrayList<MobileDevice> getMobileDevices() {
 		return this.mobileDevices;
 	}
+
+	/**
+	 * @return the taskIdCounter
+	 */
+	public int getTaskIdCounter() {
+		return taskIdCounter;
+	}
+
+	/**
+	 * @param taskIdCounter the taskIdCounter to set
+	 */
+	public void setTaskIdCounter(int taskIdCounter) {
+		this.taskIdCounter = taskIdCounter;
+	}
+
+	/**
+	 * @return the base
+	 */
+	public static int getBase() {
+		return BASE;
+	}
+
+	/**
+	 * @return the requestReceivedByCloud
+	 */
+	public static int getRequestReceivedByCloud() {
+		return REQUEST_RECEIVED_BY_CLOUD;
+	}
+
+	/**
+	 * @return the requestProcessedByCloud
+	 */
+	public static int getRequestProcessedByCloud() {
+		return REQUEST_PROCESSED_BY_CLOUD;
+	}
+
+	/**
+	 * @return the requestRecivedByEdgeDevice
+	 */
+	public static int getRequestRecivedByEdgeDevice() {
+		return REQUEST_RECIVED_BY_EDGE_DEVICE;
+	}
+
+	/**
+	 * @return the responseReceivedByMobileDevice
+	 */
+	public static int getResponseReceivedByMobileDevice() {
+		return RESPONSE_RECEIVED_BY_MOBILE_DEVICE;
+	}
+
+	/**
+	 * @param mobileDevices the mobileDevices to set
+	 */
+	public void setMobileDevices(ArrayList<MobileDevice> mobileDevices) {
+		this.mobileDevices = mobileDevices;
+	}
 }

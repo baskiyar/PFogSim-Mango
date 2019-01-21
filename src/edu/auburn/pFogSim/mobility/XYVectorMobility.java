@@ -217,4 +217,88 @@ public class XYVectorMobility extends MobilityModel {
 	{
 		return treeMapArray.get(1).size();
 	}
+
+	/**
+	 * @return the treeMapArray
+	 */
+	public List<TreeMap<Double, Location>> getTreeMapArray() {
+		return treeMapArray;
+	}
+
+	/**
+	 * @param treeMapArray the treeMapArray to set
+	 */
+	public void setTreeMapArray(List<TreeMap<Double, Location>> treeMapArray) {
+		this.treeMapArray = treeMapArray;
+	}
+
+	/**
+	 * @return the mAX_WIDTH
+	 */
+	public double getMAX_WIDTH() {
+		return MAX_WIDTH;
+	}
+
+	/**
+	 * @param mAX_WIDTH the mAX_WIDTH to set
+	 */
+	public void setMAX_WIDTH(double mAX_WIDTH) {
+		MAX_WIDTH = mAX_WIDTH;
+	}
+
+	/**
+	 * @return the mIN_WIDTH
+	 */
+	public double getMIN_WIDTH() {
+		return MIN_WIDTH;
+	}
+
+	/**
+	 * @param mIN_WIDTH the mIN_WIDTH to set
+	 */
+	public void setMIN_WIDTH(double mIN_WIDTH) {
+		MIN_WIDTH = mIN_WIDTH;
+	}
+
+	/**
+	 * @return the mAX_HEIGHT
+	 */
+	public double getMAX_HEIGHT() {
+		return MAX_HEIGHT;
+	}
+
+	/**
+	 * @param mAX_HEIGHT the mAX_HEIGHT to set
+	 */
+	public void setMAX_HEIGHT(double mAX_HEIGHT) {
+		MAX_HEIGHT = mAX_HEIGHT;
+	}
+
+	/**
+	 * @return the mIN_HEIGHT
+	 */
+	public double getMIN_HEIGHT() {
+		return MIN_HEIGHT;
+	}
+
+	/**
+	 * @param mIN_HEIGHT the mIN_HEIGHT to set
+	 */
+	public void setMIN_HEIGHT(double mIN_HEIGHT) {
+		MIN_HEIGHT = mIN_HEIGHT;
+	}
+
+	/**
+	 * @return the network
+	 */
+	public NetworkTopology getNetwork() {
+		return network;
+	}
+
+	/**
+	 * @param network the network to set
+	 */
+	public void setNetwork(NetworkTopology network) {
+		this.network = network;
+	}
 }

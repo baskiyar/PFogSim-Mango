@@ -34,6 +34,8 @@ import org.cloudbus.cloudsim.core.CloudSim;
 /**
  * implementation of Edge Orchestrator for using puddles
  * @author Jacob I Hall jih0007@auburn.edu
+ * @author Qian Wang
+ * @author Shehenaz Shaik
  *
  */
 public class PuddleOrchestrator extends EdgeOrchestrator {

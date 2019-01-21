@@ -114,4 +114,100 @@ public class Task extends Cloudlet {
 	public int getDesMobileId() {
 		return this.mobileDeviceId;
 	}
+
+
+	/**
+	 * @return the type
+	 */
+	public SimSettings.APP_TYPES getType() {
+		return type;
+	}
+
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(SimSettings.APP_TYPES type) {
+		this.type = type;
+	}
+
+
+	/**
+	 * @return the hostIndex
+	 */
+	public int getHostIndex() {
+		return hostIndex;
+	}
+
+
+	/**
+	 * @param hostIndex the hostIndex to set
+	 */
+	public void setHostIndex(int hostIndex) {
+		this.hostIndex = hostIndex;
+	}
+
+
+	/**
+	 * @return the wifi
+	 */
+	public boolean isWifi() {
+		return wifi;
+	}
+
+
+	/**
+	 * @param wifi the wifi to set
+	 */
+	public void setWifi(boolean wifi) {
+		this.wifi = wifi;
+	}
+
+
+	/**
+	 * @return the sens
+	 */
+	public boolean isSens() {
+		return sens;
+	}
+
+
+	/**
+	 * @param sens the sens to set
+	 */
+	public void setSens(boolean sens) {
+		this.sens = sens;
+	}
+
+
+	/**
+	 * @return the act
+	 */
+	public boolean isAct() {
+		return act;
+	}
+
+
+	/**
+	 * @param act the act to set
+	 */
+	public void setAct(boolean act) {
+		this.act = act;
+	}
+
+
+	/**
+	 * @return the desMobileDeviceId
+	 */
+	public int getDesMobileDeviceId() {
+		return desMobileDeviceId;
+	}
+
+
+	/**
+	 * @param mobileDeviceId the mobileDeviceId to set
+	 */
+	public void setMobileDeviceId(int mobileDeviceId) {
+		this.mobileDeviceId = mobileDeviceId;
+	}
 }	

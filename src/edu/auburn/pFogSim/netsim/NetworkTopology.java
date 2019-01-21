@@ -218,4 +218,46 @@ public class NetworkTopology {
 		mobileNodes = new HashSet<NodeSim>();
 		mobileNodes.addAll(in);
 	}
+	/**
+	 * @return the coords
+	 */
+	public TreeSet<Location> getCoords() {
+		return coords;
+	}
+	/**
+	 * @param coords the coords to set
+	 */
+	public void setCoords(TreeSet<Location> coords) {
+		this.coords = coords;
+	}
+	/**
+	 * @return the pond
+	 */
+	public ArrayList<Puddle> getPond() {
+		return pond;
+	}
+	/**
+	 * @param pond the pond to set
+	 */
+	public void setPond(ArrayList<Puddle> pond) {
+		this.pond = pond;
+	}
+	/**
+	 * @param links the links to set
+	 */
+	public void setLinks(HashSet<Link> links) {
+		this.links = links;
+	}
+	/**
+	 * @param nodes the nodes to set
+	 */
+	public void setNodes(HashSet<NodeSim> nodes) {
+		this.nodes = nodes;
+	}
+	/**
+	 * @param mobileNodes the mobileNodes to set
+	 */
+	public void setMobileNodes(HashSet<NodeSim> mobileNodes) {
+		this.mobileNodes = mobileNodes;
+	}
 }

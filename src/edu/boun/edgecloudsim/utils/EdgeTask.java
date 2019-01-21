@@ -46,4 +46,151 @@ public class EdgeTask {
     public void setDesMobileDeviceId(int deviceId) {
     	this.desMobileDeviceId = deviceId;
     }
+
+	/**
+	 * @return the taskType
+	 */
+	public APP_TYPES getTaskType() {
+		return taskType;
+	}
+
+	/**
+	 * @param taskType the taskType to set
+	 */
+	public void setTaskType(APP_TYPES taskType) {
+		this.taskType = taskType;
+	}
+
+	/**
+	 * @return the startTime
+	 */
+	public double getStartTime() {
+		return startTime;
+	}
+
+	/**
+	 * @param startTime the startTime to set
+	 */
+	public void setStartTime(double startTime) {
+		this.startTime = startTime;
+	}
+
+	/**
+	 * @return the length
+	 */
+	public long getLength() {
+		return length;
+	}
+
+	/**
+	 * @param length the length to set
+	 */
+	public void setLength(long length) {
+		this.length = length;
+	}
+
+	/**
+	 * @return the inputFileSize
+	 */
+	public long getInputFileSize() {
+		return inputFileSize;
+	}
+
+	/**
+	 * @param inputFileSize the inputFileSize to set
+	 */
+	public void setInputFileSize(long inputFileSize) {
+		this.inputFileSize = inputFileSize;
+	}
+
+	/**
+	 * @return the outputFileSize
+	 */
+	public long getOutputFileSize() {
+		return outputFileSize;
+	}
+
+	/**
+	 * @param outputFileSize the outputFileSize to set
+	 */
+	public void setOutputFileSize(long outputFileSize) {
+		this.outputFileSize = outputFileSize;
+	}
+
+	/**
+	 * @return the pesNumber
+	 */
+	public int getPesNumber() {
+		return pesNumber;
+	}
+
+	/**
+	 * @param pesNumber the pesNumber to set
+	 */
+	public void setPesNumber(int pesNumber) {
+		this.pesNumber = pesNumber;
+	}
+
+	/**
+	 * @return the mobileDeviceId
+	 */
+	public int getMobileDeviceId() {
+		return mobileDeviceId;
+	}
+
+	/**
+	 * @param mobileDeviceId the mobileDeviceId to set
+	 */
+	public void setMobileDeviceId(int mobileDeviceId) {
+		this.mobileDeviceId = mobileDeviceId;
+	}
+
+	/**
+	 * @return the wifi
+	 */
+	public boolean isWifi() {
+		return wifi;
+	}
+
+	/**
+	 * @param wifi the wifi to set
+	 */
+	public void setWifi(boolean wifi) {
+		this.wifi = wifi;
+	}
+
+	/**
+	 * @return the sens
+	 */
+	public boolean isSens() {
+		return sens;
+	}
+
+	/**
+	 * @param sens the sens to set
+	 */
+	public void setSens(boolean sens) {
+		this.sens = sens;
+	}
+
+	/**
+	 * @return the act
+	 */
+	public boolean isAct() {
+		return act;
+	}
+
+	/**
+	 * @param act the act to set
+	 */
+	public void setAct(boolean act) {
+		this.act = act;
+	}
+
+	/**
+	 * @return the desMobileDeviceId
+	 */
+	public int getDesMobileDeviceId() {
+		return desMobileDeviceId;
+	}
 }

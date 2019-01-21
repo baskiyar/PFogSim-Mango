@@ -153,6 +153,20 @@ public class FogHierCluster {
 	public ArrayList<FogCluster> getClusters() {
 		return clusterList;
 	}
+
+	/**
+	 * @return the clusterList
+	 */
+	public ArrayList<FogCluster> getClusterList() {
+		return clusterList;
+	}
+
+	/**
+	 * @param clusterList the clusterList to set
+	 */
+	public void setClusterList(ArrayList<FogCluster> clusterList) {
+		this.clusterList = clusterList;
+	}
 	
 /*	private static void makeClusters() {
 		double distance = 0;

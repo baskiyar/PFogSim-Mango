@@ -22,7 +22,7 @@ import java.util.LinkedList;
 //import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
 /**
- * @author Jacob I Hall
+ * @author Jacob I Hall; Qian Wang; Shehenaz Shaik.
  * puddle class for separating nodes into logical hierarchies
  */
 public class Puddle {
@@ -295,5 +295,125 @@ public class Puddle {
 				}
 			}
 		}
+	}
+	/**
+	 * @return the down
+	 */
+	public ArrayList<Puddle> getDown() {
+		return down;
+	}
+	/**
+	 * @param down the down to set
+	 */
+	public void setDown(ArrayList<Puddle> down) {
+		this.down = down;
+	}
+	/**
+	 * @return the availRam
+	 */
+	public int getAvailRam() {
+		return availRam;
+	}
+	/**
+	 * @param availRam the availRam to set
+	 */
+	public void setAvailRam(int availRam) {
+		this.availRam = availRam;
+	}
+	/**
+	 * @return the availMIPS
+	 */
+	public double getAvailMIPS() {
+		return availMIPS;
+	}
+	/**
+	 * @param availMIPS the availMIPS to set
+	 */
+	public void setAvailMIPS(double availMIPS) {
+		this.availMIPS = availMIPS;
+	}
+	/**
+	 * @return the availPES
+	 */
+	public int getAvailPES() {
+		return availPES;
+	}
+	/**
+	 * @param availPES the availPES to set
+	 */
+	public void setAvailPES(int availPES) {
+		this.availPES = availPES;
+	}
+	/**
+	 * @return the maxRam
+	 */
+	public int getMaxRam() {
+		return maxRam;
+	}
+	/**
+	 * @param maxRam the maxRam to set
+	 */
+	public void setMaxRam(int maxRam) {
+		this.maxRam = maxRam;
+	}
+	/**
+	 * @return the maxMIPS
+	 */
+	public double getMaxMIPS() {
+		return maxMIPS;
+	}
+	/**
+	 * @param maxMIPS the maxMIPS to set
+	 */
+	public void setMaxMIPS(double maxMIPS) {
+		this.maxMIPS = maxMIPS;
+	}
+	/**
+	 * @return the maxPES
+	 */
+	public int getMaxPES() {
+		return maxPES;
+	}
+	/**
+	 * @param maxPES the maxPES to set
+	 */
+	public void setMaxPES(int maxPES) {
+		this.maxPES = maxPES;
+	}
+	/**
+	 * @return the totalCapacity
+	 */
+	public double getTotalCapacity() {
+		return totalCapacity;
+	}
+	/**
+	 * @param totalCapacity the totalCapacity to set
+	 */
+	public void setTotalCapacity(double totalCapacity) {
+		this.totalCapacity = totalCapacity;
+	}
+	/**
+	 * @return the maxCapacity
+	 */
+	public double getMaxCapacity() {
+		return maxCapacity;
+	}
+	/**
+	 * @param maxCapacity the maxCapacity to set
+	 */
+	public void setMaxCapacity(double maxCapacity) {
+		this.maxCapacity = maxCapacity;
+	}
+	/**
+	 * @return the up
+	 */
+	public Puddle getUp() {
+		return up;
+	}
+	/**
+	 * @param members the members to set
+	 */
+	public void setMembers(ArrayList<EdgeHost> members) {
+		this.members = members;
 	}
 }

@@ -38,5 +38,12 @@ public class ApplicationServicesManager {
 	public List<ApplicationService> getAppServicesList() {
 		return appServicesList;
 	}
+
+	/**
+	 * @param appServicesList the appServicesList to set
+	 */
+	public void setAppServicesList(List<ApplicationService> appServicesList) {
+		this.appServicesList = appServicesList;
+	}
 	
 }

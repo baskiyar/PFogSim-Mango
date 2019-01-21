@@ -170,4 +170,32 @@ public class LinesComponent extends JComponent{
 	    frame.setLocationRelativeTo(null);
 	    frame.setVisible(true);
 	}
+
+	/**
+	 * @return the level
+	 */
+	public int getLevel() {
+		return level;
+	}
+
+	/**
+	 * @param level the level to set
+	 */
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	/**
+	 * @return the lines
+	 */
+	public ArrayList<Line> getLines() {
+		return lines;
+	}
+
+	/**
+	 * @param lines the lines to set
+	 */
+	public void setLines(ArrayList<Line> lines) {
+		this.lines = lines;
+	}
 }

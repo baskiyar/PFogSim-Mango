@@ -660,6 +660,181 @@ public class SimLogger {
 		vmLoadList.clear();
 		centerFileW.close();
 	}
+
+	/**
+	 * @return the printLogEnabled
+	 */
+	public static boolean isPrintLogEnabled() {
+		return printLogEnabled;
+	}
+
+	/**
+	 * @param printLogEnabled the printLogEnabled to set
+	 */
+	public static void setPrintLogEnabled(boolean printLogEnabled) {
+		SimLogger.printLogEnabled = printLogEnabled;
+	}
+
+	/**
+	 * @return the filePrefix
+	 */
+	public String getFilePrefix() {
+		return filePrefix;
+	}
+
+	/**
+	 * @param filePrefix the filePrefix to set
+	 */
+	public void setFilePrefix(String filePrefix) {
+		this.filePrefix = filePrefix;
+	}
+
+	/**
+	 * @return the outputFolder
+	 */
+	public String getOutputFolder() {
+		return outputFolder;
+	}
+
+	/**
+	 * @param outputFolder the outputFolder to set
+	 */
+	public void setOutputFolder(String outputFolder) {
+		this.outputFolder = outputFolder;
+	}
+
+	/**
+	 * @return the taskMap
+	 */
+	public Map<Integer, LogItem> getTaskMap() {
+		return taskMap;
+	}
+
+	/**
+	 * @param taskMap the taskMap to set
+	 */
+	public void setTaskMap(Map<Integer, LogItem> taskMap) {
+		this.taskMap = taskMap;
+	}
+
+	/**
+	 * @return the vmLoadList
+	 */
+	public LinkedList<VmLoadLogItem> getVmLoadList() {
+		return vmLoadList;
+	}
+
+	/**
+	 * @param vmLoadList the vmLoadList to set
+	 */
+	public void setVmLoadList(LinkedList<VmLoadLogItem> vmLoadList) {
+		this.vmLoadList = vmLoadList;
+	}
+
+	/**
+	 * @return the centerLogFile
+	 */
+	public File getCenterLogFile() {
+		return centerLogFile;
+	}
+
+	/**
+	 * @param centerLogFile the centerLogFile to set
+	 */
+	public void setCenterLogFile(File centerLogFile) {
+		this.centerLogFile = centerLogFile;
+	}
+
+	/**
+	 * @return the centerFileW
+	 */
+	public PrintWriter getCenterFileW() {
+		return centerFileW;
+	}
+
+	/**
+	 * @param centerFileW the centerFileW to set
+	 */
+	public void setCenterFileW(PrintWriter centerFileW) {
+		this.centerFileW = centerFileW;
+	}
+
+	/**
+	 * @return the utlizationArray
+	 */
+	public ArrayList<Integer> getUtlizationArray() {
+		return utlizationArray;
+	}
+
+	/**
+	 * @param utlizationArray the utlizationArray to set
+	 */
+	public void setUtlizationArray(ArrayList<Integer> utlizationArray) {
+		this.utlizationArray = utlizationArray;
+	}
+
+	/**
+	 * @return the singleton
+	 */
+	public static SimLogger getSingleton() {
+		return singleton;
+	}
+
+	/**
+	 * @param singleton the singleton to set
+	 */
+	public static void setSingleton(SimLogger singleton) {
+		SimLogger.singleton = singleton;
+	}
+
+	/**
+	 * @return the totalNodesNmuberInEachLevel
+	 */
+	public int[] getTotalNodesNmuberInEachLevel() {
+		return totalNodesNmuberInEachLevel;
+	}
+
+	/**
+	 * @param totalNodesNmuberInEachLevel the totalNodesNmuberInEachLevel to set
+	 */
+	public void setTotalNodesNmuberInEachLevel(int[] totalNodesNmuberInEachLevel) {
+		this.totalNodesNmuberInEachLevel = totalNodesNmuberInEachLevel;
+	}
+
+	/**
+	 * @return the levelFogNodeCount
+	 */
+	public int[] getLevelFogNodeCount() {
+		return levelFogNodeCount;
+	}
+
+	/**
+	 * @param levelFogNodeCount the levelFogNodeCount to set
+	 */
+	public void setLevelFogNodeCount(int[] levelFogNodeCount) {
+		this.levelFogNodeCount = levelFogNodeCount;
+	}
+
+	/**
+	 * @return the levelCloudletCount
+	 */
+	public int[] getLevelCloudletCount() {
+		return levelCloudletCount;
+	}
+
+	/**
+	 * @param levelCloudletCount the levelCloudletCount to set
+	 */
+	public void setLevelCloudletCount(int[] levelCloudletCount) {
+		this.levelCloudletCount = levelCloudletCount;
+	}
+
+	/**
+	 * @param fileLogEnabled the fileLogEnabled to set
+	 */
+	public static void setFileLogEnabled(boolean fileLogEnabled) {
+		SimLogger.fileLogEnabled = fileLogEnabled;
+	}
 	
 }
 

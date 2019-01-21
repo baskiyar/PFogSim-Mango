@@ -92,5 +92,19 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 		mobile.setHost(host);
 		mobile.makeReservation();
 	}
+
+	/**
+	 * @return the node
+	 */
+	public static String getNode() {
+		return node;
+	}
+
+	/**
+	 * @param node the node to set
+	 */
+	public static void setNode(String node) {
+		CloudOnlyOrchestrator.node = node;
+	}
 	
 }

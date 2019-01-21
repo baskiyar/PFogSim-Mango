@@ -241,4 +241,100 @@ public class DistRadix {
 		//Arrays.sort(latencies); // Shaik update
 		return getLatenciesList(); // Shaik update
 	}
+	/**
+	 * @return the input
+	 */
+	public ArrayList<EdgeHost> getInput() {
+		return input;
+	}
+	/**
+	 * @param input the input to set
+	 */
+	public void setInput(ArrayList<EdgeHost> input) {
+		this.input = input;
+	}
+	/**
+	 * @return the coordMap
+	 */
+	public TreeMap<Location, EdgeHost> getCoordMap() {
+		return coordMap;
+	}
+	/**
+	 * @param coordMap the coordMap to set
+	 */
+	public void setCoordMap(TreeMap<Location, EdgeHost> coordMap) {
+		this.coordMap = coordMap;
+	}
+	/**
+	 * @return the distMap
+	 */
+	public HashMap<Double, Location> getDistMap() {
+		return distMap;
+	}
+	/**
+	 * @param distMap the distMap to set
+	 */
+	public void setDistMap(HashMap<Double, Location> distMap) {
+		this.distMap = distMap;
+	}
+	/**
+	 * @return the latencyMap
+	 */
+	public HashMap<Double, ArrayList<Location>> getLatencyMap() {
+		return latencyMap;
+	}
+	/**
+	 * @param latencyMap the latencyMap to set
+	 */
+	public void setLatencyMap(HashMap<Double, ArrayList<Location>> latencyMap) {
+		this.latencyMap = latencyMap;
+	}
+	/**
+	 * @return the ref
+	 */
+	public Location getRef() {
+		return ref;
+	}
+	/**
+	 * @param ref the ref to set
+	 */
+	public void setRef(Location ref) {
+		this.ref = ref;
+	}
+	/**
+	 * @return the coords
+	 */
+	public ArrayList<Location> getCoords() {
+		return coords;
+	}
+	/**
+	 * @param coords the coords to set
+	 */
+	public void setCoords(ArrayList<Location> coords) {
+		this.coords = coords;
+	}
+	/**
+	 * @return the distances
+	 */
+	public ArrayList<Integer> getDistances() {
+		return distances;
+	}
+	/**
+	 * @param distances the distances to set
+	 */
+	public void setDistances(ArrayList<Integer> distances) {
+		this.distances = distances;
+	}
+	/**
+	 * @return the arrgs
+	 */
+	public int[] getArrgs() {
+		return arrgs;
+	}
+	/**
+	 * @param arrgs the arrgs to set
+	 */
+	public void setArrgs(int[] arrgs) {
+		this.arrgs = arrgs;
+	}
 }

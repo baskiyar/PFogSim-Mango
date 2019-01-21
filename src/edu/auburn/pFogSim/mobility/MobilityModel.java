@@ -37,4 +37,32 @@ public abstract class MobilityModel {
 	public abstract int getWlanId(int deviceId);
 	public abstract int getSize();
 	public abstract int getTreeMapSize();
+
+	/**
+	 * @return the numberOfMobileDevices
+	 */
+	public int getNumberOfMobileDevices() {
+		return numberOfMobileDevices;
+	}
+
+	/**
+	 * @param numberOfMobileDevices the numberOfMobileDevices to set
+	 */
+	public void setNumberOfMobileDevices(int numberOfMobileDevices) {
+		this.numberOfMobileDevices = numberOfMobileDevices;
+	}
+
+	/**
+	 * @return the simulationTime
+	 */
+	public double getSimulationTime() {
+		return simulationTime;
+	}
+
+	/**
+	 * @param simulationTime the simulationTime to set
+	 */
+	public void setSimulationTime(double simulationTime) {
+		this.simulationTime = simulationTime;
+	}
 }

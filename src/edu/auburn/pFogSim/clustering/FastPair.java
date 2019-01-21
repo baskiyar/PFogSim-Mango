@@ -241,4 +241,88 @@ class FastPair {
             findNeighbor(q);
         }
     }
+
+	/**
+	 * @return the points
+	 */
+	public int[] getPoints() {
+		return points;
+	}
+
+	/**
+	 * @param points the points to set
+	 */
+	public void setPoints(int[] points) {
+		this.points = points;
+	}
+
+	/**
+	 * @return the index
+	 */
+	public int[] getIndex() {
+		return index;
+	}
+
+	/**
+	 * @param index the index to set
+	 */
+	public void setIndex(int[] index) {
+		this.index = index;
+	}
+
+	/**
+	 * @return the npoints
+	 */
+	public int getNpoints() {
+		return npoints;
+	}
+
+	/**
+	 * @param npoints the npoints to set
+	 */
+	public void setNpoints(int npoints) {
+		this.npoints = npoints;
+	}
+
+	/**
+	 * @return the neighbor
+	 */
+	public int[] getNeighbor() {
+		return neighbor;
+	}
+
+	/**
+	 * @param neighbor the neighbor to set
+	 */
+	public void setNeighbor(int[] neighbor) {
+		this.neighbor = neighbor;
+	}
+
+	/**
+	 * @return the distance
+	 */
+	public double[] getDistance() {
+		return distance;
+	}
+
+	/**
+	 * @param distance the distance to set
+	 */
+	public void setDistance(double[] distance) {
+		this.distance = distance;
+	}
+
+	/**
+	 * @return the proximity
+	 */
+	public double[][] getProximity() {
+		return proximity;
+	}
+
+	/**
+	 * @param proximity the proximity to set
+	 */
+	public void setProximity(double[][] proximity) {
+		this.proximity = proximity;
+	}
 }

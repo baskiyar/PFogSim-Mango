@@ -41,4 +41,53 @@ public abstract class LoadGeneratorModel {
 	 * fill task list according to related task generation model
 	 */
 	public abstract void initializeModel();
+
+	/**
+	 * @return the numberOfMobileDevices
+	 */
+	public int getNumberOfMobileDevices() {
+		return numberOfMobileDevices;
+	}
+
+	/**
+	 * @param numberOfMobileDevices the numberOfMobileDevices to set
+	 */
+	public void setNumberOfMobileDevices(int numberOfMobileDevices) {
+		this.numberOfMobileDevices = numberOfMobileDevices;
+	}
+
+	/**
+	 * @return the simulationTime
+	 */
+	public double getSimulationTime() {
+		return simulationTime;
+	}
+
+	/**
+	 * @param simulationTime the simulationTime to set
+	 */
+	public void setSimulationTime(double simulationTime) {
+		this.simulationTime = simulationTime;
+	}
+
+	/**
+	 * @return the simScenario
+	 */
+	public String getSimScenario() {
+		return simScenario;
+	}
+
+	/**
+	 * @param simScenario the simScenario to set
+	 */
+	public void setSimScenario(String simScenario) {
+		this.simScenario = simScenario;
+	}
+
+	/**
+	 * @param taskList the taskList to set
+	 */
+	public void setTaskList(List<EdgeTask> taskList) {
+		this.taskList = taskList;
+	}
 }

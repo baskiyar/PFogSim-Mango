@@ -440,4 +440,235 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 7][12] = "41943040";
 		nodeSpecs[MAX_LEVELS - 7][13] = "1048576";
 	}
+
+	/**
+	 * @return the mAX_LEVELS
+	 */
+	public static int getMAX_LEVELS() {
+		return MAX_LEVELS;
+	}
+
+	/**
+	 * @param mAX_LEVELS the mAX_LEVELS to set
+	 */
+	public static void setMAX_LEVELS(int mAX_LEVELS) {
+		MAX_LEVELS = mAX_LEVELS;
+	}
+
+	/**
+	 * @return the files
+	 */
+	public static String[] getFiles() {
+		return files;
+	}
+
+	/**
+	 * @param files the files to set
+	 */
+	public static void setFiles(String[] files) {
+		DataInterpreter.files = files;
+	}
+
+	/**
+	 * @return the nodeSpecs
+	 */
+	public static String[][] getNodeSpecs() {
+		return nodeSpecs;
+	}
+
+	/**
+	 * @param nodeSpecs the nodeSpecs to set
+	 */
+	public static void setNodeSpecs(String[][] nodeSpecs) {
+		DataInterpreter.nodeSpecs = nodeSpecs;
+	}
+
+	/**
+	 * @return the nodeList
+	 */
+	public static ArrayList<Double[]> getNodeList() {
+		return nodeList;
+	}
+
+	/**
+	 * @param nodeList the nodeList to set
+	 */
+	public static void setNodeList(ArrayList<Double[]> nodeList) {
+		DataInterpreter.nodeList = nodeList;
+	}
+
+	/**
+	 * @return the tempList
+	 */
+	public static ArrayList<Double[]> getTempList() {
+		return tempList;
+	}
+
+	/**
+	 * @param tempList the tempList to set
+	 */
+	public static void setTempList(ArrayList<Double[]> tempList) {
+		DataInterpreter.tempList = tempList;
+	}
+
+	/**
+	 * @return the universitiesCircle
+	 */
+	public static ArrayList<Double[]> getUniversitiesCircle() {
+		return universitiesCircle;
+	}
+
+	/**
+	 * @param universitiesCircle the universitiesCircle to set
+	 */
+	public static void setUniversitiesCircle(ArrayList<Double[]> universitiesCircle) {
+		DataInterpreter.universitiesCircle = universitiesCircle;
+	}
+
+	/**
+	 * @return the mIN_LAT
+	 */
+	public static double getMIN_LAT() {
+		return MIN_LAT;
+	}
+
+	/**
+	 * @param mIN_LAT the mIN_LAT to set
+	 */
+	public static void setMIN_LAT(double mIN_LAT) {
+		MIN_LAT = mIN_LAT;
+	}
+
+	/**
+	 * @return the mAX_LAT
+	 */
+	public static double getMAX_LAT() {
+		return MAX_LAT;
+	}
+
+	/**
+	 * @param mAX_LAT the mAX_LAT to set
+	 */
+	public static void setMAX_LAT(double mAX_LAT) {
+		MAX_LAT = mAX_LAT;
+	}
+
+	/**
+	 * @return the mIN_LONG
+	 */
+	public static double getMIN_LONG() {
+		return MIN_LONG;
+	}
+
+	/**
+	 * @param mIN_LONG the mIN_LONG to set
+	 */
+	public static void setMIN_LONG(double mIN_LONG) {
+		MIN_LONG = mIN_LONG;
+	}
+
+	/**
+	 * @return the mAX_LONG
+	 */
+	public static double getMAX_LONG() {
+		return MAX_LONG;
+	}
+
+	/**
+	 * @param mAX_LONG the mAX_LONG to set
+	 */
+	public static void setMAX_LONG(double mAX_LONG) {
+		MAX_LONG = mAX_LONG;
+	}
+
+	/**
+	 * @return the universitiesYet
+	 */
+	public static boolean isUniversitiesYet() {
+		return universitiesYet;
+	}
+
+	/**
+	 * @param universitiesYet the universitiesYet to set
+	 */
+	public static void setUniversitiesYet(boolean universitiesYet) {
+		DataInterpreter.universitiesYet = universitiesYet;
+	}
+
+	/**
+	 * @return the universitiesLinked
+	 */
+	public static boolean isUniversitiesLinked() {
+		return universitiesLinked;
+	}
+
+	/**
+	 * @param universitiesLinked the universitiesLinked to set
+	 */
+	public static void setUniversitiesLinked(boolean universitiesLinked) {
+		DataInterpreter.universitiesLinked = universitiesLinked;
+	}
+
+	/**
+	 * @return the movingMobileDevices
+	 */
+	public static boolean isMovingMobileDevices() {
+		return movingMobileDevices;
+	}
+
+	/**
+	 * @param movingMobileDevices the movingMobileDevices to set
+	 */
+	public static void setMovingMobileDevices(boolean movingMobileDevices) {
+		DataInterpreter.movingMobileDevices = movingMobileDevices;
+	}
+
+	/**
+	 * @return the xmlFile
+	 */
+	public File getXmlFile() {
+		return xmlFile;
+	}
+
+	/**
+	 * @param xmlFile the xmlFile to set
+	 */
+	public void setXmlFile(File xmlFile) {
+		this.xmlFile = xmlFile;
+	}
+
+	/**
+	 * @return the xmlFW
+	 */
+	public FileWriter getXmlFW() {
+		return xmlFW;
+	}
+
+	/**
+	 * @param xmlFW the xmlFW to set
+	 */
+	public void setXmlFW(FileWriter xmlFW) {
+		this.xmlFW = xmlFW;
+	}
+
+	/**
+	 * @return the xmlBR
+	 */
+	public BufferedWriter getXmlBR() {
+		return xmlBR;
+	}
+
+	/**
+	 * @param xmlBR the xmlBR to set
+	 */
+	public void setXmlBR(BufferedWriter xmlBR) {
+		this.xmlBR = xmlBR;
+	}
+
+	/**
+	 * @param inputType the inputType to set
+	 */
+	public static void setInputType(String inputType) {
+		DataInterpreter.inputType = inputType;
+	}
 }

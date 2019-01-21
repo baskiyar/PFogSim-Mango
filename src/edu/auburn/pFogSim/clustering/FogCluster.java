@@ -397,6 +397,102 @@ public class FogCluster {
 		}
 	}
 
+
+	/**
+	 * @return the lines
+	 */
+	public String[] getLines() {
+		return lines;
+	}
+
+
+	/**
+	 * @param lines the lines to set
+	 */
+	public void setLines(String[] lines) {
+		this.lines = lines;
+	}
+
+
+	/**
+	 * @return the points
+	 */
+	public Double[][] getPoints() {
+		return points;
+	}
+
+
+	/**
+	 * @param points the points to set
+	 */
+	public void setPoints(Double[][] points) {
+		this.points = points;
+	}
+
+
+	/**
+	 * @return the proximityMatrix
+	 */
+	public double[][] getProximityMatrix() {
+		return proximityMatrix;
+	}
+
+
+	/**
+	 * @param proximityMatrix the proximityMatrix to set
+	 */
+	public void setProximityMatrix(double[][] proximityMatrix) {
+		this.proximityMatrix = proximityMatrix;
+	}
+
+
+	/**
+	 * @return the maxClusterHeight
+	 */
+	public double getMaxClusterHeight() {
+		return maxClusterHeight;
+	}
+
+
+	/**
+	 * @param maxClusterHeight the maxClusterHeight to set
+	 */
+	public void setMaxClusterHeight(double maxClusterHeight) {
+		this.maxClusterHeight = maxClusterHeight;
+	}
+
+
+	/**
+	 * @return the level
+	 */
+	public int getLevel() {
+		return level;
+	}
+
+
+	/**
+	 * @param level the level to set
+	 */
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+
+	/**
+	 * @return the clusterNumber
+	 */
+	public int getClusterNumber() {
+		return clusterNumber;
+	}
+
+
+	/**
+	 * @param cluster the cluster to set
+	 */
+	public void setCluster(Double[][][] cluster) {
+		this.cluster = cluster;
+	}
+
 }// end class FogCluster
 
 

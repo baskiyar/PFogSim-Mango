@@ -495,4 +495,109 @@ public class EdgeServerManager {
 		}
 		return true;
 	}
+
+	/**
+	 * @return the localDatacenters
+	 */
+	public List<Datacenter> getLocalDatacenters() {
+		return localDatacenters;
+	}
+
+	/**
+	 * @param localDatacenters the localDatacenters to set
+	 */
+	public void setLocalDatacenters(List<Datacenter> localDatacenters) {
+		this.localDatacenters = localDatacenters;
+	}
+
+	/**
+	 * @return the vmList
+	 */
+	public List<List<EdgeVM>> getVmList() {
+		return vmList;
+	}
+
+	/**
+	 * @param vmList the vmList to set
+	 */
+	public void setVmList(List<List<EdgeVM>> vmList) {
+		this.vmList = vmList;
+	}
+
+	/**
+	 * @return the hostList
+	 */
+	public List<EdgeHost> getHostList() {
+		return hostList;
+	}
+
+	/**
+	 * @param hostList the hostList to set
+	 */
+	public void setHostList(List<EdgeHost> hostList) {
+		this.hostList = hostList;
+	}
+
+	/**
+	 * @return the hostIdCounter
+	 */
+	public int getHostIdCounter() {
+		return hostIdCounter;
+	}
+
+	/**
+	 * @param hostIdCounter the hostIdCounter to set
+	 */
+	public void setHostIdCounter(int hostIdCounter) {
+		this.hostIdCounter = hostIdCounter;
+	}
+
+	/**
+	 * @return the networkTopology
+	 */
+	public NetworkTopology getNetworkTopology() {
+		return networkTopology;
+	}
+
+	/**
+	 * @param networkTopology the networkTopology to set
+	 */
+	public void setNetworkTopology(NetworkTopology networkTopology) {
+		this.networkTopology = networkTopology;
+	}
+
+	/**
+	 * @return the nodesForTopography
+	 */
+	public List<NodeSim> getNodesForTopography() {
+		return nodesForTopography;
+	}
+
+	/**
+	 * @param nodesForTopography the nodesForTopography to set
+	 */
+	public void setNodesForTopography(List<NodeSim> nodesForTopography) {
+		this.nodesForTopography = nodesForTopography;
+	}
+
+	/**
+	 * @return the linksForTopography
+	 */
+	public List<Link> getLinksForTopography() {
+		return linksForTopography;
+	}
+
+	/**
+	 * @param linksForTopography the linksForTopography to set
+	 */
+	public void setLinksForTopography(List<Link> linksForTopography) {
+		this.linksForTopography = linksForTopography;
+	}
+
+	/**
+	 * @param instance the instance to set
+	 */
+	public static void setInstance(EdgeServerManager instance) {
+		EdgeServerManager.instance = instance;
+	}
 }

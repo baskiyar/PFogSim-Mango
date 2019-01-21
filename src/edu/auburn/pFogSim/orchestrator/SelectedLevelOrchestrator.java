@@ -95,4 +95,18 @@ public class SelectedLevelOrchestrator extends EdgeOrchestrator {
 		// TODO Auto-generated method stub
 		
 	}
+
+	/**
+	 * @return the hostLevelMap
+	 */
+	public Map<Integer, ArrayList<EdgeHost>> getHostLevelMap() {
+		return hostLevelMap;
+	}
+
+	/**
+	 * @param hostLevelMap the hostLevelMap to set
+	 */
+	public void setHostLevelMap(Map<Integer, ArrayList<EdgeHost>> hostLevelMap) {
+		this.hostLevelMap = hostLevelMap;
+	}
 }

@@ -39,4 +39,18 @@ public class CpuUtilizationModel_Custom implements UtilizationModel {
 	public double predictUtilization(SimSettings.VM_TYPES _vmType){
 		return SimSettings.getInstance().getTaskLookUpTable()[taskType.ordinal()][9];
 	}
+
+	/**
+	 * @return the taskType
+	 */
+	public SimSettings.APP_TYPES getTaskType() {
+		return taskType;
+	}
+
+	/**
+	 * @param taskType the taskType to set
+	 */
+	public void setTaskType(SimSettings.APP_TYPES taskType) {
+		this.taskType = taskType;
+	}
 }

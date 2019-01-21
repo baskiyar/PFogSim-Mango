@@ -157,5 +157,29 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 		mobile.makeReservation();
 		return;
 	}
+	/**
+	 * @return the hosts
+	 */
+	public ArrayList<EdgeHost> getHosts() {
+		return hosts;
+	}
+	/**
+	 * @param hosts the hosts to set
+	 */
+	public void setHosts(ArrayList<EdgeHost> hosts) {
+		this.hosts = hosts;
+	}
+	/**
+	 * @return the pathTable
+	 */
+	public HashMap<NodeSim, HashMap<NodeSim, LinkedList<NodeSim>>> getPathTable() {
+		return pathTable;
+	}
+	/**
+	 * @param pathTable the pathTable to set
+	 */
+	public void setPathTable(HashMap<NodeSim, HashMap<NodeSim, LinkedList<NodeSim>>> pathTable) {
+		this.pathTable = pathTable;
+	}
 
 }

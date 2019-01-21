@@ -47,4 +47,32 @@ public class PoissonDistr {
         public double sample() {
         	return poisson.nextDouble();
     }
+
+	/**
+	 * @return the poisson
+	 */
+	public Poisson getPoisson() {
+		return poisson;
+	}
+
+	/**
+	 * @param poisson the poisson to set
+	 */
+	public void setPoisson(Poisson poisson) {
+		this.poisson = poisson;
+	}
+
+	/**
+	 * @return the engine
+	 */
+	public RandomEngine getEngine() {
+		return engine;
+	}
+
+	/**
+	 * @param engine the engine to set
+	 */
+	public void setEngine(RandomEngine engine) {
+		this.engine = engine;
+	}
 }

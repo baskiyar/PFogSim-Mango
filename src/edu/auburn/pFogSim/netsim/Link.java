@@ -224,4 +224,52 @@ public class Link {
 	public boolean validateLat() {
 		return (rightLatency >= 0 && leftLatency >= 0);
 	}
+	/**
+	 * @return the leftCoord
+	 */
+	public Location getLeftCoord() {
+		return leftCoord;
+	}
+	/**
+	 * @param leftCoord the leftCoord to set
+	 */
+	public void setLeftCoord(Location leftCoord) {
+		this.leftCoord = leftCoord;
+	}
+	/**
+	 * @return the rightCoord
+	 */
+	public Location getRightCoord() {
+		return rightCoord;
+	}
+	/**
+	 * @param rightCoord the rightCoord to set
+	 */
+	public void setRightCoord(Location rightCoord) {
+		this.rightCoord = rightCoord;
+	}
+	/**
+	 * @return the lATENCY_MULTIPLIER
+	 */
+	public double getLATENCY_MULTIPLIER() {
+		return LATENCY_MULTIPLIER;
+	}
+	/**
+	 * @param lATENCY_MULTIPLIER the lATENCY_MULTIPLIER to set
+	 */
+	public void setLATENCY_MULTIPLIER(double lATENCY_MULTIPLIER) {
+		LATENCY_MULTIPLIER = lATENCY_MULTIPLIER;
+	}
+	/**
+	 * @param leftLatency the leftLatency to set
+	 */
+	public void setLeftLatency(double leftLatency) {
+		this.leftLatency = leftLatency;
+	}
+	/**
+	 * @param rightLatency the rightLatency to set
+	 */
+	public void setRightLatency(double rightLatency) {
+		this.rightLatency = rightLatency;
+	}
 }

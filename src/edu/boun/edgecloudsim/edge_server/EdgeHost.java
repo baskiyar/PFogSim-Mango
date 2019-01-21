@@ -227,4 +227,52 @@ public class EdgeHost extends Host {
 			return true;
 		}
 	}
+	/**
+	 * @return the reserveBW
+	 */
+	public double getReserveBW() {
+		return reserveBW;
+	}
+	/**
+	 * @param reserveBW the reserveBW to set
+	 */
+	public void setReserveBW(double reserveBW) {
+		this.reserveBW = reserveBW;
+	}
+	/**
+	 * @return the reserveMips
+	 */
+	public long getReserveMips() {
+		return reserveMips;
+	}
+	/**
+	 * @param reserveMips the reserveMips to set
+	 */
+	public void setReserveMips(long reserveMips) {
+		this.reserveMips = reserveMips;
+	}
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+	/**
+	 * @param costPerBW the costPerBW to set
+	 */
+	public void setCostPerBW(double costPerBW) {
+		this.costPerBW = costPerBW;
+	}
+	/**
+	 * @param costPerSec the costPerSec to set
+	 */
+	public void setCostPerSec(double costPerSec) {
+		this.costPerSec = costPerSec;
+	}
+	/**
+	 * @param childern the childern to set
+	 */
+	public void setChildern(ArrayList<EdgeHost> childern) {
+		this.childern = childern;
+	}
 }

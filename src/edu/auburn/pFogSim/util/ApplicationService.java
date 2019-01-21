@@ -73,6 +73,20 @@ public class ApplicationService {
 	public void setAvaliable(boolean avaliable) {
 		this.avaliable = avaliable;
 	}
+
+	/**
+	 * @return the type
+	 */
+	public SimSettings.APP_TYPES getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(SimSettings.APP_TYPES type) {
+		this.type = type;
+	}
 	
 	
 	

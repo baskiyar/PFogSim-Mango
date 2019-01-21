@@ -295,5 +295,53 @@ public class NodeSim {
 			this.addLink(link);
 		}
 	}
+	/**
+	 * @return the myLocation
+	 */
+	public Location getMyLocation() {
+		return myLocation;
+	}
+	/**
+	 * @param myLocation the myLocation to set
+	 */
+	public void setMyLocation(Location myLocation) {
+		this.myLocation = myLocation;
+	}
+	/**
+	 * @return the wifiAccess
+	 */
+	public boolean isWifiAccess() {
+		return wifiAccess;
+	}
+	/**
+	 * @param wifiAccess the wifiAccess to set
+	 */
+	public void setWifiAccess(boolean wifiAccess) {
+		this.wifiAccess = wifiAccess;
+	}
+	/**
+	 * @return the wlan_id
+	 */
+	public int getWlan_id() {
+		return wlan_id;
+	}
+	/**
+	 * @param wlan_id the wlan_id to set
+	 */
+	public void setWlan_id(int wlan_id) {
+		this.wlan_id = wlan_id;
+	}
+	/**
+	 * @param edges the edges to set
+	 */
+	public void setEdges(ArrayList<Link> edges) {
+		this.edges = edges;
+	}
+	/**
+	 * @param moving the moving to set
+	 */
+	public void setMoving(boolean moving) {
+		this.moving = moving;
+	}
 	
 }

@@ -210,4 +210,46 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		
 		return selectedVM;
 	}
+
+	/**
+	 * @return the numberOfHost
+	 */
+	public int getNumberOfHost() {
+		return numberOfHost;
+	}
+
+	/**
+	 * @param numberOfHost the numberOfHost to set
+	 */
+	public void setNumberOfHost(int numberOfHost) {
+		this.numberOfHost = numberOfHost;
+	}
+
+	/**
+	 * @return the lastSelectedHostIndex
+	 */
+	public int getLastSelectedHostIndex() {
+		return lastSelectedHostIndex;
+	}
+
+	/**
+	 * @param lastSelectedHostIndex the lastSelectedHostIndex to set
+	 */
+	public void setLastSelectedHostIndex(int lastSelectedHostIndex) {
+		this.lastSelectedHostIndex = lastSelectedHostIndex;
+	}
+
+	/**
+	 * @return the lastSelectedVmIndexes
+	 */
+	public int[] getLastSelectedVmIndexes() {
+		return lastSelectedVmIndexes;
+	}
+
+	/**
+	 * @param lastSelectedVmIndexes the lastSelectedVmIndexes to set
+	 */
+	public void setLastSelectedVmIndexes(int[] lastSelectedVmIndexes) {
+		this.lastSelectedVmIndexes = lastSelectedVmIndexes;
+	}
 }

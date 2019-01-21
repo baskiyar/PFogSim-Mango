@@ -646,4 +646,536 @@ public class SimSettings {
 		}
 		return level;
 	}
+
+	/**
+	 * @return the edgeDevicesDoc
+	 */
+	public Document getEdgeDevicesDoc() {
+		return edgeDevicesDoc;
+	}
+
+	/**
+	 * @param edgeDevicesDoc the edgeDevicesDoc to set
+	 */
+	public void setEdgeDevicesDoc(Document edgeDevicesDoc) {
+		this.edgeDevicesDoc = edgeDevicesDoc;
+	}
+
+	/**
+	 * @return the linksDoc
+	 */
+	public Document getLinksDoc() {
+		return linksDoc;
+	}
+
+	/**
+	 * @param linksDoc the linksDoc to set
+	 */
+	public void setLinksDoc(Document linksDoc) {
+		this.linksDoc = linksDoc;
+	}
+
+	/**
+	 * @return the cLOUD_DATACENTER_ID
+	 */
+	public static int getCLOUD_DATACENTER_ID() {
+		return CLOUD_DATACENTER_ID;
+	}
+
+	/**
+	 * @param cLOUD_DATACENTER_ID the cLOUD_DATACENTER_ID to set
+	 */
+	public static void setCLOUD_DATACENTER_ID(int cLOUD_DATACENTER_ID) {
+		CLOUD_DATACENTER_ID = cLOUD_DATACENTER_ID;
+	}
+
+	/**
+	 * @return the cLOUD_HOST_ID
+	 */
+	public static int getCLOUD_HOST_ID() {
+		return CLOUD_HOST_ID;
+	}
+
+	/**
+	 * @param cLOUD_HOST_ID the cLOUD_HOST_ID to set
+	 */
+	public static void setCLOUD_HOST_ID(int cLOUD_HOST_ID) {
+		CLOUD_HOST_ID = cLOUD_HOST_ID;
+	}
+
+	/**
+	 * @return the cLOUD_VM_ID
+	 */
+	public static int getCLOUD_VM_ID() {
+		return CLOUD_VM_ID;
+	}
+
+	/**
+	 * @param cLOUD_VM_ID the cLOUD_VM_ID to set
+	 */
+	public static void setCLOUD_VM_ID(int cLOUD_VM_ID) {
+		CLOUD_VM_ID = cLOUD_VM_ID;
+	}
+
+	/**
+	 * @return the eDGE_ORCHESTRATOR_ID
+	 */
+	public static int getEDGE_ORCHESTRATOR_ID() {
+		return EDGE_ORCHESTRATOR_ID;
+	}
+
+	/**
+	 * @param eDGE_ORCHESTRATOR_ID the eDGE_ORCHESTRATOR_ID to set
+	 */
+	public static void setEDGE_ORCHESTRATOR_ID(int eDGE_ORCHESTRATOR_ID) {
+		EDGE_ORCHESTRATOR_ID = eDGE_ORCHESTRATOR_ID;
+	}
+
+	/**
+	 * @return the gENERIC_EDGE_DEVICE_ID
+	 */
+	public static int getGENERIC_EDGE_DEVICE_ID() {
+		return GENERIC_EDGE_DEVICE_ID;
+	}
+
+	/**
+	 * @param gENERIC_EDGE_DEVICE_ID the gENERIC_EDGE_DEVICE_ID to set
+	 */
+	public static void setGENERIC_EDGE_DEVICE_ID(int gENERIC_EDGE_DEVICE_ID) {
+		GENERIC_EDGE_DEVICE_ID = gENERIC_EDGE_DEVICE_ID;
+	}
+
+	/**
+	 * @return the mOBILE_DEVICE_ID
+	 */
+	public static int getMOBILE_DEVICE_ID() {
+		return MOBILE_DEVICE_ID;
+	}
+
+	/**
+	 * @param mOBILE_DEVICE_ID the mOBILE_DEVICE_ID to set
+	 */
+	public static void setMOBILE_DEVICE_ID(int mOBILE_DEVICE_ID) {
+		MOBILE_DEVICE_ID = mOBILE_DEVICE_ID;
+	}
+
+	/**
+	 * @return the dELIMITER
+	 */
+	public static String getDELIMITER() {
+		return DELIMITER;
+	}
+
+	/**
+	 * @param dELIMITER the dELIMITER to set
+	 */
+	public static void setDELIMITER(String dELIMITER) {
+		DELIMITER = dELIMITER;
+	}
+
+	/**
+	 * @return the sIMULATION_TIME
+	 */
+	public double getSIMULATION_TIME() {
+		return SIMULATION_TIME;
+	}
+
+	/**
+	 * @param sIMULATION_TIME the sIMULATION_TIME to set
+	 */
+	public void setSIMULATION_TIME(double sIMULATION_TIME) {
+		SIMULATION_TIME = sIMULATION_TIME;
+	}
+
+	/**
+	 * @return the wARM_UP_PERIOD
+	 */
+	public double getWARM_UP_PERIOD() {
+		return WARM_UP_PERIOD;
+	}
+
+	/**
+	 * @param wARM_UP_PERIOD the wARM_UP_PERIOD to set
+	 */
+	public void setWARM_UP_PERIOD(double wARM_UP_PERIOD) {
+		WARM_UP_PERIOD = wARM_UP_PERIOD;
+	}
+
+	/**
+	 * @return the iNTERVAL_TO_GET_VM_LOAD_LOG
+	 */
+	public double getINTERVAL_TO_GET_VM_LOAD_LOG() {
+		return INTERVAL_TO_GET_VM_LOAD_LOG;
+	}
+
+	/**
+	 * @param iNTERVAL_TO_GET_VM_LOAD_LOG the iNTERVAL_TO_GET_VM_LOAD_LOG to set
+	 */
+	public void setINTERVAL_TO_GET_VM_LOAD_LOG(double iNTERVAL_TO_GET_VM_LOAD_LOG) {
+		INTERVAL_TO_GET_VM_LOAD_LOG = iNTERVAL_TO_GET_VM_LOAD_LOG;
+	}
+
+	/**
+	 * @return the iNTERVAL_TO_GET_VM_LOCATION_LOG
+	 */
+	public double getINTERVAL_TO_GET_VM_LOCATION_LOG() {
+		return INTERVAL_TO_GET_VM_LOCATION_LOG;
+	}
+
+	/**
+	 * @param iNTERVAL_TO_GET_VM_LOCATION_LOG the iNTERVAL_TO_GET_VM_LOCATION_LOG to set
+	 */
+	public void setINTERVAL_TO_GET_VM_LOCATION_LOG(double iNTERVAL_TO_GET_VM_LOCATION_LOG) {
+		INTERVAL_TO_GET_VM_LOCATION_LOG = iNTERVAL_TO_GET_VM_LOCATION_LOG;
+	}
+
+	/**
+	 * @return the fILE_LOG_ENABLED
+	 */
+	public boolean isFILE_LOG_ENABLED() {
+		return FILE_LOG_ENABLED;
+	}
+
+	/**
+	 * @param fILE_LOG_ENABLED the fILE_LOG_ENABLED to set
+	 */
+	public void setFILE_LOG_ENABLED(boolean fILE_LOG_ENABLED) {
+		FILE_LOG_ENABLED = fILE_LOG_ENABLED;
+	}
+
+	/**
+	 * @return the dEEP_FILE_LOG_ENABLED
+	 */
+	public boolean isDEEP_FILE_LOG_ENABLED() {
+		return DEEP_FILE_LOG_ENABLED;
+	}
+
+	/**
+	 * @param dEEP_FILE_LOG_ENABLED the dEEP_FILE_LOG_ENABLED to set
+	 */
+	public void setDEEP_FILE_LOG_ENABLED(boolean dEEP_FILE_LOG_ENABLED) {
+		DEEP_FILE_LOG_ENABLED = dEEP_FILE_LOG_ENABLED;
+	}
+
+	/**
+	 * @return the tRACE_ENABLED
+	 */
+	public boolean isTRACE_ENABLED() {
+		return TRACE_ENABLED;
+	}
+
+	/**
+	 * @param tRACE_ENABLED the tRACE_ENABLED to set
+	 */
+	public void setTRACE_ENABLED(boolean tRACE_ENABLED) {
+		TRACE_ENABLED = tRACE_ENABLED;
+	}
+
+	/**
+	 * @return the mIN_NUM_OF_MOBILE_DEVICES
+	 */
+	public int getMIN_NUM_OF_MOBILE_DEVICES() {
+		return MIN_NUM_OF_MOBILE_DEVICES;
+	}
+
+	/**
+	 * @param mIN_NUM_OF_MOBILE_DEVICES the mIN_NUM_OF_MOBILE_DEVICES to set
+	 */
+	public void setMIN_NUM_OF_MOBILE_DEVICES(int mIN_NUM_OF_MOBILE_DEVICES) {
+		MIN_NUM_OF_MOBILE_DEVICES = mIN_NUM_OF_MOBILE_DEVICES;
+	}
+
+	/**
+	 * @return the mAX_NUM_OF_MOBILE_DEVICES
+	 */
+	public int getMAX_NUM_OF_MOBILE_DEVICES() {
+		return MAX_NUM_OF_MOBILE_DEVICES;
+	}
+
+	/**
+	 * @param mAX_NUM_OF_MOBILE_DEVICES the mAX_NUM_OF_MOBILE_DEVICES to set
+	 */
+	public void setMAX_NUM_OF_MOBILE_DEVICES(int mAX_NUM_OF_MOBILE_DEVICES) {
+		MAX_NUM_OF_MOBILE_DEVICES = mAX_NUM_OF_MOBILE_DEVICES;
+	}
+
+	/**
+	 * @return the mOBILE_DEVICE_COUNTER_SIZE
+	 */
+	public int getMOBILE_DEVICE_COUNTER_SIZE() {
+		return MOBILE_DEVICE_COUNTER_SIZE;
+	}
+
+	/**
+	 * @param mOBILE_DEVICE_COUNTER_SIZE the mOBILE_DEVICE_COUNTER_SIZE to set
+	 */
+	public void setMOBILE_DEVICE_COUNTER_SIZE(int mOBILE_DEVICE_COUNTER_SIZE) {
+		MOBILE_DEVICE_COUNTER_SIZE = mOBILE_DEVICE_COUNTER_SIZE;
+	}
+
+	/**
+	 * @return the nUM_OF_EDGE_DATACENTERS
+	 */
+	public int getNUM_OF_EDGE_DATACENTERS() {
+		return NUM_OF_EDGE_DATACENTERS;
+	}
+
+	/**
+	 * @param nUM_OF_EDGE_DATACENTERS the nUM_OF_EDGE_DATACENTERS to set
+	 */
+	public void setNUM_OF_EDGE_DATACENTERS(int nUM_OF_EDGE_DATACENTERS) {
+		NUM_OF_EDGE_DATACENTERS = nUM_OF_EDGE_DATACENTERS;
+	}
+
+	/**
+	 * @return the nUM_OF_EDGE_HOSTS
+	 */
+	public int getNUM_OF_EDGE_HOSTS() {
+		return NUM_OF_EDGE_HOSTS;
+	}
+
+	/**
+	 * @param nUM_OF_EDGE_HOSTS the nUM_OF_EDGE_HOSTS to set
+	 */
+	public void setNUM_OF_EDGE_HOSTS(int nUM_OF_EDGE_HOSTS) {
+		NUM_OF_EDGE_HOSTS = nUM_OF_EDGE_HOSTS;
+	}
+
+	/**
+	 * @return the nUM_OF_EDGE_VMS
+	 */
+	public int getNUM_OF_EDGE_VMS() {
+		return NUM_OF_EDGE_VMS;
+	}
+
+	/**
+	 * @param nUM_OF_EDGE_VMS the nUM_OF_EDGE_VMS to set
+	 */
+	public void setNUM_OF_EDGE_VMS(int nUM_OF_EDGE_VMS) {
+		NUM_OF_EDGE_VMS = nUM_OF_EDGE_VMS;
+	}
+
+	/**
+	 * @return the wAN_PROPOGATION_DELAY
+	 */
+	public double getWAN_PROPOGATION_DELAY() {
+		return WAN_PROPOGATION_DELAY;
+	}
+
+	/**
+	 * @param wAN_PROPOGATION_DELAY the wAN_PROPOGATION_DELAY to set
+	 */
+	public void setWAN_PROPOGATION_DELAY(double wAN_PROPOGATION_DELAY) {
+		WAN_PROPOGATION_DELAY = wAN_PROPOGATION_DELAY;
+	}
+
+	/**
+	 * @return the lAN_INTERNAL_DELAY
+	 */
+	public double getLAN_INTERNAL_DELAY() {
+		return LAN_INTERNAL_DELAY;
+	}
+
+	/**
+	 * @param lAN_INTERNAL_DELAY the lAN_INTERNAL_DELAY to set
+	 */
+	public void setLAN_INTERNAL_DELAY(double lAN_INTERNAL_DELAY) {
+		LAN_INTERNAL_DELAY = lAN_INTERNAL_DELAY;
+	}
+
+	/**
+	 * @return the bANDWITH_WLAN
+	 */
+	public int getBANDWITH_WLAN() {
+		return BANDWITH_WLAN;
+	}
+
+	/**
+	 * @param bANDWITH_WLAN the bANDWITH_WLAN to set
+	 */
+	public void setBANDWITH_WLAN(int bANDWITH_WLAN) {
+		BANDWITH_WLAN = bANDWITH_WLAN;
+	}
+
+	/**
+	 * @return the bANDWITH_WAN
+	 */
+	public int getBANDWITH_WAN() {
+		return BANDWITH_WAN;
+	}
+
+	/**
+	 * @param bANDWITH_WAN the bANDWITH_WAN to set
+	 */
+	public void setBANDWITH_WAN(int bANDWITH_WAN) {
+		BANDWITH_WAN = bANDWITH_WAN;
+	}
+
+	/**
+	 * @return the bANDWITH_GSM
+	 */
+	public int getBANDWITH_GSM() {
+		return BANDWITH_GSM;
+	}
+
+	/**
+	 * @param bANDWITH_GSM the bANDWITH_GSM to set
+	 */
+	public void setBANDWITH_GSM(int bANDWITH_GSM) {
+		BANDWITH_GSM = bANDWITH_GSM;
+	}
+
+	/**
+	 * @return the mIPS_FOR_CLOUD
+	 */
+	public int getMIPS_FOR_CLOUD() {
+		return MIPS_FOR_CLOUD;
+	}
+
+	/**
+	 * @param mIPS_FOR_CLOUD the mIPS_FOR_CLOUD to set
+	 */
+	public void setMIPS_FOR_CLOUD(int mIPS_FOR_CLOUD) {
+		MIPS_FOR_CLOUD = mIPS_FOR_CLOUD;
+	}
+
+	/**
+	 * @return the sELECTED_NODES
+	 */
+	public String[] getSELECTED_NODES() {
+		return SELECTED_NODES;
+	}
+
+	/**
+	 * @param sELECTED_NODES the sELECTED_NODES to set
+	 */
+	public void setSELECTED_NODES(String[] sELECTED_NODES) {
+		SELECTED_NODES = sELECTED_NODES;
+	}
+
+	/**
+	 * @return the currentSelection
+	 */
+	public int getCurrentSelection() {
+		return currentSelection;
+	}
+
+	/**
+	 * @param currentSelection the currentSelection to set
+	 */
+	public void setCurrentSelection(int currentSelection) {
+		this.currentSelection = currentSelection;
+	}
+
+	/**
+	 * @return the sELECTED_LEVELS
+	 */
+	public String[] getSELECTED_LEVELS() {
+		return SELECTED_LEVELS;
+	}
+
+	/**
+	 * @param sELECTED_LEVELS the sELECTED_LEVELS to set
+	 */
+	public void setSELECTED_LEVELS(String[] sELECTED_LEVELS) {
+		SELECTED_LEVELS = sELECTED_LEVELS;
+	}
+
+	/**
+	 * @return the currentLevelIndex
+	 */
+	public int getCurrentLevelIndex() {
+		return currentLevelIndex;
+	}
+
+	/**
+	 * @param currentLevelIndex the currentLevelIndex to set
+	 */
+	public void setCurrentLevelIndex(int currentLevelIndex) {
+		this.currentLevelIndex = currentLevelIndex;
+	}
+
+	/**
+	 * @return the sIMULATION_SCENARIOS
+	 */
+	public String[] getSIMULATION_SCENARIOS() {
+		return SIMULATION_SCENARIOS;
+	}
+
+	/**
+	 * @param sIMULATION_SCENARIOS the sIMULATION_SCENARIOS to set
+	 */
+	public void setSIMULATION_SCENARIOS(String[] sIMULATION_SCENARIOS) {
+		SIMULATION_SCENARIOS = sIMULATION_SCENARIOS;
+	}
+
+	/**
+	 * @return the oRCHESTRATOR_POLICIES
+	 */
+	public String[] getORCHESTRATOR_POLICIES() {
+		return ORCHESTRATOR_POLICIES;
+	}
+
+	/**
+	 * @param oRCHESTRATOR_POLICIES the oRCHESTRATOR_POLICIES to set
+	 */
+	public void setORCHESTRATOR_POLICIES(String[] oRCHESTRATOR_POLICIES) {
+		ORCHESTRATOR_POLICIES = oRCHESTRATOR_POLICIES;
+	}
+
+	/**
+	 * @return the mAX_LEVELS
+	 */
+	public int getMAX_LEVELS() {
+		return MAX_LEVELS;
+	}
+
+	/**
+	 * @param mAX_LEVELS the mAX_LEVELS to set
+	 */
+	public void setMAX_LEVELS(int mAX_LEVELS) {
+		MAX_LEVELS = mAX_LEVELS;
+	}
+
+	/**
+	 * @return the mobileDevicesMoving
+	 */
+	public boolean isMobileDevicesMoving() {
+		return mobileDevicesMoving;
+	}
+
+	/**
+	 * @param instance the instance to set
+	 */
+	public static void setInstance(SimSettings instance) {
+		SimSettings.instance = instance;
+	}
+
+	/**
+	 * @param clusterType the clusterType to set
+	 */
+	public void setClusterType(boolean clusterType) {
+		this.clusterType = clusterType;
+	}
+
+	/**
+	 * @param serviceReplacement the serviceReplacement to set
+	 */
+	public void setServiceReplacement(boolean serviceReplacement) {
+		this.serviceReplacement = serviceReplacement;
+	}
+
+	/**
+	 * @param mobilityLookUpTable the mobilityLookUpTable to set
+	 */
+	public void setMobilityLookUpTable(double[] mobilityLookUpTable) {
+		this.mobilityLookUpTable = mobilityLookUpTable;
+	}
+
+	/**
+	 * @param taskLookUpTable the taskLookUpTable to set
+	 */
+	public void setTaskLookUpTable(double[][] taskLookUpTable) {
+		this.taskLookUpTable = taskLookUpTable;
+	}
 }

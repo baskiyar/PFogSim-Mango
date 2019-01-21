@@ -139,5 +139,19 @@ public class MobileDevice {
 			interHost.reserveBW(this);
 		}
 	}
+
+	/**
+	 * @return the appType
+	 */
+	public SimSettings.APP_TYPES getAppType() {
+		return appType;
+	}
+
+	/**
+	 * @param appType the appType to set
+	 */
+	public void setAppType(SimSettings.APP_TYPES appType) {
+		this.appType = appType;
+	}
 	
 }

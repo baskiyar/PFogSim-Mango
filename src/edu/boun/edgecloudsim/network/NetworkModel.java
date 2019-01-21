@@ -46,4 +46,16 @@ public abstract class NetworkModel {
 	public abstract void uploadFinished(Location accessPointLocation, int destDeviceId);
 	public abstract void downloadStarted(Location accessPointLocation, int sourceDeviceId);
 	public abstract void downloadFinished(Location accessPointLocation, int sourceDeviceId);
+	/**
+	 * @return the numberOfMobileDevices
+	 */
+	public int getNumberOfMobileDevices() {
+		return numberOfMobileDevices;
+	}
+	/**
+	 * @param numberOfMobileDevices the numberOfMobileDevices to set
+	 */
+	public void setNumberOfMobileDevices(int numberOfMobileDevices) {
+		this.numberOfMobileDevices = numberOfMobileDevices;
+	}
 }

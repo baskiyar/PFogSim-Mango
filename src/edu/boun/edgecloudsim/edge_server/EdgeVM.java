@@ -44,4 +44,32 @@ public class EdgeVM extends Vm {
 	public ApplicationServicesManager getApplicationServicesManager() {
 		return appServicesManager;
 	}
+
+	/**
+	 * @return the type
+	 */
+	public SimSettings.VM_TYPES getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(SimSettings.VM_TYPES type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the appServicesManager
+	 */
+	public ApplicationServicesManager getAppServicesManager() {
+		return appServicesManager;
+	}
+
+	/**
+	 * @param appServicesManager the appServicesManager to set
+	 */
+	public void setAppServicesManager(ApplicationServicesManager appServicesManager) {
+		this.appServicesManager = appServicesManager;
+	}
 }

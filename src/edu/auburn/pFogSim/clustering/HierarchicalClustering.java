@@ -217,4 +217,32 @@ public class HierarchicalClustering implements Serializable {
             }
         }
     }
+
+	/**
+	 * @return the merge
+	 */
+	public int[][] getMerge() {
+		return merge;
+	}
+
+	/**
+	 * @param merge the merge to set
+	 */
+	public void setMerge(int[][] merge) {
+		this.merge = merge;
+	}
+
+	/**
+	 * @return the serialversionuid
+	 */
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	/**
+	 * @param height the height to set
+	 */
+	public void setHeight(double[] height) {
+		this.height = height;
+	}
 }
