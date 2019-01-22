@@ -276,4 +276,21 @@ public class EdgeHost extends Host {
 	public void setChildern(ArrayList<EdgeHost> childern) {
 		this.childern = childern;
 	}
+	
+	
+	/**
+	 * @author szs0117
+	 * @return double
+	 */
+	public double getFnMipsUtilization() {
+		return (reserveMips * 100.0 / this.getTotalMips());
+	}
+	
+	/**
+	 * @author szs0117
+	 * @return double
+	 */
+	public double getFnNwUtilization() {
+		return (reserveBW * 100.0 / this.getBw());
+	}
 }

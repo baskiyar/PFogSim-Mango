@@ -246,6 +246,11 @@ public class SimManager extends SimEntity {
 				break;
 			case GET_LOAD_LOG:
 				SimLogger.getInstance().addVmUtilizationLog(CloudSim.clock(),edgeServerManager.getAvgUtilization());
+				// for each fog node - capture current utilization - Shaik added
+				for (Datacenter node : SimManager.getInstance().getLocalServerManager().getDatacenterList()) {
+					SimLogger.getInstance().addFNMipsUtilizationLog(CloudSim.clock(), ((EdgeHost) node.getHostList().get(0)).getId(), ((EdgeHost)node.getHostList().get(0)).getLevel(), ((EdgeHost)node.getHostList().get(0)).getFnMipsUtilization());
+					SimLogger.getInstance().addFNNwUtilizationLog(CloudSim.clock(), ((EdgeHost) node.getHostList().get(0)).getId(), ((EdgeHost)node.getHostList().get(0)).getLevel(), ((EdgeHost)node.getHostList().get(0)).getFnNwUtilization());
+				}	
 				schedule(getId(), SimSettings.getInstance().getVmLoadLogInterval(), GET_LOAD_LOG);
 				break;
 			case PRINT_PROGRESS:

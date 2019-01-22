@@ -54,11 +54,13 @@ public class SimLogger {
 	private String outputFolder;
 	private Map<Integer, LogItem> taskMap;
 	private LinkedList<VmLoadLogItem> vmLoadList;
+	private LinkedList<FNMipsUtilLogItem> fnMipsUtilList; // shaik added
+	private LinkedList<FNNwUtilLogItem> fnNwUtilList; // shaik added
 	private File centerLogFile;
 	PrintWriter centerFileW;
 	private ArrayList<Integer> utlizationArray;
 	
-	
+
 
 	private static SimLogger singleton = new SimLogger();
 	
@@ -108,11 +110,17 @@ public class SimLogger {
 			System.out.print(msg);
 	}
 
+	/**
+	 * @param outFolder
+	 * @param fileName
+	 */
 	public void simStarted(String outFolder, String fileName) {
 		filePrefix = fileName;
 		outputFolder = outFolder;
 		taskMap = new HashMap<Integer, LogItem>();
 		vmLoadList = new LinkedList<VmLoadLogItem>();
+		fnMipsUtilList = new LinkedList<FNMipsUtilLogItem>(); // shaik added
+		fnNwUtilList = new LinkedList<FNNwUtilLogItem>(); // shaik added
 		utlizationArray = new ArrayList<Integer>();
 		try {
 			centerLogFile = new File(outputFolder, filePrefix + "_Cost_Logger.txt");
@@ -121,6 +129,30 @@ public class SimLogger {
 			System.out.println("Centralize Logger File Cannot Find");
 		}
 	}
+	
+	/**
+	 * @author szs0117
+	 * @param time
+	 * @param hostId
+	 * @param hostLevel
+	 * @param fnMipsUtil
+	 */
+	public void addFNMipsUtilizationLog(double time, int hostId, int hostLevel, double fnMipsUtil) {
+		fnMipsUtilList.add(new FNMipsUtilLogItem(time, hostId, hostLevel, fnMipsUtil));
+	}		
+
+		
+	/**
+	 * @author szs0117
+	 * @param time
+	 * @param hostId
+	 * @param hostLevel
+	 * @param fnBwUtil
+	 */
+	public void addFNNwUtilizationLog(double time, int hostId, int hostLevel, double fnBwUtil) {
+		fnNwUtilList.add(new FNNwUtilLogItem(time, hostId, hostLevel, fnBwUtil));
+	}		
+
 	
 	public PrintWriter getCentralizeLogPrinter() {
 		return centerFileW;
@@ -207,9 +239,9 @@ public class SimLogger {
 	public void simStopped() throws IOException {
 		int numOfAppTypes = SimSettings.getInstance().getTaskLookUpTable().length;
 
-		File successFile = null, failFile = null, vmLoadFile = null, locationFile = null, distFile = null, hopFile = null;
-		FileWriter successFW = null, failFW = null, vmLoadFW = null, locationFW = null, distFW = null, hopFW = null;
-		BufferedWriter successBW = null, failBW = null, vmLoadBW = null, locationBW = null, distBW = null, hopBW = null;
+		File successFile = null, failFile = null, vmLoadFile = null, fnMipsUtilFile = null, fnNwUtilFile = null, locationFile = null, distFile = null, hopFile = null;
+		FileWriter successFW = null, failFW = null, vmLoadFW = null, fnMipsUtilFW = null, fnNwUtilFW = null, locationFW = null, distFW = null, hopFW = null;
+		BufferedWriter successBW = null, failBW = null, vmLoadBW = null, fnMipsUtilBW = null, fnNwUtilBW = null, locationBW = null, distBW = null, hopBW = null;
 
 		/*File[] vmLoadFileClay = new File[numOfAppTypes]; 
 		FileWriter[] vmLoadFWClay = new FileWriter[numOfAppTypes];
@@ -273,6 +305,16 @@ public class SimLogger {
 			vmLoadFile = new File(outputFolder, filePrefix + "_VM_LOAD.log");
 			vmLoadFW = new FileWriter(vmLoadFile, true);
 			vmLoadBW = new BufferedWriter(vmLoadFW);
+
+			// shaik added
+			fnMipsUtilFile = new File(outputFolder, filePrefix + "_HOST_MIPS_UTILIZATION.log");
+			fnMipsUtilFW = new FileWriter(fnMipsUtilFile, true);
+			fnMipsUtilBW = new BufferedWriter(fnMipsUtilFW);
+
+			// shaik added
+			fnNwUtilFile = new File(outputFolder, filePrefix + "_HOST_NETWORK_UTILIZATION.log");
+			fnNwUtilFW = new FileWriter(fnNwUtilFile, true);
+			fnNwUtilBW = new BufferedWriter(fnNwUtilFW);
 
 			locationFile = new File(outputFolder, filePrefix + "_LOCATION.log");
 			locationFW = new FileWriter(locationFile, true);
@@ -451,6 +493,28 @@ public class SimLogger {
 			if (fileLogEnabled)
 				appendToFile(vmLoadBW, entry.toString());
 		}
+		
+		// Shaik added
+		// calculate Average Mips utilization of all fog nodes		
+		double totalFnMipsUtil = 0;		
+		for (FNMipsUtilLogItem entry : fnMipsUtilList) {		
+			totalFnMipsUtil += entry.getFnMipsUtil();	
+			if (fileLogEnabled)	
+				appendToFile(fnMipsUtilBW, entry.toString());
+				
+		}		
+		
+		// Shaik added
+		// calculate Average Network utilization of all fog nodes		
+		double totalFnNwUtil = 0;		
+		for (FNNwUtilLogItem entry : fnNwUtilList) {		
+			totalFnNwUtil += entry.getFnNwUtil();	
+			if (fileLogEnabled)	
+				appendToFile(fnNwUtilBW, entry.toString());
+				
+		}		
+
+		
 //		//Qian Write require data into file
 //		//**********************************
 //		//**********************************
@@ -513,6 +577,8 @@ public class SimLogger {
 				double _networkDelay = (completedTask[i] == 0) ? 0.0 : (networkDelay[i] / (double) completedTask[i]);
 				double _processingTime = (completedTask[i] == 0) ? 0.0 : (processingTime[i] / (double) completedTask[i]);
 				double _vmLoad = (vmLoadList.size() == 0) ? 0.0 : (totalVmLoad / (double) vmLoadList.size());
+				double _fnMipsUtil = (fnMipsUtilList.size() == 0) ? 0.0 : (totalFnMipsUtil / (double) fnMipsUtilList.size());				
+				double _fnNwUtil = (fnNwUtilList.size() == 0) ? 0.0 : (totalFnNwUtil / (double) fnNwUtilList.size());				
 				double _cost = (completedTask[i] == 0) ? 0.0 : (cost[i] / (double) completedTask[i]);
 				double dist = (numberOfAppTypes[i] == 0) ? 0.0 : (totalDist[i] / (double) numberOfAppTypes[i]);
 				double hops = (numberOfAppTypes[i] == 0) ? 0.0 : ((double) totalHops[i] / (double) numberOfAppTypes[i]);
@@ -528,7 +594,9 @@ public class SimLogger {
 						+ Double.toString(_vmLoad) + SimSettings.DELIMITER 
 						+ Double.toString(_cost) + SimSettings.DELIMITER 
 						+ Integer.toString(rejectedTaskDoToVmCapacity[i]) + SimSettings.DELIMITER 
-						+ Integer.toString(failedTaskDuetoMobility[i]);
+						+ Integer.toString(failedTaskDuetoMobility[i]) + SimSettings.DELIMITER
+						+ Double.toString(_fnMipsUtil) + SimSettings.DELIMITER 
+						+ Double.toString(_fnNwUtil);
 
 				// check if the divisor is zero in order to avoid division by
 				// zero problem
@@ -576,6 +644,8 @@ public class SimLogger {
 				failBW.close();
 			}
 			vmLoadBW.close();
+			fnMipsUtilBW.close(); // Shaik added
+			fnNwUtilBW.close(); // Shaik added
 			locationBW.close();
 			for (int i = 0; i < numOfAppTypes + 1; i++) {
 				if (i < numOfAppTypes) {
@@ -636,6 +706,11 @@ public class SimLogger {
 
 		printLine("average server utilization: " 
 				+ String.format("%.6f", totalVmLoad / (double) vmLoadList.size()) + "%");
+		printLine("average Fog server utilization: " 
+				+ String.format("%.6f", totalFnMipsUtil / (double) fnMipsUtilList.size()) + "%"); // Shaik added
+		printLine("average Fog network utilization: " 
+				+ String.format("%.6f", totalFnNwUtil / (double) fnNwUtilList.size()) + "%"); // Shaik added
+
 		printLine("Cloudlets Per Level");
 		for(int i = 1; i <= SimSettings.getInstance().getMaxLevels(); i++) //From 1 to MAX_LEVELS because there won't be network apps running on mobile devices at level 0
 			printLine(String.format("\tLevel %d:\t%d", i, levelCloudletCount[i]));
@@ -658,6 +733,8 @@ public class SimLogger {
 		// clear related collections (map list etc.)
 		taskMap.clear();
 		vmLoadList.clear();
+		fnMipsUtilList.clear(); // Shaik added
+		fnNwUtilList.clear(); // Shaik added
 		centerFileW.close();
 	}
 
@@ -856,7 +933,400 @@ class VmLoadLogItem {
 	}
 }
 
+/**
+ * @author szs0117
+ *
+ */
+class FNMipsUtilLogItem {								
+	private double time;							
+	private int hostId;							
+	private int hostLevel;							
+	private double fnMipsUtil;							
+								
+	FNMipsUtilLogItem(double _time, int _hostId, int _hostLevel, double _fnMipsUtil) {							
+		time = _time;						
+		hostId = _hostId;						
+		hostLevel = _hostLevel;						
+		fnMipsUtil = _fnMipsUtil;						
+	}							
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "FNMipsUtilLogItem [time=" + time + ", hostId=" + hostId + ", hostLevel=" + hostLevel + ", fnMipsUtil="
+				+ fnMipsUtil + "]";
+	}
+
+	/**
+	 * @return the time
+	 */
+	public double getTime() {
+		return time;
+	}
+
+	/**
+	 * @param time the time to set
+	 */
+	public void setTime(double time) {
+		this.time = time;
+	}
+
+	/**
+	 * @return the hostId
+	 */
+	public int getHostId() {
+		return hostId;
+	}
+
+	/**
+	 * @param hostId the hostId to set
+	 */
+	public void setHostId(int hostId) {
+		this.hostId = hostId;
+	}
+
+	/**
+	 * @return the hostLevel
+	 */
+	public int getHostLevel() {
+		return hostLevel;
+	}
+
+	/**
+	 * @param hostLevel the hostLevel to set
+	 */
+	public void setHostLevel(int hostLevel) {
+		this.hostLevel = hostLevel;
+	}
+
+	/**
+	 * @return the fnMipsUtil
+	 */
+	public double getFnMipsUtil() {
+		return fnMipsUtil;
+	}
+
+	/**
+	 * @param fnMipsUtil the fnMipsUtil to set
+	 */
+	public void setFnMipsUtil(double fnMipsUtil) {
+		this.fnMipsUtil = fnMipsUtil;
+	}
+	
+}								
+
+
+/**
+ * @author szs0117
+ *
+ */
+class FNNwUtilLogItem {								
+	private double time;							
+	private int hostId;							
+	private int hostLevel;							
+	private double fnNwUtil;
+	
+	/**
+	 * @param time
+	 * @param hostId
+	 * @param hostLevel
+	 * @param fnNwUtil
+	 */
+	public FNNwUtilLogItem(double time, int hostId, int hostLevel, double fnNwUtil) {
+		super();
+		this.time = time;
+		this.hostId = hostId;
+		this.hostLevel = hostLevel;
+		this.fnNwUtil = fnNwUtil;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "FNNwUtilLogItem [time=" + time + ", hostId=" + hostId + ", hostLevel=" + hostLevel + ", fnNwUtil="
+				+ fnNwUtil + "]";
+	}
+
+	/**
+	 * @return the time
+	 */
+	public double getTime() {
+		return time;
+	}
+
+	/**
+	 * @param time the time to set
+	 */
+	public void setTime(double time) {
+		this.time = time;
+	}
+
+	/**
+	 * @return the hostId
+	 */
+	public int getHostId() {
+		return hostId;
+	}
+
+	/**
+	 * @param hostId the hostId to set
+	 */
+	public void setHostId(int hostId) {
+		this.hostId = hostId;
+	}
+
+	/**
+	 * @return the hostLevel
+	 */
+	public int getHostLevel() {
+		return hostLevel;
+	}
+
+	/**
+	 * @param hostLevel the hostLevel to set
+	 */
+	public void setHostLevel(int hostLevel) {
+		this.hostLevel = hostLevel;
+	}
+
+	/**
+	 * @return the fnNwUtil
+	 */
+	public double getFnNwUtil() {
+		return fnNwUtil;
+	}
+
+	/**
+	 * @param fnNwUtil the fnNwUtil to set
+	 */
+	public void setFnNwUtil(double fnNwUtil) {
+		this.fnNwUtil = fnNwUtil;
+	}			
+
+}
+
 class LogItem {
+	/**
+	 * @return the datacenterId
+	 */
+	public int getDatacenterId() {
+		return datacenterId;
+	}
+
+	/**
+	 * @param datacenterId the datacenterId to set
+	 */
+	public void setDatacenterId(int datacenterId) {
+		this.datacenterId = datacenterId;
+	}
+
+	/**
+	 * @return the hostId
+	 */
+	public int getHostId() {
+		return hostId;
+	}
+
+	/**
+	 * @param hostId the hostId to set
+	 */
+	public void setHostId(int hostId) {
+		this.hostId = hostId;
+	}
+
+	/**
+	 * @return the vmId
+	 */
+	public int getVmId() {
+		return vmId;
+	}
+
+	/**
+	 * @param vmId the vmId to set
+	 */
+	public void setVmId(int vmId) {
+		this.vmId = vmId;
+	}
+
+	/**
+	 * @return the taskLenght
+	 */
+	public int getTaskLenght() {
+		return taskLenght;
+	}
+
+	/**
+	 * @param taskLenght the taskLenght to set
+	 */
+	public void setTaskLenght(int taskLenght) {
+		this.taskLenght = taskLenght;
+	}
+
+	/**
+	 * @return the taskInputType
+	 */
+	public int getTaskInputType() {
+		return taskInputType;
+	}
+
+	/**
+	 * @param taskInputType the taskInputType to set
+	 */
+	public void setTaskInputType(int taskInputType) {
+		this.taskInputType = taskInputType;
+	}
+
+	/**
+	 * @return the taskOutputSize
+	 */
+	public int getTaskOutputSize() {
+		return taskOutputSize;
+	}
+
+	/**
+	 * @param taskOutputSize the taskOutputSize to set
+	 */
+	public void setTaskOutputSize(int taskOutputSize) {
+		this.taskOutputSize = taskOutputSize;
+	}
+
+	/**
+	 * @return the numberOfHops
+	 */
+	public int getNumberOfHops() {
+		return numberOfHops;
+	}
+
+	/**
+	 * @param numberOfHops the numberOfHops to set
+	 */
+	public void setNumberOfHops(int numberOfHops) {
+		this.numberOfHops = numberOfHops;
+	}
+
+	/**
+	 * @return the taskStartTime
+	 */
+	public double getTaskStartTime() {
+		return taskStartTime;
+	}
+
+	/**
+	 * @param taskStartTime the taskStartTime to set
+	 */
+	public void setTaskStartTime(double taskStartTime) {
+		this.taskStartTime = taskStartTime;
+	}
+
+	/**
+	 * @return the taskEndTime
+	 */
+	public double getTaskEndTime() {
+		return taskEndTime;
+	}
+
+	/**
+	 * @param taskEndTime the taskEndTime to set
+	 */
+	public void setTaskEndTime(double taskEndTime) {
+		this.taskEndTime = taskEndTime;
+	}
+
+	/**
+	 * @return the bwCost
+	 */
+	public double getBwCost() {
+		return bwCost;
+	}
+
+	/**
+	 * @param bwCost the bwCost to set
+	 */
+	public void setBwCost(double bwCost) {
+		this.bwCost = bwCost;
+	}
+
+	/**
+	 * @return the cpuCost
+	 */
+	public double getCpuCost() {
+		return cpuCost;
+	}
+
+	/**
+	 * @param cpuCost the cpuCost to set
+	 */
+	public void setCpuCost(double cpuCost) {
+		this.cpuCost = cpuCost;
+	}
+
+	/**
+	 * @return the taskCost
+	 */
+	public double getTaskCost() {
+		return taskCost;
+	}
+
+	/**
+	 * @param taskCost the taskCost to set
+	 */
+	public void setTaskCost(double taskCost) {
+		this.taskCost = taskCost;
+	}
+
+	/**
+	 * @return the distanceToHost
+	 */
+	public double getDistanceToHost() {
+		return distanceToHost;
+	}
+
+	/**
+	 * @param distanceToHost the distanceToHost to set
+	 */
+	public void setDistanceToHost(double distanceToHost) {
+		this.distanceToHost = distanceToHost;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(SimLogger.TASK_STATUS status) {
+		this.status = status;
+	}
+
+	/**
+	 * @param vmType the vmType to set
+	 */
+	public void setVmType(int vmType) {
+		this.vmType = vmType;
+	}
+
+	/**
+	 * @param taskType the taskType to set
+	 */
+	public void setTaskType(int taskType) {
+		this.taskType = taskType;
+	}
+
+	/**
+	 * @param networkDelay the networkDelay to set
+	 */
+	public void setNetworkDelay(double networkDelay) {
+		this.networkDelay = networkDelay;
+	}
+
+	/**
+	 * @param isInWarmUpPeriod the isInWarmUpPeriod to set
+	 */
+	public void setInWarmUpPeriod(boolean isInWarmUpPeriod) {
+		this.isInWarmUpPeriod = isInWarmUpPeriod;
+	}
+
 	private SimLogger.TASK_STATUS status;
 	private int datacenterId;
 	private int hostId;
