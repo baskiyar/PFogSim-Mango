@@ -193,6 +193,90 @@ public class FogCluster {
 	}//end calcProximity()
 
 	
+	/**
+	 * @author szs0117
+	 * Create clusters
+	 * @param 
+	 */
+	
+public void learnByMaxHeight(){
+		
+		//HierarchicalClustering hc = new HierarchicalClustering(new SingleLinkage(proximityMatrix));
+		HierarchicalClustering hc = new HierarchicalClustering(new CompleteLinkage(proximityMatrix));
+		//SimLogger.printLine("clusterNumber is: "+clusterNumber);
+//		int[] membership = hc.partition(maxClusterHeight);//Qian commented for get matrix
+//		clusterNumber = membership.length;
+		int[] membership = hc.partition(this.maxClusterHeight);
+		//SimLogger.printLine("Membership : " + membership);
+		clusterNumber = membership.length;  // Shaik added
+		int[] clusterSize = new int[clusterNumber];
+		//SimLogger.printLine("ClusterSize : " + clusterSize);
+		//System.out.println("membership[] length: "+membership.length);
+		//SimLogger.printLine("membership.length : " + membership.length);
+		for (int i=0; i< membership.length; i++){
+			clusterSize[membership[i]]++;
+			//SimLogger.printLine("i membership[i] clusterSize: "+i+"   "+membership[i]+"   "+clusterSize[membership[i]]);
+		} 
+		
+		cluster = new Double[clusterNumber][][];
+		//System.out.println("clusterNumber is: "+clusterNumber);
+		for (int k = 0; k < clusterNumber; k++){
+			//System.out.println("k clusterSize[k]: "+k+"   "+clusterSize[k]);
+			cluster[k] = new Double[clusterSize[k]][2];
+			
+			for (int i = 0, j = 0; i < points.length; i++){
+				if (membership[i] == k){
+					cluster[k][j++] = points[i];
+				}// end if				
+			}// end for i,j
+			
+			// These are classified as a cluster; print these separately. 
+			//System.out.println("\n\n Cluster Number: " + k +"\n");
+			for (int i=0; i<clusterSize[k]; i++){
+				//System.out.println(cluster[k][i][0]+" , "+cluster[k][i][1]);
+			}// end for i
+			
+		}// end for k
+		
+		/* code prior to change
+		 * 		for (int k=0; k<clusterNumber; k++){
+			Integer[][] cluster = new Integer[clusterSize[k]][];
+			
+			for (int i=0,j=0; i<points.length; i++){
+				if (membership[i] == k){
+					cluster[j++] = points[i];
+				}// end if				
+			}// end for i,j
+			
+			// These are classified as a cluster; print these separately. 
+			//System.out.println("\n\n Cluster Number: " + k +"\n");
+			for (int i=0; i<clusterSize[k]; i++){
+				//System.out.println(cluster[i][0]+" , "+cluster[i][1]);
+			}// end for i
+			
+		}// end for k
+		
+		 * */
+		
+		/** Copied code here
+		 for (int k = 0; k < clusterNumber; k++) {
+	            double[][] cluster = new double[clusterSize[k]][];
+	            for (int i = 0, j = 0; i < dataset[datasetIndex].length; i++) {
+	                if (membership[i] == k) {
+	                    cluster[j++] = dataset[datasetIndex][i];
+	                }
+	            }
+
+	            plot.points(cluster, pointLegend, Palette.COLORS[k % Palette.COLORS.length]);
+	        }
+		*/
+		
+				
+	}// end learnByMaxHeight()
+	
+	
+	
+	
 	public void learn(){
 		
 		//HierarchicalClustering hc = new HierarchicalClustering(new SingleLinkage(proximityMatrix));
@@ -338,7 +422,7 @@ public class FogCluster {
 		stdInput(arrayList);
 		calcProximity();
 		if(arrayList.size() > 0)
-			learn();
+			learnByMaxHeight();  // Shaik added
 		
 		//Make the voronoi diagram for that level and add it to the list
 		//PowerDiagram voronoi = new PowerDiagram(arrayList);
