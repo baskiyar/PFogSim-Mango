@@ -193,6 +193,7 @@ public class EdgeHost extends Host {
 		reserveBW(mb);
 		reserveCPUResource(mb);
 		customers.add(mb);
+		System.out.println("Mobile device: "+mb.getId()+"  Assigned host: "+this.getId());
 	}
 	/**
 	 * @return the customers
