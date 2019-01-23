@@ -19,6 +19,7 @@ import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.diagram.*;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
+import edu.auburn.pFogSim.util.DataInterpreter;
 
 public class FogCluster {
 	private String[] lines = null;
@@ -147,6 +148,7 @@ public class FogCluster {
 					
 					//Calculate distance
 					distance = Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1)));
+					//distance = DataInterpreter.measure(x1, y1, x2, y2);//Qian
 					//System.out.println(distance);
 					
 					//Update entry in proximityMatrix
