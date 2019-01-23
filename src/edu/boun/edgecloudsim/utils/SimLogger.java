@@ -290,6 +290,14 @@ public class SimLogger {
 		int[] totalHops = new int[numOfAppTypes + 1];
 		int[] numberOfAppTypes = new int[numOfAppTypes + 1];
 
+		double[] fogLayerAvgMipsUtil = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
+		double[] fogLayerTotalMipsUtil = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
+		double[] fogLayerEntryMipsCount = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
+
+		double[] fogLayerAvgNwUtil = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
+		double[] fogLayerTotalNwUtil = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
+		double[] fogLayerEntryNwCount = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
+
 		// open all files and prepare them for write
 		if (fileLogEnabled) {
 			if (SimSettings.getInstance().getDeepFileLoggingEnabled()) {
@@ -501,8 +509,11 @@ public class SimLogger {
 			totalFnMipsUtil += entry.getFnMipsUtil();	
 			if (fileLogEnabled)	
 				appendToFile(fnMipsUtilBW, entry.toString());
-				
-		}		
+			
+			// Capture metrics per layer
+			fogLayerTotalMipsUtil[entry.getHostLevel()-1] += entry.getFnMipsUtil();
+			fogLayerEntryMipsCount[entry.getHostLevel()-1]++;	
+		}
 		
 		// Shaik added
 		// calculate Average Network utilization of all fog nodes		
@@ -511,9 +522,26 @@ public class SimLogger {
 			totalFnNwUtil += entry.getFnNwUtil();	
 			if (fileLogEnabled)	
 				appendToFile(fnNwUtilBW, entry.toString());
-				
+
+			// Capture metrics per layer
+			fogLayerTotalNwUtil[entry.getHostLevel()-1] += entry.getFnNwUtil();
+			fogLayerEntryNwCount[entry.getHostLevel()-1]++;	
 		}		
 
+		// Shaik added
+		// calculate Average node utilization per fog layer		
+		for (int i=0; i < fogLayerAvgMipsUtil.length; i++ ) {
+			fogLayerAvgMipsUtil[i] = fogLayerTotalMipsUtil[i] / fogLayerEntryMipsCount[i];
+		}
+		
+		// Shaik added
+		// calculate Average network utilization per fog layer		
+		for (int i=0; i < fogLayerAvgNwUtil.length; i++ ) {
+			fogLayerAvgNwUtil[i] = fogLayerTotalNwUtil[i] / fogLayerEntryNwCount[i];
+		}
+
+		
+		
 		
 //		//Qian Write require data into file
 //		//**********************************
@@ -725,9 +753,20 @@ public class SimLogger {
 		
 		//Qian print average fog nodes utilization in each level.
 		getTotalFogNodesCountInEachLevel();
-		printLine("average fog node utilization:");
+		//printLine("average fog node utilization:"); // Shaik commented
+		printLine("Percentage of fog nodes executing atleast one task:"); // Shaik modified
 		for (int i = 0; i < 7; i++) {
 			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)levelFogNodeCount[i] / (double)totalNodesNmuberInEachLevel[i])));
+		}
+		
+		printLine("Average fog node utilization per layer:"); // Shaik added
+		for (int i = 0; i < fogLayerAvgMipsUtil.length; i++) {
+			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)fogLayerAvgMipsUtil[i])));
+		}
+
+		printLine("Average fog network utilization per layer:"); // Shaik added
+		for (int i = 0; i < fogLayerAvgNwUtil.length; i++) {
+			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)fogLayerAvgNwUtil[i])));
 		}
 		
 		// clear related collections (map list etc.)
