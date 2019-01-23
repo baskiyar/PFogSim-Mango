@@ -44,16 +44,16 @@ public class SimSettings {
 	public static enum PLACE_TYPES { ATTRACTIVENESS_L1, ATTRACTIVENESS_L2, ATTRACTIVENESS_L3 }
 	
 	//predifined IDs for cloud components.
-	public static int CLOUD_DATACENTER_ID = 1000;
+	public static int CLOUD_DATACENTER_ID = 1000000;
 	public static int CLOUD_HOST_ID = CLOUD_DATACENTER_ID + 1;
 	public static int CLOUD_VM_ID = CLOUD_DATACENTER_ID + 2;
 	
 	//predifined IDs for edge devices
-	public static int EDGE_ORCHESTRATOR_ID = 2000;
+	public static int EDGE_ORCHESTRATOR_ID = 2000000;
 	public static int GENERIC_EDGE_DEVICE_ID = EDGE_ORCHESTRATOR_ID + 1;
 	
 	//generic ID for mobile device
-	public static int MOBILE_DEVICE_ID = 3000;
+	public static int MOBILE_DEVICE_ID = 3000000;
 
 	//delimiter for output file.
 	public static String DELIMITER = ";";
