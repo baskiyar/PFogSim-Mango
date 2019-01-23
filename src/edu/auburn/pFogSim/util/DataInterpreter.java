@@ -68,7 +68,7 @@ public class DataInterpreter {
 		String rawNode = null;
 		String[] nodeLoc = new String[3];
 		Double[] temp = new Double[3];
-		int counter = 1;
+		int counter = 0;
 		int prevCounter = 0;
 		for(int i = 0; i < MAX_LEVELS; i++)
 		{
