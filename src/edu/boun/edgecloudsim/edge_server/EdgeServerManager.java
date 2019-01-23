@@ -63,7 +63,7 @@ public class EdgeServerManager {
 		localDatacenters=new ArrayList<Datacenter>();
 		vmList = new ArrayList<List<EdgeVM>>();
 		vmList.add(new ArrayList<EdgeVM>());
-		hostIdCounter = 1;
+		hostIdCounter = 0; // Shaik modified from hostIdCounter = 1; 
 		instance = this;
 	}
 	

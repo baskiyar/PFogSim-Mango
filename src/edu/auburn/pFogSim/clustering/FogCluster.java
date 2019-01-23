@@ -147,8 +147,8 @@ public class FogCluster {
 					y2 = points[j][1];
 					
 					//Calculate distance
-					distance = Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1)));
-					//distance = DataInterpreter.measure(x1, y1, x2, y2);//Qian
+					//distance = Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1)));
+					distance = DataInterpreter.measure(x1, y1, x2, y2); //Qian added
 					//System.out.println(distance);
 					
 					//Update entry in proximityMatrix
