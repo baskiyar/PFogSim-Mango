@@ -80,17 +80,24 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 		}
 	}
 
-	/* (non-Javadoc)
+	/* 
+	 * @ author Qian Wang
+	 * @ author Shehenaz Shaik
+	 * (non-Javadoc)
 	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
 	 */
 	@Override
 	public void assignHost(MobileDevice mobile) {
-		// TODO Auto-generated method stub
-		EdgeHost host = (EdgeHost) cloud.getHostList().get(0);
-		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mobile);
-		mobile.setPath(path);
-		mobile.setHost(host);
-		mobile.makeReservation();
+ 
+		EdgeHost cloudHost = (EdgeHost) cloud.getHostList().get(0);
+		if (goodHost(cloudHost, mobile)) {
+			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(cloudHost, mobile);
+			mobile.setPath(path);
+			mobile.setHost(cloudHost);
+			mobile.makeReservation();
+		}
+		else
+			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
 	}
 
 	/**

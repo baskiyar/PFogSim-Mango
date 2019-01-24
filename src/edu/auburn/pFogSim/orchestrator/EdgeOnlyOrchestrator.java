@@ -80,7 +80,10 @@ public class EdgeOnlyOrchestrator extends EdgeOrchestrator {
 		task.setPath(mb.getPath());
 		return mb.getHost();
 	}
-	/* (non-Javadoc)
+	/* 
+	 * @ author Qian Wang
+	 * @ author Shehenaz Shaik
+	 * (non-Javadoc)
 	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
 	 */
 	@Override
@@ -108,6 +111,8 @@ public class EdgeOnlyOrchestrator extends EdgeOrchestrator {
 			mobile.makeReservation();
 			System.out.println("  Assigned host: " + host.getId());
 		}
+		else
+			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
 	}
 	/**
 	 * @return the hosts
