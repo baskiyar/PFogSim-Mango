@@ -3,6 +3,7 @@ package edu.auburn.pFogSim.clustering;
 //import edu.boun.edgecloudsim.utils.*;
 import javafx.util.Pair;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -70,6 +71,7 @@ public class FogHierCluster {
 		
 		//Make the clusters
 		makeClusters();
+		writeClustersToFile();
 	}
 	
 	private void makeClusters() 
@@ -399,7 +401,31 @@ public class FogHierCluster {
 		
 	}// End main
 */
-	
+	public void writeClustersToFile() {
+		PrintWriter writer;
+		try {
+			for (int i = 0; i < clusterList.size(); i++ ) {
+				int level = i + 1;
+				writer = new PrintWriter("sim_results/Clusters/level" + level + ".xml");
+				writer.println("<?xml version=\"1.0\"?>");
+				Double[][][] cluster = clusterList.get(i).getCluster();
+				for (int j = 0; j < cluster.length; j++) {
+					writer.println("<cluster"+ j +">");
+					for (int k = 0; k < cluster[j].length; k++) {
+						writer.println("<location>");
+						writer.println("<x_pos>" + cluster[j][k][0] + "</x_pos>");
+						writer.println("<y_pos>" + cluster[j][k][1] + "</y_pos>");
+						writer.println("</location>");
+					}
+					writer.println("</cluster"+ j + ">");
+				}
+				writer.close();
+			}
+		}
+		catch(Exception e) {
+			
+		}
+	}
 }// end class FogHierCluster
 
 /*
