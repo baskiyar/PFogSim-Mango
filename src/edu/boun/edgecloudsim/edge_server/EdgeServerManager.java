@@ -442,6 +442,7 @@ public class EdgeServerManager {
 				return node;
 			}
 		}
+		System.out.println("Error. Host not found for given GPS coordinates."); // Shaik added
 		return null;
 	}
 	/**

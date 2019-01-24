@@ -5,6 +5,7 @@
 package edu.auburn.pFogSim.orchestrator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,12 +83,16 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 		task.setPath(mb.getPath());
 		return mb.getHost();
 	}
-	/* (non-Javadoc)
+	/* 
+	 * @ author Qian Wang
+	 * @ author Shehenaz Shaik 
+	 * (non-Javadoc)
 	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
 	 */
 	@Override
 	public void assignHost(MobileDevice mobile) {
-		// TODO Auto-generated method stub
+		// Find the total cost of execution at each prospective fog node
+		// cost of execution and cost of data transfer depends on the type of application accessed from mobile device
 		Map<Double, List<NodeSim>> costMap = new HashMap<>();
 		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(mobile.getLocation(), false);
 		Map<NodeSim, LinkedList<NodeSim>> desMap = pathTable.get(src);
@@ -114,7 +119,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 				double exCost = desHost.getCostPerSec() * 
 						(mobile.getTaskLengthRequirement() / desHost.getTotalMips());
 				cost = cost + exCost;
-				//SimLogger.getInstance().getCentralizeLogPrinter().println("Destiation:\t"+ des.getWlanId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("Destination:\t"+ des.getWlanId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
 			}
 			
 			if (costMap.containsKey(cost)) {
@@ -128,34 +133,44 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 				costMap.put(cost, desList);
 			}
 		}
+		
+		//Sort the list of prospective nodes by increasing cost 
+		LinkedList<EdgeHost> hostsSortedByCost = new LinkedList<EdgeHost>();
+		
+		//Create a sorted list of costs
+		List<Double> costList = new ArrayList<Double> (costMap.keySet());
+		Collections.sort(costList);
+		
+		//Access the map entries in order sorted by cost
 		EdgeHost host = null;
-		for (Map.Entry<Double, List<NodeSim>> entry: costMap.entrySet()) {
-			for(NodeSim desNode: entry.getValue()) {
+		for (Double totalCost : costList) {
+			// Get the list of prospective nodes available at that cost
+			for(NodeSim desNode: costMap.get(totalCost)) {
 				host = SimManager.getInstance().getLocalServerManager().findHostByLoc(desNode.getLocation().getXPos(), desNode.getLocation().getYPos());
-				try {
-					if(goodHost(host, mobile)) {
-						LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mobile);
-						mobile.setPath(path);
-						mobile.setHost(host);
-						mobile.makeReservation();
-						return;
-						
-					}
-				}
-				catch (NullPointerException e){//THE OTHER LEVER!!!!!!!!!!
-					//If there are no nodes in the list that can take the task, send to the cloud
-					host = (EdgeHost) cloud.getHostList().get(0);
-				}
+				hostsSortedByCost.add(host);
+				System.out.println("Hosts in sorted order of costs:  "+host.getId()+"  at cost:  "+totalCost);
 			}
 		}
-		if (host == null) {
-			host = (EdgeHost) cloud.getHostList().get(0);
+		
+		//Find a cost-optimal node with available resources
+		EdgeHost centralHost = null;
+		centralHost = hostsSortedByCost.poll();
+		
+		while(!goodHost(centralHost, mobile)) {
+			centralHost = hostsSortedByCost.poll();//find the next cost-optimal node capable of handling the task
+			if (centralHost == null) {
+				break;
+			}
 		}
-		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mobile);
-		mobile.setPath(path);
-		mobile.setHost(host);
-		mobile.makeReservation();
-		return;
+		if (centralHost != null) {
+			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(centralHost, mobile);
+			mobile.setPath(path);
+			mobile.setHost(host);
+			mobile.makeReservation();
+			System.out.println("  Assigned host: " + host.getId());
+		}
+		else
+			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
 	}
 	/**
 	 * @return the hosts
