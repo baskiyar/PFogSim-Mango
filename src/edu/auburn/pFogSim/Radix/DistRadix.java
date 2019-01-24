@@ -207,6 +207,7 @@ public class DistRadix {
 			for (Location loc: entry.getValue()) {
 				node = coordMap.get(loc);
 				output.add(node);
+				System.out.println("Latency Key is: "+entry.getKey());
 			}
 		}
 //		for (int i = 0; i < coords.size(); i++) {
@@ -216,6 +217,41 @@ public class DistRadix {
 //		}
 		return output;
 	}
+	
+	/**
+	 * @author Shaik
+	 * modified by Qian
+	 * get the list of nodes sorted by latency
+	 * @return
+	 */
+	private LinkedList<EdgeHost> getSortedNodesListByLatency() {
+
+		//Return: List of nodes
+		LinkedList<EdgeHost> output = new LinkedList<EdgeHost>();
+		
+		//Create a sorted list of latencies
+		List<Double> latenciesList = new ArrayList<Double> (latencyMap.keySet());
+		Collections.sort(latenciesList);
+		
+		//Access the map entries in order sorted by latencies
+		EdgeHost node;
+		//for (Map.Entry<Double, ArrayList<Location>> entry: latencyMap.entrySet()) {
+		for (Double lat : latenciesList) {
+			// Get the list of locations accessible at that latency
+			for (Location loc: latencyMap.get(lat)) {
+				node = coordMap.get(loc);
+				output.add(node);
+				//System.out.println("Latency Key is: "+lat);
+			}
+		}
+//		for (int i = 0; i < coords.size(); i++) {
+//			loc = latencyMap.get(latencies[i]); // Shaik *** When the entry-value is implemented as a 'loc' list - ensure that this operation removes the element after reading the value, so that next request for same latency key will return a different node accessible at same latency. Otherwise, only the first node in list will be returned always and not all nodes will be considered in assignHost() method.  
+//			node = coordMap.get(loc);   
+//			output.add(node);
+//		}
+		return output;
+	}
+	
 	/**
 	 * public facing method to get the list of sorted nodes
 	 * @return
@@ -239,7 +275,8 @@ public class DistRadix {
 		//setArrgs(); // Shaik update
 		// radixSort(); // Shaik update
 		//Arrays.sort(latencies); // Shaik update
-		return getLatenciesList(); // Shaik update
+		//return getLatenciesList(); // Shaik update
+		return getSortedNodesListByLatency(); // Shaik modified
 	}
 	/**
 	 * @return the input
