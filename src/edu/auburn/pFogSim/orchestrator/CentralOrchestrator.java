@@ -166,9 +166,9 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 		if (centralHost != null) {
 			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(centralHost, mobile);
 			mobile.setPath(path);
-			mobile.setHost(host);
+			mobile.setHost(centralHost);
 			mobile.makeReservation();
-			System.out.println("  Assigned host: " + host.getId());
+			System.out.println("  Assigned host: " + centralHost.getId());
 		}
 		else
 			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");

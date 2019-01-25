@@ -94,6 +94,15 @@ public class MobileDeviceManager extends DatacenterBroker {
 				((ESBModel) networkModel).getHops(task, task.getAssociatedHostId());
 				networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi);
 			}*/
+			
+			if (SimSettings.getInstance().traceEnalbe()) {
+				SimLogger.getInstance().printLine("WlanDelay: "+ WlanDelay+ "  taskmaxDelay: "+task.getMaxDelay());
+				if (WlanDelay < 0)
+					SimLogger.getInstance().printLine("FAILED DUE TO BANDWIDTH");
+				if (WlanDelay > task.getMaxDelay())
+					SimLogger.getInstance().printLine("FAILED DUE TO LATENCY");				
+			}
+			
 			if(WlanDelay >= 0 && WlanDelay <= task.getMaxDelay()) {
 				networkModel.downloadStarted(currentLocation, SimSettings.GENERIC_EDGE_DEVICE_ID);
 				schedule(getId(), WlanDelay, RESPONSE_RECEIVED_BY_MOBILE_DEVICE, task);
