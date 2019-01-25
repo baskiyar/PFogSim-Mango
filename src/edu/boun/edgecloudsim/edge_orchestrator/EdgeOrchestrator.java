@@ -60,6 +60,7 @@ public abstract class EdgeOrchestrator {
 	 * @return
 	 */
 	protected static boolean goodHost(EdgeHost host, MobileDevice mb) {
+		System.out.print(host.getId());
 		if (!host.isMIPSAvailable(mb) || !host.isBWAvailable(mb)) {
 			return false;
 		}
@@ -70,6 +71,7 @@ public abstract class EdgeOrchestrator {
 				return false;
 			}
 		}
+		System.out.println(" is good.");
 		return true;
 		
 	}

@@ -109,7 +109,7 @@ public class EdgeOnlyOrchestrator extends EdgeOrchestrator {
 			mobile.setPath(path);
 			mobile.setHost(host);
 			mobile.makeReservation();
-			System.out.println("  Assigned host: " + host.getId());
+			//System.out.println("  Assigned host: " + host.getId());
 		}
 		else
 			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");

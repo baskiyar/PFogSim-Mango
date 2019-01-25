@@ -156,6 +156,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 		EdgeHost centralHost = null;
 		centralHost = hostsSortedByCost.poll();
 		
+		System.out.print("Prospective host:  ");
 		while(!goodHost(centralHost, mobile)) {
 			centralHost = hostsSortedByCost.poll();//find the next cost-optimal node capable of handling the task
 			if (centralHost == null) {
