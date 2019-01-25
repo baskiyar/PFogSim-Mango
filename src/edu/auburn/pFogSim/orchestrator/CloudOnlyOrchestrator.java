@@ -6,6 +6,7 @@
 
 package edu.auburn.pFogSim.orchestrator;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.cloudbus.cloudsim.Datacenter;
@@ -24,6 +25,7 @@ import edu.boun.edgecloudsim.utils.SimLogger;
 public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 
 	private static String node = "Datacenter_0";
+	EdgeHost cHost;
 	
 	public CloudOnlyOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
@@ -31,7 +33,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 	
 	@Override
 	public void initialize() {
-
+		cHost = (EdgeHost)(SimManager.getInstance().getLocalServerManager().findHostById(0));
 	}
 
 	/**
@@ -90,6 +92,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 	public void assignHost(MobileDevice mobile) {
  
 		EdgeHost cloudHost = (EdgeHost) cloud.getHostList().get(0);
+		cloudHost = (EdgeHost)cHost; // Shaik added - for test
 		if (goodHost(cloudHost, mobile)) {
 			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(cloudHost, mobile);
 			mobile.setPath(path);
