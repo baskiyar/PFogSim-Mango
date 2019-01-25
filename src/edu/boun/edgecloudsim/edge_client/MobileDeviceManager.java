@@ -274,11 +274,22 @@ public class MobileDeviceManager extends DatacenterBroker {
 					selectedVM.getHost().getId(),
 					selectedVM.getId(),
 					selectedVM.getVmType().ordinal());
+
+			if (SimSettings.getInstance().traceEnalbe()) {
+				SimLogger.printLine("submitTaskToEdgeDevice: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+"  Selected VM: "+ selectedVM.getId());
+			}
+
 		}
 		else{
 			//SimLogger.printLine("Task #" + task.getCloudletId() + " cannot assign to any VM");
 			SimLogger.getInstance().rejectedDueToVMCapacity(task.getCloudletId(), CloudSim.clock());
+
+			if (SimSettings.getInstance().traceEnalbe()) {
+				SimLogger.printLine("submitTaskToEdgeDevice: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to VM capacity");
+			}
+			
 		}
+
 	}
 	
 	public void submitTask(EdgeTask edgeTask) {
@@ -352,9 +363,9 @@ public class MobileDeviceManager extends DatacenterBroker {
 			if (SimSettings.getInstance().traceEnalbe()) {
 				SimLogger.printLine("WlanDelay: "+ WlanDelay+ "  taskmaxDelay: "+task.getMaxDelay());
 				if (WlanDelay < 0)
-					SimLogger.printLine("FAILED DUE TO BANDWIDTH during Upload in submitTask");
+					SimLogger.printLine("submitTask: FAILED DUE TO BANDWIDTH during Upload in submitTask");
 				if (WlanDelay > task.getMaxDelay())
-					SimLogger.printLine("FAILED DUE TO LATENCY during Upload in submitTask");				
+					SimLogger.printLine("submitTask: FAILED DUE TO LATENCY during Upload in submitTask");				
 			}
 			
 			if(WlanDelay > 0){
