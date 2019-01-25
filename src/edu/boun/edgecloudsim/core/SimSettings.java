@@ -494,7 +494,7 @@ public class SimSettings {
 			    taskLookUpTable[appType.ordinal()][7] = task_length; //avg task length (MI)
 			    taskLookUpTable[appType.ordinal()][8] = required_core; //required # of core
 			    taskLookUpTable[appType.ordinal()][9] = vm_utilization; //vm utilization [0-100]
-			    taskLookUpTable[appType.ordinal()][10] = delay_sensitivity; //delay_sensitivity (milliseconds)
+			    taskLookUpTable[appType.ordinal()][10] = delay_sensitivity * 1000; //delay_sensitivity (milliseconds) // Shaik modified to - '*1000' to convert the delay specification from seconds to milliseconds to match rest of the simulator design
 			    
 			}
 	
