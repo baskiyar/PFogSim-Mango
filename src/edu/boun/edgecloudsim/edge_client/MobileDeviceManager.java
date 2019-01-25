@@ -96,11 +96,11 @@ public class MobileDeviceManager extends DatacenterBroker {
 			}*/
 			
 			if (SimSettings.getInstance().traceEnalbe()) {
-				SimLogger.getInstance().printLine("WlanDelay: "+ WlanDelay+ "  taskmaxDelay: "+task.getMaxDelay());
+				SimLogger.printLine("WlanDelay: "+ WlanDelay+ "  taskmaxDelay: "+task.getMaxDelay());
 				if (WlanDelay < 0)
-					SimLogger.getInstance().printLine("FAILED DUE TO BANDWIDTH");
+					SimLogger.printLine("FAILED DUE TO BANDWIDTH during Download in processCloudletReturn");
 				if (WlanDelay > task.getMaxDelay())
-					SimLogger.getInstance().printLine("FAILED DUE TO LATENCY");				
+					SimLogger.printLine("FAILED DUE TO LATENCY during Download in processCloudletReturn");				
 			}
 			
 			if(WlanDelay >= 0 && WlanDelay <= task.getMaxDelay()) {
@@ -348,6 +348,14 @@ public class MobileDeviceManager extends DatacenterBroker {
 //		}
 		else /*(nextHopId == SimSettings.GENERIC_EDGE_DEVICE_ID)*/ {
 			double WlanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false);
+
+			if (SimSettings.getInstance().traceEnalbe()) {
+				SimLogger.printLine("WlanDelay: "+ WlanDelay+ "  taskmaxDelay: "+task.getMaxDelay());
+				if (WlanDelay < 0)
+					SimLogger.printLine("FAILED DUE TO BANDWIDTH during Upload in submitTask");
+				if (WlanDelay > task.getMaxDelay())
+					SimLogger.printLine("FAILED DUE TO LATENCY during Upload in submitTask");				
+			}
 			
 			if(WlanDelay > 0){
 				networkModel.uploadStarted(currentLocation, nextHopId);
