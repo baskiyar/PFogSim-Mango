@@ -160,6 +160,9 @@ public class EdgeServerManager {
 			Element datacenterElement = (Element) datacenterNode;
 			String arch = datacenterElement.getAttribute("arch");
 			NodeList hostNodeList = datacenterElement.getElementsByTagName("host");
+			
+			Element location = (Element)datacenterElement.getElementsByTagName("location").item(0); // shaik added
+			
 			for (int j = 0; j < hostNodeList.getLength(); j++) {
 				
 				vmList.add(hostCounter, new ArrayList<EdgeVM>());
@@ -177,8 +180,8 @@ public class EdgeServerManager {
 					double mips = Double.parseDouble(vmElement.getElementsByTagName("mips").item(0).getTextContent());
 					double ram = Double.parseDouble(vmElement.getElementsByTagName("ram").item(0).getTextContent());
 					long storage = Long.parseLong(vmElement.getElementsByTagName("storage").item(0).getTextContent());
-					long bandwidth = SimSettings.getInstance().getWlanBandwidth() / (hostNodeList.getLength()+vmNodeList.getLength());
-					
+					//long bandwidth = SimSettings.getInstance().getWlanBandwidth() / (hostNodeList.getLength()+vmNodeList.getLength());
+					long bandwidth = Long.parseLong(location.getElementsByTagName("bandwidth").item(0).getTextContent()); // shaik added
 					
 					//VM Parameters		
 					EdgeVM vm = new EdgeVM(vmCounter, brockerId, mips, numOfCores, (int) ram, bandwidth, storage, vmm, new CloudletSchedulerTimeShared());
