@@ -98,7 +98,7 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 					result = true;
 				}
 				if (!result) {
-					//SimLogger.printLine("VM BAD");
+					SimLogger.printLine("Custom policy: VM BAD: "+vm.getId());
 				}
 			}
 		}
@@ -116,6 +116,7 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 			return true;
 		}
 
+		SimLogger.printLine("Custom policy: VM BAD in 2 param method: "+vm.getId());
 		return false;
 	}
 

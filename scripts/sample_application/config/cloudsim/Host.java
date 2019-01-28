@@ -15,6 +15,7 @@ import org.cloudbus.cloudsim.lists.PeList;
 import org.cloudbus.cloudsim.provisioners.BwProvisioner;
 import org.cloudbus.cloudsim.provisioners.RamProvisioner;
 
+import edu.boun.edgecloudsim.utils.SimLogger; // Shaik added
 /**
  * Host executes actions related to management of virtual machines (e.g., creation and destruction).
  * A host has a defined policy for provisioning memory and bw, as well as an allocation policy for
@@ -200,33 +201,49 @@ public class Host {
 	 * @post $none
 	 */
 	public boolean vmCreate(Vm vm) {
+		
+		SimLogger.printLine("vmCreate: Attempting to create VM on host. "+vm.getId());
+		SimLogger.printLine(" Storage available on host: "+getStorage()+" Storage req by VM: "+vm.getSize());
+		SimLogger.printLine(" BW available on host: "+getBwProvisioner().getAvailableBw()+" Bw req by VM: "+vm.getCurrentRequestedBw());
+		
 		if (getStorage() < vm.getSize()) {
-			Log.printLine("[VmScheduler.vmCreate] Allocation of VM #" + vm.getId() + " to Host #" + getId()
+			SimLogger.printLine("[VmScheduler.vmCreate] Allocation of VM #" + vm.getId() + " to Host #" + getId()
 					+ " failed by storage");
+			SimLogger.printLine("vmCreate: Insufficent storage. "+vm.getId());
 			return false;
 		}
+		SimLogger.printLine("vmCreate: Storage available for VM  "+vm.getId()+" on host"+getId());
 
-		if (!getRamProvisioner().allocateRamForVm(vm, vm.getCurrentRequestedRam())) {
-			Log.printLine("[VmScheduler.vmCreate] Allocation of VM #" + vm.getId() + " to Host #" + getId()
+				if (!getRamProvisioner().allocateRamForVm(vm, vm.getCurrentRequestedRam())) {
+			SimLogger.printLine("[VmScheduler.vmCreate] Allocation of VM #" + vm.getId() + " to Host #" + getId()
 					+ " failed by RAM");
+			SimLogger.printLine("vmCreate: Insufficent Ram. "+vm.getId());
 			return false;
 		}
+		SimLogger.printLine("vmCreate: Ram available for VM  "+vm.getId()+" on host"+getId());		
 
 		if (!getBwProvisioner().allocateBwForVm(vm, vm.getCurrentRequestedBw())) {
-			Log.printLine("[VmScheduler.vmCreate] Allocation of VM #" + vm.getId() + " to Host #" + getId()
+			SimLogger.printLine("BW available on host: "+getBwProvisioner().getAvailableBw()+" Bw req by VM: "+vm.getCurrentRequestedBw());
+			SimLogger.printLine("[VmScheduler.vmCreate] Allocation of VM #" + vm.getId() + " to Host #" + getId()
 					+ " failed by BW");
 			getRamProvisioner().deallocateRamForVm(vm);
+			SimLogger.printLine("vmCreate: Insufficent bandwidth. "+vm.getId());
 			return false;
 		}
-
+		SimLogger.printLine("vmCreate: Bw available for VM  "+vm.getId()+" on host  "+getId());
+		
 		if (!getVmScheduler().allocatePesForVm(vm, vm.getCurrentRequestedMips())) {
-			Log.printLine("[VmScheduler.vmCreate] Allocation of VM #" + vm.getId() + " to Host #" + getId()
+			SimLogger.printLine("[VmScheduler.vmCreate] Allocation of VM #" + vm.getId() + " to Host #" + getId()
 					+ " failed by MIPS");
 			getRamProvisioner().deallocateRamForVm(vm);
 			getBwProvisioner().deallocateBwForVm(vm);
+			SimLogger.printLine("vmCreate: Insufficent mips. "+vm.getId());
 			return false;
 		}
 
+		SimLogger.printLine("vmCreate: Pes available for VM  "+vm.getId()+" on host  "+getId());
+		SimLogger.printLine("vmCreate: Returning true. "+vm.getId());
+		
 		setStorage(getStorage() - vm.getSize());
 		getVmList().add(vm);
 		vm.setHost(this);

@@ -42,7 +42,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 	@Override
 	public int getDeviceToOffload(Task task) {
 		try {
-			System.out.println("Task: Cloud orchestrator: assigned Host Id:  " + getHost(task).getId());
+			//System.out.println("Task: Cloud orchestrator: assigned Host Id:  " + getHost(task).getId());
 			return getHost(task).getId();
 		}
 		catch (NullPointerException e) {
@@ -56,7 +56,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 	public EdgeVM getVmToOffload(Task task) {
 		try {
 			EdgeVM assignedVm = (EdgeVM) (getHost(task).getVmList().get(0)); 
-			System.out.println("Task: Cloud orchestrator: assigned VM Id:  " + assignedVm.getId());
+			//System.out.println("Task: Cloud orchestrator: assigned VM Id:  " + assignedVm.getId());
 			return assignedVm;
 		}
 		catch (NullPointerException e) {

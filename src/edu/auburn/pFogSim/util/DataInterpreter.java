@@ -338,11 +338,11 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 1][8] = "false";
 		nodeSpecs[MAX_LEVELS - 1][9] = "2867200";
 		//nodeSpecs[MAX_LEVELS - 1][9] = "500";
-		nodeSpecs[MAX_LEVELS - 1][10] = "522240000"; //Qian prev = 4874240000
+		nodeSpecs[MAX_LEVELS - 1][10] = "52224000"; // Shaik modified to 1/100th - prev = 4874240000
 		nodeSpecs[MAX_LEVELS - 1][11] = "164926744166400";
 		//nodeSpecs[MAX_LEVELS - 1][11] = "1500";
 		nodeSpecs[MAX_LEVELS - 1][12] = "1046898278400";
-		nodeSpecs[MAX_LEVELS - 1][13] = "104857600";
+		nodeSpecs[MAX_LEVELS - 1][13] = "1048576"; // Shaik modified to 1/100th - prev = 104857600
 		
 		nodeSpecs[MAX_LEVELS - 2][0] = "City Hall";
 		nodeSpecs[MAX_LEVELS - 2][1] = "Linux";
@@ -355,11 +355,11 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 2][8] = "false";
 		nodeSpecs[MAX_LEVELS - 2][9] = "28672";
 		//nodeSpecs[MAX_LEVELS - 2][9] = "500";
-		nodeSpecs[MAX_LEVELS - 2][10] = "5222400"; //Qian prev = 48742400
+		nodeSpecs[MAX_LEVELS - 2][10] = "522240"; // Shaik modified to 1/100th - prev = 48742400
 		nodeSpecs[MAX_LEVELS - 2][11] = "1649267441664";
 		//nodeSpecs[MAX_LEVELS - 2][11] = "1500";
 		nodeSpecs[MAX_LEVELS - 2][12] = "10468982784";
-		nodeSpecs[MAX_LEVELS - 2][13] = "104857600";
+		nodeSpecs[MAX_LEVELS - 2][13] = "1048576"; // Shaik modified to 1/100th - prev = 104857600
 		
 		nodeSpecs[MAX_LEVELS - 3][0] = "University";
 		nodeSpecs[MAX_LEVELS - 3][1] = "Linux";
@@ -372,11 +372,11 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 3][8] = "false";
 		nodeSpecs[MAX_LEVELS - 3][9] = "7168";
 		//nodeSpecs[MAX_LEVELS - 3][9] = "500";
-		nodeSpecs[MAX_LEVELS - 3][10] = "1305600"; //Qian prev =  12185600
+		nodeSpecs[MAX_LEVELS - 3][10] = "130560"; // Shaik modified to 1/100th - prev = 12185600
 		nodeSpecs[MAX_LEVELS - 3][11] = "412316860416";
 		//nodeSpecs[MAX_LEVELS - 3][11] = "1500";
 		nodeSpecs[MAX_LEVELS - 3][12] = "2617245696";
-		nodeSpecs[MAX_LEVELS - 3][13] = "10485760";
+		nodeSpecs[MAX_LEVELS - 3][13] = "104857"; // Shaik modified to 1/100th - prev = 10485760
 		
 		nodeSpecs[MAX_LEVELS - 4][0] = "Ward";
 		nodeSpecs[MAX_LEVELS - 4][1] = "Linux";
@@ -388,11 +388,11 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 4][7] = "true";
 		nodeSpecs[MAX_LEVELS - 4][8] = "false";
 		nodeSpecs[MAX_LEVELS - 4][9] = "768";
-		nodeSpecs[MAX_LEVELS - 4][10] = "130560"; // Qian prev = 1305600
+		nodeSpecs[MAX_LEVELS - 4][10] = "13056"; // Shaik modified to 1/100th - prev = 1305600
 		nodeSpecs[MAX_LEVELS - 4][11] = "100663296";
 		//nodeSpecs[MAX_LEVELS - 4][11] = "1500";
 		nodeSpecs[MAX_LEVELS - 4][12] = "1677721600";
-		nodeSpecs[MAX_LEVELS - 4][13] = "10485760";
+		nodeSpecs[MAX_LEVELS - 4][13] = "104857"; // Shaik modified to 1/100th - prev = 10485760
 		
 		nodeSpecs[MAX_LEVELS - 5][0] = "Library";
 		nodeSpecs[MAX_LEVELS - 5][1] = "Linux";
@@ -404,11 +404,11 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 5][7] = "true";
 		nodeSpecs[MAX_LEVELS - 5][8] = "false";
 		nodeSpecs[MAX_LEVELS - 5][9] = "192";
-		nodeSpecs[MAX_LEVELS - 5][10] = "32640"; // Qian prev = 326400 
+		nodeSpecs[MAX_LEVELS - 5][10] = "3264"; // Shaik modified to 1/100th - prev = 326400 
 		nodeSpecs[MAX_LEVELS - 5][11] = "25165824";
 		//nodeSpecs[MAX_LEVELS - 5][11] = "1500";
 		nodeSpecs[MAX_LEVELS - 5][12] = "167772160";
-		nodeSpecs[MAX_LEVELS - 5][13] = "10485760";
+		nodeSpecs[MAX_LEVELS - 5][13] = "104857"; // Shaik modified to 1/100th - prev = 10485760
 		
 		nodeSpecs[MAX_LEVELS - 6][0] = "Community Center";
 		nodeSpecs[MAX_LEVELS - 6][1] = "Linux";
@@ -420,25 +420,25 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 6][7] = "true";
 		nodeSpecs[MAX_LEVELS - 6][8] = "false";
 		nodeSpecs[MAX_LEVELS - 6][9] = "128";
-		nodeSpecs[MAX_LEVELS - 6][10] = "21760"; //Qian prev = 217600
+		nodeSpecs[MAX_LEVELS - 6][10] = "2176"; // Shaik modified to 1/100th - prev = 217600
 		nodeSpecs[MAX_LEVELS - 6][11] = "16384";
 		nodeSpecs[MAX_LEVELS - 6][12] = "167772160";
-		nodeSpecs[MAX_LEVELS - 6][13] = "1048576";
+		nodeSpecs[MAX_LEVELS - 6][13] = "10485"; // Shaik modified to 1/100th - prev = 1048576
 		
 		nodeSpecs[MAX_LEVELS - 7][0] = "School";
 		nodeSpecs[MAX_LEVELS - 7][1] = "Linux";
 		nodeSpecs[MAX_LEVELS - 7][2] = "Xen";
-		nodeSpecs[MAX_LEVELS - 7][3] = oneGbRouterCost + "";
+		nodeSpecs[MAX_LEVELS - 7][3] = oneGbRouterCost + ""; 
 		nodeSpecs[MAX_LEVELS - 7][4] = "0.01319444"; // Shaik modified - prev = "0.0003"
 		nodeSpecs[MAX_LEVELS - 7][5] = "1";
 		nodeSpecs[MAX_LEVELS - 7][6] = "1";
 		nodeSpecs[MAX_LEVELS - 7][7] = "true";
 		nodeSpecs[MAX_LEVELS - 7][8] = "false";
 		nodeSpecs[MAX_LEVELS - 7][9] = "32";
-		nodeSpecs[MAX_LEVELS - 7][10] = "5440"; //Qian prev = 54400
+		nodeSpecs[MAX_LEVELS - 7][10] = "544"; // Shaik modified to 1/100th - prev = 54400 
 		nodeSpecs[MAX_LEVELS - 7][11] = "4096";
 		nodeSpecs[MAX_LEVELS - 7][12] = "41943040";
-		nodeSpecs[MAX_LEVELS - 7][13] = "1048576";
+		nodeSpecs[MAX_LEVELS - 7][13] = "10485"; // Shaik modified to 1/100th - prev = 1048576
 	}
 
 	/**

@@ -150,7 +150,7 @@ public class EdgeServerManager {
 		int hostCounter=0;
 		int vmCounter=0;
 		
-		//SimLogger.printLine("createVmList reached");
+		SimLogger.printLine("createVmList reached");
 		
 		//Create VMs for each hosts
 		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
@@ -188,12 +188,14 @@ public class EdgeServerManager {
 					vm.setVmType(SimSettings.VM_TYPES.EDGE_VM);
 					vm.setArch(arch);
 					vmList.get(hostCounter).add(vm);
+					SimLogger.printLine("Created EdgeVM with id: "+vmCounter+" from config of host with id: "+hostCounter);
 					vmCounter++;
 				}
 
 				hostCounter++;
 			}
 		}
+		SimLogger.printLine("createVmList - completed");
 	}
 	
 	public void terminateDatacenters(){
