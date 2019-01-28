@@ -148,7 +148,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 			for(NodeSim desNode: costMap.get(totalCost)) {
 				host = SimManager.getInstance().getLocalServerManager().findHostByLoc(desNode.getLocation().getXPos(), desNode.getLocation().getYPos());
 				hostsSortedByCost.add(host);
-				System.out.println("Hosts in sorted order of costs:  "+host.getId()+"  at cost:  "+totalCost);
+				//System.out.println("Hosts in sorted order of costs:  "+host.getId()+"  at cost:  "+totalCost);
 			}
 		}
 		
