@@ -33,7 +33,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 	
 	@Override
 	public void initialize() {
-		cHost = (EdgeHost)(SimManager.getInstance().getLocalServerManager().findHostById(4));
+		cHost = (EdgeHost)(SimManager.getInstance().getLocalServerManager().findHostById(0));
 	}
 
 	/**

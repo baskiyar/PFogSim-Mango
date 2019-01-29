@@ -689,8 +689,9 @@ public class SimLogger {
 		// printout important results
 		printLine("# of tasks: " + (failedTask[numOfAppTypes] + completedTask[numOfAppTypes]));
 		
-		//Qian print warm up task
-		printLine("# of warm up tasks: "+ warmUpTasks);
+		// Do not provide info regarding warmup tasks; Commenting line below. - Shaik modified
+		// Qian print warm up task
+		//printLine("# of warm up tasks: "+ warmUpTasks);
 		
 		printLine("# of failed tasks: " + failedTask[numOfAppTypes]);
 		
@@ -709,37 +710,52 @@ public class SimLogger {
 						/ (double) (completedTask[numOfAppTypes] + failedTask[numOfAppTypes]))
 				+ "%");
 
-		printLine("average service time: "
+		// Shaik modified the three lines below.
+		/*printLine("average service time: "
 				+ String.format("%.6f", serviceTime[numOfAppTypes] / (double) completedTask[numOfAppTypes])
 				+ " seconds. (" + "on Cloudlet: "
 				+ String.format("%.6f", serviceTimeOnCloudlet[numOfAppTypes] / (double) completedTaskOnCloudlet[numOfAppTypes])
 				+ ", " + "on Cloud: "
 				+ String.format("%.6f", serviceTimeOnCloud[numOfAppTypes] / (double) completedTaskOnCloud[numOfAppTypes])
 				+ ")");
+		*/
+		printLine("average service time: "
+				+ String.format("%.6f", serviceTime[numOfAppTypes] / (double) completedTask[numOfAppTypes])
+				+ " seconds.");
 
-		printLine("average processing time: "
+		/*printLine("average processing time: "
 				+ String.format("%.6f", processingTime[numOfAppTypes] / (double) completedTask[numOfAppTypes])
 				+ " seconds. (" + "on Cloudlet: "
 				+ String.format("%.6f", processingTimeOnCloudlet[numOfAppTypes] / (double) completedTaskOnCloudlet[numOfAppTypes])
 				+ ", " + "on Cloud: " 
 				+ String.format("%.6f", processingTimeOnCloud[numOfAppTypes] / (double) completedTaskOnCloud[numOfAppTypes])
 				+ ")");
+		*/
+	
+		printLine("average processing time: "
+				+ String.format("%.6f", processingTime[numOfAppTypes] / (double) completedTask[numOfAppTypes])
+				+ " seconds.");
 
-		printLine("average network delay: "
+		/*printLine("average network delay: "
 				+ String.format("%.6f", networkDelay[numOfAppTypes] / (double) completedTask[numOfAppTypes])
 				+ " seconds. (" + "LAN delay: "
 				+ String.format("%.6f", lanDelay[numOfAppTypes] / (double) completedTaskOnCloudlet[numOfAppTypes])
 				+ ", " + "WAN delay: "
 				+ String.format("%.6f", wanDelay[numOfAppTypes] / (double) completedTaskOnCloud[numOfAppTypes]) + ")");
+		*/
+		
+		printLine("average network delay: "
+				+ String.format("%.6f", networkDelay[numOfAppTypes] / (double) completedTask[numOfAppTypes])
+				+ " seconds.");
 
 		printLine("average server utilization: " 
-				+ String.format("%.6f", totalVmLoad / (double) vmLoadList.size()) + "%");
+				+ String.format("%.6f", totalVmLoad / (double) vmLoadList.size() * 100) + "%"); // Shaik modified '*100'
 		printLine("average Fog server utilization: " 
 				+ String.format("%.6f", totalFnMipsUtil / (double) fnMipsUtilList.size()) + "%"); // Shaik added
 		printLine("average Fog network utilization: " 
 				+ String.format("%.6f", totalFnNwUtil / (double) fnNwUtilList.size()) + "%"); // Shaik added
 
-		printLine("Cloudlets Per Level");
+		printLine("Tasks executed per fog layer: ");
 		for(int i = 1; i <= SimSettings.getInstance().getMaxLevels(); i++) //From 1 to MAX_LEVELS because there won't be network apps running on mobile devices at level 0
 			printLine(String.format("\tLevel %d:\t%d", i, levelCloudletCount[i]));
 		
