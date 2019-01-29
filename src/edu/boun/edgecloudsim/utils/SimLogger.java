@@ -706,11 +706,10 @@ public class SimLogger {
 		
 		// Shaik added
 		printLine("Submitted tasks: "
-				+ (failedTask[numOfAppTypes] + completedTask[numOfAppTypes]) 
-				+"( Completed / Uncompleted / Failed: "
-				+ completedTask[numOfAppTypes] +" / "
-				+ uncompletedTask[numOfAppTypes] +" / "
-				+ failedTask[numOfAppTypes] +" ) ");
+				+ (failedTask[numOfAppTypes] + completedTask[numOfAppTypes]+ uncompletedTask[numOfAppTypes] ) 
+				+" ( Completed:" + completedTask[numOfAppTypes] 
+				+ " / Failed:" + failedTask[numOfAppTypes] 
+				+ " / Uncompleted:" + uncompletedTask[numOfAppTypes] );
 
 		printLine("percentage of failed tasks: "
 				+ String.format("%.6f", ((double) failedTask[numOfAppTypes] * (double) 100)
@@ -726,7 +725,7 @@ public class SimLogger {
 				+ String.format("%.6f", serviceTimeOnCloud[numOfAppTypes] / (double) completedTaskOnCloud[numOfAppTypes])
 				+ ")");
 		*/
-		printLine("average service time: "
+		printLine("\naverage service time: "
 				+ String.format("%.6f", serviceTime[numOfAppTypes] / (double) completedTask[numOfAppTypes])
 				+ " seconds.");
 
@@ -755,7 +754,7 @@ public class SimLogger {
 				+ String.format("%.6f", networkDelay[numOfAppTypes] / (double) completedTask[numOfAppTypes])
 				+ " seconds.");
 
-		printLine("average server utilization: " 
+		printLine("\naverage server utilization: " 
 				+ String.format("%.6f", totalVmLoad / (double) vmLoadList.size() * 100) + "%"); // Shaik modified '*100'
 		printLine("average Fog server utilization: " 
 				+ String.format("%.6f", totalFnMipsUtil / (double) fnMipsUtilList.size()) + "%"); // Shaik added
@@ -768,26 +767,25 @@ public class SimLogger {
 		
 		//Clayton changed this so it would output a value based on the average cost per time I was seeing in the XML files
 		//	this value may mean absolutely nothing so we should look into it more if we want to use it
-		printLine("average cost: $" + String.format("%.2f", averageTaskCost));
-		printLine("ProcessingTime: " + processingTime[numOfAppTypes]);
-		printLine("CompletedTask: " + completedTask[numOfAppTypes]);
+		printLine("\nAverage cost: $" + String.format("%.6f", averageTaskCost));
+		printLine("Processing Time: " + processingTime[numOfAppTypes]);
 		printLine("Average Distance from task to host: " + String.format("%.2f", totalDist[numOfAppTypes]/((double) taskMap.size())));
 		printLine("Average number of hops from task to host: " + String.format("%.2f",((double) totalHops[numOfAppTypes])/((double) taskMap.size())));
 		
 		//Qian print average fog nodes utilization in each level.
 		getTotalFogNodesCountInEachLevel();
 		//printLine("average fog node utilization:"); // Shaik commented
-		printLine("Percentage of fog nodes executing atleast one task:"); // Shaik modified
+		printLine("\nPercentage of fog nodes executing atleast one task:"); // Shaik modified
 		for (int i = 0; i < 7; i++) {
-			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)levelFogNodeCount[i] / (double)totalNodesNmuberInEachLevel[i])));
+			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)levelFogNodeCount[i] / (double)totalNodesNmuberInEachLevel[i] * 100)) + " %");
 		}
 		
-		printLine("Average fog node utilization per layer:"); // Shaik added
+		printLine("\nAverage fog node utilization per layer:"); // Shaik added
 		for (int i = 0; i < fogLayerAvgMipsUtil.length; i++) {
 			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)fogLayerAvgMipsUtil[i])));
 		}
 
-		printLine("Average fog network utilization per layer:"); // Shaik added
+		printLine("\nAverage fog network utilization per layer:"); // Shaik added
 		for (int i = 0; i < fogLayerAvgNwUtil.length; i++) {
 			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)fogLayerAvgNwUtil[i])));
 		}
