@@ -1,51 +1,190 @@
 package edu.auburn.pFogSim.orchestrator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.core.CloudSim;
 
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
+import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator;
+import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
+import edu.boun.edgecloudsim.utils.Location;
 
 public class SelectedNodesOrchestrator extends EdgeOrchestrator{
+	
+	private static String node = "Datacenter_";
+	ArrayList<EdgeHost> allHosts;
+	HashMap<NodeSim,HashMap<NodeSim, LinkedList<NodeSim>>> pathTable;
+	ESBModel networkModel;
+	
 public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 		// TODO Auto-generated constructor stub
 	}
 
-	private static String node = "Datacenter_";
-	
 	
 	@Override
 	public void initialize() {
 
+		allHosts = new ArrayList<EdgeHost>();
+		for (Datacenter node : SimManager.getInstance().getLocalServerManager().getDatacenterList()) {
+			allHosts.add(((EdgeHost) node.getHostList().get(0)));
+		}
+		pathTable = new HashMap<>();
+		networkModel = (ESBModel)(SimManager.getInstance().getNetworkModel());
+		for (NodeSim src: networkModel.getNetworkTopology().getNodes()) {
+			HashMap<NodeSim, LinkedList<NodeSim>> tempMap = new HashMap<>();
+			for (NodeSim des: networkModel.getNetworkTopology().getNodes()) {
+				LinkedList<NodeSim> tempList = new LinkedList<>();
+				tempList = networkModel.findPath(src, des);
+				tempMap.put(des, tempList);
+			}
+			pathTable.put(src, tempMap);
+		}
+		
 	}
 
 	@Override
 	public int getDeviceToOffload(Task task) {
-		NodeSim des = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getLocalServerManager().findHostById(cloud.getHostList().get(0).getId()).getLocation(), false);
-		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
-		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(src, des);
-		task.setPath(path);
-		return cloud.getHostList().get(0).getId();
+			return getHost(task).getId();
 	}
 
 	@Override
 	public EdgeVM getVmToOffload(Task task) {
-		//Qian confirm the cloud level.
-		//SimLogger.printLine("cloud level: "+((EdgeHost) cloud.getHostList().get(0)).getLevel());
-		NodeSim des = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getLocalServerManager().findHostById(cloud.getHostList().get(0).getId()).getLocation(), false);
-		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
-		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(src, des);
-		task.setPath(path);
-		return ((EdgeVM) cloud.getHostList().get(0).getVmList().get(0));
+		return ((EdgeVM) getHost(task).getVmList().get(0));
 	}
+	
+	/**
+	 * find the host
+	 * @param task
+	 * @return
+	 */
+	private EdgeHost getHost(Task task) {
+		MobileDevice mb = SimManager.getInstance().getMobileDeviceManager().getMobileDevices().get(task.getMobileDeviceId());
+		task.setPath(mb.getPath());
+		return mb.getHost();
+	}
+
+	/* 
+	 * @ author Qian Wang
+	 * @ author Shehenaz Shaik 
+	 * (non-Javadoc)
+	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
+	 */
+	@Override
+	public void assignHost(MobileDevice mobile) {
+		
+		//--------------------------------------------------------------------------------
+		// Find the total cost of execution at each prospective fog node
+		// cost of execution and cost of data transfer depends on the type of application accessed from mobile device
+		Map<Double, List<NodeSim>> costMap = new HashMap<>();
+		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(mobile.getLocation(), false);
+		
+		// get the set of paths for all nodes from current location of mobile device
+		Map<NodeSim, LinkedList<NodeSim>> desMap = pathTable.get(src);
+		
+		// Prune the set of paths to include only the prospective fog nodes from given selectedNodes list
+		Map<NodeSim, LinkedList<NodeSim>> selectedDesMap = new HashMap<>();
+		// get the list of host ids
+		for (int i : SimSettings.getInstance().getSelectedHostIds()) {
+			// for each host id, get the NodeSim object
+			Location hostLoc = SimManager.getInstance().getLocalServerManager().findHostById(i).getLocation();
+			NodeSim hostNode = ((ESBModel)networkModel).getNetworkTopology().findNode(hostLoc, false);
+			
+			// for each such NodeSim object, retrieve the row and add it to selectedDesMap
+			selectedDesMap.put(hostNode, desMap.get(hostNode));	
+		}
+		
+		// continue with processing as earlier.
+		for (Entry<NodeSim, LinkedList<NodeSim>> entry: selectedDesMap.entrySet()) {
+			double cost = 0;
+			NodeSim des = entry.getKey();
+			LinkedList<NodeSim> path = entry.getValue();
+			if (path == null || path.size() == 0) {
+				EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(mobile.getLocation().getXPos(), mobile.getLocation().getYPos());
+				//des = ((ESBModel)(SimManager.getInstance().getNetworkModel())).getNetworkTopology().findNode(task.getSubmittedLocation(), false);
+				cost = (mobile.getTaskLengthRequirement() / k.getTotalMips() * k.getCostPerSec() + mobile.getBWRequirement() * k.getCostPerBW());
+			}
+			else {
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("**********Path From " + src.getWlanId() + " To " + des.getWlanId() + "**********");
+				for (NodeSim node: path) {
+					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos());
+					double bwCost = mobile.getBWRequirement() * k.getCostPerBW();
+					cost = cost + bwCost;
+					//SimLogger.getInstance().getCentralizeLogPrinter().println("Level:\t" + node.getLevel() + "\tNode:\t" + node.getWlanId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
+				}
+				//des = path.peekLast();
+				EdgeHost desHost = SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos());
+				double exCost = desHost.getCostPerSec() * 
+						(mobile.getTaskLengthRequirement() / desHost.getTotalMips());
+				cost = cost + exCost;
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("Destination:\t"+ des.getWlanId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
+			}
+			
+			if (costMap.containsKey(cost)) {
+				if (!costMap.get(cost).contains(des)) {
+					costMap.get(cost).add(des);
+				}
+			}
+			else {
+				ArrayList<NodeSim> desList = new ArrayList<>();
+				desList.add(des);
+				costMap.put(cost, desList);
+			}
+		}
+		
+		//Sort the list of prospective nodes by increasing cost 
+		LinkedList<EdgeHost> hostsSortedByCost = new LinkedList<EdgeHost>();
+		
+		//Create a sorted list of costs
+		List<Double> costList = new ArrayList<Double> (costMap.keySet());
+		Collections.sort(costList);
+		
+		//Access the map entries in order sorted by cost
+		EdgeHost host = null;
+		for (Double totalCost : costList) {
+			// Get the list of prospective nodes available at that cost
+			for(NodeSim desNode: costMap.get(totalCost)) {
+				host = SimManager.getInstance().getLocalServerManager().findHostByLoc(desNode.getLocation().getXPos(), desNode.getLocation().getYPos());
+				hostsSortedByCost.add(host);
+				//System.out.println("Hosts in sorted order of costs:  "+host.getId()+"  at cost:  "+totalCost);
+			}
+		}
+		
+		//Find a cost-optimal node with available resources
+		EdgeHost selHost = null;
+		selHost = hostsSortedByCost.poll();
+		
+		System.out.print("Prospective host:  ");
+		while(!goodHost(selHost, mobile)) {
+			selHost = hostsSortedByCost.poll();//find the next cost-optimal node capable of handling the task
+			if (selHost == null) {
+				break;
+			}
+		}
+		if (selHost != null) {
+			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(selHost, mobile);
+			mobile.setPath(path);
+			mobile.setHost(selHost);
+			mobile.makeReservation();
+			System.out.println("  Assigned host: " + selHost.getId());
+		}
+		else
+			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
+	}
+
 	
 	@Override
 	public void setCloud(Datacenter _cloud ) {
@@ -67,5 +206,59 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 	 */
 	public static void setNode(String node) {
 		SelectedNodesOrchestrator.node = node;
+	}
+
+
+
+	/**
+	 * @return the allHosts
+	 */
+	public ArrayList<EdgeHost> getAllHosts() {
+		return allHosts;
+	}
+
+
+
+	/**
+	 * @param allHosts the allHosts to set
+	 */
+	public void setAllHosts(ArrayList<EdgeHost> allHosts) {
+		this.allHosts = allHosts;
+	}
+
+
+
+	/**
+	 * @return the pathTable
+	 */
+	public HashMap<NodeSim, HashMap<NodeSim, LinkedList<NodeSim>>> getPathTable() {
+		return pathTable;
+	}
+
+
+
+	/**
+	 * @param pathTable the pathTable to set
+	 */
+	public void setPathTable(HashMap<NodeSim, HashMap<NodeSim, LinkedList<NodeSim>>> pathTable) {
+		this.pathTable = pathTable;
+	}
+
+
+
+	/**
+	 * @return the networkModel
+	 */
+	public ESBModel getNetworkModel() {
+		return networkModel;
+	}
+
+
+
+	/**
+	 * @param networkModel the networkModel to set
+	 */
+	public void setNetworkModel(ESBModel networkModel) {
+		this.networkModel = networkModel;
 	}
 }

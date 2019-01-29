@@ -90,7 +90,8 @@ public class SimSettings {
     
     //Qian selected nodes
     private String[] SELECTED_NODES;
-    private int currentSelection = 0;
+    private int[] selectedHostIds;
+	private int currentSelection = 0;
     
     //Qian added for selected Level
     private String[] SELECTED_LEVELS;
@@ -171,6 +172,13 @@ public class SimSettings {
 			
 			//Qian get selected nodes from conf file.
 			SELECTED_NODES = prop.getProperty("selected_nodes").split(",");
+			
+			//Shaik added
+			selectedHostIds = new int[SELECTED_NODES.length];
+			int selHostIdsIndex = 0;
+			for (String selNode : SELECTED_NODES) 
+				selectedHostIds[selHostIdsIndex++] = Integer.parseInt(selNode);
+			
 			//Qian get selected levels from conf file
 			SELECTED_LEVELS = prop.getProperty("selected_levels").split(",");
 
@@ -208,6 +216,20 @@ public class SimSettings {
 		parseLinksXML(linksFile);
 		
 		return result;
+	}
+	
+    /**
+	 * @return the selectedHostIds
+	 */
+	public int[] getSelectedHostIds() {
+		return selectedHostIds;
+	}
+
+	/**
+	 * @param selectedHostIds the selectedHostIds to set
+	 */
+	public void setSelectedHostIds(int[] selectedHostIds) {
+		this.selectedHostIds = selectedHostIds;
 	}
 	
 	/**
