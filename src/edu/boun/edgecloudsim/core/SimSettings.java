@@ -36,7 +36,7 @@ public class SimSettings {
 	private Document edgeDevicesDoc = null;
 	private Document linksDoc = null;
 	
-	//enumarations for the VM, appplication, and place.
+	//enumerations for the VM, application, and place.
 	//if you want to add different types on your config file,
 	//you may modify current types or add new types here. 
 	public static enum VM_TYPES { EDGE_VM, CLOUD_VM }
@@ -90,11 +90,13 @@ public class SimSettings {
     
     //Qian selected nodes
     private String[] SELECTED_NODES;
-    private int[] selectedHostIds;
+    private int[] selectedHostIds; // Shaik added
 	private int currentSelection = 0;
     
     //Qian added for selected Level
     private String[] SELECTED_LEVELS;
+    private int[] selectedLayerIds; // Shaik added
+
     private int currentLevelIndex = 0;
     
     private String[] SIMULATION_SCENARIOS;
@@ -181,6 +183,12 @@ public class SimSettings {
 			
 			//Qian get selected levels from conf file
 			SELECTED_LEVELS = prop.getProperty("selected_levels").split(",");
+
+			//Shaik added
+			selectedLayerIds = new int[SELECTED_LEVELS.length];
+			int selLayerIdsIndex = 0;
+			for (String selLayer : SELECTED_LEVELS) 
+				selectedLayerIds[selLayerIdsIndex++] = Integer.parseInt(selLayer);
 
 			ORCHESTRATOR_POLICIES = prop.getProperty("orchestrator_policies").split(",");
 			
@@ -1199,5 +1207,19 @@ public class SimSettings {
 	 */
 	public void setTaskLookUpTable(double[][] taskLookUpTable) {
 		this.taskLookUpTable = taskLookUpTable;
+	}
+
+	/**
+	 * @return the selectedLayerIds
+	 */
+	public int[] getSelectedLayerIds() {
+		return selectedLayerIds;
+	}
+
+	/**
+	 * @param selectedLayerIds the selectedLayerIds to set
+	 */
+	public void setSelectedLayerIds(int[] selectedLayerIds) {
+		this.selectedLayerIds = selectedLayerIds;
 	}
 }

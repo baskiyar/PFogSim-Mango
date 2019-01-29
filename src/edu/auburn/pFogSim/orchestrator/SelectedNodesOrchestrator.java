@@ -21,6 +21,7 @@ import edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.utils.Location;
+import edu.boun.edgecloudsim.utils.SimLogger;
 
 public class SelectedNodesOrchestrator extends EdgeOrchestrator{
 	
@@ -86,7 +87,6 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 	@Override
 	public void assignHost(MobileDevice mobile) {
 		
-		//--------------------------------------------------------------------------------
 		// Find the total cost of execution at each prospective fog node
 		// cost of execution and cost of data transfer depends on the type of application accessed from mobile device
 		Map<Double, List<NodeSim>> costMap = new HashMap<>();
@@ -98,7 +98,9 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 		// Prune the set of paths to include only the prospective fog nodes from given selectedNodes list
 		Map<NodeSim, LinkedList<NodeSim>> selectedDesMap = new HashMap<>();
 		// get the list of host ids
+		SimLogger.print("List of given Hosts: ");
 		for (int i : SimSettings.getInstance().getSelectedHostIds()) {
+			SimLogger.print(i+" ");
 			// for each host id, get the NodeSim object
 			Location hostLoc = SimManager.getInstance().getLocalServerManager().findHostById(i).getLocation();
 			NodeSim hostNode = ((ESBModel)networkModel).getNetworkTopology().findNode(hostLoc, false);
@@ -106,7 +108,8 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 			// for each such NodeSim object, retrieve the row and add it to selectedDesMap
 			selectedDesMap.put(hostNode, desMap.get(hostNode));	
 		}
-		
+		SimLogger.printLine(" ");
+
 		// continue with processing as earlier.
 		for (Entry<NodeSim, LinkedList<NodeSim>> entry: selectedDesMap.entrySet()) {
 			double cost = 0;

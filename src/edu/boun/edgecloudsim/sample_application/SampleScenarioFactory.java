@@ -25,7 +25,7 @@ import edu.auburn.pFogSim.orchestrator.EdgeOnlyOrchestrator;
 import edu.auburn.pFogSim.orchestrator.FixedNodeOrchestrator;
 import edu.auburn.pFogSim.orchestrator.LocalOnlyOrchestrator;
 import edu.auburn.pFogSim.orchestrator.PuddleOrchestrator;
-import edu.auburn.pFogSim.orchestrator.SelectedLevelOrchestrator;
+import edu.auburn.pFogSim.orchestrator.SelectedLevelsOrchestrator;
 import edu.auburn.pFogSim.orchestrator.SelectedNodesOrchestrator;
 import edu.boun.edgecloudsim.core.ScenarioFactory;
 import edu.boun.edgecloudsim.core.SimSettings;
@@ -84,7 +84,7 @@ public class SampleScenarioFactory implements ScenarioFactory {
 			return new SelectedNodesOrchestrator(orchestratorPolicy, simScenario);
 		}
 		else if (simScenario.equals("SELECTED_LEVELS")) {
-			return new SelectedLevelOrchestrator(orchestratorPolicy, simScenario);
+			return new SelectedLevelsOrchestrator(orchestratorPolicy, simScenario);
 		}
 		return null;
 	}
