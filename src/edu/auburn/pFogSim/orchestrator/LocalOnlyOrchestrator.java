@@ -68,7 +68,7 @@ public class LocalOnlyOrchestrator extends EdgeOrchestrator {
 	@Override
 	public EdgeVM getVmToOffload(Task task) {
 		try {
-			EdgeVM tempVM = ((EdgeVM) getHost(task).getVmList().get(0));
+			EdgeVM tempVM = ((EdgeVM) (getHost(task).getVmList().get(0)));
 			return tempVM;
 			
 		}
@@ -104,6 +104,7 @@ public class LocalOnlyOrchestrator extends EdgeOrchestrator {
 //		}
 //		return null;
 //	}
+	
 	/**
 	 * find the host
 	 * @author Qian
@@ -114,31 +115,40 @@ public class LocalOnlyOrchestrator extends EdgeOrchestrator {
 		task.setPath(mb.getPath());
 		return mb.getHost();
 	}
-	/* (non-Javadoc)
+	
+	/*
+	 * @author Qian Wang
+	 * @author Shehenaz Shaik
+	 * (non-Javadoc)
 	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
 	 */
 	@Override
 	public void assignHost(MobileDevice mobile) {
-		// TODO Auto-generated method stub
-		for (Datacenter node : SimManager.getInstance().getLocalServerManager().getDatacenterList()) {
-			EdgeHost host = (EdgeHost) node.getHostList().get(0);
-			if (host.getLocation().getXPos() == mobile.getLocation().getXPos()
-					&& host.getLocation().getYPos() == mobile.getLocation().getYPos()) {
-				if (goodHost(host, mobile)) {
-					LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mobile);
-					mobile.setPath(path);
-					mobile.setHost(host);
-					mobile.makeReservation();
-				}	
-			}
+		
+		//Get the WAP Id of mobile device
+		int wapId = mobile.getLocation().getServingWlanId();
+		
+		// Get local host
+		EdgeHost localHost = (EdgeHost) (SimManager.getInstance().getLocalServerManager().findHostByWlanId(wapId));
+
+		if (goodHost(localHost,mobile)) {
+			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(localHost, mobile);
+			mobile.setPath(path);
+			mobile.setHost(localHost);
+			mobile.makeReservation();
+			//System.out.println("  Assigned host: " + host.getId());
 		}
+		else
+			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+ wapId +"  Assigned host:  NULL");
 	}
+
 	/**
 	 * @return the hosts
 	 */
 	public ArrayList<EdgeHost> getHosts() {
 		return hosts;
 	}
+	
 	/**
 	 * @param hosts the hosts to set
 	 */
