@@ -74,10 +74,10 @@ public class SampleScenarioFactory implements ScenarioFactory {
 		else if (simScenario.equals("EDGE_ONLY")) {
 			return new EdgeOnlyOrchestrator(orchestratorPolicy, simScenario);
 		}
-		else if (simScenario.equals("LOCAL")) {
+		else if (simScenario.equals("LOCAL_ONLY")) {
 			return new LocalOnlyOrchestrator(orchestratorPolicy, simScenario);
 		}
-		else if (simScenario.equals("FIX_NODE")) {
+		else if (simScenario.equals("FIXED_NODE")) {
 			return new FixedNodeOrchestrator(orchestratorPolicy, simScenario);
 		}
 		else if (simScenario.equals("SELECTED_NODES")) {

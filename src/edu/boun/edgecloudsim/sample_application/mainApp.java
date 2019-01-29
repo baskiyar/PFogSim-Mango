@@ -39,7 +39,10 @@ public class mainApp {
 		 * Try to get FogHierClust.java to run
 		 * 
 		 */
-		Log.disable();
+		
+		// Comment the following line for detailed logging
+		//Log.disable();
+
 		//enable console output and file output of this application
 		SimLogger.enablePrintLog();
 		DataInterpreter.initialize();
@@ -92,7 +95,7 @@ public class mainApp {
 		SS.setSimulationSpace(DataInterpreter.getSimulationSpace());
 		SS.setMaxLevels(DataInterpreter.getMaxLevels());
 		SS.setInputType(DataInterpreter.getInputType());
-		SS.setMobileDevicesMoving(iterationNumber >= 7); // 7 is the count of scenarios in properties file.
+		SS.setMobileDevicesMoving(iterationNumber >= 8); // 8 is the count of scenarios in properties file.
 		
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date SimulationStartDate = Calendar.getInstance().getTime();
