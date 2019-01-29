@@ -493,6 +493,8 @@ public class SimLogger {
 		totalDist[numOfAppTypes] = DoubleStream.of(totalDist).sum();
 		totalHops[numOfAppTypes] = IntStream.of(totalHops).sum();
 		numberOfAppTypes[numOfAppTypes] = taskMap.size();
+		// Shaik added
+		double averageTaskCost = (completedTask[numOfAppTypes] == 0) ? 0.0 : (cost[numOfAppTypes] / (double) completedTask[numOfAppTypes]);
 
 		// calculate server load
 		double totalVmLoad = 0;
@@ -540,8 +542,6 @@ public class SimLogger {
 			fogLayerAvgNwUtil[i] = fogLayerTotalNwUtil[i] / fogLayerEntryNwCount[i];
 		}
 
-		
-		
 		
 //		//Qian Write require data into file
 //		//**********************************
@@ -692,12 +692,11 @@ public class SimLogger {
 		// Do not provide info regarding warmup tasks; Commenting line below. - Shaik modified
 		// Qian print warm up task
 		//printLine("# of warm up tasks: "+ warmUpTasks);
-		
-		printLine("# of failed tasks: " + failedTask[numOfAppTypes]);
-		
-		printLine("# of completed tasks: " + completedTask[numOfAppTypes]);
-		
-		printLine("# of uncompleted tasks: " + uncompletedTask[numOfAppTypes]);
+
+		// Shaik commented the following - Redundant info
+		//printLine("# of failed tasks: " + failedTask[numOfAppTypes]);
+		//printLine("# of completed tasks: " + completedTask[numOfAppTypes]);
+		//printLine("# of uncompleted tasks: " + uncompletedTask[numOfAppTypes]);
 		
 		printLine("# of failed tasks due to vm capacity/LAN bw/WAN bw/mobility: "
 				+ rejectedTaskDoToVmCapacity[numOfAppTypes]
@@ -705,6 +704,14 @@ public class SimLogger {
 				+ "/" + +failedTaskDuetoWanBw[numOfAppTypes] 
 				+ "/" + failedTaskDuetoMobility[numOfAppTypes]);
 		
+		// Shaik added
+		printLine("Submitted tasks: "
+				+ (failedTask[numOfAppTypes] + completedTask[numOfAppTypes]) 
+				+"( Completed / Uncompleted / Failed: "
+				+ completedTask[numOfAppTypes] +" / "
+				+ uncompletedTask[numOfAppTypes] +" / "
+				+ failedTask[numOfAppTypes] +" ) ");
+
 		printLine("percentage of failed tasks: "
 				+ String.format("%.6f", ((double) failedTask[numOfAppTypes] * (double) 100)
 						/ (double) (completedTask[numOfAppTypes] + failedTask[numOfAppTypes]))
@@ -761,7 +768,7 @@ public class SimLogger {
 		
 		//Clayton changed this so it would output a value based on the average cost per time I was seeing in the XML files
 		//	this value may mean absolutely nothing so we should look into it more if we want to use it
-		printLine("average cost: $" + String.format("%.2f", processingTime[numOfAppTypes] / (double) completedTask[numOfAppTypes]));
+		printLine("average cost: $" + String.format("%.2f", averageTaskCost));
 		printLine("ProcessingTime: " + processingTime[numOfAppTypes]);
 		printLine("CompletedTask: " + completedTask[numOfAppTypes]);
 		printLine("Average Distance from task to host: " + String.format("%.2f", totalDist[numOfAppTypes]/((double) taskMap.size())));
