@@ -55,7 +55,7 @@ public class mainApp {
 		
 		//CJ added linksFile to supply the link xml file, had to adjust all constructors that
 		//	use these file to seamlessly use it
-		int iterationNumber = 5; // index for the list of n scenarios in properties file is from 0..n-1
+		int iterationNumber = 3; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
 		String edgeDevicesFile = "";
@@ -95,7 +95,7 @@ public class mainApp {
 		SS.setSimulationSpace(DataInterpreter.getSimulationSpace());
 		SS.setMaxLevels(DataInterpreter.getMaxLevels());
 		SS.setInputType(DataInterpreter.getInputType());
-		SS.setMobileDevicesMoving(iterationNumber >= 8); // 8 is the count of scenarios in properties file.
+		SS.setMobileDevicesMoving(iterationNumber >= 9); // 9 is the count of scenarios in properties file.
 		
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date SimulationStartDate = Calendar.getInstance().getTime();
@@ -109,7 +109,7 @@ public class mainApp {
 			{
 				for(int i=0; i<1; i++)
 				{
-					String simScenario = SS.getSimulationScenarios()[iterationNumber%7]; // 7 is the count of scenarios in properties file. 
+					String simScenario = SS.getSimulationScenarios()[iterationNumber%9]; // 9 is the count of scenarios in properties file. 
 					String orchestratorPolicy = SS.getOrchestratorPolicies()[i];
 					Date ScenarioStartDate = Calendar.getInstance().getTime();
 					now = df.format(ScenarioStartDate);

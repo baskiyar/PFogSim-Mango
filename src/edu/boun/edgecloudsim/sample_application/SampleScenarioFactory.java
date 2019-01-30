@@ -21,7 +21,8 @@ import edu.auburn.pFogSim.mobility.XYVectorMobility;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.orchestrator.CentralOrchestrator;
 import edu.auburn.pFogSim.orchestrator.CloudOnlyOrchestrator;
-import edu.auburn.pFogSim.orchestrator.EdgeOnlyOrchestrator;
+import edu.auburn.pFogSim.orchestrator.EdgeByLatencyOrchestrator;
+import edu.auburn.pFogSim.orchestrator.EdgeByDistanceOrchestrator;
 import edu.auburn.pFogSim.orchestrator.FixedNodeOrchestrator;
 import edu.auburn.pFogSim.orchestrator.LocalOnlyOrchestrator;
 import edu.auburn.pFogSim.orchestrator.PuddleOrchestrator;
@@ -71,8 +72,11 @@ public class SampleScenarioFactory implements ScenarioFactory {
 		else if (simScenario.equals("CLOUD_ONLY")) {
 			return new CloudOnlyOrchestrator(orchestratorPolicy, simScenario);
 		}
-		else if (simScenario.equals("EDGE_ONLY")) {
-			return new EdgeOnlyOrchestrator(orchestratorPolicy, simScenario);
+		else if (simScenario.equals("EDGE_BY_LATENCY")) {
+			return new EdgeByLatencyOrchestrator(orchestratorPolicy, simScenario);
+		}
+		else if (simScenario.equals("EDGE_BY_DISTANCE")) {
+			return new EdgeByDistanceOrchestrator(orchestratorPolicy, simScenario);
 		}
 		else if (simScenario.equals("LOCAL_ONLY")) {
 			return new LocalOnlyOrchestrator(orchestratorPolicy, simScenario);
