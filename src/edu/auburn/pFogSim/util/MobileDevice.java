@@ -10,6 +10,7 @@ import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.utils.Location;
+import edu.boun.edgecloudsim.utils.SimLogger;
 
 /**
  * @author Qian
@@ -20,6 +21,21 @@ public class MobileDevice {
 	private Location location;
 	private int id;
 	private EdgeHost host = null;
+	private SimLogger.TASK_STATUS assignHostStatus;
+	/**
+	 * @return the assignHostStatus
+	 */
+	public SimLogger.TASK_STATUS getAssignHostStatus() {
+		return assignHostStatus;
+	}
+
+	/**
+	 * @param assignHostStatus the assignHostStatus to set
+	 */
+	public void setAssignHostStatus(SimLogger.TASK_STATUS assignHostStatus) {
+		this.assignHostStatus = assignHostStatus;
+	}
+
 	private SimSettings.APP_TYPES appType;
 	private LinkedList<NodeSim> path;
 	
@@ -132,12 +148,23 @@ public class MobileDevice {
 		return length;
 	}
 	
+	/**
+	 * get task length information
+	 * @author Shehenaz Shaik
+	 *	@return
+	 */
+	public double getLatencyRequirement() {
+		double latencyReq  = SimSettings.getInstance().getTaskLookUpTable()[appType.ordinal()][10];
+		return latencyReq;
+	}
+	
 	public void makeReservation() {
 		host.makeReservation(this);
 		for (NodeSim node: path) {
 			EdgeHost interHost = SimManager.getInstance().getLocalServerManager().findHostByWlanId(node.getLocation().getServingWlanId());
 			interHost.reserveBW(this);
 		}
+		setAssignHostStatus(SimLogger.TASK_STATUS.ASSIGNED_HOST);
 	}
 
 	/**

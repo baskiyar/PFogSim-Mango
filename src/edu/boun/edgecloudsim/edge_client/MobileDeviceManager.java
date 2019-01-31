@@ -282,10 +282,10 @@ public class MobileDeviceManager extends DatacenterBroker {
 		}
 		else{
 			//SimLogger.printLine("Task #" + task.getCloudletId() + " cannot assign to any VM");
-			SimLogger.getInstance().rejectedDueToVMCapacity(task.getCloudletId(), CloudSim.clock());
+			SimLogger.getInstance().taskRejected(task.getCloudletId(), CloudSim.clock(),getMobileDevices().get(task.getMobileDeviceId()).getAssignHostStatus());
 
 			if (SimSettings.getInstance().traceEnalbe()) {
-				SimLogger.printLine("submitTaskToEdgeDevice: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to VM capacity");
+				SimLogger.printLine("submitTaskToEdgeDevice: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to host unavailability");
 			}
 			
 		}
@@ -314,7 +314,13 @@ public class MobileDeviceManager extends DatacenterBroker {
 
 		int nextHopId = SimManager.getInstance().getEdgeOrchestrator().getDeviceToOffload(task);
 		if (nextHopId < 0) {
-			SimLogger.getInstance().rejectedDueToVMCapacity(task.getCloudletId(), CloudSim.clock());
+			//SimLogger.getInstance().rejectedDueToVMCapacity(task.getCloudletId(), CloudSim.clock()); // Shaik commented
+			SimLogger.getInstance().taskRejected(task.getCloudletId(), CloudSim.clock(),getMobileDevices().get(task.getMobileDeviceId()).getAssignHostStatus()); // Shaik added
+			// Shaik added	
+			if (SimSettings.getInstance().traceEnalbe()) {
+				SimLogger.printLine("submitTask: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to host unavailability");
+			}
+
 			return;
 		}
 		//Qian add host to utilization map

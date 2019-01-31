@@ -25,6 +25,7 @@ import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.utils.Location;
+import edu.boun.edgecloudsim.utils.SimLogger;
 
 public class EdgeHost extends Host {
 	private Location location;
@@ -144,6 +145,7 @@ public class EdgeHost extends Host {
 			return true;
 		}
 		else {
+			mb.setAssignHostStatus(SimLogger.TASK_STATUS.REJECTED_DUE_TO_LACK_OF_NETWORK_BANDWIDTH);
 			return false;
 		}
 	}
@@ -170,6 +172,7 @@ public class EdgeHost extends Host {
 			return true;
 		}
 		else {
+			mb.setAssignHostStatus(SimLogger.TASK_STATUS.REJECTED_DUE_TO_LACK_OF_NODE_CAPACITY);
 			return false;
 		}
 	}
@@ -181,6 +184,26 @@ public class EdgeHost extends Host {
 	 */
 	private void reserveCPUResource(MobileDevice mb) {
 		reserveMips = reserveMips + mb.getTaskLengthRequirement(); 
+	}
+	
+	/**
+	 * Check if latency requirement is satisfied for certain mobile device
+	 * @author Shehenaz Shaik
+	 *	@param mb
+	 *	@return boolean
+	 */
+	public boolean isLatencySatisfactory(MobileDevice mb) {
+		
+		double acceptableLatency = mb.getLatencyRequirement();
+		double hostNetworkDelay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(mb.getLocation(), this.location);
+		
+		if (hostNetworkDelay < acceptableLatency) {
+			return true;
+		}
+		else {
+			mb.setAssignHostStatus(SimLogger.TASK_STATUS.REJECTED_DUE_TO_UNACCEPTABLE_LATENCY);
+			return false;
+		}
 	}
 	
 	/**

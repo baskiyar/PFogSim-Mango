@@ -27,6 +27,7 @@ import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_client.CpuUtilizationModel_Custom;
 import edu.boun.edgecloudsim.edge_client.Task;
+import edu.boun.edgecloudsim.utils.SimLogger;
 
 public abstract class EdgeOrchestrator {
 	protected String policy;
@@ -61,7 +62,7 @@ public abstract class EdgeOrchestrator {
 	 */
 	protected static boolean goodHost(EdgeHost host, MobileDevice mb) {
 		System.out.print(host.getId()+" ");
-		if (!host.isMIPSAvailable(mb) || !host.isBWAvailable(mb)) {
+		if (!host.isMIPSAvailable(mb) || !host.isBWAvailable(mb) || !host.isLatencySatisfactory(mb)) {
 			return false;
 		}
 		LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mb);

@@ -45,7 +45,7 @@ import edu.boun.edgecloudsim.edge_server.EdgeHost;
 
 public class SimLogger {
 	public static enum TASK_STATUS {
-		CREATED, UPLOADING, PROCESSING, DOWNLOADING, COMPLETED, REJECTED_DUE_TO_VM_CAPACITY, REJECTED_DUE_TO_BANDWIDTH, UNFINISHED_DUE_TO_BANDWIDTH, UNFINISHED_DUE_TO_MOBILITY
+		CREATED, UPLOADING, PROCESSING, DOWNLOADING, COMPLETED, REJECTED_DUE_TO_VM_CAPACITY, REJECTED_DUE_TO_BANDWIDTH, UNFINISHED_DUE_TO_BANDWIDTH, UNFINISHED_DUE_TO_MOBILITY, ASSIGNED_HOST, REJECTED_DUE_TO_LACK_OF_NODE_CAPACITY, REJECTED_DUE_TO_LACK_OF_NETWORK_BANDWIDTH, REJECTED_DUE_TO_UNACCEPTABLE_LATENCY
 	}
 
 	private static boolean fileLogEnabled;
@@ -184,6 +184,12 @@ public class SimLogger {
 		taskMap.get(taskId).taskDownloaded(taskEndTime, cost);
 	}
 
+	// Shaik added
+	public void taskRejected(int taskId, double taskRejectTime, SimLogger.TASK_STATUS taskStatus) {
+		taskMap.get(taskId).taskRejectedStatus(taskRejectTime, taskStatus);
+	}
+	
+	
 	public void rejectedDueToVMCapacity(int taskId, double taskRejectTime) {
 		taskMap.get(taskId).taskRejectedDueToVMCapacity(taskRejectTime);
 	}
@@ -284,7 +290,12 @@ public class SimLogger {
 		int[] failedTaskDuetoLanBw = new int[numOfAppTypes + 1];
 		int[] failedTaskDuetoWanBw = new int[numOfAppTypes + 1];
 		int[] failedTaskDuetoMobility = new int[numOfAppTypes + 1];
-		int[] rejectedTaskDoToVmCapacity = new int[numOfAppTypes + 1];
+		int[] rejectedTaskDueToVmCapacity = new int[numOfAppTypes + 1];
+		
+		//Shaik added
+		int[] rejectedTaskDueToLackofNodeCapacity = new int[numOfAppTypes+1];
+		int[] rejectedTaskDueToLackofNetworkBandwidth = new int[numOfAppTypes+1];
+		int[] rejectedTaskDueToUnacceptableLatency = new int[numOfAppTypes+1];
 		
 		double[] totalDist = new double[numOfAppTypes + 1];
 		int[] totalHops = new int[numOfAppTypes + 1];
@@ -347,8 +358,7 @@ public class SimLogger {
 				String fileName = "ALL_APPS_GENERIC.log";
 
 				if (i < numOfAppTypes) {
-					// if related app is not used in this simulation, just
-					// discard it
+					// if related app is not used in this simulation, just discard it
 					if (SimSettings.getInstance().getTaskLookUpTable()[i][0] == 0)
 						continue;
 
@@ -377,19 +387,16 @@ public class SimLogger {
 		for (Map.Entry<Integer, LogItem> entry : taskMap.entrySet()) {
 			Integer key = entry.getKey();
 			LogItem value = entry.getValue();
-			totalDist[value.getTaskType()] += value.getHostDist();
-			distBW.write(value.getHostDist() + ",");
-			totalHops[value.getTaskType()] += value.getHops();
-			hopBW.write(value.getHops() + ",");
-			numberOfAppTypes[value.getTaskType()]++;
-			
-			
+
+			//Ignore all Warmup tasks - Shaik updated
 			if (value.isInWarmUpPeriod()) {
 				warmUpTasks++;
 				continue;
-			}
-				
-
+			}				
+	
+			numberOfAppTypes[value.getTaskType()]++;
+			
+			// track the number of successfully COMPLETED tasks 			
 			if (value.getStatus() == SimLogger.TASK_STATUS.COMPLETED) {
 				completedTask[value.getTaskType()]++;
 
@@ -406,15 +413,21 @@ public class SimLogger {
 					failedTaskOnCloudlet[value.getTaskType()]++;
 			}
 
+			// Track additional metrics per task
+			// If task is COMPLETED
 			if (value.getStatus() == SimLogger.TASK_STATUS.COMPLETED) {
-				//value.se
+				
+				// Get info to calculate 'Average distance to host'
+				totalDist[value.getTaskType()] += value.getHostDist();
+				distBW.write(value.getHostDist() + ",");
+				
+				// Get info to calculate 'Average number of hops to host'
+				totalHops[value.getTaskType()] += value.getHops();
+				hopBW.write(value.getHops() + ",");
+				
 				cost[value.getTaskType()] += value.getCost();
 				serviceTime[value.getTaskType()] += value.getServiceTime();
 				networkDelay[value.getTaskType()] += value.getNetworkDelay();
-				
-				//Make a file that saves all of the network delays and current time info
-				//appendToFile(vmLoadBWClay[value.getTaskType()], value.getNetworkDelay() + "\t" + CloudSim.clock());
-				
 				processingTime[value.getTaskType()] += (value.getServiceTime() - value.getNetworkDelay());
 
 				if (value.getVmType() == SimSettings.VM_TYPES.CLOUD_VM.ordinal()) {
@@ -430,14 +443,29 @@ public class SimLogger {
 
 				if (fileLogEnabled && SimSettings.getInstance().getDeepFileLoggingEnabled())
 					appendToFile(successBW, value.toString(key));
-			} else if (value.getStatus() == SimLogger.TASK_STATUS.REJECTED_DUE_TO_VM_CAPACITY) {
-				rejectedTaskDoToVmCapacity[value.getTaskType()]++;
-				if (value.getVmType() == SimSettings.VM_TYPES.CLOUD_VM.ordinal())
-					if (fileLogEnabled && SimSettings.getInstance().getDeepFileLoggingEnabled())
-						appendToFile(failBW, value.toString(key));
-			} else if (value.getStatus() == SimLogger.TASK_STATUS.REJECTED_DUE_TO_BANDWIDTH
+			}
+			
+			// If task is REJECTED_DUE_TO_VM_CAPACITY
+			else if (value.getStatus() == SimLogger.TASK_STATUS.REJECTED_DUE_TO_VM_CAPACITY) {
+				rejectedTaskDueToVmCapacity[value.getTaskType()]++;
+				
+				if (fileLogEnabled && SimSettings.getInstance().getDeepFileLoggingEnabled())
+					appendToFile(failBW, value.toString(key));
+			}
+			
+			// If task is REJECTED_DUE_TO_LACK_OF_NODE_CAPACITY
+			else if (value.getStatus() == SimLogger.TASK_STATUS.REJECTED_DUE_TO_LACK_OF_NODE_CAPACITY) {
+				rejectedTaskDueToLackofNodeCapacity[value.getTaskType()]++;
+				
+				if (fileLogEnabled && SimSettings.getInstance().getDeepFileLoggingEnabled())
+					appendToFile(failBW, value.toString(key));
+			}
+			
+			// If task is REJECTED_DUE_TO_BANDWIDTH or UNFINISHED_DUE_TO_BANDWIDTH
+			else if (value.getStatus() == SimLogger.TASK_STATUS.REJECTED_DUE_TO_BANDWIDTH
 					|| value.getStatus() == SimLogger.TASK_STATUS.UNFINISHED_DUE_TO_BANDWIDTH) {
 				failedTaskDuetoBw[value.getTaskType()]++;
+				
 				if (value.getVmType() == SimSettings.VM_TYPES.CLOUD_VM.ordinal())
 					failedTaskDuetoWanBw[value.getTaskType()]++;
 				else
@@ -445,18 +473,48 @@ public class SimLogger {
 
 				if (fileLogEnabled && SimSettings.getInstance().getDeepFileLoggingEnabled())
 					appendToFile(failBW, value.toString(key));
-			} else if (value.getStatus() == SimLogger.TASK_STATUS.UNFINISHED_DUE_TO_MOBILITY) {
-				failedTaskDuetoMobility[value.getTaskType()]++;
+			}
+			
+			// If task is REJECTED_DUE_TO_LACK_OF_NETWORK_BANDWIDTH
+			else if (value.getStatus() == SimLogger.TASK_STATUS.REJECTED_DUE_TO_LACK_OF_NETWORK_BANDWIDTH) {
+				rejectedTaskDueToLackofNetworkBandwidth[value.getTaskType()]++;
+				
 				if (fileLogEnabled && SimSettings.getInstance().getDeepFileLoggingEnabled())
 					appendToFile(failBW, value.toString(key));
-			} else {
-				uncompletedTask[value.getTaskType()]++;
-				if (value.getVmType() == SimSettings.VM_TYPES.CLOUD_VM.ordinal())
-					uncompletedTaskOnCloud[value.getTaskType()]++;
-				else
-					uncompletedTaskOnCloudlet[value.getTaskType()]++;
 			}
-		}
+			
+			// If task is REJECTED_DUE_TO_UNACCEPTABLE_LATENCY
+			else if (value.getStatus() == SimLogger.TASK_STATUS.REJECTED_DUE_TO_UNACCEPTABLE_LATENCY) {
+				rejectedTaskDueToUnacceptableLatency[value.getTaskType()]++;
+				
+				if (fileLogEnabled && SimSettings.getInstance().getDeepFileLoggingEnabled())
+					appendToFile(failBW, value.toString(key));
+			}
+
+			// If task is UNFINISHED_DUE_TO_MOBILITY
+			else if (value.getStatus() == SimLogger.TASK_STATUS.UNFINISHED_DUE_TO_MOBILITY) {
+				failedTaskDuetoMobility[value.getTaskType()]++;
+				
+				if (fileLogEnabled && SimSettings.getInstance().getDeepFileLoggingEnabled())
+					appendToFile(failBW, value.toString(key));
+			}
+			
+			// If task execution is left incomplete
+			else {
+				uncompletedTask[value.getTaskType()]++;
+				failedTask[value.getTaskType()]--;
+				
+				if (value.getVmType() == SimSettings.VM_TYPES.CLOUD_VM.ordinal()) {
+					uncompletedTaskOnCloud[value.getTaskType()]++;
+					failedTaskOnCloud[value.getTaskType()]--;
+				}	
+				else {
+					uncompletedTaskOnCloudlet[value.getTaskType()]++;
+					failedTaskOnCloudlet[value.getTaskType()]--;	
+				}
+			}
+			
+		}//end for entry
 		
 		// calculate total values
 		uncompletedTask[numOfAppTypes] = IntStream.of(uncompletedTask).sum();
@@ -488,14 +546,17 @@ public class SimLogger {
 		failedTaskDuetoWanBw[numOfAppTypes] = IntStream.of(failedTaskDuetoWanBw).sum();
 		failedTaskDuetoLanBw[numOfAppTypes] = IntStream.of(failedTaskDuetoLanBw).sum();
 		failedTaskDuetoMobility[numOfAppTypes] = IntStream.of(failedTaskDuetoMobility).sum();
-		rejectedTaskDoToVmCapacity[numOfAppTypes] = IntStream.of(rejectedTaskDoToVmCapacity).sum();
+		rejectedTaskDueToVmCapacity[numOfAppTypes] = IntStream.of(rejectedTaskDueToVmCapacity).sum();
+		
+		//Shaik added
+		rejectedTaskDueToLackofNodeCapacity[numOfAppTypes] = IntStream.of(rejectedTaskDueToLackofNodeCapacity).sum();
+		rejectedTaskDueToLackofNetworkBandwidth[numOfAppTypes] = IntStream.of(rejectedTaskDueToLackofNetworkBandwidth).sum();
+		rejectedTaskDueToUnacceptableLatency[numOfAppTypes] = IntStream.of(rejectedTaskDueToUnacceptableLatency).sum();
 		
 		totalDist[numOfAppTypes] = DoubleStream.of(totalDist).sum();
 		totalHops[numOfAppTypes] = IntStream.of(totalHops).sum();
-		numberOfAppTypes[numOfAppTypes] = taskMap.size();
-		// Shaik added
-		double averageTaskCost = (completedTask[numOfAppTypes] == 0) ? 0.0 : (cost[numOfAppTypes] / (double) completedTask[numOfAppTypes]);
-
+		numberOfAppTypes[numOfAppTypes] = IntStream.of(numOfAppTypes).sum(); // Shaik modified
+		
 		// calculate server load
 		double totalVmLoad = 0;
 		for (VmLoadLogItem entry : vmLoadList) {
@@ -566,41 +627,34 @@ public class SimLogger {
 //		costWritor.close();
 		//**********************************
 		//**********************************
+
+		// Print metrics to log files
 		if (fileLogEnabled) {
-			// write location info to file
+
+			// write location info of all mobile devices to file
 			for (int t = 1; t < (SimSettings.getInstance().getSimulationTime()
 					/ SimSettings.getInstance().getVmLocationLogInterval()); t++) {
-				int[] locationInfo = new int[SimSettings.PLACE_TYPES.values().length];
 				Double time = t * SimSettings.getInstance().getVmLocationLogInterval();
-
 				if (time < SimSettings.getInstance().getWarmUpPeriod())
 					continue;
 
+				locationBW.write(time.toString()+"-");
 				for (int i = 0; i < SimManager.getInstance().getNumOfMobileDevice(); i++) {
-
 					Location loc = SimManager.getInstance().getMobilityModel().getLocation(i, time);
-					SimSettings.PLACE_TYPES placeType = loc.getPlaceType();
-					//locationInfo[placeType.ordinal()]++;
+					locationBW.write(loc.getXPos()+","+loc.getYPos()+SimSettings.DELIMITER);
 				}
-
-				locationBW.write(time.toString());
-				for (int i = 0; i < locationInfo.length; i++)
-					locationBW.write(SimSettings.DELIMITER + locationInfo[i]);
-
 				locationBW.newLine();
 			}
 
+			//calculate averages for various metrics 
 			for (int i = 0; i < numOfAppTypes + 1; i++) {
-
 				if (i < numOfAppTypes) {
-					// if related app is not used in this simulation, just
-					// discard it
+					// if corresponding application is not used in this simulation, just discard it
 					if (SimSettings.getInstance().getTaskLookUpTable()[i][0] == 0)
 						continue;
 				}
 
-				// check if the divisor is zero in order to avoid division by
-				// zero problem
+				// check if the divisor is zero in order to avoid division by zero problem
 				double _serviceTime = (completedTask[i] == 0) ? 0.0 : (serviceTime[i] / (double) completedTask[i]);
 				double _networkDelay = (completedTask[i] == 0) ? 0.0 : (networkDelay[i] / (double) completedTask[i]);
 				double _processingTime = (completedTask[i] == 0) ? 0.0 : (processingTime[i] / (double) completedTask[i]);
@@ -608,8 +662,8 @@ public class SimLogger {
 				double _fnMipsUtil = (fnMipsUtilList.size() == 0) ? 0.0 : (totalFnMipsUtil / (double) fnMipsUtilList.size());				
 				double _fnNwUtil = (fnNwUtilList.size() == 0) ? 0.0 : (totalFnNwUtil / (double) fnNwUtilList.size());				
 				double _cost = (completedTask[i] == 0) ? 0.0 : (cost[i] / (double) completedTask[i]);
-				double dist = (numberOfAppTypes[i] == 0) ? 0.0 : (totalDist[i] / (double) numberOfAppTypes[i]);
-				double hops = (numberOfAppTypes[i] == 0) ? 0.0 : ((double) totalHops[i] / (double) numberOfAppTypes[i]);
+				double dist = (completedTask[i] == 0) ? 0.0 : (totalDist[i] / (double) completedTask[i]);
+				double hops = (completedTask[i] == 0) ? 0.0 : ((double) totalHops[i] / (double) completedTask[i]);
 
 				// write generic results
 				String genericResult1 = Integer.toString(completedTask[i]) + SimSettings.DELIMITER
@@ -621,13 +675,16 @@ public class SimLogger {
 						+ Double.toString(_networkDelay) + SimSettings.DELIMITER
 						+ Double.toString(_vmLoad) + SimSettings.DELIMITER 
 						+ Double.toString(_cost) + SimSettings.DELIMITER 
-						+ Integer.toString(rejectedTaskDoToVmCapacity[i]) + SimSettings.DELIMITER 
+						+ Integer.toString(rejectedTaskDueToVmCapacity[i]) + SimSettings.DELIMITER 
 						+ Integer.toString(failedTaskDuetoMobility[i]) + SimSettings.DELIMITER
 						+ Double.toString(_fnMipsUtil) + SimSettings.DELIMITER 
-						+ Double.toString(_fnNwUtil);
-
-				// check if the divisor is zero in order to avoid division by
-				// zero problem
+						+ Double.toString(_fnNwUtil) + SimSettings.DELIMITER 
+						+ Integer.toString(rejectedTaskDueToLackofNodeCapacity[i]) + SimSettings.DELIMITER 
+						+ Integer.toString(rejectedTaskDueToLackofNetworkBandwidth[i]) + SimSettings.DELIMITER 
+						+ Integer.toString(rejectedTaskDueToUnacceptableLatency[i])
+						+ Integer.toString(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]); 
+				
+				// check if the divisor is zero in order to avoid division by zero problem
 				double _lanDelay = (completedTaskOnCloudlet[i] == 0) ? 0.0
 						: (lanDelay[i] / (double) completedTaskOnCloudlet[i]);
 				double _serviceTimeOnCloudlet = (completedTaskOnCloudlet[i] == 0) ? 0.0
@@ -642,8 +699,7 @@ public class SimLogger {
 						+ Double.toString(_processingTimeOnCloudlet) + SimSettings.DELIMITER
 						+ Double.toString(_lanDelay);
 
-				// check if the divisor is zero in order to avoid division by
-				// zero problem
+				// check if the divisor is zero in order to avoid division by zero problem
 				double _wanDelay = (completedTaskOnCloud[i] == 0) ? 0.0
 						: (wanDelay[i] / (double) completedTaskOnCloud[i]);
 				double _serviceTimeOnCloud = (completedTaskOnCloud[i] == 0) ? 0.0
@@ -671,20 +727,24 @@ public class SimLogger {
 				successBW.close();
 				failBW.close();
 			}
+			
 			vmLoadBW.close();
 			fnMipsUtilBW.close(); // Shaik added
 			fnNwUtilBW.close(); // Shaik added
 			locationBW.close();
+			distBW.close(); // Shaik added
+			hopBW.close(); // Shaik added
+			
 			for (int i = 0; i < numOfAppTypes + 1; i++) {
 				if (i < numOfAppTypes) {
-					// if related app is not used in this simulation, just
-					// discard it
+					// if related app is not used in this simulation, just discard it
 					if (SimSettings.getInstance().getTaskLookUpTable()[i][0] == 0)
 						continue;
 				}
 				genericBWs[i].close();
 			}
-		}
+		} // end - print metrics to log files
+		
 		printLine("Mobile Devices Moving? : " + SimSettings.getInstance().areMobileDevicesMoving());
 		// printout important results
 		printLine("# of tasks: " + (failedTask[numOfAppTypes] + completedTask[numOfAppTypes]));
@@ -698,12 +758,17 @@ public class SimLogger {
 		//printLine("# of completed tasks: " + completedTask[numOfAppTypes]);
 		//printLine("# of uncompleted tasks: " + uncompletedTask[numOfAppTypes]);
 		
-		printLine("# of failed tasks due to vm capacity/LAN bw/WAN bw/mobility: "
-				+ rejectedTaskDoToVmCapacity[numOfAppTypes]
+		printLine("# of failed tasks due to vm capacity/LAN bw/mobility: "
+				+ rejectedTaskDueToVmCapacity[numOfAppTypes]
 				+ "/" + +failedTaskDuetoLanBw[numOfAppTypes] 
-				+ "/" + +failedTaskDuetoWanBw[numOfAppTypes] 
 				+ "/" + failedTaskDuetoMobility[numOfAppTypes]);
-		
+
+		// Shaik added
+		printLine("# of failed tasks due to lack of node capacity/lack of network bandwidth/unacceptable latency: "
+				+ rejectedTaskDueToLackofNodeCapacity[numOfAppTypes]
+				+ "/" + rejectedTaskDueToLackofNetworkBandwidth[numOfAppTypes]
+				+ "/" + rejectedTaskDueToUnacceptableLatency[numOfAppTypes]);
+	
 		// Shaik added
 		printLine("Submitted tasks: "
 				+ (failedTask[numOfAppTypes] + completedTask[numOfAppTypes]+ uncompletedTask[numOfAppTypes] ) 
@@ -755,7 +820,7 @@ public class SimLogger {
 				+ " seconds.");
 
 		printLine("\naverage server utilization: " 
-				+ String.format("%.6f", totalVmLoad / (double) vmLoadList.size() * 100) + "%"); // Shaik modified '*100'
+				+ String.format("%.6f", totalVmLoad / (double) vmLoadList.size()) + "%");
 		printLine("average Fog server utilization: " 
 				+ String.format("%.6f", totalFnMipsUtil / (double) fnMipsUtilList.size()) + "%"); // Shaik added
 		printLine("average Fog network utilization: " 
@@ -763,15 +828,20 @@ public class SimLogger {
 
 		printLine("Tasks executed per fog layer: ");
 		for(int i = 1; i <= SimSettings.getInstance().getMaxLevels(); i++) //From 1 to MAX_LEVELS because there won't be network apps running on mobile devices at level 0
-			printLine(String.format("\tLevel %d:\t%d", i, levelCloudletCount[i]));
+			printLine(String.format("\tLayer %d:\t%d", i, levelCloudletCount[i]));
 		
-		//Clayton changed this so it would output a value based on the average cost per time I was seeing in the XML files
-		//	this value may mean absolutely nothing so we should look into it more if we want to use it
-		printLine("\nAverage cost: $" + String.format("%.6f", averageTaskCost));
+		// Shaik added
+		double averageTaskCost = (completedTask[numOfAppTypes] == 0) ? 0.0 : (cost[numOfAppTypes] / (double) completedTask[numOfAppTypes]);
+		printLine("\nAverage cost: $" + String.format("%.6f", averageTaskCost)); // Shaik updated
+		
 		printLine("Processing Time: " + processingTime[numOfAppTypes]);
-		printLine("Average Distance from task to host: " + String.format("%.2f", totalDist[numOfAppTypes]/((double) taskMap.size())));
-		printLine("Average number of hops from task to host: " + String.format("%.2f",((double) totalHops[numOfAppTypes])/((double) taskMap.size())));
 		
+		double averageDistance = (completedTask[numOfAppTypes] == 0) ? 0.0 : (totalDist[numOfAppTypes] / (double) completedTask[numOfAppTypes]);
+		printLine("Average Distance from task to host: " + String.format("%.2f", averageDistance));
+
+		double averageHops = (completedTask[numOfAppTypes] == 0) ? 0.0 : (totalHops[numOfAppTypes] / (double) completedTask[numOfAppTypes]);
+		printLine("Average number of hops from task to host: " + String.format("%.2f", averageHops));
+
 		//Qian print average fog nodes utilization in each level.
 		getTotalFogNodesCountInEachLevel();
 		//printLine("average fog node utilization:"); // Shaik commented
@@ -796,7 +866,7 @@ public class SimLogger {
 		fnMipsUtilList.clear(); // Shaik added
 		fnNwUtilList.clear(); // Shaik added
 		centerFileW.close();
-	}
+	} // end simStopped()
 
 	/**
 	 * @return the printLogEnabled
@@ -1448,6 +1518,12 @@ class LogItem {
 		taskEndTime = _taskEndTime;
 		taskCost = cost;
 		status = SimLogger.TASK_STATUS.COMPLETED;
+	}
+	
+	// Shaik added
+	public void taskRejectedStatus(double _taskRejectTime, SimLogger.TASK_STATUS taskStatus) {
+		taskEndTime = _taskRejectTime;
+		status = taskStatus;				
 	}
 
 	public void taskRejectedDueToVMCapacity(double _taskRejectTime) {
