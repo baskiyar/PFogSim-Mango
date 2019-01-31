@@ -30,6 +30,7 @@ import org.cloudbus.cloudsim.core.SimEvent;
 
 import edu.auburn.pFogSim.mobility.GPSVectorMobility;
 import edu.auburn.pFogSim.netsim.*;
+import edu.auburn.pFogSim.util.DataInterpreter;
 import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
@@ -242,6 +243,12 @@ public class MobileDeviceManager extends DatacenterBroker {
 				//Qian change cost = latency cost + processing cost
 				//SimLogger.printLine(CloudSim.clock() + ": " + getName() + ": Cloudlet " + cloudlet.getCloudletId() + " is received");
 				SimLogger.getInstance().downloaded(task.getCloudletId(), CloudSim.clock(), cost);
+
+				//Shaik added
+				Location devLoc = task.getSubmittedLocation();
+				Location hostLoc = SimManager.getInstance().getLocalServerManager().findHostById(task.getAssociatedHostId()).getLocation();
+				double hostDistance = DataInterpreter.measure(hostLoc.getYPos(), hostLoc.getXPos(), devLoc.getYPos(), devLoc.getXPos());
+				SimLogger.getInstance().addHostDistanceLog(task.getCloudletId(), hostDistance);
 				break;
 			}
 			default:

@@ -1598,6 +1598,12 @@ class LogItem {
 			result += "3"; // failure reason 3
 		else if (status == SimLogger.TASK_STATUS.UNFINISHED_DUE_TO_MOBILITY)
 			result += "4"; // failure reason 4
+		else if (status == SimLogger.TASK_STATUS.REJECTED_DUE_TO_LACK_OF_NODE_CAPACITY)
+			result += "5"; // failure reason 5
+		else if (status == SimLogger.TASK_STATUS.REJECTED_DUE_TO_LACK_OF_NETWORK_BANDWIDTH)
+			result += "6"; // failure reason 6
+		else if (status == SimLogger.TASK_STATUS.REJECTED_DUE_TO_UNACCEPTABLE_LATENCY)
+			result += "7"; // failure reason 7
 		else
 			result += "0"; // default failure reason
 		return result;
