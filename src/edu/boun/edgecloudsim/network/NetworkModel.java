@@ -13,6 +13,7 @@
 
 package edu.boun.edgecloudsim.network;
 
+import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.utils.Location;
 
 public abstract class NetworkModel {
@@ -31,12 +32,14 @@ public abstract class NetworkModel {
     /**
     * calculates the upload delay from source to destination device
     */
-	public abstract double getUploadDelay(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest);
+	// Shaik updated
+	public abstract double getUploadDelay(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud);
 	
     /**
     * calculates the download delay from source to destination device
     */
-	public abstract double getDownloadDelay(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest);
+	//Shaik updated
+	public abstract double getDownloadDelay(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud);
 	
     /**
     * Mobile device manager should inform network manager about the network operation

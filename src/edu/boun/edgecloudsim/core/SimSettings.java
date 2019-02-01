@@ -42,6 +42,7 @@ public class SimSettings {
 	public static enum VM_TYPES { EDGE_VM, CLOUD_VM }
 	public static enum APP_TYPES { AUGMENTED_REALITY, HEALTH_APP, HEAVY_COMP_APP, INFOTAINMENT_APP }
 	public static enum PLACE_TYPES { ATTRACTIVENESS_L1, ATTRACTIVENESS_L2, ATTRACTIVENESS_L3 }
+	public static enum CLOUD_TRANSFER { IGNORE, CLOUD_UPLOAD, CLOUD_DOWNLOAD }
 	
 	//predifined IDs for cloud components.
 	public static int CLOUD_DATACENTER_ID = 1000000; // Shaik modified - prior value 1000

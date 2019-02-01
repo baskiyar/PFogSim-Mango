@@ -80,9 +80,13 @@ public class ESBModel extends NetworkModel {
 		router = new Router();
 	}
 
+	/*
+	 * Shaik - modified -- to solve the issue of failed tasks with cloud host having Host Id '0'.  
+	 * Include details of approach here. 
+	 * */
 
 	@Override
-	public double getUploadDelay(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest) {
+	public double getUploadDelay(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud) {
 		double delay = 0;
 		Location accessPointLocation = null;
 		Location destPointLocation = null;
@@ -95,7 +99,11 @@ public class ESBModel extends NetworkModel {
 		 * when you get such exception, flip the sign of the id and search it as a host
 		 */
 		try {
-			accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(sourceDeviceId,CloudSim.clock());
+			if (isCloud == SimSettings.CLOUD_TRANSFER.CLOUD_DOWNLOAD)
+				// then source is the cloud host (with Host Id '0'), not mobile device
+				accessPointLocation = SimManager.getInstance().getLocalServerManager().findHostById(sourceDeviceId).getLocation();
+			else	
+				accessPointLocation = SimManager.getInstance().getMobilityModel().getLocation(sourceDeviceId,CloudSim.clock());
 		}
 		catch (IndexOutOfBoundsException e) {
 			sourceDeviceId *= -1;
@@ -103,7 +111,12 @@ public class ESBModel extends NetworkModel {
 			//SimLogger.printLine(accessPointLocation.toString());
 		}
 		try {
-			destPointLocation = SimManager.getInstance().getMobilityModel().getLocation(destDeviceId,CloudSim.clock());
+			if (isCloud == SimSettings.CLOUD_TRANSFER.CLOUD_UPLOAD)
+				// then destination is the cloud host (with Host Id '0'), not mobile device
+				destPointLocation = SimManager.getInstance().getLocalServerManager().findHostById(destDeviceId).getLocation();
+			else	
+				destPointLocation = SimManager.getInstance().getMobilityModel().getLocation(destDeviceId,CloudSim.clock());
+			
 			//SimLogger.printLine(destPointLocation.toString());
 		}
 		catch (IndexOutOfBoundsException e) {
@@ -167,8 +180,8 @@ public class ESBModel extends NetworkModel {
     * destination device is always mobile device in our simulation scenarios!
     */
 	@Override
-	public double getDownloadDelay(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest) {
-		return getUploadDelay(sourceDeviceId, destDeviceId, dataSize, wifiSrc, wifiDest);//getUploadDelay has been made bi-directional
+	public double getDownloadDelay(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud) {
+		return getUploadDelay(sourceDeviceId, destDeviceId, dataSize, wifiSrc, wifiDest, isCloud);//getUploadDelay has been made bi-directional
 	}
 	
 	public int getMaxNumOfClientsInPlace(){

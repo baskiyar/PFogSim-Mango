@@ -89,7 +89,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 		//if(task.getSubmittedLocation().equals(currentLocation))
 		//{
 			//SimLogger.printLine(CloudSim.clock() + ": " + getName() + ": Cloudlet " + task.getCloudletId() + " received");
-			double WlanDelay = networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi);
+			SimSettings.CLOUD_TRANSFER isCloud = (task.getAssociatedHostId() == 0)?SimSettings.CLOUD_TRANSFER.CLOUD_DOWNLOAD:SimSettings.CLOUD_TRANSFER.IGNORE;
+			double WlanDelay = networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
 			SimLogger.getInstance().addHops(task.getCloudletId(), ((ESBModel) networkModel).getHops(task, task.getAssociatedHostId()));
 			/*if (((ESBModel) networkModel).getHops(task, task.getAssociatedHostId()) == 0) {
 				((ESBModel) networkModel).getHops(task, task.getAssociatedHostId());
@@ -159,7 +160,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 
 				//SimLogger.printLine(CloudSim.clock() + ": " + getName() + ": Cloudlet " + task.getCloudletId() + " received");
 				//SimLogger.printLine("SourceID: " + SimSettings.CLOUD_DATACENTER_ID);
-				double WanDelay = networkModel.getDownloadDelay(SimSettings.CLOUD_DATACENTER_ID, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi);
+				SimSettings.CLOUD_TRANSFER isCloud = SimSettings.CLOUD_TRANSFER.IGNORE;
+				double WanDelay = networkModel.getDownloadDelay(SimSettings.CLOUD_DATACENTER_ID, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
 				if(WanDelay >= 0 && WanDelay <= task.getMaxDelay())
 				{
 					Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()+WanDelay);
@@ -339,7 +341,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 		task.setPath(path);
 		if(nextHopId == SimSettings.CLOUD_DATACENTER_ID){
 			
-			double WanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false);
+			SimSettings.CLOUD_TRANSFER isCloud = SimSettings.CLOUD_TRANSFER.IGNORE;
+			double WanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
 			
 			if(WanDelay>0){
 				networkModel.uploadStarted(currentLocation, nextHopId);
@@ -371,7 +374,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 //			}
 //		}
 		else /*(nextHopId == SimSettings.GENERIC_EDGE_DEVICE_ID)*/ {
-			double WlanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false);
+			SimSettings.CLOUD_TRANSFER isCloud = (nextHopId== 0)?SimSettings.CLOUD_TRANSFER.CLOUD_UPLOAD:SimSettings.CLOUD_TRANSFER.IGNORE;
+			double WlanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
 
 			if (SimSettings.getInstance().traceEnalbe()) {
 				SimLogger.printLine("WlanDelay: "+ WlanDelay+ "  taskmaxDelay: "+task.getMaxDelay());
