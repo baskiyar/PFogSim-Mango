@@ -104,7 +104,7 @@ public class DataInterpreter {
 			    node.println(String.format("\t<VM vmm=\"%s\">\n\t\t\t<core>%s</core>\n\t\t\t<mips>%s</mips>\n\t\t\t<ram>%s</ram>\n\t\t\t<storage>%s</storage>\n\t\t</VM>\n\t</host>\n</datacenter>", nodeSpecs[MAX_LEVELS - i - 1][2], nodeSpecs[MAX_LEVELS - i - 1][9], nodeSpecs[MAX_LEVELS - i - 1][10], nodeSpecs[MAX_LEVELS - i - 1][11], nodeSpecs[MAX_LEVELS - i - 1][12]));
 	
 				if(i == 2) { 
-						SimLogger.printLine("University Fog node Id (prior to list add): "+counter+" Lat: "+temp[1]+" Lon: "+temp[2]);
+						//SimLogger.printLine("University Fog node Id (prior to list add): "+counter+" Lat: "+temp[1]+" Lon: "+temp[2]);
 				}
 				//SimLogger.printLine("");
 
@@ -124,15 +124,15 @@ public class DataInterpreter {
 						//SimLogger.printLine("Layer: "+(i+1)+"    nodeList.size = " + nodeList.size());
 
 						distance = measure(nodeList.get(j)[2], nodeList.get(j)[1], temp[2], temp[1]);
-						SimLogger.print("\nFog node Id: "+counter+" - Parent Node Id: "+nodeList.get(j)[0]+" - Parent Layer: "+(MAX_LEVELS-i)+" - Distance: " + distance);
+						//SimLogger.print("\nFog node Id: "+counter+" - Layer i: "+i+" - Parent Node Id: "+nodeList.get(j)[0]+" - Distance: " + distance);
 						if(distance < minDistance)
 						{
 							minDistance = distance;
 							index = j;
-							SimLogger.print(" - New min distance: " + minDistance);
+							//SimLogger.print(" - New min distance: " + minDistance);
 						}
 					}
-					SimLogger.print("\n\n\n");
+					//SimLogger.print("\n\n\n");
 					minDistance = Double.MAX_VALUE;
 					if(index >= 0)
 					{
@@ -156,24 +156,28 @@ public class DataInterpreter {
 					    		"		<left_latency>" + latency + "</left_latency>\n" + 
 					    		"		<right_latency>" + latency + "</right_latency>\n" + 
 					    		"	</link>");
+						
+						//SimLogger.printLine("Link: "+nodeList.get(index)[0]+" - "+temp[0]);
+						
 					}
 				}
 
 				if(i == 2) { 
-					SimLogger.printLine("University Fog node Id (just before list add): "+counter+" Lat: "+temp[1]+" Lon: "+temp[2]);
-					for (int kk=0; kk<tempList.size(); kk++)
-						SimLogger.printLine("University Fog node Id: "+tempList.get(kk)[0]+" Lat: "+tempList.get(kk)[1]+" Lon: "+tempList.get(kk)[2]);
+				//	SimLogger.printLine("University Fog node Id (just before list add): "+counter+" Lat: "+temp[1]+" Lon: "+temp[2]);
+					//for (int kk=0; kk<tempList.size(); kk++)
+					//	SimLogger.printLine("University Fog node Id: "+tempList.get(kk)[0]+" Lat: "+tempList.get(kk)[1]+" Lon: "+tempList.get(kk)[2]);
 				}
 
-				tempList.add(temp);				
+				tempList.add(new Double[] {(double)temp[0], (double)temp[1], (double)temp[2]});
+				//tempList.add(temp);				
 				counter++;
 				
 				if(i == 2) { 
-					SimLogger.printLine("University Fog node Id (after list add): "+counter+" Lat: "+temp[1]+" Lon: "+temp[2]);
-					for (int kk=0; kk<tempList.size(); kk++)
-						SimLogger.printLine("University Fog node Id: "+tempList.get(kk)[0]+" Lat: "+tempList.get(kk)[1]+" Lon: "+tempList.get(kk)[2]);
+				//	SimLogger.printLine("University Fog node Id (after list add): "+counter+" Lat: "+temp[1]+" Lon: "+temp[2]);
+					//for (int kk=0; kk<tempList.size(); kk++)
+						//SimLogger.printLine("University Fog node Id: "+tempList.get(kk)[0]+" Lat: "+tempList.get(kk)[1]+" Lon: "+tempList.get(kk)[2]);
 				}
-				SimLogger.printLine("");
+				//SimLogger.printLine("");
 
 			}
 			
@@ -186,29 +190,37 @@ public class DataInterpreter {
 			// Include additional links among border routers
 			if(i == 2) // Universities fog layer
 			{
+				// For each university, find the nearest and second nearest and create links to the two identified ones. 
 				for(Double[] input : tempList)
 				{
 					double minDistance = Double.MAX_VALUE;
 					double secondminDistance = Double.MAX_VALUE;
 					int index1 = -1, index2 = -1;
 					double distance = 0;
+					
+					
 					//Go through all nodes and find the closest
 					for(int j = 0; j < tempList.size(); j++)
 					{
 						//SimLogger.printLine("nodeList.size = " + nodeList.size());
-		
+
 						distance = measure(tempList.get(j)[2], tempList.get(j)[1], input[2], input[1]);
-						if(distance < secondminDistance && distance != 0)
-						{
-							secondminDistance = distance;
-							index2 = j;
-						}
+						//SimLogger.print("\nFog node Id (from): "+input[0]+" Fog node Id (to): "+tempList.get(j)[0]+" - Distance: " + distance+" - MinDistance: " + minDistance+" - SecMinDistance: " + secondminDistance);
+
 						if(distance < minDistance && distance != 0)
 						{
 							secondminDistance = minDistance;
 							index2 = index1;
 							minDistance = distance;
 							index1 = j;
+							//SimLogger.print(" - new minDistance: "+minDistance+" - new secondminDistance: "+ secondminDistance);
+						}
+
+						else if(distance < secondminDistance && distance != 0)
+						{
+							secondminDistance = distance;
+							index2 = j;
+							//SimLogger.print(" - new secondminDistance: "+ secondminDistance);
 						}
 					}
 					minDistance = Double.MAX_VALUE;
@@ -236,6 +248,9 @@ public class DataInterpreter {
 						   		"		<left_latency>"+latency+"</left_latency>\n" + 
 						   		"		<right_latency>"+latency+"</right_latency>\n" + 
 						   		"	</link>");
+						
+						//SimLogger.printLine("\nLink: "+tempList.get(index1)[0]+" - "+input[0]);
+
 						}
 					if(index2 >= 0)
 					{
@@ -260,16 +275,21 @@ public class DataInterpreter {
 						   		"		<left_latency>"+latency+"</left_latency>\n" + 
 						   		"		<right_latency>"+latency+"</right_latency>\n" + 
 						   		"	</link>");
+						
+						//SimLogger.printLine("Link: "+tempList.get(index2)[0]+" - "+input[0]);
+						
 						}
 				}
 			}
 
 			// Save the list of universities.
 			if(i == 2) { 
+				universitiesList.clear();
 				for(Double[] input : tempList) 	{
 					universitiesList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
-					SimLogger.printLine("University Fog node Id: "+input[0]+" Lat: "+input[1]+" Lon: "+input[2]);
+					//SimLogger.printLine("University Fog node Id: "+input[0]+" Lat: "+input[1]+" Lon: "+input[2]);
 				}
+				universitiesCircle.clear();
 			}
 
 			// Qian - create universities circle to let Connect centers and Schools to connect to nearest University / Ward / Library.
@@ -281,12 +301,18 @@ public class DataInterpreter {
 			
 			// If the next set of nodes are Wards / Libraries, link to nearest university.
 			if (i == 2 || i==3) { 
-				nodeList = universitiesList;
+				nodeList.clear();
+				for(Double[] input : universitiesList) 	{
+					nodeList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
+				}
 			}
 
 			// If the next set of nodes are Connect centers / Schools, use universities circle as next higher layer.
 			else if (i == 4 || i==5) { 
-				nodeList = universitiesCircle;
+				nodeList.clear();
+				for(Double[] input : universitiesCircle) 	{
+					nodeList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
+				}
 			}
 			
 			// else link to a nearest node of next higher layer
