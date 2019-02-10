@@ -41,7 +41,7 @@ public class mainApp {
 		 */
 		
 		// Comment the following line for detailed logging
-		//Log.disable();
+		Log.disable();
 
 		//enable console output and file output of this application
 		SimLogger.enablePrintLog();
