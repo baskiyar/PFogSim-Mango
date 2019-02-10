@@ -159,6 +159,12 @@ public class DataInterpreter {
 					}
 				}
 
+				if(i == 2) { 
+					SimLogger.printLine("University Fog node Id (just before list add): "+counter+" Lat: "+temp[1]+" Lon: "+temp[2]);
+					for (int kk=0; kk<tempList.size(); kk++)
+						SimLogger.printLine("University Fog node Id: "+tempList.get(kk)[0]+" Lat: "+tempList.get(kk)[1]+" Lon: "+tempList.get(kk)[2]);
+				}
+
 				tempList.add(temp);				
 				counter++;
 				
