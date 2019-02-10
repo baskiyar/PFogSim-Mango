@@ -55,7 +55,7 @@ public class mainApp {
 		
 		//CJ added linksFile to supply the link xml file, had to adjust all constructors that
 		//	use these file to seamlessly use it
-		int iterationNumber = 3; // index for the list of n scenarios in properties file is from 0..n-1
+		int iterationNumber = 7; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
 		String edgeDevicesFile = "";

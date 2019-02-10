@@ -30,6 +30,7 @@ public class DataInterpreter {
 	private static ArrayList<Double[]> nodeList = new ArrayList<Double[]>();
 	private static ArrayList<Double[]> tempList = new ArrayList<Double[]>();
 	private static ArrayList<Double[]> universitiesCircle = new ArrayList<Double[]>();
+	private static ArrayList<Double[]> universitiesList = new ArrayList<Double[]>();
 	
 	//This will return as height/y is LAT and width/x is LONG
 	private static double MIN_LAT = -100000, MAX_LAT = -100000, MIN_LONG = -100000, MAX_LONG = -100000; //Just instantiated so the first gps coord sets these
@@ -102,6 +103,11 @@ public class DataInterpreter {
 			    node.println(String.format("<host>\n\t<core>%s</core>\n\t<mips>%s</mips>\n\t<ram>%s</ram>\n\t<storage>%s</storage>\n", nodeSpecs[MAX_LEVELS - i - 1][9], nodeSpecs[MAX_LEVELS - i - 1][10], nodeSpecs[MAX_LEVELS - i - 1][11], nodeSpecs[MAX_LEVELS - i - 1][12]));
 			    node.println(String.format("\t<VM vmm=\"%s\">\n\t\t\t<core>%s</core>\n\t\t\t<mips>%s</mips>\n\t\t\t<ram>%s</ram>\n\t\t\t<storage>%s</storage>\n\t\t</VM>\n\t</host>\n</datacenter>", nodeSpecs[MAX_LEVELS - i - 1][2], nodeSpecs[MAX_LEVELS - i - 1][9], nodeSpecs[MAX_LEVELS - i - 1][10], nodeSpecs[MAX_LEVELS - i - 1][11], nodeSpecs[MAX_LEVELS - i - 1][12]));
 	
+				if(i == 2) { 
+						SimLogger.printLine("University Fog node Id (prior to list add): "+counter+" Lat: "+temp[1]+" Lon: "+temp[2]);
+				}
+				//SimLogger.printLine("");
+
 				
 			    if (counter == 643) {
 			    	//SimLogger.print("");
@@ -115,15 +121,18 @@ public class DataInterpreter {
 					//Go through all nodes one level up and find the closest
 					for(int j = 0; j < nodeList.size(); j++)
 					{
-						////SimLogger.printLine("nodeList.size = " + nodeList.size());
+						//SimLogger.printLine("Layer: "+(i+1)+"    nodeList.size = " + nodeList.size());
 
 						distance = measure(nodeList.get(j)[2], nodeList.get(j)[1], temp[2], temp[1]);
+						SimLogger.print("\nFog node Id: "+counter+" - Parent Node Id: "+nodeList.get(j)[0]+" - Parent Layer: "+(MAX_LEVELS-i)+" - Distance: " + distance);
 						if(distance < minDistance)
 						{
 							minDistance = distance;
 							index = j;
+							SimLogger.print(" - New min distance: " + minDistance);
 						}
 					}
+					SimLogger.print("\n\n\n");
 					minDistance = Double.MAX_VALUE;
 					if(index >= 0)
 					{
@@ -149,9 +158,17 @@ public class DataInterpreter {
 					    		"	</link>");
 					}
 				}
-				
-				tempList.add(temp);
+
+				tempList.add(temp);				
 				counter++;
+				
+				if(i == 2) { 
+					SimLogger.printLine("University Fog node Id (after list add): "+counter+" Lat: "+temp[1]+" Lon: "+temp[2]);
+					for (int kk=0; kk<tempList.size(); kk++)
+						SimLogger.printLine("University Fog node Id: "+tempList.get(kk)[0]+" Lat: "+tempList.get(kk)[1]+" Lon: "+tempList.get(kk)[2]);
+				}
+				SimLogger.printLine("");
+
 			}
 			
 			////SimLogger.printLine("Level : " + i + "\n\t" + prevCounter + " -> " + counter);
@@ -159,38 +176,22 @@ public class DataInterpreter {
 			////SimLogger.printLine("nodeList" + nodeList.toString());
 			////SimLogger.printLine("tempList" + tempList.toString());
 			//move tempList to nodeList
-			if(!universitiesYet)
+
+			// Include additional links among border routers
+			if(i == 2) // Universities fog layer
 			{
-				nodeList.clear();
-				//nodeList.addAll(tempList);
 				for(Double[] input : tempList)
-				{
-					nodeList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
-				}
-			}
-			if(i >= 2 && i <= 4) { // Qian create universities circle to let  Connects and schools to connect when file is Universities.csv, Ward.cvs, Libraries.cvs.
-				for(Double[] input : tempList)
-				{
-					universitiesCircle.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
-				}
-			}
-			if (i > 4) { //when the file is Connect.csv and Schools.csv use universities circle as upper layer.
-				nodeList = universitiesCircle;
-			}
-			if(!universitiesLinked)
-			{
-				for(Double[] input : nodeList)
 				{
 					double minDistance = Double.MAX_VALUE;
 					double secondminDistance = Double.MAX_VALUE;
 					int index1 = -1, index2 = -1;
 					double distance = 0;
-					//Go through all nodes one level up and find the closest
-					for(int j = 0; j < nodeList.size(); j++)
+					//Go through all nodes and find the closest
+					for(int j = 0; j < tempList.size(); j++)
 					{
 						//SimLogger.printLine("nodeList.size = " + nodeList.size());
 		
-						distance = measure(nodeList.get(j)[2], nodeList.get(j)[1], input[2], input[1]);
+						distance = measure(tempList.get(j)[2], tempList.get(j)[1], input[2], input[1]);
 						if(distance < secondminDistance && distance != 0)
 						{
 							secondminDistance = distance;
@@ -209,22 +210,22 @@ public class DataInterpreter {
 					if(index1 >= 0)
 					{
 						//SimLogger.getInstance().print("Find first min index1: " + index1);
-						if(nodeList.get(index1).equals(temp)) 
+						if(tempList.get(index1).equals(temp)) 
 						{
 							//SimLogger.printLine("Yep, they're the same thing");
 							System.exit(0);
 						}
-						double dis = measure(input[2], input[1], nodeList.get(index1)[2], nodeList.get(index1)[1]) / 1000;
+						double dis = measure(input[2], input[1], tempList.get(index1)[2], tempList.get(index1)[1]) / 1000;
 						double latency = dis * 0.01;
 						links.println("<link>\n" + 
-					    		"		<name>L" + nodeList.get(index1)[0] + "_" + input[0] + "</name>\n" + 
+					    		"		<name>L" + tempList.get(index1)[0] + "_" + input[0] + "</name>\n" + 
 						   		"		<left>\n" + 
 					    		"			<x_pos>" + input[1] + "</x_pos>\n" + 
 						   		"			<y_pos>" + input[2] + "</y_pos>\n" + 
 						   		"		</left>\n" + 
 						   		"		<right>\n" + 
-						    	"			<x_pos>" + nodeList.get(index1)[1] + "</x_pos>\n" + 
-						   		"			<y_pos>" + nodeList.get(index1)[2] + "</y_pos>\n" + 
+						    	"			<x_pos>" + tempList.get(index1)[1] + "</x_pos>\n" + 
+						   		"			<y_pos>" + tempList.get(index1)[2] + "</y_pos>\n" + 
 						   		"		</right>\n" + 
 						   		"		<left_latency>"+latency+"</left_latency>\n" + 
 						   		"		<right_latency>"+latency+"</right_latency>\n" + 
@@ -232,23 +233,23 @@ public class DataInterpreter {
 						}
 					if(index2 >= 0)
 					{
-						if(nodeList.get(index2).equals(temp)) 
+						if(tempList.get(index2).equals(temp)) 
 						{
 							//SimLogger.printLine("Yep, they're the same thing");
 							System.exit(0);
 						}
 						//SimLogger.getInstance().print("Find second min index2: " + index2);
-						double dis = measure(input[2], input[1], nodeList.get(index2)[2], nodeList.get(index2)[1]) / 1000;
+						double dis = measure(input[2], input[1], tempList.get(index2)[2], tempList.get(index2)[1]) / 1000;
 						double latency = dis * 0.01;
 						links.println("<link>\n" + 
-					    		"		<name>L" + nodeList.get(index2)[0] + "_" + input[0] + "</name>\n" + 
+					    		"		<name>L" + tempList.get(index2)[0] + "_" + input[0] + "</name>\n" + 
 						   		"		<left>\n" + 
 					    		"			<x_pos>" + input[1] + "</x_pos>\n" + 
 						   		"			<y_pos>" + input[2] + "</y_pos>\n" + 
 						   		"		</left>\n" + 
 						   		"		<right>\n" + 
-						    	"			<x_pos>" + nodeList.get(index2)[1] + "</x_pos>\n" + 
-						   		"			<y_pos>" + nodeList.get(index2)[2] + "</y_pos>\n" + 
+						    	"			<x_pos>" + tempList.get(index2)[1] + "</x_pos>\n" + 
+						   		"			<y_pos>" + tempList.get(index2)[2] + "</y_pos>\n" + 
 						   		"		</right>\n" + 
 						   		"		<left_latency>"+latency+"</left_latency>\n" + 
 						   		"		<right_latency>"+latency+"</right_latency>\n" + 
@@ -256,11 +257,47 @@ public class DataInterpreter {
 						}
 				}
 			}
+
+			// Save the list of universities.
+			if(i == 2) { 
+				for(Double[] input : tempList) 	{
+					universitiesList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
+					SimLogger.printLine("University Fog node Id: "+input[0]+" Lat: "+input[1]+" Lon: "+input[2]);
+				}
+			}
+
+			// Qian - create universities circle to let Connect centers and Schools to connect to nearest University / Ward / Library.
+			if(i == 2 || i == 3 || i == 4) { 
+				for(Double[] input : tempList) 	{
+					universitiesCircle.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
+				}
+			}
+			
+			// If the next set of nodes are Wards / Libraries, link to nearest university.
+			if (i == 2 || i==3) { 
+				nodeList = universitiesList;
+			}
+
+			// If the next set of nodes are Connect centers / Schools, use universities circle as next higher layer.
+			else if (i == 4 || i==5) { 
+				nodeList = universitiesCircle;
+			}
+			
+			// else link to a nearest node of next higher layer
+			else{
+				nodeList.clear();
+				//nodeList.addAll(tempList);
+				for(Double[] input : tempList) 	{
+					nodeList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
+				}
+			}
+			
+			// Prepare to process info for next layer fog nodes
 			tempList.clear();
-			if(files[i].equals("Chicago_Universities.csv")) universitiesYet = true;
+			
 			////SimLogger.printLine("nodeList" + nodeList.toString());
 			////SimLogger.printLine("tempList" + tempList.toString());
-		}
+		}// end - for MAX_LEVELS
 		
 		node.println("</edge_devices>");
 		links.println("</links>");
