@@ -59,20 +59,33 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 		}
 
 	}
+
 	/**
 	 * get the id of the appropriate host
 	 */
 	@Override
 	public int getDeviceToOffload(Task task) {
-		return getHost(task).getId();
+		try {
+			return getHost(task).getId();
+		}
+		catch (NullPointerException e) {
+			return -1;
+		}
 	}
+
 	/**
 	 * the the appropriate VM to run on
 	 */
 	@Override
 	public EdgeVM getVmToOffload(Task task) {
+		try {
 		return ((EdgeVM) getHost(task).getVmList().get(0));
+		}
+		catch (NullPointerException e) {
+			return null;
+		}
 	}
+
 	/**
 	 * find the host
 	 * @param task
