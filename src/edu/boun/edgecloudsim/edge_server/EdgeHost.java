@@ -15,8 +15,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.cloudbus.cloudsim.Host;
+import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Pe;
 import org.cloudbus.cloudsim.VmScheduler;
+import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.provisioners.BwProvisioner;
 import org.cloudbus.cloudsim.provisioners.RamProvisioner;
 
@@ -49,6 +51,7 @@ public class EdgeHost extends Host {
 		this.customers = new ArrayList<>();
 
 	}
+	
 	//Qian add two parameters for centralOrchestrator
 	public EdgeHost(int id, RamProvisioner ramProvisioner,
 			BwProvisioner bwProvisioner, long storage,
@@ -132,6 +135,7 @@ public class EdgeHost extends Host {
 	public ArrayList<EdgeHost> getChildern() {
 		return this.childern;
 	}
+	
 	/**
 	 * Check if free Bandwidth available for certain mobile device
 	 * @author Qian
@@ -140,6 +144,7 @@ public class EdgeHost extends Host {
 	 */
 	public boolean isBWAvailable(MobileDevice mb) {
 		double maxBW = this.getBw();
+		Log.printLine("isBWAvailable:maxBW: "+maxBW);
 		double tempBW = reserveBW + mb.getBWRequirement();
 		if (tempBW < maxBW) {
 			return true;
@@ -151,7 +156,7 @@ public class EdgeHost extends Host {
 	}
 	
 	/**
-	 * reserve Bandwith for certain mobile device
+	 * reserve Bandwidth for certain mobile device
 	 * @author Qian
 	 *	@param mb
 	 */
@@ -167,6 +172,7 @@ public class EdgeHost extends Host {
 	 */
 	public boolean isMIPSAvailable(MobileDevice mb) {
 		long maxMips = this.getTotalMips();
+		Log.printLine("isMIPSAvailable:maxMips: "+maxMips); 
 		long tempLength = reserveMips + mb.getTaskLengthRequirement();
 		if (tempLength < maxMips) {
 			return true;
@@ -213,23 +219,29 @@ public class EdgeHost extends Host {
 	 *	@return
 	 */
 	public void  makeReservation(MobileDevice mb) {
+		Log.print("Before Reservation: Host Id: "+this.getId()+" Prev Reserved Mips: "+this.getReserveMips()+" Prev Reserved BW: "+this.getReserveBW()); 
 		reserveBW(mb);
 		reserveCPUResource(mb);
+		Log.print(" After Reservation: Host Id: "+this.getId()+" Current Reserved Mips: "+this.getReserveMips()+" Current Reserved BW: "+this.getReserveBW());
 		customers.add(mb);
 		System.out.println("  Mobile device: "+mb.getId()+"  WAP: "+mb.getLocation().getServingWlanId()+"  Assigned host: "+this.getId());
+		Log.printLine();
 	}
+	
 	/**
 	 * @return the customers
 	 */
 	public ArrayList<MobileDevice> getCustomers() {
 		return customers;
 	}
+	
 	/**
 	 * @param customers the customers to set
 	 */
 	public void setCustomers(ArrayList<MobileDevice> customers) {
 		this.customers = customers;
 	}
+	
 	/**
 	 * for puddle canHandle
 	 * @author Qian
@@ -251,56 +263,63 @@ public class EdgeHost extends Host {
 			return true;
 		}
 	}
+	
 	/**
 	 * @return the reserveBW
 	 */
 	public double getReserveBW() {
 		return reserveBW;
 	}
+	
 	/**
 	 * @param reserveBW the reserveBW to set
 	 */
 	public void setReserveBW(double reserveBW) {
 		this.reserveBW = reserveBW;
 	}
+	
 	/**
 	 * @return the reserveMips
 	 */
 	public long getReserveMips() {
 		return reserveMips;
 	}
+	
 	/**
 	 * @param reserveMips the reserveMips to set
 	 */
 	public void setReserveMips(long reserveMips) {
 		this.reserveMips = reserveMips;
 	}
+	
 	/**
 	 * @param location the location to set
 	 */
 	public void setLocation(Location location) {
 		this.location = location;
 	}
+	
 	/**
 	 * @param costPerBW the costPerBW to set
 	 */
 	public void setCostPerBW(double costPerBW) {
 		this.costPerBW = costPerBW;
 	}
+	
 	/**
 	 * @param costPerSec the costPerSec to set
 	 */
 	public void setCostPerSec(double costPerSec) {
 		this.costPerSec = costPerSec;
 	}
+	
 	/**
 	 * @param childern the childern to set
 	 */
 	public void setChildern(ArrayList<EdgeHost> childern) {
 		this.childern = childern;
 	}
-	
-	
+		
 	/**
 	 * @author szs0117
 	 * @return double
