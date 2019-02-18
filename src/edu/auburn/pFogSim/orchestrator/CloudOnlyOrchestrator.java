@@ -33,7 +33,12 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 	
 	@Override
 	public void initialize() {
+		try {
 		cHost = (EdgeHost)(SimManager.getInstance().getLocalServerManager().findHostById(0));
+		}
+		catch (NullPointerException e) {
+			return;
+		}
 	}
 
 	/**
@@ -95,7 +100,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 	public void assignHost(MobileDevice mobile) {
  
 		EdgeHost cloudHost = (EdgeHost) cloud.getHostList().get(0);
-		cloudHost = (EdgeHost)cHost; // Shaik added - for test
+		cloudHost = (EdgeHost)cHost; // Shaik added
 		if (goodHost(cloudHost, mobile)) {
 			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(cloudHost, mobile);
 			mobile.setPath(path);

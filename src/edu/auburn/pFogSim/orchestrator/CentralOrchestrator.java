@@ -1,6 +1,8 @@
 /**
  * Centralized Orchestrator for comparison against Puddle algorithm
- * @author jih0007@auburn.edu
+ * @author Jacob Hall
+ * @author Qian Wang
+ * @author Shehenaz Shaik
  */
 package edu.auburn.pFogSim.orchestrator;
 
@@ -30,13 +32,14 @@ import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
 public class CentralOrchestrator extends EdgeOrchestrator {
-
+	
 	ArrayList<EdgeHost> hosts;
 	HashMap<NodeSim,HashMap<NodeSim, LinkedList<NodeSim>>> pathTable;
 	
 	public CentralOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 	}
+
 	/**
 	 * get all the hosts in the network into one list
 	 */
@@ -57,7 +60,6 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 			}
 			pathTable.put(src, tempMap);
 		}
-
 	}
 
 	/**
@@ -96,6 +98,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 		task.setPath(mb.getPath());
 		return mb.getHost();
 	}
+	
 	/* 
 	 * @ author Qian Wang
 	 * @ author Shehenaz Shaik 
