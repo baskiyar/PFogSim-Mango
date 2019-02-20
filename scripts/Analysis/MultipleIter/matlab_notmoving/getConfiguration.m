@@ -5,7 +5,7 @@
 function [ret_val] = getConfiguration(argType)
     if(argType == 1)
         %ret_val = 'C:\Users\jbm0085\Desktop\pFogSim-master\prelim results';
-        ret_val = 'S:\Shehenaz\FIaaSRSM-SampleTests\Run-110-All';
+        ret_val = 'S:\Shehenaz\FIaaSRSM-SampleTests\Run-128-All';
         % USERNAME = your username
         % FILE = File or path that your EdgeCloudSim-master folder is located in
         
@@ -17,10 +17,10 @@ function [ret_val] = getConfiguration(argType)
         ret_val = 1; %x tick interval for number of mobile devices
     elseif(argType == 5)
         %ret_val = {'CENTRALIZED_ORCHESTRATOR','CLOUD_ONLY','PUDDLE_ORCHESTRATOR','SELECTED_LEVELS','EDGE_BY_LATENCY','EDGE_BY_DISTANCE','LOCAL_ONLY','FIXED_NODE','SELECTED_NODES'};
-        ret_val = {'CENTRALIZED_ORCHESTRATOR','CLOUD_ONLY','EDGE_BY_LATENCY','EDGE_BY_DISTANCE','LOCAL_ONLY'};   
+        ret_val = {'CENTRALIZED_ORCHESTRATOR','CLOUD_ONLY','LOCAL_ONLY'};   
     elseif(argType == 6)
         %ret_val = {'Centralized','Cloud','Puddle','Sel Levels','Edge by Latency','Local','Fixed','Sel Nodes'};
-        ret_val = {'Centralized','Cloud','Edge by Latency','Edge by Distance','Local'};
+        ret_val = {'Centralized','Cloud','Local'};
     elseif(argType == 7)
         ret_val=[350 60 450 450]; %position of figure
     elseif(argType == 8)
@@ -28,11 +28,11 @@ function [ret_val] = getConfiguration(argType)
     elseif(argType == 9)
         ret_val = 'Number of Mobile Devices'; %Common text for s axis
     elseif(argType == 10)
-        ret_val = 5000; %min number of mobile device
+        ret_val = 10000; %min number of mobile device
     elseif(argType == 11)
-        ret_val = 5000; %step size of mobile device count
+        ret_val = 1; %step size of mobile device count
     elseif(argType == 12)
-        ret_val =10000; %max number of mobile device
+        ret_val =10001; %max number of mobile device
     elseif(argType == 19)
         ret_val = 1; %return 1 if you want to plot errors
     elseif(argType == 20)

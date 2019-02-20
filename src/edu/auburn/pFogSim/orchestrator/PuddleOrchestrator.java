@@ -1,11 +1,15 @@
 package edu.auburn.pFogSim.orchestrator;
+
 /*
- * For those who come after...
+ * @author Shehenaz Shaik
+ * @author Qian Wang
+ * @author Jacob Hall
  * 
- * If you are here to change the puddle orchestrator to the true HAFA architecture, (i.e. change it from optimized 
+ * For those who come after...
+ *  * If you are here to change the puddle orchestrator to the true HAFA architecture, (i.e. change it from optimized 
  * on distance to optimized on cost) then the only changes that need to be made are in DistRadix. The only thing 
  * that needs to be changed is the metric upon which we sort and select nodes. See DistRadix for more info.
- * @jih0007
+ * 
  */
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_client.CpuUtilizationModel_Custom;
@@ -31,6 +35,7 @@ import java.util.LinkedList;
 import org.cloudbus.cloudsim.Datacenter;
 //import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
 import org.cloudbus.cloudsim.core.CloudSim;
+
 /**
  * implementation of Edge Orchestrator for using puddles
  * @author Jacob I Hall jih0007@auburn.edu
@@ -45,11 +50,10 @@ public class PuddleOrchestrator extends EdgeOrchestrator {
 	 * @param _policy
 	 * @param _simScenario
 	 */
-	
-	
 	public PuddleOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 	}
+
 	@Override
 	public void initialize() {
 		
@@ -57,6 +61,7 @@ public class PuddleOrchestrator extends EdgeOrchestrator {
 	/**
 	 * get the id of the appropriate host
 	 */
+
 	@Override
 	public int getDeviceToOffload(Task task) {
 		try {
@@ -66,6 +71,7 @@ public class PuddleOrchestrator extends EdgeOrchestrator {
 			return -1;
 		}
 	}
+
 	/**
 	 * the the appropriate VM to run on
 	 */
@@ -78,6 +84,7 @@ public class PuddleOrchestrator extends EdgeOrchestrator {
 			return null;
 		}
 	}
+
 	/**
 	 * get the closest level 0 puddle as a staring point
 	 * modified by Qian
@@ -118,6 +125,7 @@ public class PuddleOrchestrator extends EdgeOrchestrator {
 		task.setPath(mb.getPath());
 		return mb.getHost();		
 	}
+
 	/**
 	 * find an alternate puddle of a given level
 	 * modified by Qian
@@ -148,12 +156,12 @@ public class PuddleOrchestrator extends EdgeOrchestrator {
 		}
 		return puddle;
 	}
+
 	/* (non-Javadoc)
 	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
 	 */
 	@Override
 	public void assignHost(MobileDevice mobile) {
-		// TODO Auto-generated method stub
 		Puddle puddle = getNearest0Pud(mobile);//start with the closest level0 puddle
 		Puddle nextBestPuddle = null;
 		ArrayList<Puddle> puds = new ArrayList<Puddle>();
@@ -217,5 +225,4 @@ public class PuddleOrchestrator extends EdgeOrchestrator {
 		return;
 	}
 	
-
 }

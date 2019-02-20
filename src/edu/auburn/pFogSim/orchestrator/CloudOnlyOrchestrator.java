@@ -106,6 +106,36 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 			mobile.setPath(path);
 			mobile.setHost(cloudHost);
 			mobile.makeReservation();
+			
+			//-- Shaik - Following code component is to track the expected total cost.
+			///*
+			double cost=0;
+			NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(mobile.getLocation(), false);
+			NodeSim des = ((ESBModel)(SimManager.getInstance().getNetworkModel())).getNetworkTopology().findNode(cloudHost.getLocation(), false);
+
+			ESBModel networkModel = (ESBModel)(SimManager.getInstance().getNetworkModel());
+			LinkedList<NodeSim> tpath = new LinkedList<>();
+			tpath = networkModel.findPath(src, des);
+			
+			if (tpath == null || tpath.size() == 0) {
+				EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(mobile.getLocation().getXPos(), mobile.getLocation().getYPos());
+				cost = (mobile.getTaskLengthRequirement() / k.getTotalMips() * k.getCostPerSec() + mobile.getBWRequirement() * k.getCostPerBW());
+			}
+			else {
+				SimLogger.getInstance().getCentralizeLogPrinter().println("**********Path From " + src.getWlanId() + " To " + des.getWlanId() + "**********");
+				for (NodeSim node: tpath) {
+					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos());
+					double bwCost = mobile.getBWRequirement() * k.getCostPerBW();
+					cost = cost + bwCost;
+					SimLogger.getInstance().getCentralizeLogPrinter().println("Level:\t" + node.getLevel() + "\tNode:\t" + node.getWlanId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
+				}				
+				EdgeHost desHost = SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos());
+				double exCost = desHost.getCostPerSec() * 
+						(mobile.getTaskLengthRequirement() / desHost.getTotalMips());
+				cost = cost + exCost;
+				SimLogger.getInstance().getCentralizeLogPrinter().println("Destination:\t"+ des.getWlanId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
+			}
+			//*/						
 		}
 		else
 			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");

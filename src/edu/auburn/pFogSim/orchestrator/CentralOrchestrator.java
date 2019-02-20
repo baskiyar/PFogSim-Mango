@@ -60,6 +60,12 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 			}
 			pathTable.put(src, tempMap);
 		}
+		
+		// Addl Info - Ignore the two lines below.
+		//Location hostLoc = SimManager.getInstance().getLocalServerManager().findHostById(i).getLocation();
+		//NodeSim hostNode = ((ESBModel)networkModel).getNetworkTopology().findNode(hostLoc, false);
+
+		
 	}
 
 	/**
