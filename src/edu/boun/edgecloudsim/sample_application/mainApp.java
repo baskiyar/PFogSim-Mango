@@ -37,7 +37,7 @@ public class mainApp {
 	public static void main(String[] args) {
 				
 		// Comment the following line for detailed logging
-		//Log.disable();
+		Log.disable();
 
 		//enable console output and file output of this application
 		SimLogger.enablePrintLog();
@@ -49,7 +49,7 @@ public class mainApp {
 			e.printStackTrace();
 		}
 		
-		int iterationNumber = 1; // index for the list of n scenarios in properties file is from 0..n-1
+		int iterationNumber = 2; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
 		String edgeDevicesFile = "";

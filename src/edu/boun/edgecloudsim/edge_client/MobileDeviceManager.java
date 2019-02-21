@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.DatacenterBroker;
+import org.cloudbus.cloudsim.Log;
 //import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.UtilizationModel;
 import org.cloudbus.cloudsim.UtilizationModelFull;
@@ -216,7 +217,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 				
 				break;
 			}
-			case RESPONSE_RECEIVED_BY_MOBILE_DEVICE:
+			case RESPONSE_RECEIVED_BY_MOBILE_DEVICE: // Shaik updated
 			{
 				Task task = (Task) ev.getData();
 				
@@ -227,23 +228,38 @@ public class MobileDeviceManager extends DatacenterBroker {
 				//Find edgedevice + get cost
 				//double cost = task.getActualCPUTime() * task.getCostPerSec();
 				LinkedList<NodeSim> path = task.getPath();
+				int hostID = task.getAssociatedHostId();
+				EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostById(hostID);
 				double cost = 0;
+
 				if (path == null || path.size() == 0) {
-					int hostID = task.getAssociatedHostId();
-					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostById(hostID);
-					cost = task.getActualCPUTime() * task.getCostPerSec() + (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW();
+					double bwCost = (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW(); 
+					double exCost = task.getActualCPUTime() * task.getCostPerSec();
+					cost = cost + bwCost;
+					SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Level:\t" + k.getLevel() + "\tNode:\t" + k.getId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
+					SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + (task.getCloudletFileSize() + task.getCloudletOutputSize()) + "\tBWCostPerSec:\t" + k.getCostPerBW());
+					cost = cost + exCost;
+					SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Destination:\t"+ k.getId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
+					SimLogger.getInstance().getCentralizeLogPrinter().println("Task actual CPU Time:\t" + task.getActualCPUTime() + "\tMipsCostPerSec:\t" + task.getCostPerSec());
 				}
 				else {
 					for (NodeSim node: path) {
-						EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos());
-						cost = cost + (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW();
-						//SimLogger.printLine("cost " + cost);
+						k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos());
+						double bwCost = (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW();
+						cost = cost + bwCost;
+						SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Level:\t" + k.getLevel() + "\tNode:\t" + k.getId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
+						SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + (task.getCloudletFileSize() + task.getCloudletOutputSize()) + "\tBWCostPerSec:\t" + k.getCostPerBW());
 					}
-					cost = cost + task.getActualCPUTime() * task.getCostPerSec();
-					//SimLogger.printLine("2 : " + cost);
+					double exCost = task.getActualCPUTime() * task.getCostPerSec();
+					cost = cost + exCost;
+					k = SimManager.getInstance().getLocalServerManager().findHostById(hostID);
+					SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Destination:\t"+ k.getId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
+					SimLogger.getInstance().getCentralizeLogPrinter().println("Task actual CPU Time:\t" + task.getActualCPUTime() + "\tMipsCostPerSec:\t" + task.getCostPerSec());
 				}
 				//Qian change cost = latency cost + processing cost
 				//SimLogger.printLine(CloudSim.clock() + ": " + getName() + ": Cloudlet " + cloudlet.getCloudletId() + " is received");
+				SimLogger.getInstance().getCentralizeLogPrinter().println("Task logged total cost:   "+ cost);
+				Log.printLine("Task logged total cost:   "+ cost);
 				SimLogger.getInstance().downloaded(task.getCloudletId(), CloudSim.clock(), cost);
 
 				//Shaik added
