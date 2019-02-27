@@ -34,6 +34,7 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 	public EdgeByLatencyOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 	}
+	
 	/**
 	 * get all the hosts in the network into one list
 	 */
@@ -47,6 +48,7 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 		}
 
 	}
+	
 	/**
 	 * get the id of the appropriate host
 	 */
@@ -59,6 +61,7 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 			return -1;
 		}
 	}
+	
 	/**
 	 * the the appropriate VM to run on
 	 */
@@ -71,6 +74,7 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 			return null;
 		}
 	}
+	
 	/**
 	 * find the host
 	 * @param task
@@ -81,6 +85,7 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 		task.setPath(mb.getPath());
 		return mb.getHost();
 	}
+	
 	/* 
 	 * @ author Qian Wang
 	 * @ author Shehenaz Shaik
@@ -89,7 +94,7 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 	 */
 	@Override
 	public void assignHost(MobileDevice mobile) {
-		// TODO Auto-generated method stub
+		
 		DistRadix sort = new DistRadix(hosts, mobile.getLocation());//use radix sort based on distance from task
 		LinkedList<EdgeHost> nodes = sort.sortNodesByLatency();
 		//System.out.print("nodes size: " + nodes.size() + "  Device Id: " + mobile.getId() + "  WAP Id: " + mobile.getLocation().getServingWlanId());
@@ -99,6 +104,7 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 		 *     host = nodes.poll();
 		 * }
 		 */
+		System.out.print("Prospective host:  ");
 		while(!goodHost(host, mobile)) {
 			host = nodes.poll();//find the closest node capable of handling the task
 			if (host == null) {
@@ -110,17 +116,19 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 			mobile.setPath(path);
 			mobile.setHost(host);
 			mobile.makeReservation();
-			//System.out.println("  Assigned host: " + host.getId());
+			System.out.println("  Assigned host: " + host.getId());
 		}
 		else
 			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
 	}
+	
 	/**
 	 * @return the hosts
 	 */
 	public ArrayList<EdgeHost> getHosts() {
 		return hosts;
 	}
+	
 	/**
 	 * @param hosts the hosts to set
 	 */

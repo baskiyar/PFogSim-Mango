@@ -5,3 +5,5 @@
 *.xml
 *.txt
 *.log
+scripts/Analysis/MultipleIter/matlab_notmoving/plotAvgVmUtilization.asv
+scripts/Analysis/MultipleIter/matlab_notmoving/plotAvgVmUtilization.asv

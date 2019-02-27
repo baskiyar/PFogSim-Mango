@@ -236,29 +236,28 @@ public class MobileDeviceManager extends DatacenterBroker {
 					double bwCost = (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW(); 
 					double exCost = task.getActualCPUTime() * task.getCostPerSec();
 					cost = cost + bwCost;
-					SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Level:\t" + k.getLevel() + "\tNode:\t" + k.getId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
-					SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + (task.getCloudletFileSize() + task.getCloudletOutputSize()) + "\tBWCostPerSec:\t" + k.getCostPerBW());
+					//SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Level:\t" + k.getLevel() + "\tNode:\t" + k.getId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
+					//SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + (task.getCloudletFileSize() + task.getCloudletOutputSize()) + "\tBWCostPerSec:\t" + k.getCostPerBW());
 					cost = cost + exCost;
-					SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Destination:\t"+ k.getId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
-					SimLogger.getInstance().getCentralizeLogPrinter().println("Task actual CPU Time:\t" + task.getActualCPUTime() + "\tMipsCostPerSec:\t" + task.getCostPerSec());
+					//SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Destination:\t"+ k.getId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
+					//SimLogger.getInstance().getCentralizeLogPrinter().println("Task actual CPU Time:\t" + task.getActualCPUTime() + "\tMipsCostPerSec:\t" + task.getCostPerSec());
 				}
 				else {
 					for (NodeSim node: path) {
 						k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos());
 						double bwCost = (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW();
 						cost = cost + bwCost;
-						SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Level:\t" + k.getLevel() + "\tNode:\t" + k.getId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
-						SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + (task.getCloudletFileSize() + task.getCloudletOutputSize()) + "\tBWCostPerSec:\t" + k.getCostPerBW());
+						//SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Level:\t" + k.getLevel() + "\tNode:\t" + k.getId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
+						//SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + (task.getCloudletFileSize() + task.getCloudletOutputSize()) + "\tBWCostPerSec:\t" + k.getCostPerBW());
 					}
 					double exCost = task.getActualCPUTime() * task.getCostPerSec();
 					cost = cost + exCost;
 					k = SimManager.getInstance().getLocalServerManager().findHostById(hostID);
-					SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Destination:\t"+ k.getId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
-					SimLogger.getInstance().getCentralizeLogPrinter().println("Task actual CPU Time:\t" + task.getActualCPUTime() + "\tMipsCostPerSec:\t" + task.getCostPerSec());
+					//SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Destination:\t"+ k.getId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
+					//SimLogger.getInstance().getCentralizeLogPrinter().println("Task actual CPU Time:\t" + task.getActualCPUTime() + "\tMipsCostPerSec:\t" + task.getCostPerSec());
 				}
 				//Qian change cost = latency cost + processing cost
-				//SimLogger.printLine(CloudSim.clock() + ": " + getName() + ": Cloudlet " + cloudlet.getCloudletId() + " is received");
-				SimLogger.getInstance().getCentralizeLogPrinter().println("Task logged total cost:   "+ cost);
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("Task logged total cost:   "+ cost);
 				Log.printLine("Task logged total cost:   "+ cost);
 				SimLogger.getInstance().downloaded(task.getCloudletId(), CloudSim.clock(), cost);
 

@@ -23,6 +23,7 @@ import edu.boun.edgecloudsim.edge_server.EdgeVM;
 public class FixedNodeOrchestrator extends EdgeOrchestrator{
 	
 	private static String node = "Datacenter_1";
+	EdgeHost cHost;
 	
 	public FixedNodeOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
@@ -30,7 +31,12 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 	
 	@Override
 	public void initialize() {
-
+		try {
+			cHost = (EdgeHost)(SimManager.getInstance().getLocalServerManager().findHostById(1));
+			}
+			catch (NullPointerException e) {
+				return;
+			}
 	}
 
 	/**
@@ -45,6 +51,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 			return -1;
 		}
 	}
+	
 	/**
 	 * the the appropriate VM to run on
 	 */
@@ -57,6 +64,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 			return null;
 		}
 	}
+	
 	/**
 	 * find the host
 	 * @param task
@@ -67,6 +75,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 		task.setPath(mb.getPath());
 		return mb.getHost();
 	}
+	
 	/**
 	 * set cloud
 	 * modified by Qian
@@ -84,14 +93,56 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 	 */
 	@Override
 	public void assignHost(MobileDevice mobile) {
-		// TODO Auto-generated method stub
-		EdgeHost host = (EdgeHost) cloud.getHostList().get(0);
-		if (goodHost(host, mobile)) {
-			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(host, mobile);
+		EdgeHost cloudHost = (EdgeHost) cloud.getHostList().get(0);
+		cloudHost = (EdgeHost)cHost; // Shaik added
+		if (goodHost(cloudHost, mobile)) {
+			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(cloudHost, mobile);
 			mobile.setPath(path);
-			mobile.setHost(host);
+			mobile.setHost(cloudHost);
 			mobile.makeReservation();
+			
+			//-- Shaik - Following code component is to track the expected total cost.
+			///*
+			double cost=0;
+			NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(mobile.getLocation(), false);
+			NodeSim des = ((ESBModel)(SimManager.getInstance().getNetworkModel())).getNetworkTopology().findNode(cloudHost.getLocation(), false);
+
+			ESBModel networkModel = (ESBModel)(SimManager.getInstance().getNetworkModel());
+			LinkedList<NodeSim> tpath = new LinkedList<>();
+			tpath = networkModel.findPath(src, des);
+			
+			if (tpath == null || tpath.size() == 0) {
+				EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(mobile.getLocation().getXPos(), mobile.getLocation().getYPos());
+				
+				double bwCost = mobile.getBWRequirement() * k.getCostPerBW(); 
+				double exCost = (double)mobile.getTaskLengthRequirement() / k.getTotalMips() * k.getCostPerSec();
+				cost = cost + bwCost;
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("Level:\t" + des.getLevel() + "\tNode:\t" + des.getWlanId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + mobile.getBWRequirement() + "\tBWCostPerSec:\t" + k.getCostPerBW());
+				cost = cost + exCost;
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("Destination:\t"+ des.getWlanId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("Service CPU Time:\t" + ((double)mobile.getTaskLengthRequirement() / k.getTotalMips()) + "\tMipsCostPerSec:\t" + k.getCostPerSec());
+			}
+			else {
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("**********Path From " + src.getWlanId() + " To " + des.getWlanId() + "**********");
+				for (NodeSim node: tpath) {
+					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos());
+					double bwCost = mobile.getBWRequirement() * k.getCostPerBW();
+					cost = cost + bwCost;
+					//SimLogger.getInstance().getCentralizeLogPrinter().println("Level:\t" + node.getLevel() + "\tNode:\t" + node.getWlanId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
+					//SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + mobile.getBWRequirement() + "\tBWCostPerSec:\t" + k.getCostPerBW());
+				}				
+				EdgeHost desHost = SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos());
+				double exCost = desHost.getCostPerSec() * 
+						((double)mobile.getTaskLengthRequirement() / desHost.getTotalMips());
+				cost = cost + exCost;
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("Destination:\t"+ des.getWlanId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
+				//SimLogger.getInstance().getCentralizeLogPrinter().println("Service CPU Time:\t" + ((double)mobile.getTaskLengthRequirement() / desHost.getTotalMips()) + "\tMipsCostPerSec:\t" + desHost.getCostPerSec());
+			}
+			//*/						
 		}
+		else
+			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
 	}
 
 	/**

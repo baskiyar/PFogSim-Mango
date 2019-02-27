@@ -1,8 +1,10 @@
 /**
- * Centralized Orchestrator for comparison against Puddle algorithm
+ * Local only Orchestrator for comparison against Puddle algorithm.
  * 
- * This orchestrator uses the centralized approach to selecting a VM but never associates a task to the cloud
- * @author jih0007@auburn.edu
+ * This orchestrator uses the centralized approach to selecting a VM.
+ * @author Jacob hall
+ * @author Shehenaz Shaik
+ * @author Qian Wang
  */
 package edu.auburn.pFogSim.orchestrator;
 
@@ -33,6 +35,7 @@ public class LocalOnlyOrchestrator extends EdgeOrchestrator {
 	public LocalOnlyOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 	}
+	
 	/**
 	 * get all the hosts in the network into one list
 	 */
@@ -49,6 +52,7 @@ public class LocalOnlyOrchestrator extends EdgeOrchestrator {
 		}
 
 	}
+	
 	/**
 	 * get the id of the appropriate host
 	 */
@@ -61,6 +65,7 @@ public class LocalOnlyOrchestrator extends EdgeOrchestrator {
 			return -1;
 		}
 	}
+	
 	/**
 	 * the the appropriate VM to run on
 	 *
@@ -76,6 +81,7 @@ public class LocalOnlyOrchestrator extends EdgeOrchestrator {
 			return null;
 		}
 	}
+	
 //	/**
 //	 * find the host
 //	 * @param task
@@ -136,7 +142,7 @@ public class LocalOnlyOrchestrator extends EdgeOrchestrator {
 			mobile.setPath(path);
 			mobile.setHost(localHost);
 			mobile.makeReservation();
-			//System.out.println("  Assigned host: " + host.getId());
+			System.out.println("  Assigned host: " + localHost.getId());
 		}
 		else
 			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+ wapId +"  Assigned host:  NULL");
