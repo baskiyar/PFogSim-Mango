@@ -25,7 +25,7 @@ import edu.auburn.pFogSim.orchestrator.EdgeByLatencyOrchestrator;
 import edu.auburn.pFogSim.orchestrator.EdgeByDistanceOrchestrator;
 import edu.auburn.pFogSim.orchestrator.FixedNodeOrchestrator;
 import edu.auburn.pFogSim.orchestrator.LocalOnlyOrchestrator;
-import edu.auburn.pFogSim.orchestrator.PuddleOrchestrator;
+import edu.auburn.pFogSim.orchestrator.HAFAOrchestrator;
 import edu.auburn.pFogSim.orchestrator.SelectedLevelsOrchestrator;
 import edu.auburn.pFogSim.orchestrator.SelectedNodesOrchestrator;
 import edu.boun.edgecloudsim.core.ScenarioFactory;
@@ -64,7 +64,7 @@ public class SampleScenarioFactory implements ScenarioFactory {
 	@Override
 	public EdgeOrchestrator getEdgeOrchestrator() {
 		if (simScenario.equals("PUDDLE_ORCHESTRATOR")) { 
-			return new PuddleOrchestrator(orchestratorPolicy, simScenario);
+			return new HAFAOrchestrator(orchestratorPolicy, simScenario);
 		}
 		else if (simScenario.equals("CENTRALIZED_ORCHESTRATOR")) {
 			return new CentralOrchestrator(orchestratorPolicy, simScenario);

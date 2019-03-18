@@ -44,7 +44,7 @@ import edu.auburn.pFogSim.Puddle.Puddle;
 import edu.auburn.pFogSim.clustering.*;
 import edu.auburn.pFogSim.netsim.*;
 import edu.auburn.pFogSim.orchestrator.CloudOnlyOrchestrator;
-import edu.auburn.pFogSim.orchestrator.PuddleOrchestrator;
+import edu.auburn.pFogSim.orchestrator.HAFAOrchestrator;
 
 public class EdgeServerManager {
 	private List<Datacenter> localDatacenters;
@@ -131,7 +131,7 @@ public class EdgeServerManager {
 		((ESBModel) SimManager.getInstance().getNetworkModel()).setNetworkTopology(networkTopology);
 		
 		//((ESBModel) SimManager.getInstance().getNetworkModel()).gravityWell();
-		if (SimManager.getInstance().getEdgeOrchestrator() instanceof PuddleOrchestrator) {
+		if (SimManager.getInstance().getEdgeOrchestrator() instanceof HAFAOrchestrator) {
 			SimLogger.print("\n\tMaking Cluster Object...");
 			FogHierCluster clusterObject = new FogHierCluster((ArrayList<NodeSim>)nodesForTopography);
 			//Sets network topology and uses it to make the Puddle Objects

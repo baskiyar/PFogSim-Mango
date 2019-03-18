@@ -24,7 +24,7 @@ import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.j2d.Site;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NetworkTopology;
 import edu.auburn.pFogSim.netsim.NodeSim;
-import edu.auburn.pFogSim.orchestrator.PuddleOrchestrator;
+import edu.auburn.pFogSim.orchestrator.HAFAOrchestrator;
 import edu.auburn.pFogSim.util.DataInterpreter;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
@@ -128,7 +128,7 @@ public class XYVectorMobility extends MobilityModel {
 					PowerDiagram diagram = SimManager.getInstance().getVoronoiDiagramAtLevel(levelNum - 1);
 					diagram.showDiagram();
 					
-					if (SimManager.getInstance().getEdgeOrchestrator() instanceof PuddleOrchestrator) {
+					if (SimManager.getInstance().getEdgeOrchestrator() instanceof HAFAOrchestrator) {
 						for(Site site : diagram.getSites())
 						{
 							SimLogger.printLine("\ndiagram.getSites.size() : " + diagram.getSites().size);
