@@ -78,11 +78,23 @@ public class SimManager extends SimEntity {
 
 	private static SimManager instance = null;
 	
+	/**
+	 * Constructor
+	 * - Generates workload for all mobile devices.
+	 * - Configures network topology
+	 * - Identify orchestrator policy
+	 * - Create physical servers (fog nodes) and mobile devices
+	 * @param _scenarioFactory
+	 * @param _numOfMobileDevice
+	 * @param _simScenario
+	 * @throws Exception
+	 */
 	public SimManager(ScenarioFactory _scenarioFactory, int _numOfMobileDevice, String _simScenario) throws Exception {
 		super("SimManager");
 		scenarioFactory = _scenarioFactory;
 		numOfMobileDevice = _numOfMobileDevice;
 
+		// Generate workload (tasks) for all mobile devices to be executed during the simulation test run.  
 		SimLogger.print("Creating tasks...");
 		loadGeneratorModel = scenarioFactory.getLoadGeneratorModel();
 		loadGeneratorModel.initializeModel();
@@ -93,7 +105,7 @@ public class SimManager extends SimEntity {
 		networkModel = scenarioFactory.getNetworkModel();
 		networkModel.initialize();
 		
-		//Generate edge orchestrator
+		//Identify orchestrator policy 
 		edgeOrchestrator = scenarioFactory.getEdgeOrchestrator();
 		//edgeOrchestrator.initialize();
 		
@@ -107,6 +119,10 @@ public class SimManager extends SimEntity {
 		instance = this;
 	}
 	
+	/**
+	 * Returns current instance of SimManager 
+	 * @return
+	 */
 	public static SimManager getInstance(){
 		return instance;
 	}

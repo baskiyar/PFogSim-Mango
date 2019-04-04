@@ -12,6 +12,7 @@ import edu.boun.edgecloudsim.utils.Location;
 
 public class FogHierCluster {
 	private ArrayList<FogCluster> clusterList = new ArrayList<FogCluster>();
+	public int[][] parentCluster;
 	
 	
 	public FogHierCluster(ArrayList<NodeSim> nodes) {
@@ -19,9 +20,12 @@ public class FogHierCluster {
 		HashMap<Integer, ArrayList<Location>> levelMap = new HashMap<Integer, ArrayList<Location>>();
 		int level = 1000;
 		double x_pos = -1.0, y_pos = -1.0;
-		//ArrayList<Location> tempList;
-//		for(int r = 0; r < 20; r++)
-//			levelMap.put(r, new ArrayList<Location>()); //commented by Qian
+		int[] clusterCount = {100, 40, 20, 10, 3, 1, 1}; // Shaik added - number of clusters to be created in a given layer.
+		double[] maxLatency = {2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0}; // Shaik added - max latency between any two nodes in a given layer is 2 msec.
+		
+		ArrayList<Location> newList = new ArrayList<>();
+		for(int r = 1; r <= 7; r++)
+			levelMap.put(r, new ArrayList<Location>()); 
 		//Add all nodes to levelMap based on their level values
 		for(NodeSim node : nodes)
 		{
@@ -33,71 +37,62 @@ public class FogHierCluster {
 				levelMap.get(level).add(pair);
 			}
 			else {
-				ArrayList<Location> newList = new ArrayList<>();
+				newList = new ArrayList<>();
 				newList.add(pair);
 				levelMap.put(level, newList);
 			}
-			//SimLogger.printLine("node added!");
-			/*if(levelMap.size() != 0)
-			{
-				
-			}*/
-			//else
-			//{
-				//levelMap.put(level, new ArrayList<Pair<Integer, Integer>>());
-				//Pair<Integer, Integer> pair = new Pair<Integer, Integer>(x_pos, y_pos);
-				//levelMap.get(level).add(pair);
-			//}
 		}
-		int length = levelMap.size();
-		//SimLogger.printLine("Length = " + length);
-//		int removed = 0;//commented by Qian
-//		for (int i = 1; i < length; i++) {
-//			if(levelMap.get(i).size() == 0) {
-//				levelMap.remove(i);
-//				removed++;
-//			}
-//		}
-		//SimLogger.printLine("Removed = " + removed);
-		//Add all clusters we are making out of each layer to the clusterList
-		for(int leveliter = 1; leveliter < levelMap.size(); leveliter++)
+
+		//Create clusters of nodes at each fog layer & save the configuration in clusterList
+		for(int levelIter = 1; levelIter <= 7; levelIter++)
 		{
-			//SimLogger.printLine("Size = " + levelMap.get(leveliter));
-			FogCluster fc = new FogCluster(levelMap.get(leveliter), leveliter);// Qian just for get matrix, remove it after get latency.
-			//FogCluster fc = new FogCluster(levelMap.get(leveliter));// Qian make FogCluster in every layer.
-			//FogCluster fc = new FogCluster(levelMap.get(leveliter), max); Qian switch to this method after we get max distance or latency
+			FogCluster fc = new FogCluster(levelMap.get(levelIter), levelIter, clusterCount[levelIter-1]); // Create specified number of clusters in each layer.
+			//FogCluster fc = new FogCluster(levelMap.get(levelIter), levelIter, maxLatency[levelIter-1]); // Clusters defined by maximum latency among members of each cluster.
 			clusterList.add(fc);
 		}
 		
-		//Make the clusters
+		//Identify parent/child relationships among clusters belonging to adjacent layers.
 		makeClusters();
+		
+		//Log the configuration 
 		writeClustersToFile();
-	}
+	}// end FogHierCluster()
 	
+	/**
+	 * Create HAFA Architecture inter-layer links
+	 * @author Shaik
+	 */
 	private void makeClusters() 
 	{
-		//Now, for each set of clusters in adjacent layers, repeat the following:
-				//Say clusters in layer-3 & layer-4
 		double distance = 0;
 		double clusterMaxDistance = 0 ;
 		double minDistance = Double.MAX_VALUE;
-		int parent = 0;
-		int[] parentCluster;
+		parentCluster = new int[clusterList.size()][];
 		int j;
+
+		//Now, for each set of clusters in adjacent layers, repeat the following:
+				//Say clusters in layer-3 & layer-4
+		
 		for(int i = clusterList.size() - 2; i > 0; i--)
 		{
-				j = i - 1;
+			//entry pairs considered are (i-j) = 5-4, 4-3, 3-2, 2-1, 1-0
+			//corresponding layer pairs considered are = 6-5, 5-4, 4-3, 3-2, 2-1
+			
+				j = i - 1; //i - upper layer index; j-lower layer index
+				
+				// clusterList element at index p has clusters info for layer p+1
 				int clusterNumber3 = clusterList.get(j).getCluster().length;
 				int clusterNumber4 = clusterList.get(i).getCluster().length;
 				
+				parentCluster[j] = new int[clusterNumber3];
+				
 				Double[][][] clusterSet3 = clusterList.get(j).getCluster();
 				Double[][][] clusterSet4 = clusterList.get(i).getCluster();
-				parentCluster = new int[clusterNumber3];
+				//parentCluster = new int[clusterNumber3];
 				
 				//For each cluster in lower layer, do the following
 				for (int cLower=0; cLower<clusterNumber3; cLower++){
 					minDistance = Double.MAX_VALUE;
-					parent = 0;
 					
 					//For each cluster in upper layer, do the following
 					for(int cUpper=0; cUpper<clusterNumber4; cUpper++){
@@ -137,20 +132,22 @@ public class FogHierCluster {
 						//If this is the closer upper layer cluster, then this is a better parent cluster
 						if (clusterMaxDistance < minDistance){
 							minDistance = clusterMaxDistance;
-							parentCluster[cLower] = cUpper; 
+							parentCluster[j][cLower] = cUpper; 
 						}
 						
 					}// end for cUpper
 				}// end for cLower
 				
+				
 				//Print Parent/Child relationships
-				//System.out.println("ChildCluster"+"   "+"ParentCluster");
-				//for (int cLower=0; cLower<clusterNumber3; cLower++){
-					//System.out.println("         "+cLower+"   "+"         "+parentCluster[cLower]);
-				//}// end for cLower-Print
+				System.out.println("\nChildCluster"+"   "+"ParentCluster");
+				for (int cLower=0; cLower<clusterNumber3; cLower++){
+					System.out.println("         "+cLower+"   "+"         "+parentCluster[cLower]);
+				}// end for cLower-Print
+				
 		}
 
-	}
+	}// end makeClusters()
 	
 	public ArrayList<FogCluster> getClusters() {
 		return clusterList;

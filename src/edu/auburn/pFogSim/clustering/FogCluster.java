@@ -115,9 +115,8 @@ public class FogCluster {
 
 
 	/**
-	 * Calculate Proximity matrix
-	 * Method - calcProximity
-	 * 
+	 * This method calculates Proximity matrix.
+	 *  
 	 */
 	void calcProximity(){
 		
@@ -135,7 +134,8 @@ public class FogCluster {
 		
 		proximityMatrix = new double[n][n];
 		
-		if(SimSettings.getInstance().getClusterType()) {//Qian changed for cluster type.
+		if(SimSettings.getInstance().getClusterType()) {//Qian changed for cluster type. {TRUE - Distance; FALSE - Latency}
+			System.out.println("Populating proximity matrix with distances.");
 			for (int i=0; i<n; i++){// distance based
 				// First point
 				x1 = points[i][0];
@@ -149,13 +149,13 @@ public class FogCluster {
 					//Calculate distance
 					//distance = Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1)));
 					distance = DataInterpreter.measure(x1, y1, x2, y2); //Qian added
-					//System.out.println(distance);
+					System.out.print(distance+" , ");
 					
 					//Update entry in proximityMatrix
 					proximityMatrix[i][j] = distance;
 					
 				}// end for j
-					
+				System.out.println();
 			}//end for i
 		}
 		else {
@@ -278,27 +278,25 @@ public void learnByMaxHeight(){
 	
 	
 	
-	
+	/**
+	 * This method creates 'clusterNumber' number of clusters from given set of points.
+	 */
 	public void learn(){
 		
-		//HierarchicalClustering hc = new HierarchicalClustering(new SingleLinkage(proximityMatrix));
 		HierarchicalClustering hc = new HierarchicalClustering(new CompleteLinkage(proximityMatrix));
-		//SimLogger.printLine("clusterNumber is: "+clusterNumber);
-//		int[] membership = hc.partition(maxClusterHeight);//Qian commented for get matrix
-//		clusterNumber = membership.length;
+
+		//Create clusters
 		int[] membership = hc.partition(clusterNumber);
-		//SimLogger.printLine("Membership : " + membership);
+		// membership[a]=b, signifies that point 'a' belongs to cluster 'b' 
+		
+		// Get member count of each of the clusters
 		int[] clusterSize = new int[clusterNumber];
-		//SimLogger.printLine("ClusterSize : " + clusterSize);
-		//System.out.println("membership[] length: "+membership.length);
-		//SimLogger.printLine("membership.length : " + membership.length);
 		for (int i=0; i< membership.length; i++){
 			clusterSize[membership[i]]++;
 			//SimLogger.printLine("i membership[i] clusterSize: "+i+"   "+membership[i]+"   "+clusterSize[membership[i]]);
 		} 
 		
 		cluster = new Double[clusterNumber][][];
-		//System.out.println("clusterNumber is: "+clusterNumber);
 		for (int k = 0; k < clusterNumber; k++){
 			//System.out.println("k clusterSize[k]: "+k+"   "+clusterSize[k]);
 			cluster[k] = new Double[clusterSize[k]][2];
@@ -310,47 +308,12 @@ public void learnByMaxHeight(){
 			}// end for i,j
 			
 			// These are classified as a cluster; print these separately. 
-			//System.out.println("\n\n Cluster Number: " + k +"\n");
+			System.out.println("\n\n Cluster Number: " + k +"\n");
 			for (int i=0; i<clusterSize[k]; i++){
-				//System.out.println(cluster[k][i][0]+" , "+cluster[k][i][1]);
+				System.out.println(cluster[k][i][0]+" , "+cluster[k][i][1]);
 			}// end for i
-			
 		}// end for k
 		
-		/* code prior to change
-		 * 		for (int k=0; k<clusterNumber; k++){
-			Integer[][] cluster = new Integer[clusterSize[k]][];
-			
-			for (int i=0,j=0; i<points.length; i++){
-				if (membership[i] == k){
-					cluster[j++] = points[i];
-				}// end if				
-			}// end for i,j
-			
-			// These are classified as a cluster; print these separately. 
-			//System.out.println("\n\n Cluster Number: " + k +"\n");
-			for (int i=0; i<clusterSize[k]; i++){
-				//System.out.println(cluster[i][0]+" , "+cluster[i][1]);
-			}// end for i
-			
-		}// end for k
-		
-		 * */
-		
-		/** Copied code here
-		 for (int k = 0; k < clusterNumber; k++) {
-	            double[][] cluster = new double[clusterSize[k]][];
-	            for (int i = 0, j = 0; i < dataset[datasetIndex].length; i++) {
-	                if (membership[i] == k) {
-	                    cluster[j++] = dataset[datasetIndex][i];
-	                }
-	            }
-
-	            plot.points(cluster, pointLegend, Palette.COLORS[k % Palette.COLORS.length]);
-	        }
-		*/
-		
-				
 	}// end learn()
 	
 	
@@ -367,60 +330,51 @@ public void learnByMaxHeight(){
 		
 	}// end Constructor FogHierCluster()
 	
-	public FogCluster(ArrayList<Location> arrayList) {
+	/**
+	 * This method creates 'clusterCount' number of clusters from given list of locations. 
+	 * @param arrayList
+	 * @param fogLevel
+	 * @param clusterCount
+	 * 
+	 * @author Shaik
+	 */
+	public FogCluster(ArrayList<Location> arrayList, int fogLevel, int clusterCount) {
 		//arrayList is a list of all the Locations on the map a device exists
 		super();
-		//SimLogger.printLine("Blank constructor FogCluster() reached");
-		//SimLogger.printLine("LevelList size = " + levelList.size());
+		this.level = fogLevel;
+		
 		if(arrayList.size() < 4)
 			setClusterNumber(arrayList.size());
 		else
 			setClusterNumber(arrayList.size() / 4);
+		
+		// Specify the number of clusters to create.
+		setClusterNumber(clusterCount);
+		
+		// Populate array of 'points' from given list of locations.
 		stdInput(arrayList);
+		
+		// Calculate proximity matrix i.e. distances between each pair of points.
 		calcProximity();
+		
+		// Group points into clusters.
 		if(arrayList.size() > 0)
 			learn();
 		
 		//Make the voronoi diagram for that level and add it to the list
 		//PowerDiagram voronoi = new PowerDiagram(arrayList);
 		//SimLogger.printLine("ArrayList : " + arrayList);
-		SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
+		//------later------SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
 		
 	}
-	/**
-	 * @author Qian
-	 * add a new parameter to get level for print matrix 
-	 * @param arrayList
-	 * @param _level
-	 */
-	public FogCluster(ArrayList<Location> arrayList, int _level) {
+	
+	public FogCluster(ArrayList<Location> arrayList, int _level, double max) {
 		//arrayList is a list of all the Locations on the map a device exists
 		super();
 		this.level = _level;
 		//SimLogger.printLine("Blank constructor FogCluster() reached");
 		//SimLogger.printLine("LevelList size = " + levelList.size());
-		if(arrayList.size() < 4)
-			setClusterNumber(arrayList.size());
-		else
-			setClusterNumber(arrayList.size() / 4);
-		stdInput(arrayList);
-		calcProximity();
-		if(arrayList.size() > 0)
-			learn();
-		
-		//Make the voronoi diagram for that level and add it to the list
-		//PowerDiagram voronoi = new PowerDiagram(arrayList);
-		//SimLogger.printLine("ArrayList : " + arrayList);
-		SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
-		
-	}
-	
-	public FogCluster(ArrayList<Location> arrayList, double max) {
-		//arrayList is a list of all the Locations on the map a device exists
-		super();
-		//SimLogger.printLine("Blank constructor FogCluster() reached");
-		//SimLogger.printLine("LevelList size = " + levelList.size());
-		setClusterHeight(max);
+		setClusterHeight(max); 
 		stdInput(arrayList);
 		calcProximity();
 		if(arrayList.size() > 0)
@@ -429,7 +383,7 @@ public void learnByMaxHeight(){
 		//Make the voronoi diagram for that level and add it to the list
 		//PowerDiagram voronoi = new PowerDiagram(arrayList);
 		//SimLogger.printLine("ArrayList : " + arrayList);
-		SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
+		//------later------SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
 		
 	}
 

@@ -129,20 +129,26 @@ public class EdgeServerManager {
 		}
 		
 		((ESBModel) SimManager.getInstance().getNetworkModel()).setNetworkTopology(networkTopology);
-		
 		//((ESBModel) SimManager.getInstance().getNetworkModel()).gravityWell();
+
+		// If HAFA Orchestrator, configure HAFA logical architecture
 		if (SimManager.getInstance().getEdgeOrchestrator() instanceof HAFAOrchestrator) {
-			SimLogger.print("\n\tMaking Cluster Object...");
+			SimLogger.print("\n\t Creating clusters of fog nodes...");
+			
+			// Organize fog nodes belonging to each layer into clusters based on predefined criteria.
 			FogHierCluster clusterObject = new FogHierCluster((ArrayList<NodeSim>)nodesForTopography);
-			//Sets network topology and uses it to make the Puddle Objects
+			
+			//Populate puddles with cluster members; Save configuration in network topology
 			networkTopology.setPuddles(makePuddles(clusterObject));
-			SimLogger.printLine("Done,");
+			
+			SimLogger.printLine("HAFA Achitecture configuration completed.");
+			
 			/*LinesComponent comp = new LinesComponent();
 			comp.drawNetworkTopology(5);
 			comp.drawNetworkTopology(4);
 			comp.drawNetworkTopology(3);*/
 
-		}
+		}// end HAFA Arch
 		checkUniqueDC();
 	}
 
