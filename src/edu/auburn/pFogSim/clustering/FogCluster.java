@@ -214,9 +214,21 @@ public class FogCluster {
 		int[] clusterSize = new int[clusterNumber];
 		for (int i=0; i< membership.length; i++){
 			clusterSize[membership[i]]++;
-			//SimLogger.printLine("i membership[i] clusterSize: "+i+"   "+membership[i]+"   "+clusterSize[membership[i]]);
+			SimLogger.printLine("i membership[i] clusterSize: "+i+"   "+membership[i]+"   "+clusterSize[membership[i]]);
 		} 
 		
+		// Get the number of clusters with >=1 members
+		for(int i=0; i < membership.length; i++) {
+			SimLogger.printLine("Cluster id: "+i+" ClusterSize: "+clusterSize[i]);	
+			
+			// Identify the number of clusters formed based on specified criteria of maximum height (distance/latency)
+			if (clusterSize[i]== 0) {
+				clusterNumber = i;
+				break;
+			}
+		}
+		SimLogger.printLine("Identified number of clusters formed: "+clusterNumber);
+				
 		cluster = new Double[clusterNumber][][];
 		//System.out.println("clusterNumber is: "+clusterNumber);
 		for (int k = 0; k < clusterNumber; k++){
@@ -344,6 +356,8 @@ public class FogCluster {
 		// If there s only one point, then place it in a singleton cluster.
 		if (arrayList.size() == 1){
 			setClusterNumber(1);
+			cluster = new Double[clusterNumber][][];
+			cluster[0] = new Double[1][2];
 			this.cluster[0][0] = points[0];			
 		}
 		

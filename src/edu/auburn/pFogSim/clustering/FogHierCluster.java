@@ -22,7 +22,7 @@ public class FogHierCluster {
 		double x_pos = -1.0, y_pos = -1.0;
 		int[] clusterCount = {100, 40, 20, 10, 3, 1, 1}; // Shaik added - number of clusters to be created in a given layer.
 		double[] maxLatency = {2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0}; // Shaik added - max latency between any two nodes in a given layer is 2 msec.
-		double[] maxDistance = {500, 1000, 1500, 2000, 2500, 3000, 4000}; // Shaik added - max latency between any two nodes in a given layer is 2 msec.
+		double[] maxDistance = {200, 500, 750, 1250, 1000, 3000, 4000}; // Shaik added - max distance between any two nodes in a given layer is 2 msec.
 		
 		ArrayList<Location> newList = new ArrayList<>();
 		for(int r = 1; r <= 7; r++)
