@@ -162,6 +162,9 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 	 */
 	@Override
 	public void assignHost(MobileDevice mobile) {
+		if (1==1) 
+			return;
+
 		Puddle puddle = getNearest0Pud(mobile);//start with the closest level0 puddle
 		Puddle nextBestPuddle = null;
 		ArrayList<Puddle> puds = new ArrayList<Puddle>();

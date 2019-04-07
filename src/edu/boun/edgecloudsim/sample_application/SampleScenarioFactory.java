@@ -63,7 +63,7 @@ public class SampleScenarioFactory implements ScenarioFactory {
 
 	@Override
 	public EdgeOrchestrator getEdgeOrchestrator() {
-		if (simScenario.equals("PUDDLE_ORCHESTRATOR")) { 
+		if (simScenario.equals("HAFA_ORCHESTRATOR")) { 
 			return new HAFAOrchestrator(orchestratorPolicy, simScenario);
 		}
 		else if (simScenario.equals("CENTRALIZED_ORCHESTRATOR")) {

@@ -22,6 +22,7 @@ public class FogHierCluster {
 		double x_pos = -1.0, y_pos = -1.0;
 		int[] clusterCount = {100, 40, 20, 10, 3, 1, 1}; // Shaik added - number of clusters to be created in a given layer.
 		double[] maxLatency = {2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0}; // Shaik added - max latency between any two nodes in a given layer is 2 msec.
+		double[] maxDistance = {500, 1000, 1500, 2000, 2500, 3000, 4000}; // Shaik added - max latency between any two nodes in a given layer is 2 msec.
 		
 		ArrayList<Location> newList = new ArrayList<>();
 		for(int r = 1; r <= 7; r++)
@@ -46,8 +47,10 @@ public class FogHierCluster {
 		//Create clusters of nodes at each fog layer & save the configuration in clusterList
 		for(int levelIter = 1; levelIter <= 7; levelIter++)
 		{
-			FogCluster fc = new FogCluster(levelMap.get(levelIter), levelIter, clusterCount[levelIter-1]); // Create specified number of clusters in each layer.
+			//FogCluster fc = new FogCluster(levelMap.get(levelIter), levelIter, clusterCount[levelIter-1]); // Create specified number of clusters in each layer.
 			//FogCluster fc = new FogCluster(levelMap.get(levelIter), levelIter, maxLatency[levelIter-1]); // Clusters defined by maximum latency among members of each cluster.
+			FogCluster fc = new FogCluster(levelMap.get(levelIter), levelIter, maxDistance[levelIter-1]); // Clusters defined by maximum latency among members of each cluster.
+
 			clusterList.add(fc);
 		}
 		
@@ -119,7 +122,7 @@ public class FogHierCluster {
 														
 								//find the distance
 								distance = Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1)));
-								////System.out.println(distance);
+								//System.out.println(distance);
 								
 								// Save the maximum distance
 								if (distance > clusterMaxDistance){
@@ -142,7 +145,7 @@ public class FogHierCluster {
 				//Print Parent/Child relationships
 				System.out.println("\nChildCluster"+"   "+"ParentCluster");
 				for (int cLower=0; cLower<clusterNumber3; cLower++){
-					System.out.println("         "+cLower+"   "+"         "+parentCluster[cLower]);
+					System.out.println("         "+cLower+"   "+"         "+parentCluster[j][cLower]);
 				}// end for cLower-Print
 				
 		}

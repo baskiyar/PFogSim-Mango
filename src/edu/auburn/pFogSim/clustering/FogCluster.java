@@ -233,9 +233,9 @@ public void learnByMaxHeight(){
 			}// end for i,j
 			
 			// These are classified as a cluster; print these separately. 
-			//System.out.println("\n\n Cluster Number: " + k +"\n");
+			System.out.println("\n\n Cluster Number: " + k +"\n");
 			for (int i=0; i<clusterSize[k]; i++){
-				//System.out.println(cluster[k][i][0]+" , "+cluster[k][i][1]);
+				System.out.println(cluster[k][i][0]+" , "+cluster[k][i][1]);
 			}// end for i
 			
 		}// end for k
