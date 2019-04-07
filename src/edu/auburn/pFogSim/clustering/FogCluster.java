@@ -199,22 +199,19 @@ public class FogCluster {
 	 * @author szs0117
 	 * Create clusters
 	 * @param 
-	 */
-	
-public void learnByMaxHeight(){
+	 */	
+	public void learnByMaxHeight(){
 		
-		//HierarchicalClustering hc = new HierarchicalClustering(new SingleLinkage(proximityMatrix));
 		HierarchicalClustering hc = new HierarchicalClustering(new CompleteLinkage(proximityMatrix));
-		//SimLogger.printLine("clusterNumber is: "+clusterNumber);
-//		int[] membership = hc.partition(maxClusterHeight);//Qian commented for get matrix
-//		clusterNumber = membership.length;
+		
+		//Create clusters
 		int[] membership = hc.partition(this.maxClusterHeight);
-		//SimLogger.printLine("Membership : " + membership);
+		// membership[a]=b, signifies that point 'a' belongs to cluster 'b' 
+
 		clusterNumber = membership.length;  // Shaik added
+		
+		// Get member count of each of the clusters
 		int[] clusterSize = new int[clusterNumber];
-		//SimLogger.printLine("ClusterSize : " + clusterSize);
-		//System.out.println("membership[] length: "+membership.length);
-		//SimLogger.printLine("membership.length : " + membership.length);
 		for (int i=0; i< membership.length; i++){
 			clusterSize[membership[i]]++;
 			//SimLogger.printLine("i membership[i] clusterSize: "+i+"   "+membership[i]+"   "+clusterSize[membership[i]]);
@@ -237,46 +234,9 @@ public void learnByMaxHeight(){
 			for (int i=0; i<clusterSize[k]; i++){
 				System.out.println(cluster[k][i][0]+" , "+cluster[k][i][1]);
 			}// end for i
-			
 		}// end for k
-		
-		/* code prior to change
-		 * 		for (int k=0; k<clusterNumber; k++){
-			Integer[][] cluster = new Integer[clusterSize[k]][];
-			
-			for (int i=0,j=0; i<points.length; i++){
-				if (membership[i] == k){
-					cluster[j++] = points[i];
-				}// end if				
-			}// end for i,j
-			
-			// These are classified as a cluster; print these separately. 
-			//System.out.println("\n\n Cluster Number: " + k +"\n");
-			for (int i=0; i<clusterSize[k]; i++){
-				//System.out.println(cluster[i][0]+" , "+cluster[i][1]);
-			}// end for i
-			
-		}// end for k
-		
-		 * */
-		
-		/** Copied code here
-		 for (int k = 0; k < clusterNumber; k++) {
-	            double[][] cluster = new double[clusterSize[k]][];
-	            for (int i = 0, j = 0; i < dataset[datasetIndex].length; i++) {
-	                if (membership[i] == k) {
-	                    cluster[j++] = dataset[datasetIndex][i];
-	                }
-	            }
-
-	            plot.points(cluster, pointLegend, Palette.COLORS[k % Palette.COLORS.length]);
-	        }
-		*/
-		
-				
 	}// end learnByMaxHeight()
-	
-	
+		
 	
 	/**
 	 * This method creates 'clusterNumber' number of clusters from given set of points.
@@ -312,8 +272,7 @@ public void learnByMaxHeight(){
 			for (int i=0; i<clusterSize[k]; i++){
 				System.out.println(cluster[k][i][0]+" , "+cluster[k][i][1]);
 			}// end for i
-		}// end for k
-		
+		}// end for k		
 	}// end learn()
 	
 	
@@ -368,24 +327,36 @@ public void learnByMaxHeight(){
 		
 	}
 	
-	public FogCluster(ArrayList<Location> arrayList, int _level, double max) {
+	public FogCluster(ArrayList<Location> arrayList, int foglevel, double max) {
 		//arrayList is a list of all the Locations on the map a device exists
 		super();
-		this.level = _level;
-		//SimLogger.printLine("Blank constructor FogCluster() reached");
-		//SimLogger.printLine("LevelList size = " + levelList.size());
+		this.level = foglevel;
+		
+		// Specify the number of clusters to create, based on maximum distance/latency between members of each cluster.
 		setClusterHeight(max); 
+
+		// Populate array of 'points' from given list of locations.
 		stdInput(arrayList);
+
+		// Calculate proximity matrix i.e. distances between each pair of points.
 		calcProximity();
-		if(arrayList.size() > 0)
-			learnByMaxHeight();  // Shaik added
+		
+		// If there s only one point, then place it in a singleton cluster.
+		if (arrayList.size() == 1){
+			setClusterNumber(1);
+			this.cluster[0][0] = points[0];			
+		}
+		
+		// If >1 points, group them into clusters.
+		else if(arrayList.size() > 0) {
+			learnByMaxHeight();
+		}
 		
 		//Make the voronoi diagram for that level and add it to the list
 		//PowerDiagram voronoi = new PowerDiagram(arrayList);
 		//SimLogger.printLine("ArrayList : " + arrayList);
 		//------later------SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
-		
-	}
+	} // end FogCluster (max)
 
 
 	public static void main(String[] args) {
