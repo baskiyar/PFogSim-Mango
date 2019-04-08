@@ -15,6 +15,7 @@ package edu.boun.edgecloudsim.edge_server;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
 import org.cloudbus.cloudsim.Datacenter;
@@ -45,6 +46,7 @@ import edu.auburn.pFogSim.clustering.*;
 import edu.auburn.pFogSim.netsim.*;
 import edu.auburn.pFogSim.orchestrator.CloudOnlyOrchestrator;
 import edu.auburn.pFogSim.orchestrator.HAFAOrchestrator;
+import edu.auburn.pFogSim.util.DataInterpreter;
 
 public class EdgeServerManager {
 	private List<Datacenter> localDatacenters;
@@ -53,12 +55,18 @@ public class EdgeServerManager {
 	private int hostIdCounter;
 	private NetworkTopology networkTopology;
 	private static EdgeServerManager instance = null;
+	public  Puddle[][] puddles;  //-- make it private - later
+
 	
 	//CJ Added these to make the lists of all the nodes and respective links 
 	//	to pass to topology constructor
 	private List<NodeSim> nodesForTopography = new ArrayList<NodeSim>();
 	private List<Link> linksForTopography = new ArrayList<Link>();
 
+	
+	/**
+	 * Constructor
+	 */
 	public EdgeServerManager() {
 		localDatacenters=new ArrayList<Datacenter>();
 		vmList = new ArrayList<List<EdgeVM>>();
@@ -67,23 +75,49 @@ public class EdgeServerManager {
 		instance = this;
 	}
 	
+	
+	/**
+	 * Return current instance object
+	 * @return
+	 */
 	public static EdgeServerManager getInstance()
 	{
 		return instance;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public List<List<EdgeVM>> getVMS() {
 		return vmList;
 	}
 	
+	
+	/**
+	 * 
+	 * @param hostId
+	 * @return
+	 */
 	public List<EdgeVM> getVmList(int hostId){
 		return vmList.get(hostId);
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public List<Datacenter> getDatacenterList(){
 		return localDatacenters;
 	}
 	
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
 	public void startDatacenters() throws Exception{
 		//create random number generator for each place
 		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
@@ -142,16 +176,16 @@ public class EdgeServerManager {
 			networkTopology.setPuddles(makePuddles(clusterObject));
 			
 			SimLogger.printLine("HAFA Achitecture configuration completed.");
-			
-			/*LinesComponent comp = new LinesComponent();
-			comp.drawNetworkTopology(5);
-			comp.drawNetworkTopology(4);
-			comp.drawNetworkTopology(3);*/
 
 		}// end HAFA Arch
 		checkUniqueDC();
 	}
 
+	
+	/**
+	 * 
+	 * @param brockerId
+	 */
 	public void createVmList(int brockerId){
 		int hostCounter=0;
 		int vmCounter=0;
@@ -204,13 +238,21 @@ public class EdgeServerManager {
 		SimLogger.printLine("createVmList - completed");
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public void terminateDatacenters(){
 		for (Datacenter datacenter : localDatacenters) {
 			datacenter.shutdownEntity();
 		}
 	}
 
-	//average utilization of all VMs
+	
+	/**
+	 * average utilization of all VMs
+	 * @return
+	 */
 	public double getAvgUtilization(){
 		double totalUtilization = 0;
 		double vmCounter = 0;
@@ -232,6 +274,14 @@ public class EdgeServerManager {
 		return totalUtilization / vmCounter;
 	}
 
+	
+	/**
+	 * 
+	 * @param index
+	 * @param datacenterElement
+	 * @return
+	 * @throws Exception
+	 */
 	private Datacenter createDatacenter(int index, Element datacenterElement) throws Exception{
 		String arch = datacenterElement.getAttribute("arch");
 		String os = datacenterElement.getAttribute("os");
@@ -267,6 +317,12 @@ public class EdgeServerManager {
 		return datacenter;
 	}
 	
+	
+	/**
+	 * 
+	 * @param datacenterElement
+	 * @return
+	 */
 	private List<EdgeHost> createHosts(Element datacenterElement){
 
 		// Here are the steps needed to create a PowerDatacenter:
@@ -352,59 +408,112 @@ public class EdgeServerManager {
 
 		return hostList;
 	}
+	
+	
 	/**
-	 * interpret the clusters into puddles<br>
+	 * Interpret the clusters into puddles<br>
+	 * Create Puddles and populate them with identified cluster members.
 	 * added by pFogSim
 	 * @param clusters
 	 * @return
 	 */
 	public ArrayList<Puddle> makePuddles(FogHierCluster clusters) {
-		EdgeHost host;
-		double x, y;
-		Puddle puddle;
 		FogCluster cluster;
+		EdgeHost host;
 		ArrayList<EdgeHost> hosts;
+		Puddle puddle;
+		
+		double x, y;		
 		double staticLatency = Double.MAX_VALUE;
-		Puddle[][] puds = new Puddle[clusters.getClusters().size()][];//2D array: 1stD is the level, 2ndD is the puddles in that layer
-		for (int k = 0; k < clusters.getClusters().size(); k++) {//for each layer in the system
-			cluster = clusters.getClusters().get(k);//extract the layer
-			puds[k] =  new Puddle[cluster.getCluster().length];//set the list of puddles for that layer
-			for (int i = 0; i < cluster.getCluster().length; i++) {//for each puddle in the layer
+		
+		//Create Puddles
+		puddles = new Puddle[clusters.getClusters().size()][];//2D array: 1stD is the level, 2ndD is the puddles in that layer
+		
+		//1. Assign hosts (cluster members) to Puddles (clusters) 
+		for (int k = 0; k < clusters.getClusters().size(); k++) {
+			//For each fog layer in the system
+			
+			//Get the collection of clusters configured for the fog layer.
+			cluster = clusters.getClusters().get(k);
+
+			// Create an array of Puddles for this fog layer - to reflect the set of clusters configured.
+			puddles[k] =  new Puddle[cluster.getCluster().length];
+			
+			// Populate each Puddle of this layer with EdgeHosts (fog nodes) belonging to this layer.
+			for (int i = 0; i < cluster.getCluster().length; i++) {
+				
 				puddle = new Puddle();
-				puddle.setLevel(k + 1);
+				puddle.setLevel(cluster.getLevel());
+				puddle.setPuddleId(i);
+				
 				hosts = new ArrayList<EdgeHost>();
 				for (int j = 0; j < cluster.getCluster()[i].length; j++) {//for each host in the puddle
 					x = cluster.getCluster()[i][j][0];
 					y = cluster.getCluster()[i][j][1];
 					host = findHostByLoc(x, y);
 					if (host != null) {
+						host.setPuddleId(i);
 						hosts.add(host);
 					}
-				}
+				}// end for j - members of each cluster
+				
 				puddle.setMembers(hosts);
 				puddle.chooseNewHead();
+				
+				//Assign Parent relationships among Puddles belonging to adjacent fog layers.
+				puddle.setParentPuddleId(clusters.parentCluster[k][i]);
+				
+				//Assign parent and children host nodes from connected parent/child puddles
+				puddle.setNodeParentAndChildern();
+				
+				//Track resources in Puddles
 				puddle.updateResources();
 				//puddle.updateCapacity();
-				puds[k][i] = puddle;
-			}
-		}
-		//now we need to set the proper parent-child relationships
-		double temp;
+				
+				//Save Puddle configuration
+				puddles[k][i] = puddle;
+				
+			}// end for i - clusters belonging to each fog layer
+			
+		}// end for k - fog layers
+
+		//Assign Child relationships among Puddles belonging to adjacent fog layers.
+		for (int k=0; k<puddles.length; k++) {
+			for (int i=0; i<puddles[k].length; i++) {
+
+				// Skip cloud, as it belongs to highest fog layer and does not have a parent.
+				if (puddles[k][i].getLevel() == 7)
+					continue;
+				
+				// for each puddle, get its parent info
+				int childPudId = puddles[k][i].getPuddleId();
+				int parentPudId = puddles[k][i].getParentPuddleId();
+				int childLayer = puddles[k][i].getLevel();
+				
+				// add itself to the list of children of that parent
+				puddles[childLayer+1][parentPudId].getChildPuddleIds().add(childPudId);
+
+			}// end for i
+		}// end for k		
+		
+		
+		//Assign Parent-Child relationships among Puddles belonging to adjacent fog layers. - Procedure included above.
+/*		double temp;
 		int level = 1;
 		int index = 0;
 		for (int k = 0; k < puds.length - 1; k++) {//for each layer
 			for (int i = 0; i < puds[k].length; i++) {//for each puddle in the layer
 				for (int j = 0; j < puds[k+1].length; j++) {//search the next layer up for the closest puddle (by latency)
 					temp = Router.findRoute(networkTopology, networkTopology.findNode(puds[k][i].getHead().getLocation(), false), networkTopology.findNode(puds[k+1][j].getHead().getLocation(), false));
-					/*if you are trying to debug this line shit has gone horribly horribly wrong...
-					 *that being said, lets figure out what's going on...
-					 *
-					 *we need temp to be the static latency between this puddle head and the one we are testing for parentage
-					 *to that effect we have Router.findRoute(NetworkTopology network, NodeSim src, NodeSim, dest)
-					 *we have the NetworkTopology readily available (YAY!) the others not so much :(
-					 *we need to convert the heads of the puddles into NodeSims, easiest way to do that is by location
-					 *we can thus take the locations of the puddle heads and find their corresponding NodeSim objects 
-					 */
+					///*if you are trying to debug this line shit has gone horribly horribly wrong...
+					// *that being said, lets figure out what's going on...
+					// *
+					// *we need temp to be the static latency between this puddle head and the one we are testing for parentage
+					// *to that effect we have Router.findRoute(NetworkTopology network, NodeSim src, NodeSim, dest)
+					// *we have the NetworkTopology readily available (YAY!) the others not so much :(
+					// *we need to convert the heads of the puddles into NodeSims, easiest way to do that is by location
+					// *we can thus take the locations of the puddle heads and find their corresponding NodeSim objects 
+					// 
 					if (temp < staticLatency) {
 						staticLatency = temp;
 						level = k + 1;
@@ -415,22 +524,146 @@ public class EdgeServerManager {
 				staticLatency = Double.MAX_VALUE;//reset this for the next run
 			}
 		}
+		*/
+		
 		ArrayList<Puddle> results = new ArrayList<Puddle>();
-		for (int k = 0; k < puds.length; k++) {
-			for (int i = 0; i < puds[k].length; i++) {
-				results.add(puds[k][i]);//convert the 2D array to list
+		for (int k = 0; k < puddles.length; k++) {
+			for (int i = 0; i < puddles[k].length; i++) {
+				results.add(puddles[k][i]);//convert the 2D array to list
 			}
 		}
 		
-		//Qian added for puddle id and set parent and children for each node
-		for (int i = 0; i < results.size(); i++) {
-			results.get(i).setNodeParentAndChildern();
-			for (EdgeHost tempHost: results.get(i).getMembers()) {
-				tempHost.setPuddleId(i);
-			}
-		}
 		return results;
 	}
+	
+	
+	public ArrayList<EdgeHost> getCousins(Puddle pud, int reqFLevel){
+		ArrayList<EdgeHost> cousinHosts = new ArrayList<EdgeHost>();
+		ArrayList<Puddle> cousinPuddles = new ArrayList<Puddle>();
+		
+		cousinHosts = null;
+		
+		//Get requesting Puddle Id
+		int reqPudId = pud.getPuddleId();
+		
+		// Get parent puddle level
+		int parentLevel = pud.getLevel()+1;
+
+		//Note: HAFA organization should be a single-rooted tree, not a forest.
+		if (parentLevel > 7) {
+			System.out.println("Error. Invalid fog level for parent.");
+			return null;
+		}
+		
+		// Get parent puddle
+		int parentPudId = pud.getParentPuddleId();
+		Puddle parentPud = findPuddleById(parentLevel, parentPudId);
+
+		// Get parent's child puddles 
+		// Get sibling puddles only i.e. do not consider current puddle
+		ArrayList<Integer> childPudIds = parentPud.getChildPuddleIds();
+		for (int i=0; i<childPudIds.size(); i++) {
+			int childPudId= childPudIds.get(i);
+			if (childPudId == reqPudId) {
+				// Note: This subtree is searched earlier. Ignore this. 
+				continue;
+			}
+			Puddle childPud = findPuddleById(parentPud.getLevel()-1, childPudIds.get(i));
+			cousinPuddles.add(childPud);
+		}
+				
+		// Process each element in cousinPuddles list
+		while (cousinPuddles != null) {
+			
+			// Get first element from list
+			Puddle cousinPud = cousinPuddles.get(0);
+			cousinPuddles.remove(0);
+			
+			// if the puddle belongs to required fog level, add all its members to cousinHosts list.
+			if (cousinPud.getLevel() == reqFLevel) {
+				cousinHosts.addAll(cousinPud.getMembers());
+			}
+			else {
+			// if not, get all its children puddles and add them to cousinPuddles list for further processing.
+				childPudIds = cousinPud.getChildPuddleIds();
+				for (int i=0; i<childPudIds.size(); i++) {
+					Puddle childPud = findPuddleById(cousinPud.getLevel()-1, childPudIds.get(i));
+					cousinPuddles.add(childPud);
+				}
+			}
+		}
+		
+		// return cousinHosts list		
+		return cousinHosts;
+	}
+	
+	/**
+	 * Returns Puddle object corresponding to given Puddle ID.
+	 * @param fLevel
+	 * @param pudId
+	 * @return
+	 */
+	public Puddle findPuddleById(int fLevel, int pudId){
+		
+		// Get the list of all nodes belonging to specified layer
+		for (int k=0; k<puddles.length; k++) {
+			
+			if (puddles[k][0].getLevel() != fLevel)
+				continue;
+			
+			// Identify the Puddle corresponding to given Puddle Id
+			for (int i=0; i<puddles[k].length; i++) {
+				if (puddles[k][i].getPuddleId() == pudId) 
+					return puddles[k][i];
+			}		
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * Find nearest fog node belonging to given layer, from specified location 
+	 * @param fLevel
+	 * @param xLoc
+	 * @param yLoc
+	 * @return
+	 * 
+	 * @author Shaik
+	 */
+	public EdgeHost findNearestHostByLayer(int fLevel, Double xLoc, Double yLoc) {
+		EdgeHost nearest = null;
+		ArrayList<EdgeHost> hostList = new ArrayList<EdgeHost>();
+		Double minDistance = Double.MAX_VALUE; 
+		Double distance;
+		
+		// Get the list of all nodes belonging to the specified layer
+		for (int k=0; k<puddles.length; k++) {
+			
+			if (puddles[k][0].getLevel() != fLevel)
+				continue;
+			
+			// This kth array of Puddles belong to fLevel.
+			// Consolidate the list of Hosts, from each Puddle of this fog layer
+			for (int i=0; i<puddles[k].length; i++) {
+				hostList.addAll(puddles[k][i].getMembers());
+			}
+			break;			
+		}
+		
+		// Get the locations of hosts and Calculate distances from specified location
+		for (EdgeHost e : hostList ) {
+			distance = DataInterpreter.measure(xLoc, yLoc, e.getLocation().getXPos(), e.getLocation().getYPos());
+			if (distance < minDistance) {
+				// This fog node is nearer to specified location (xLoc,yLoc)
+				nearest = e;				
+			}
+		}
+		
+		// Return the nearest node
+		return nearest;
+	}
+	
+	
 	/**
 	 * find a given host by location<br>
 	 * added by pFogSim
@@ -447,6 +680,13 @@ public class EdgeServerManager {
 		return findMovingHost(double1, double2);
 	}
 	
+	
+	/**
+	 * 
+	 * @param double1
+	 * @param double2
+	 * @return
+	 */
 	public EdgeHost findMovingHost(Double double1, Double double2) {
 		for (EdgeHost node : hostList) {
 			if(node.getLocation().getXPos() == double1 && node.getLocation().getYPos() == double2) {
@@ -456,6 +696,8 @@ public class EdgeServerManager {
 		System.out.println("Error. Host not found for given GPS coordinates."); // Shaik added
 		return null;
 	}
+	
+	
 	/**
 	 * find a given host by id<br>
 	 * added by pFogSim
@@ -470,6 +712,8 @@ public class EdgeServerManager {
 		}
 		return null;
 	}
+	
+	
 	/**
 	 * find a EdgeHost by it's wlan_id
 	 * @author Qian
@@ -486,10 +730,20 @@ public class EdgeServerManager {
 		return null;
 	}
 	
+	
+	/**
+	 * 
+	 * @param hosts
+	 */
 	public void setHosts(List<EdgeHost> hosts) {
 		hostList.addAll(hosts);
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean checkUniqueDC() {
 		for (int i = 0; i < localDatacenters.size(); i++) {
 			for (int j = 0; j < localDatacenters.size(); j++) {
@@ -508,6 +762,7 @@ public class EdgeServerManager {
 		return true;
 	}
 
+	
 	/**
 	 * @return the localDatacenters
 	 */
@@ -515,6 +770,7 @@ public class EdgeServerManager {
 		return localDatacenters;
 	}
 
+	
 	/**
 	 * @param localDatacenters the localDatacenters to set
 	 */
@@ -522,6 +778,7 @@ public class EdgeServerManager {
 		this.localDatacenters = localDatacenters;
 	}
 
+	
 	/**
 	 * @return the vmList
 	 */
@@ -529,6 +786,7 @@ public class EdgeServerManager {
 		return vmList;
 	}
 
+	
 	/**
 	 * @param vmList the vmList to set
 	 */
@@ -536,6 +794,7 @@ public class EdgeServerManager {
 		this.vmList = vmList;
 	}
 
+	
 	/**
 	 * @return the hostList
 	 */
@@ -543,6 +802,7 @@ public class EdgeServerManager {
 		return hostList;
 	}
 
+	
 	/**
 	 * @param hostList the hostList to set
 	 */
@@ -550,6 +810,7 @@ public class EdgeServerManager {
 		this.hostList = hostList;
 	}
 
+	
 	/**
 	 * @return the hostIdCounter
 	 */
@@ -557,6 +818,7 @@ public class EdgeServerManager {
 		return hostIdCounter;
 	}
 
+	
 	/**
 	 * @param hostIdCounter the hostIdCounter to set
 	 */
@@ -564,6 +826,7 @@ public class EdgeServerManager {
 		this.hostIdCounter = hostIdCounter;
 	}
 
+	
 	/**
 	 * @return the networkTopology
 	 */
@@ -571,6 +834,7 @@ public class EdgeServerManager {
 		return networkTopology;
 	}
 
+	
 	/**
 	 * @param networkTopology the networkTopology to set
 	 */
@@ -578,6 +842,7 @@ public class EdgeServerManager {
 		this.networkTopology = networkTopology;
 	}
 
+	
 	/**
 	 * @return the nodesForTopography
 	 */
@@ -585,6 +850,7 @@ public class EdgeServerManager {
 		return nodesForTopography;
 	}
 
+	
 	/**
 	 * @param nodesForTopography the nodesForTopography to set
 	 */
@@ -592,6 +858,7 @@ public class EdgeServerManager {
 		this.nodesForTopography = nodesForTopography;
 	}
 
+	
 	/**
 	 * @return the linksForTopography
 	 */
@@ -599,6 +866,7 @@ public class EdgeServerManager {
 		return linksForTopography;
 	}
 
+	
 	/**
 	 * @param linksForTopography the linksForTopography to set
 	 */
@@ -606,10 +874,11 @@ public class EdgeServerManager {
 		this.linksForTopography = linksForTopography;
 	}
 
+	
 	/**
 	 * @param instance the instance to set
 	 */
 	public static void setInstance(EdgeServerManager instance) {
 		EdgeServerManager.instance = instance;
 	}
-}
+}// end class EdgeServerManager

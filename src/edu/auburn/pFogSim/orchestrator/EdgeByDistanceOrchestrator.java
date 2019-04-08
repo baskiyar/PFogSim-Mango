@@ -63,7 +63,7 @@ public class EdgeByDistanceOrchestrator extends EdgeOrchestrator {
 	}
 	
 	/**
-	 * the the appropriate VM to run on
+	 * get the appropriate VM to run on
 	 */
 	@Override
 	public EdgeVM getVmToOffload(Task task) {

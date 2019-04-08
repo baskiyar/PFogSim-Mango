@@ -45,11 +45,14 @@ public class Puddle {
 	private double totalCapacity;
 	private double maxCapacity;
 	private int level;
-
+	private int puddleId;
+	private int parentPuddleId;
+	private ArrayList<Integer> childPuddleIds;
 	
 	public Puddle() {
 		members = new ArrayList<EdgeHost>();
 		down = new ArrayList<Puddle>();
+		childPuddleIds = new ArrayList<Integer>();
 	}
 	/**
 	 * get the puddle head of the parent puddle
@@ -415,5 +418,41 @@ public class Puddle {
 	 */
 	public void setMembers(ArrayList<EdgeHost> members) {
 		this.members = members;
+	}
+	/**
+	 * @return the puddleId
+	 */
+	public int getPuddleId() {
+		return puddleId;
+	}
+	/**
+	 * @param puddleId the puddleId to set
+	 */
+	public void setPuddleId(int puddleId) {
+		this.puddleId = puddleId;
+	}
+	/**
+	 * @return the parentPuddleId
+	 */
+	public int getParentPuddleId() {
+		return parentPuddleId;
+	}
+	/**
+	 * @param parentPuddleId the parentPuddleId to set
+	 */
+	public void setParentPuddleId(int parentPuddleId) {
+		this.parentPuddleId = parentPuddleId;
+	}
+	/**
+	 * @return the childPuddleIds
+	 */
+	public ArrayList<Integer> getChildPuddleIds() {
+		return childPuddleIds;
+	}
+	/**
+	 * @param childPuddleIds the childPuddleIds to set
+	 */
+	public void setChildPuddleIds(ArrayList<Integer> childPuddleIds) {
+		this.childPuddleIds = childPuddleIds;
 	}
 }
