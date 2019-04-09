@@ -149,6 +149,12 @@ public class FogHierCluster {
 				}// end for cLower-Print
 				
 		}
+		
+		// Assign parent Puddle Ids for fog level 6 (city center) and fog level7 (cloud).
+		parentCluster[5] = new int[1];
+		parentCluster[5][0] = 0;
+		parentCluster[6] = new int[1];
+		parentCluster[6][0] = -1;
 
 	}// end makeClusters()
 	

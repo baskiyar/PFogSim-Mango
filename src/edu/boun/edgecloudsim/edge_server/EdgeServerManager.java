@@ -445,7 +445,7 @@ public class EdgeServerManager {
 				puddle = new Puddle();
 				puddle.setLevel(cluster.getLevel());
 				puddle.setPuddleId(i);
-				
+				System.out.println("Fog level: "+cluster.getLevel()+" Puddle Id: "+i);
 				hosts = new ArrayList<EdgeHost>();
 				for (int j = 0; j < cluster.getCluster()[i].length; j++) {//for each host in the puddle
 					x = cluster.getCluster()[i][j][0];
@@ -477,6 +477,11 @@ public class EdgeServerManager {
 			
 		}// end for k - fog layers
 
+		//Troubleshooting: print sizes of puddles array
+		for (int k=0; k<puddles.length; k++) {
+			System.out.println("Puddles row index: "+k+" length: "+puddles[k].length);
+		}
+		
 		//Assign Child relationships among Puddles belonging to adjacent fog layers.
 		for (int k=0; k<puddles.length; k++) {
 			for (int i=0; i<puddles[k].length; i++) {
@@ -490,8 +495,9 @@ public class EdgeServerManager {
 				int parentPudId = puddles[k][i].getParentPuddleId();
 				int childLayer = puddles[k][i].getLevel();
 				
+				System.out.println("Fog level: "+(childLayer+1)+" Parent Puddle Id: "+parentPudId);
 				// add itself to the list of children of that parent
-				puddles[childLayer+1][parentPudId].getChildPuddleIds().add(childPudId);
+				findPuddleById(childLayer+1, parentPudId).getChildPuddleIds().add(childPudId);
 
 			}// end for i
 		}// end for k		
