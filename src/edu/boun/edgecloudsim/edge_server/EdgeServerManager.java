@@ -588,7 +588,9 @@ public class EdgeServerManager {
 				System.out.print(" : cousinPuddles count before : "+cousinPuddles.size());				
 			}
 		}
-				
+
+		System.out.print(" : cousinPuddles count : "+cousinPuddles.size());				
+	
 		// Process each element in cousinPuddles list
 		while (cousinPuddles.size() != 0) {
 			
