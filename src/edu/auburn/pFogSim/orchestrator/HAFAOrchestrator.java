@@ -44,10 +44,10 @@ import org.cloudbus.cloudsim.core.CloudSim;
 
 /**
  * implementation of Edge Orchestrator for using puddles
- * @author Jacob I Hall jih0007@auburn.edu
- * @author Qian Wang
  * @author Shehenaz Shaik
- *
+ * @author Jacob I Hall 
+ * @author Qian Wang
+ * 
  */
 public class HAFAOrchestrator extends EdgeOrchestrator {
 
@@ -308,7 +308,7 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 	
 	
 	/**
-	 * get the closest level 0 puddle as a staring point
+	 * get the closest level 0 puddle as a staring point -------------remove this method later - unused.
 	 * modified by Qian
 	 * @param task
 	 * @return
@@ -337,8 +337,9 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 		return puddle;
 	}
 	
+	
 	/**
-	 * find an alternate puddle of a given level
+	 * find an alternate puddle of a given level -------------remove this method later - unused.
 	 * modified by Qian
 	 * @param task
 	 * @param level

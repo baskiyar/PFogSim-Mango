@@ -26,11 +26,21 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 
 	private static String node = "Datacenter_0";
 	EdgeHost cHost;
+
 	
+	/**
+	 * Constructor
+	 * @param _policy
+	 * @param _simScenario
+	 */
 	public CloudOnlyOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 	}
 	
+	
+	/**
+	 * Initializes the Orchestrator functionality.
+	 */
 	@Override
 	public void initialize() {
 		try {
@@ -41,6 +51,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 		}
 	}
 
+	
 	/**
 	 * get the id of the appropriate host
 	 */
@@ -54,6 +65,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 			return -1;
 		}
 	}
+	
 	
 	/**
 	 * the the appropriate VM to run on
@@ -70,6 +82,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 		}
 	}
 	
+	
 	/**
 	 * find the host
 	 * @param task
@@ -80,6 +93,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 		task.setPath(mb.getPath());
 		return mb.getHost();
 	}
+	
 	
 	/**
 	 * set cloud
@@ -93,6 +107,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 		}
 	}
 
+	
 	/* 
 	 * @ author Qian Wang
 	 * @ author Shehenaz Shaik
@@ -154,6 +169,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
 	}
 
+	
 	/**
 	 * @return the node
 	 */
@@ -161,6 +177,7 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 		return node;
 	}
 
+	
 	/**
 	 * @param node the node to set
 	 */

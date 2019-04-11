@@ -15,6 +15,10 @@ public class FogHierCluster {
 	public int[][] parentCluster;
 	
 	
+	/**
+	 * Constructor
+	 * @param nodes
+	 */
 	public FogHierCluster(ArrayList<NodeSim> nodes) {
 		
 		HashMap<Integer, ArrayList<Location>> levelMap = new HashMap<Integer, ArrayList<Location>>();
@@ -60,6 +64,7 @@ public class FogHierCluster {
 		//Log the configuration 
 		writeClustersToFile();
 	}// end FogHierCluster()
+	
 	
 	/**
 	 * Create HAFA Architecture inter-layer links
@@ -158,10 +163,16 @@ public class FogHierCluster {
 
 	}// end makeClusters()
 	
+	
+	/**
+	 * Return list of clusters.
+	 * @return
+	 */
 	public ArrayList<FogCluster> getClusters() {
 		return clusterList;
 	}
 
+	
 	/**
 	 * @return the clusterList
 	 */
@@ -169,6 +180,7 @@ public class FogHierCluster {
 		return clusterList;
 	}
 
+	
 	/**
 	 * @param clusterList the clusterList to set
 	 */
@@ -407,6 +419,10 @@ public class FogHierCluster {
 		
 	}// End main
 */
+	
+	/**
+	 * Save cluster info to file in XML format.
+	 */
 	public void writeClustersToFile() {
 		PrintWriter writer;
 		try {

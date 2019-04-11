@@ -18,6 +18,7 @@ package edu.auburn.pFogSim.Radix;
  * suggest studying these methods to understand what they do in order to implement cost as the sorting metric.
  * @jih0007 
  */
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,9 +34,13 @@ import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
+
+
 /**
  * Class for implementing Radix sort for find the closest nodes
  * @author Jacob I Hall jih0007@auburn.edu
+ * @author Shehenaz Shaik
+ * @author Qian Wang
  */
 public class DistRadix {
 	
@@ -49,6 +54,8 @@ public class DistRadix {
 	private ArrayList<Integer> distances;
 	//private double[] latencies; // Shaik added
 	private int[] arrgs;
+	
+	
 	/**
 	 * constructor
 	 * @param in  
@@ -66,6 +73,8 @@ public class DistRadix {
 		}
 		ref = pair;
 	}
+	
+	
 	/**
 	 * map coords to nodes
 	 */
@@ -75,6 +84,8 @@ public class DistRadix {
 			coords.add(new Location(node.getLocation().getXPos(), node.getLocation().getYPos()));
 		}
 	}
+	
+	
 	/**
 	 * map distances to coords
 	 */
@@ -91,6 +102,8 @@ public class DistRadix {
 			distances.add((int) (dist * 1000));
 		}
 	}
+	
+	
 	/**
 	 * @author Shaik
 	 * modified by Qian
@@ -116,6 +129,8 @@ public class DistRadix {
 			//latencies[index++] = latency;
 		}
 	}
+	
+	
 	/**
 	 * set the arrgs array
 	 */
@@ -125,6 +140,8 @@ public class DistRadix {
 			arrgs[i] = distances.get(i);
 		}
 	}
+	
+	
 	/**
 	 * find the max of the arrgs array
 	 * @return
@@ -138,6 +155,8 @@ public class DistRadix {
 		}
 		return max;
 	}
+	
+	
 	/**
 	 * perform counting sort
 	 * @param arr
@@ -168,6 +187,8 @@ public class DistRadix {
             arr[i] = output[i];
         }
     }
+	
+	
 	/**
 	 * perform radix sort
 	 */
@@ -177,6 +198,8 @@ public class DistRadix {
 			countSort(arrgs, arrgs.length, i);
 		}
 	}
+	
+	
 	/**
 	 * get the sorted list
 	 * @return
@@ -194,6 +217,8 @@ public class DistRadix {
 		}
 		return output;
 	}
+	
+	
 	/**
 	 * @author Shaik
 	 * modified by Qian
@@ -217,6 +242,7 @@ public class DistRadix {
 //		}
 		return output;
 	}
+	
 	
 	/**
 	 * @author Shaik
@@ -252,6 +278,7 @@ public class DistRadix {
 		return output;
 	}
 	
+	
 	/**
 	 * public facing method to get the list of sorted nodes
 	 * @return
@@ -263,6 +290,8 @@ public class DistRadix {
 		radixSort();
 		return getList();
 	}
+	
+	
 	/**
 	 * @author Qian / Shaik
 	 * public method to get list of sorted nodes by latency
@@ -278,96 +307,128 @@ public class DistRadix {
 		//return getLatenciesList(); // Shaik update
 		return getSortedNodesListByLatency(); // Shaik modified
 	}
+	
+	
 	/**
 	 * @return the input
 	 */
 	public ArrayList<EdgeHost> getInput() {
 		return input;
 	}
+	
+	
 	/**
 	 * @param input the input to set
 	 */
 	public void setInput(ArrayList<EdgeHost> input) {
 		this.input = input;
 	}
+	
+	
 	/**
 	 * @return the coordMap
 	 */
 	public TreeMap<Location, EdgeHost> getCoordMap() {
 		return coordMap;
 	}
+	
+	
 	/**
 	 * @param coordMap the coordMap to set
 	 */
 	public void setCoordMap(TreeMap<Location, EdgeHost> coordMap) {
 		this.coordMap = coordMap;
 	}
+	
+	
 	/**
 	 * @return the distMap
 	 */
 	public HashMap<Double, Location> getDistMap() {
 		return distMap;
 	}
+	
+	
 	/**
 	 * @param distMap the distMap to set
 	 */
 	public void setDistMap(HashMap<Double, Location> distMap) {
 		this.distMap = distMap;
 	}
+	
+	
 	/**
 	 * @return the latencyMap
 	 */
 	public HashMap<Double, ArrayList<Location>> getLatencyMap() {
 		return latencyMap;
 	}
+	
+	
 	/**
 	 * @param latencyMap the latencyMap to set
 	 */
 	public void setLatencyMap(HashMap<Double, ArrayList<Location>> latencyMap) {
 		this.latencyMap = latencyMap;
 	}
+	
+	
 	/**
 	 * @return the ref
 	 */
 	public Location getRef() {
 		return ref;
 	}
+	
+	
 	/**
 	 * @param ref the ref to set
 	 */
 	public void setRef(Location ref) {
 		this.ref = ref;
 	}
+	
+	
 	/**
 	 * @return the coords
 	 */
 	public ArrayList<Location> getCoords() {
 		return coords;
 	}
+	
+	
 	/**
 	 * @param coords the coords to set
 	 */
 	public void setCoords(ArrayList<Location> coords) {
 		this.coords = coords;
 	}
+	
+	
 	/**
 	 * @return the distances
 	 */
 	public ArrayList<Integer> getDistances() {
 		return distances;
 	}
+	
+	
 	/**
 	 * @param distances the distances to set
 	 */
 	public void setDistances(ArrayList<Integer> distances) {
 		this.distances = distances;
 	}
+	
+	
 	/**
 	 * @return the arrgs
 	 */
 	public int[] getArrgs() {
 		return arrgs;
 	}
+	
+	
 	/**
 	 * @param arrgs the arrgs to set
 	 */

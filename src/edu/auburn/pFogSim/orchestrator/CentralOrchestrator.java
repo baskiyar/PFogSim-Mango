@@ -37,10 +37,17 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 	HashMap<NodeSim,HashMap<NodeSim, LinkedList<NodeSim>>> pathTable;
 	Location hostLoc;
 	
+	
+	/**
+	 * Constructor
+	 * @param _policy
+	 * @param _simScenario
+	 */
 	public CentralOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 	}
 
+	
 	/**
 	 * get all the hosts in the network into one list
 	 */
@@ -69,6 +76,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 				
 	}
 
+	
 	/**
 	 * get the id of the appropriate host
 	 */
@@ -82,6 +90,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 		}
 	}
 
+	
 	/**
 	 * the the appropriate VM to run on
 	 */
@@ -95,6 +104,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 		}
 	}
 
+	
 	/**
 	 * find the host
 	 * @param task
@@ -105,6 +115,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 		task.setPath(mb.getPath());
 		return mb.getHost();
 	}
+	
 	
 	/* 
 	 * @ author Qian Wang
@@ -208,12 +219,14 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
 	}
 	
+	
 	/**
 	 * @return the hosts
 	 */
 	public ArrayList<EdgeHost> getHosts() {
 		return hosts;
 	}
+	
 	
 	/**
 	 * @param hosts the hosts to set
@@ -222,12 +235,14 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 		this.hosts = hosts;
 	}
 	
+	
 	/**
 	 * @return the pathTable
 	 */
 	public HashMap<NodeSim, HashMap<NodeSim, LinkedList<NodeSim>>> getPathTable() {
 		return pathTable;
 	}
+	
 	
 	/**
 	 * @param pathTable the pathTable to set

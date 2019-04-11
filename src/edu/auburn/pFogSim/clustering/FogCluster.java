@@ -30,6 +30,7 @@ public class FogCluster {
 	private Double[][][] cluster = new Double[clusterNumber][][];
 	private int level;
 	
+	
 	/**
 	 * @return the cluster
 	 */
@@ -59,7 +60,6 @@ public class FogCluster {
 		
 	}
 		
-	
 	
 	/**
 	 *  Method - csvInput
@@ -97,12 +97,14 @@ public class FogCluster {
 	}//end csvInput()
 */	
 	
+	
 	/**
 	 * @param clusterNumber the clusterNumber to set
 	 */
 	public void setClusterNumber(int clusterNumber) {
 		this.clusterNumber = clusterNumber;
 	}
+	
 	
 	/**
 	 * @author Qian
@@ -301,6 +303,7 @@ public class FogCluster {
 		
 	}// end Constructor FogHierCluster()
 	
+	
 	/**
 	 * This method creates 'clusterCount' number of clusters from given list of locations. 
 	 * @param arrayList
@@ -339,6 +342,13 @@ public class FogCluster {
 		
 	}
 	
+	
+	/**
+	 * Constructor
+	 * @param arrayList
+	 * @param foglevel
+	 * @param max
+	 */
 	public FogCluster(ArrayList<Location> arrayList, int foglevel, double max) {
 		//arrayList is a list of all the Locations on the map a device exists
 		super();
@@ -373,33 +383,12 @@ public class FogCluster {
 	} // end FogCluster (max)
 
 
-	public static void main(String[] args) {
-		/*
-		int clusterNumber1 = 100;
-		String fileName1 = new String("C:\\Users\\szs0117\\workspace\\tia\\src\\KMCluster\\LocData-L1-500");
-		FogCluster fc1 = new FogCluster(fileName1, clusterNumber1);
-		Integer[][][] clusters1 = fc1.getCluster(); 
-		*//*
-		int clusterNumber2 = 40;
-		String fileName2 = new String("C:\\Users\\szs0117\\workspace\\tia\\src\\KMCluster\\LocData-L2-200");
-		FogCluster fc2 = new FogCluster(fileName2, clusterNumber2);
-		Integer[][][] clusters2 = fc2.getCluster();
-		*//*
-		int clusterNumber3 = 20;
-		String fileName3 = new String("C:\\Users\\szs0117\\workspace\\tia\\src\\KMCluster\\LocData-L3-50");
-		FogCluster fc3 = new FogCluster(fileName3, clusterNumber3);
-		Integer[][][] clusters3 = fc3.getCluster();
-	
-		int clusterNumber4 = 3;
-		String fileName4 = new String("C:\\Users\\szs0117\\workspace\\tia\\src\\KMCluster\\LocData-L4-10");
-		FogCluster fc4 = new FogCluster(fileName4, clusterNumber4);
-		Integer[][][] clusters4 = fc4.getCluster();
-		
-		*/
-		
-		
-	}// End main
-	
+	/**
+	 * Write distance and latency matrices to file - for troubleshooting and reference.
+	 * @param k
+	 * @param level
+	 * @param length
+	 */
 	public void writeMatricToFile(boolean k, int level, int length) {
 		try {
 			PrintWriter matrixWriter;

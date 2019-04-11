@@ -15,7 +15,6 @@ import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
 
-
 public class DataInterpreter {
 	private static int MAX_LEVELS = 7;
 	private static String[] files= {
@@ -44,6 +43,15 @@ public class DataInterpreter {
 	private FileWriter xmlFW = null;
 	private BufferedWriter xmlBR = null;
 	
+	
+	/**
+	 * Static method - to measure distance between two GPS locations.
+	 * @param lat1
+	 * @param lon1
+	 * @param lat2
+	 * @param lon2
+	 * @return
+	 */
 	public static double measure(double lat1, double lon1, double lat2, double lon2){  // generally used geo measurement function
 	    double R = 6378.137; // Radius of earth in KM
 	    double dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
@@ -55,6 +63,11 @@ public class DataInterpreter {
 	    return d * 1000; // meters
 	}
 	
+	
+	/**
+	 * Creates input files for node and link configurations - as per specified system configuration.
+	 * @throws IOException
+	 */
 	public static void readFile() throws IOException {
 		FileReader dataFR = null;
 		BufferedReader dataBR = null;
@@ -346,28 +359,56 @@ public class DataInterpreter {
 		return;
 	}
 	
+	
+	/**
+	 * Constructor
+	 * @throws IOException
+	 */
 	public DataInterpreter() throws IOException {
 		initialize();
 		readFile();
 	}
 	
+	
+	/**
+	 * Get simulation space rectangular border coordinates.
+	 * @return
+	 */
 	public static double[] getSimulationSpace()
 	{
 		return new double[] {MIN_LONG, MAX_LONG, MIN_LAT, MAX_LAT}; 
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public static int getMaxLevels() {
 		return MAX_LEVELS;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public static String getInputType() {
 		return inputType;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public static boolean areMobileDevicesMoving() {
 		return movingMobileDevices;
 	}
+	
+	
 	/**
+	 * Initialize() method.
 	 * the great beast...<br><br>
 	 * 
 	 * this is where we define the specs for the machines on the network.<br>
@@ -510,6 +551,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 7][13] = "1048576"; // Shaik modified to 1/100th - prev = 1048576 // Shaik fixed back to 100% value
 	}
 
+	
 	/**
 	 * @return the mAX_LEVELS
 	 */
@@ -517,6 +559,7 @@ public class DataInterpreter {
 		return MAX_LEVELS;
 	}
 
+	
 	/**
 	 * @param mAX_LEVELS the mAX_LEVELS to set
 	 */
@@ -524,6 +567,7 @@ public class DataInterpreter {
 		MAX_LEVELS = mAX_LEVELS;
 	}
 
+	
 	/**
 	 * @return the files
 	 */
@@ -531,6 +575,7 @@ public class DataInterpreter {
 		return files;
 	}
 
+	
 	/**
 	 * @param files the files to set
 	 */
@@ -538,6 +583,7 @@ public class DataInterpreter {
 		DataInterpreter.files = files;
 	}
 
+	
 	/**
 	 * @return the nodeSpecs
 	 */
@@ -545,6 +591,7 @@ public class DataInterpreter {
 		return nodeSpecs;
 	}
 
+	
 	/**
 	 * @param nodeSpecs the nodeSpecs to set
 	 */
@@ -552,6 +599,7 @@ public class DataInterpreter {
 		DataInterpreter.nodeSpecs = nodeSpecs;
 	}
 
+	
 	/**
 	 * @return the nodeList
 	 */
@@ -559,6 +607,7 @@ public class DataInterpreter {
 		return nodeList;
 	}
 
+	
 	/**
 	 * @param nodeList the nodeList to set
 	 */
@@ -566,6 +615,7 @@ public class DataInterpreter {
 		DataInterpreter.nodeList = nodeList;
 	}
 
+	
 	/**
 	 * @return the tempList
 	 */
@@ -573,6 +623,7 @@ public class DataInterpreter {
 		return tempList;
 	}
 
+	
 	/**
 	 * @param tempList the tempList to set
 	 */
@@ -580,6 +631,7 @@ public class DataInterpreter {
 		DataInterpreter.tempList = tempList;
 	}
 
+	
 	/**
 	 * @return the universitiesCircle
 	 */
@@ -587,6 +639,7 @@ public class DataInterpreter {
 		return universitiesCircle;
 	}
 
+	
 	/**
 	 * @param universitiesCircle the universitiesCircle to set
 	 */
@@ -594,6 +647,7 @@ public class DataInterpreter {
 		DataInterpreter.universitiesCircle = universitiesCircle;
 	}
 
+	
 	/**
 	 * @return the mIN_LAT
 	 */
@@ -601,6 +655,7 @@ public class DataInterpreter {
 		return MIN_LAT;
 	}
 
+	
 	/**
 	 * @param mIN_LAT the mIN_LAT to set
 	 */
@@ -608,6 +663,7 @@ public class DataInterpreter {
 		MIN_LAT = mIN_LAT;
 	}
 
+	
 	/**
 	 * @return the mAX_LAT
 	 */
@@ -615,6 +671,7 @@ public class DataInterpreter {
 		return MAX_LAT;
 	}
 
+	
 	/**
 	 * @param mAX_LAT the mAX_LAT to set
 	 */
@@ -622,6 +679,7 @@ public class DataInterpreter {
 		MAX_LAT = mAX_LAT;
 	}
 
+	
 	/**
 	 * @return the mIN_LONG
 	 */
@@ -629,6 +687,7 @@ public class DataInterpreter {
 		return MIN_LONG;
 	}
 
+	
 	/**
 	 * @param mIN_LONG the mIN_LONG to set
 	 */
@@ -636,6 +695,7 @@ public class DataInterpreter {
 		MIN_LONG = mIN_LONG;
 	}
 
+	
 	/**
 	 * @return the mAX_LONG
 	 */
@@ -643,6 +703,7 @@ public class DataInterpreter {
 		return MAX_LONG;
 	}
 
+	
 	/**
 	 * @param mAX_LONG the mAX_LONG to set
 	 */
@@ -650,6 +711,7 @@ public class DataInterpreter {
 		MAX_LONG = mAX_LONG;
 	}
 
+	
 	/**
 	 * @return the universitiesYet
 	 */
@@ -657,6 +719,7 @@ public class DataInterpreter {
 		return universitiesYet;
 	}
 
+	
 	/**
 	 * @param universitiesYet the universitiesYet to set
 	 */
@@ -664,6 +727,7 @@ public class DataInterpreter {
 		DataInterpreter.universitiesYet = universitiesYet;
 	}
 
+	
 	/**
 	 * @return the universitiesLinked
 	 */
@@ -671,6 +735,7 @@ public class DataInterpreter {
 		return universitiesLinked;
 	}
 
+	
 	/**
 	 * @param universitiesLinked the universitiesLinked to set
 	 */
@@ -678,6 +743,7 @@ public class DataInterpreter {
 		DataInterpreter.universitiesLinked = universitiesLinked;
 	}
 
+	
 	/**
 	 * @return the movingMobileDevices
 	 */
@@ -685,6 +751,7 @@ public class DataInterpreter {
 		return movingMobileDevices;
 	}
 
+	
 	/**
 	 * @param movingMobileDevices the movingMobileDevices to set
 	 */
@@ -692,6 +759,7 @@ public class DataInterpreter {
 		DataInterpreter.movingMobileDevices = movingMobileDevices;
 	}
 
+	
 	/**
 	 * @return the xmlFile
 	 */
@@ -699,6 +767,7 @@ public class DataInterpreter {
 		return xmlFile;
 	}
 
+	
 	/**
 	 * @param xmlFile the xmlFile to set
 	 */
@@ -706,6 +775,7 @@ public class DataInterpreter {
 		this.xmlFile = xmlFile;
 	}
 
+	
 	/**
 	 * @return the xmlFW
 	 */
@@ -713,6 +783,7 @@ public class DataInterpreter {
 		return xmlFW;
 	}
 
+	
 	/**
 	 * @param xmlFW the xmlFW to set
 	 */
@@ -720,6 +791,7 @@ public class DataInterpreter {
 		this.xmlFW = xmlFW;
 	}
 
+	
 	/**
 	 * @return the xmlBR
 	 */
@@ -727,6 +799,7 @@ public class DataInterpreter {
 		return xmlBR;
 	}
 
+	
 	/**
 	 * @param xmlBR the xmlBR to set
 	 */
@@ -734,6 +807,7 @@ public class DataInterpreter {
 		this.xmlBR = xmlBR;
 	}
 
+	
 	/**
 	 * @param inputType the inputType to set
 	 */
