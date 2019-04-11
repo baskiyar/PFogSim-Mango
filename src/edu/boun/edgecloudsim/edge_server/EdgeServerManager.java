@@ -550,25 +550,34 @@ public class EdgeServerManager {
 		ArrayList<Puddle> cousinPuddles = new ArrayList<Puddle>();
 		ArrayList<Integer> childPudIds;
 		Puddle childPud, parentPud;
-		int parentPudId, childPudId;
+		int parentPudId, childPudId, reqPudId, parentLevel;
 		
 		//cousinHosts = null;
 		System.out.print(" : Getting cousins of Puddle : "+pud.getPuddleId()+" at level: "+pud.getLevel()+" : ");
 		
 		//Get requesting Puddle Id
-		int reqPudId = pud.getPuddleId();
+		reqPudId = pud.getPuddleId();
 		
-		// Get parent puddle level
-		int parentLevel = pud.getLevel()+1;
-
-		//Note: HAFA organization should be a single-rooted tree, not a forest.
-		if (parentLevel > 7) {
-			System.out.println("Error. Invalid fog level for parent.");
-			return null;
-		}
+		// Initialize parentPudId - to identify the first iteration in while loop below.
+		parentPudId = -1;
+		parentPud = null;
 		
 		// Move up the Puddle Tree to get the cousins' info
 		while (cousinPuddles.size() == 0) {
+
+			if (parentPudId != -1) {
+				pud = parentPud;
+			}
+			
+			// Get parent puddle level
+			parentLevel = pud.getLevel()+1;
+
+			//Note: HAFA organization should be a single-rooted tree, not a forest.
+			if (parentLevel > 7) {
+				System.out.println("Error. Invalid fog level for parent.");
+				return cousinHosts;
+			}
+
 			// Get parent puddle
 			parentPudId = pud.getParentPuddleId();
 			parentPud = findPuddleById(parentLevel, parentPudId);
