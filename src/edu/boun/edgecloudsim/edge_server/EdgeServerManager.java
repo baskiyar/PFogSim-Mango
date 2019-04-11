@@ -42,6 +42,7 @@ import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.boun.edgecloudsim.utils.SimUtils;
 import edu.auburn.pFogSim.Puddle.Puddle;
+import edu.auburn.pFogSim.Radix.DistRadix;
 import edu.auburn.pFogSim.clustering.*;
 import edu.auburn.pFogSim.netsim.*;
 import edu.auburn.pFogSim.orchestrator.CloudOnlyOrchestrator;
@@ -445,7 +446,7 @@ public class EdgeServerManager {
 				puddle = new Puddle();
 				puddle.setLevel(cluster.getLevel());
 				puddle.setPuddleId(i);
-				System.out.println("Fog level: "+cluster.getLevel()+" Puddle Id: "+i);
+				System.out.print("\nFog level: "+cluster.getLevel()+" Puddle Id: "+i+" Hosts: ");
 				hosts = new ArrayList<EdgeHost>();
 				for (int j = 0; j < cluster.getCluster()[i].length; j++) {//for each host in the puddle
 					x = cluster.getCluster()[i][j][0];
@@ -454,6 +455,7 @@ public class EdgeServerManager {
 					if (host != null) {
 						host.setPuddleId(i);
 						hosts.add(host);
+						System.out.print(host.getId()+" ");
 					}
 				}// end for j - members of each cluster
 				
@@ -636,11 +638,11 @@ public class EdgeServerManager {
 	 * 
 	 * @author Shaik
 	 */
-	public EdgeHost findNearestHostByLayer(int fLevel, Double xLoc, Double yLoc) {
+	public EdgeHost findNearestHostByLayer(int fLevel, Location loc) {
 		EdgeHost nearest = null;
 		ArrayList<EdgeHost> hostList = new ArrayList<EdgeHost>();
-		Double minDistance = Double.MAX_VALUE; 
-		Double distance;
+		//Double minDistance = Double.MAX_VALUE; 
+		//Double distance;
 		
 		// Get the list of all nodes belonging to the specified layer
 		for (int k=0; k<puddles.length; k++) {
@@ -656,6 +658,7 @@ public class EdgeServerManager {
 			break;			
 		}
 		
+		/*
 		// Get the locations of hosts and Calculate distances from specified location
 		for (EdgeHost e : hostList ) {
 			distance = DataInterpreter.measure(xLoc, yLoc, e.getLocation().getXPos(), e.getLocation().getYPos());
@@ -665,6 +668,14 @@ public class EdgeServerManager {
 			}
 		}
 		
+		*/
+		System.out.print("Fog level: "+fLevel+" hostList count: "+hostList.size());
+		DistRadix sort = new DistRadix(hostList, loc);//use radix sort based on distance from task
+		LinkedList<EdgeHost> nodes = sort.sortNodes();
+		//System.out.print("nodes size: " + nodes.size() + "  Device Id: " + mobile.getId() + "  WAP Id: " + mobile.getLocation().getServingWlanId());
+		nearest = nodes.poll();
+		System.out.println(" Nearest fog node to mobile device: "+nearest.getId());
+
 		// Return the nearest node
 		return nearest;
 	}

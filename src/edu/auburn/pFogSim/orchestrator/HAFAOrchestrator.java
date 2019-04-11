@@ -146,7 +146,7 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 		for (int levelIter=1; levelIter <= 7; levelIter++) {
 			
 			// Find fog node nearest to mobile device, belonging to this fog layer.
-			EdgeHost nearest = SimManager.getInstance().getEdgeServerManager().findNearestHostByLayer(levelIter, mobile.getLocation().getXPos(), mobile.getLocation().getYPos());
+			EdgeHost nearest = SimManager.getInstance().getEdgeServerManager().findNearestHostByLayer(levelIter, mobile.getLocation());
 			
 			// Find corresponding puddle members i.e. puddle nearest to mobile device belonging to this fog layer. 
 			int pudId = nearest.getPuddleId();
