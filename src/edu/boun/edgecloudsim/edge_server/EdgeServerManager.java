@@ -548,8 +548,12 @@ public class EdgeServerManager {
 	public ArrayList<EdgeHost> getCousins(Puddle pud, int reqFLevel){
 		ArrayList<EdgeHost> cousinHosts = new ArrayList<EdgeHost>();
 		ArrayList<Puddle> cousinPuddles = new ArrayList<Puddle>();
+		ArrayList<Integer> childPudIds;
+		Puddle childPud, parentPud;
+		int parentPudId, childPudId;
 		
 		//cousinHosts = null;
+		System.out.print(" : Getting cousins of Puddle : "+pud.getPuddleId()+" at level: "+pud.getLevel()+" : ");
 		
 		//Get requesting Puddle Id
 		int reqPudId = pud.getPuddleId();
@@ -563,29 +567,36 @@ public class EdgeServerManager {
 			return null;
 		}
 		
-		// Get parent puddle
-		int parentPudId = pud.getParentPuddleId();
-		Puddle parentPud = findPuddleById(parentLevel, parentPudId);
-
-		// Get parent's child puddles 
-		// Get sibling puddles only i.e. do not consider current puddle
-		ArrayList<Integer> childPudIds = parentPud.getChildPuddleIds();
-		for (int i=0; i<childPudIds.size(); i++) {
-			int childPudId= childPudIds.get(i);
-			if (childPudId == reqPudId) {
-				// Note: This subtree is searched earlier. Ignore this. 
-				continue;
+		// Move up the Puddle Tree to get the cousins' info
+		while (cousinPuddles.size() == 0) {
+			// Get parent puddle
+			parentPudId = pud.getParentPuddleId();
+			parentPud = findPuddleById(parentLevel, parentPudId);
+	
+			// Get parent's child puddles 
+			// Get sibling puddles only i.e. do not consider current puddle
+			childPudIds = parentPud.getChildPuddleIds();
+			for (int i=0; i<childPudIds.size(); i++) {
+				childPudId = childPudIds.get(i);
+				if (childPudId == reqPudId) {
+					// Note: This subtree is searched earlier. Ignore this. 
+					continue;
+				}
+				childPud = findPuddleById(parentPud.getLevel()-1, childPudIds.get(i));
+				cousinPuddles.add(childPud);
+				System.out.print(" : Cousin added : "+childPud.getPuddleId()+" at level: "+childPud.getLevel()+" : ");		
+				System.out.print(" : cousinPuddles count before : "+cousinPuddles.size());				
 			}
-			Puddle childPud = findPuddleById(parentPud.getLevel()-1, childPudIds.get(i));
-			cousinPuddles.add(childPud);
 		}
 				
 		// Process each element in cousinPuddles list
-		while (cousinPuddles != null) {
+		while (cousinPuddles.size() != 0) {
 			
+			System.out.print(" : cousinPuddles count after : "+cousinPuddles.size());				
+
 			// Get first element from list
 			Puddle cousinPud = cousinPuddles.get(0);
-			cousinPuddles.remove(0);
+			System.out.print(" : Processing Cousin puddle : "+cousinPud.getPuddleId()+" at level: "+cousinPud.getLevel()+" : ");				
 			
 			// if the puddle belongs to required fog level, add all its members to cousinHosts list.
 			if (cousinPud.getLevel() == reqFLevel) {
@@ -595,10 +606,12 @@ public class EdgeServerManager {
 			// if not, get all its children puddles and add them to cousinPuddles list for further processing.
 				childPudIds = cousinPud.getChildPuddleIds();
 				for (int i=0; i<childPudIds.size(); i++) {
-					Puddle childPud = findPuddleById(cousinPud.getLevel()-1, childPudIds.get(i));
+					childPud = findPuddleById(cousinPud.getLevel()-1, (int)childPudIds.get(i));
 					cousinPuddles.add(childPud);
+					System.out.print(" : Cousin added : "+childPud.getPuddleId()+" at level: "+childPud.getLevel()+" : ");	
 				}
 			}
+			cousinPuddles.remove(0);
 		}
 		
 		// return cousinHosts list		

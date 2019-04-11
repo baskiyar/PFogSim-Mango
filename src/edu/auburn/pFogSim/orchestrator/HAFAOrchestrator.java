@@ -182,7 +182,7 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 				
 				// If search unsuccessful in entire system
 				// i.e. no node in this fog layer has sufficient resources to host the application.
-				if (prospectiveNodes == null) {
+				if (prospectiveNodes.size() == 0) {
 					break;
 				}				
 				
