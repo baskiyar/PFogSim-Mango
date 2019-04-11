@@ -549,7 +549,7 @@ public class EdgeServerManager {
 		ArrayList<EdgeHost> cousinHosts = new ArrayList<EdgeHost>();
 		ArrayList<Puddle> cousinPuddles = new ArrayList<Puddle>();
 		
-		cousinHosts = null;
+		//cousinHosts = null;
 		
 		//Get requesting Puddle Id
 		int reqPudId = pud.getPuddleId();
