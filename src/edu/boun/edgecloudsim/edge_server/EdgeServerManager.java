@@ -567,6 +567,7 @@ public class EdgeServerManager {
 
 			if (parentPudId != -1) {
 				pud = parentPud;
+				System.out.print(" : Getting cousins of Puddle : "+pud.getPuddleId()+" at level: "+pud.getLevel()+" : ");
 			}
 			
 			// Get parent puddle level
