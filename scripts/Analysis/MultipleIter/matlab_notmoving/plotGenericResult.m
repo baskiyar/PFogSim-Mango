@@ -126,4 +126,5 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
     set(get(gca,'Xlabel'),'FontSize',12)
     set(get(gca,'Ylabel'),'FontSize',12)
     set(lgnd,'FontSize',12)
+    title(appType)
 end
