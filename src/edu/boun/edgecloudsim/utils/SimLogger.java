@@ -60,12 +60,9 @@ public class SimLogger {
 	PrintWriter centerFileW;
 	private ArrayList<Integer> utlizationArray;
 	
-
-
 	private static SimLogger singleton = new SimLogger();
 	
-	//Qian Print to console
-
+	
 	/*
 	 * A private Constructor prevents any other class from instantiating.
 	 */
@@ -74,42 +71,78 @@ public class SimLogger {
 		printLogEnabled = false;
 	}
 
+	
 	/* Static 'instance' method */
 	public static SimLogger getInstance() {
 		return singleton;
 	}
+	
 
+	/**
+	 * 
+	 */
 	public static void enableFileLog() {
 		fileLogEnabled = true;
 	}
 
+	
+	/**
+	 * 
+	 */
 	public static void enablePrintLog() {
 		printLogEnabled = true;
 	}
 
+
+	/**
+	 * 
+	 * @return
+	 */
 	public static boolean isFileLogEnabled() {
 		return fileLogEnabled;
 	}
 
+	
+	/**
+	 * 
+	 */
 	public static void disablePrintLog() {
 		printLogEnabled = false;
 	}
 
+	
+	/**
+	 * 
+	 * @param bw
+	 * @param line
+	 * @throws IOException
+	 */
 	private void appendToFile(BufferedWriter bw, String line) throws IOException {
 		bw.write(line);
 		bw.newLine();
 	}
 
+	
+	/**
+	 * 
+	 * @param msg
+	 */
 	public static void printLine(String msg) {
 		if (printLogEnabled)
 			System.out.println(msg);
 	}
 
+	
+	/**
+	 * 
+	 * @param msg
+	 */
 	public static void print(String msg) {
 		if (printLogEnabled)
 			System.out.print(msg);
 	}
 
+	
 	/**
 	 * @param outFolder
 	 * @param fileName
@@ -129,6 +162,7 @@ public class SimLogger {
 			System.out.println("Centralize Logger File Cannot Find");
 		}
 	}
+	
 	
 	/**
 	 * @author szs0117
@@ -154,75 +188,177 @@ public class SimLogger {
 	}		
 
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public PrintWriter getCentralizeLogPrinter() {
 		return centerFileW;
 	}
 
+	
+	/**
+	 * 
+	 * @param taskStartTime
+	 * @param taskId
+	 * @param taskType
+	 * @param taskLenght
+	 * @param taskInputType
+	 * @param taskOutputSize
+	 */
 	public void addLog(double taskStartTime, int taskId, int taskType, int taskLenght, int taskInputType,
 			int taskOutputSize) {
 		// printLine(taskId+"->"+taskStartTime);
 		taskMap.put(taskId, new LogItem(taskStartTime, taskType, taskLenght, taskInputType, taskOutputSize));
 	}
 
+	
+	/**
+	 * 
+	 * @param taskId
+	 * @param taskUploadTime
+	 */
 	public void uploadStarted(int taskId, double taskUploadTime) {
 		taskMap.get(taskId).taskUploadStarted(taskUploadTime);
 	}
 
+	
+	/**
+	 * 
+	 * @param taskId
+	 * @param datacenterId
+	 * @param hostId
+	 * @param vmId
+	 * @param vmType
+	 */
 	public void uploaded(int taskId, int datacenterId, int hostId, int vmId, int vmType) {
 		taskMap.get(taskId).taskUploaded(datacenterId, hostId, vmId, vmType);
 	}
 
+	
+	/**
+	 * 
+	 * @param taskId
+	 * @param taskDownloadTime
+	 */
 	public void downloadStarted(int taskId, double taskDownloadTime) {
 		taskMap.get(taskId).taskDownloadStarted(taskDownloadTime);
 	}
 
+	
+	/**
+	 * 
+	 * @param taskId
+	 * @param taskEndTime
+	 */
 	public void downloaded(int taskId, double taskEndTime) {
 		taskMap.get(taskId).taskDownloaded(taskEndTime);
 	}
 	
+	
+	/**
+	 * 
+	 * @param taskId
+	 * @param taskEndTime
+	 * @param cost
+	 */
 	public void downloaded(int taskId, double taskEndTime, double cost) {
 		taskMap.get(taskId).taskDownloaded(taskEndTime, cost);
 	}
 
+	
 	// Shaik added
+	/**
+	 * 
+	 * @param taskId
+	 * @param taskRejectTime
+	 * @param taskStatus
+	 */
 	public void taskRejected(int taskId, double taskRejectTime, SimLogger.TASK_STATUS taskStatus) {
 		taskMap.get(taskId).taskRejectedStatus(taskRejectTime, taskStatus);
 	}
 	
 	
+	/**
+	 * 
+	 * @param taskId
+	 * @param taskRejectTime
+	 */
 	public void rejectedDueToVMCapacity(int taskId, double taskRejectTime) {
 		taskMap.get(taskId).taskRejectedDueToVMCapacity(taskRejectTime);
 	}
 
+	
+	/**
+	 * 
+	 * @param taskId
+	 * @param taskRejectTime
+	 * @param vmType
+	 */
 	public void rejectedDueToBandwidth(int taskId, double taskRejectTime, int vmType) {
 		taskMap.get(taskId).taskRejectedDueToBandwidth(taskRejectTime, vmType);
 	}
 
+	
+	/**
+	 * 
+	 * @param taskId
+	 * @param taskRejectTime
+	 */
 	public void failedDueToBandwidth(int taskId, double taskRejectTime) {
 		taskMap.get(taskId).taskFailedDueToBandwidth(taskRejectTime);
 	}
 
+	
+	/**
+	 * 
+	 * @param taskId
+	 * @param time
+	 */
 	public void failedDueToMobility(int taskId, double time) {
 		taskMap.get(taskId).taskFailedDueToMobility(time);
 	}
 
+	
+	/**
+	 * 
+	 * @param time
+	 * @param load
+	 */
 	public void addVmUtilizationLog(double time, double load) {
 		vmLoadList.add(new VmLoadLogItem(time, load));
 	}
 	
+	
+	/**
+	 * 
+	 * @param taskId
+	 * @param dist
+	 */
 	public void addHostDistanceLog(int taskId, double dist) {
 		taskMap.get(taskId).setDistance(dist);
 	}
 	
+	
+	/**
+	 * 
+	 * @param taskId
+	 * @param hops
+	 */
 	public void addHops(int taskId, int hops) {
 		taskMap.get(taskId).setHops(hops);
 	}
 	
-	
-	
+	//	
 	int[] totalNodesNmuberInEachLevel = {0, 0, 0, 0, 0, 0, 0};
+
+	//
 	private int[] levelFogNodeCount = {0, 0, 0, 0, 0, 0, 0};
 	
+	
+	/**
+	 * 
+	 */
 	private void getTotalFogNodesCountInEachLevel() {
 		HashSet<NodeSim> nodes = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology().getNodes();
 		for (NodeSim node: nodes) {
@@ -231,6 +367,11 @@ public class SimLogger {
 	}
 	
 	//Qian add method for counting fog nodes utilization
+	/**
+	 * 
+	 * @param hostId
+	 * @param host
+	 */
 	public void addNodeUtilization(int hostId, EdgeHost host) {
 		if (!utlizationArray.contains(hostId)) {
 			utlizationArray.add(hostId);
@@ -239,9 +380,19 @@ public class SimLogger {
 	}
 	
 	private int[] levelCloudletCount = {0, 0, 0, 0, 0, 0, 0, 0};
+	
+	
+	/**
+	 * 
+	 * @param level
+	 */
 	public void addCloudletToLevel(int level) {this.levelCloudletCount[level]++;}
 	
 	
+	/**
+	 * 
+	 * @throws IOException
+	 */
 	public void simStopped() throws IOException {
 		int numOfAppTypes = SimSettings.getInstance().getTaskLookUpTable().length;
 
@@ -868,6 +1019,7 @@ public class SimLogger {
 		centerFileW.close();
 	} // end simStopped()
 
+	
 	/**
 	 * @return the printLogEnabled
 	 */
@@ -875,6 +1027,7 @@ public class SimLogger {
 		return printLogEnabled;
 	}
 
+	
 	/**
 	 * @param printLogEnabled the printLogEnabled to set
 	 */
@@ -882,6 +1035,7 @@ public class SimLogger {
 		SimLogger.printLogEnabled = printLogEnabled;
 	}
 
+	
 	/**
 	 * @return the filePrefix
 	 */
@@ -889,6 +1043,7 @@ public class SimLogger {
 		return filePrefix;
 	}
 
+	
 	/**
 	 * @param filePrefix the filePrefix to set
 	 */
@@ -896,6 +1051,7 @@ public class SimLogger {
 		this.filePrefix = filePrefix;
 	}
 
+	
 	/**
 	 * @return the outputFolder
 	 */
@@ -903,6 +1059,7 @@ public class SimLogger {
 		return outputFolder;
 	}
 
+	
 	/**
 	 * @param outputFolder the outputFolder to set
 	 */
@@ -910,6 +1067,7 @@ public class SimLogger {
 		this.outputFolder = outputFolder;
 	}
 
+	
 	/**
 	 * @return the taskMap
 	 */
@@ -917,6 +1075,7 @@ public class SimLogger {
 		return taskMap;
 	}
 
+	
 	/**
 	 * @param taskMap the taskMap to set
 	 */
@@ -924,6 +1083,7 @@ public class SimLogger {
 		this.taskMap = taskMap;
 	}
 
+	
 	/**
 	 * @return the vmLoadList
 	 */
@@ -931,6 +1091,7 @@ public class SimLogger {
 		return vmLoadList;
 	}
 
+	
 	/**
 	 * @param vmLoadList the vmLoadList to set
 	 */
@@ -938,6 +1099,7 @@ public class SimLogger {
 		this.vmLoadList = vmLoadList;
 	}
 
+	
 	/**
 	 * @return the centerLogFile
 	 */
@@ -945,6 +1107,7 @@ public class SimLogger {
 		return centerLogFile;
 	}
 
+	
 	/**
 	 * @param centerLogFile the centerLogFile to set
 	 */
@@ -952,6 +1115,7 @@ public class SimLogger {
 		this.centerLogFile = centerLogFile;
 	}
 
+	
 	/**
 	 * @return the centerFileW
 	 */
@@ -959,6 +1123,7 @@ public class SimLogger {
 		return centerFileW;
 	}
 
+	
 	/**
 	 * @param centerFileW the centerFileW to set
 	 */
@@ -966,6 +1131,7 @@ public class SimLogger {
 		this.centerFileW = centerFileW;
 	}
 
+	
 	/**
 	 * @return the utlizationArray
 	 */
@@ -973,6 +1139,7 @@ public class SimLogger {
 		return utlizationArray;
 	}
 
+	
 	/**
 	 * @param utlizationArray the utlizationArray to set
 	 */
@@ -980,6 +1147,7 @@ public class SimLogger {
 		this.utlizationArray = utlizationArray;
 	}
 
+	
 	/**
 	 * @return the singleton
 	 */
@@ -987,6 +1155,7 @@ public class SimLogger {
 		return singleton;
 	}
 
+	
 	/**
 	 * @param singleton the singleton to set
 	 */
@@ -994,6 +1163,7 @@ public class SimLogger {
 		SimLogger.singleton = singleton;
 	}
 
+	
 	/**
 	 * @return the totalNodesNmuberInEachLevel
 	 */
@@ -1001,6 +1171,7 @@ public class SimLogger {
 		return totalNodesNmuberInEachLevel;
 	}
 
+	
 	/**
 	 * @param totalNodesNmuberInEachLevel the totalNodesNmuberInEachLevel to set
 	 */
@@ -1008,6 +1179,7 @@ public class SimLogger {
 		this.totalNodesNmuberInEachLevel = totalNodesNmuberInEachLevel;
 	}
 
+	
 	/**
 	 * @return the levelFogNodeCount
 	 */
@@ -1015,6 +1187,7 @@ public class SimLogger {
 		return levelFogNodeCount;
 	}
 
+	
 	/**
 	 * @param levelFogNodeCount the levelFogNodeCount to set
 	 */
@@ -1022,6 +1195,7 @@ public class SimLogger {
 		this.levelFogNodeCount = levelFogNodeCount;
 	}
 
+	
 	/**
 	 * @return the levelCloudletCount
 	 */
@@ -1029,6 +1203,7 @@ public class SimLogger {
 		return levelCloudletCount;
 	}
 
+	
 	/**
 	 * @param levelCloudletCount the levelCloudletCount to set
 	 */
@@ -1036,6 +1211,7 @@ public class SimLogger {
 		this.levelCloudletCount = levelCloudletCount;
 	}
 
+	
 	/**
 	 * @param fileLogEnabled the fileLogEnabled to set
 	 */
@@ -1045,23 +1221,46 @@ public class SimLogger {
 	
 }
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 class VmLoadLogItem {
+	
 	private double time;
 	private double vmLoad;
 
+	
+	/**
+	 * 
+	 * @param _time
+	 * @param _vmLoad
+	 */
 	VmLoadLogItem(double _time, double _vmLoad) {
 		time = _time;
 		vmLoad = _vmLoad;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getLoad() {
 		return vmLoad;
 	}
 
+	
+	/**
+	 * 
+	 */
 	public String toString() {
 		return time + SimSettings.DELIMITER + vmLoad;
 	}
 }
+
 
 /**
  * @author szs0117
@@ -1072,7 +1271,15 @@ class FNMipsUtilLogItem {
 	private int hostId;							
 	private int hostLevel;							
 	private double fnMipsUtil;							
-								
+
+	
+	/**
+	 * 
+	 * @param _time
+	 * @param _hostId
+	 * @param _hostLevel
+	 * @param _fnMipsUtil
+	 */
 	FNMipsUtilLogItem(double _time, int _hostId, int _hostLevel, double _fnMipsUtil) {							
 		time = _time;						
 		hostId = _hostId;						
@@ -1080,6 +1287,7 @@ class FNMipsUtilLogItem {
 		fnMipsUtil = _fnMipsUtil;						
 	}							
 
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -1089,6 +1297,7 @@ class FNMipsUtilLogItem {
 				+ fnMipsUtil + "]";
 	}
 
+	
 	/**
 	 * @return the time
 	 */
@@ -1096,6 +1305,7 @@ class FNMipsUtilLogItem {
 		return time;
 	}
 
+	
 	/**
 	 * @param time the time to set
 	 */
@@ -1103,6 +1313,7 @@ class FNMipsUtilLogItem {
 		this.time = time;
 	}
 
+	
 	/**
 	 * @return the hostId
 	 */
@@ -1110,6 +1321,7 @@ class FNMipsUtilLogItem {
 		return hostId;
 	}
 
+	
 	/**
 	 * @param hostId the hostId to set
 	 */
@@ -1117,6 +1329,7 @@ class FNMipsUtilLogItem {
 		this.hostId = hostId;
 	}
 
+	
 	/**
 	 * @return the hostLevel
 	 */
@@ -1124,6 +1337,7 @@ class FNMipsUtilLogItem {
 		return hostLevel;
 	}
 
+	
 	/**
 	 * @param hostLevel the hostLevel to set
 	 */
@@ -1131,6 +1345,7 @@ class FNMipsUtilLogItem {
 		this.hostLevel = hostLevel;
 	}
 
+	
 	/**
 	 * @return the fnMipsUtil
 	 */
@@ -1138,6 +1353,7 @@ class FNMipsUtilLogItem {
 		return fnMipsUtil;
 	}
 
+	
 	/**
 	 * @param fnMipsUtil the fnMipsUtil to set
 	 */
@@ -1158,6 +1374,7 @@ class FNNwUtilLogItem {
 	private int hostLevel;							
 	private double fnNwUtil;
 	
+	
 	/**
 	 * @param time
 	 * @param hostId
@@ -1172,6 +1389,7 @@ class FNNwUtilLogItem {
 		this.fnNwUtil = fnNwUtil;
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -1181,6 +1399,7 @@ class FNNwUtilLogItem {
 				+ fnNwUtil + "]";
 	}
 
+	
 	/**
 	 * @return the time
 	 */
@@ -1188,6 +1407,7 @@ class FNNwUtilLogItem {
 		return time;
 	}
 
+	
 	/**
 	 * @param time the time to set
 	 */
@@ -1195,6 +1415,7 @@ class FNNwUtilLogItem {
 		this.time = time;
 	}
 
+	
 	/**
 	 * @return the hostId
 	 */
@@ -1202,6 +1423,7 @@ class FNNwUtilLogItem {
 		return hostId;
 	}
 
+	
 	/**
 	 * @param hostId the hostId to set
 	 */
@@ -1209,6 +1431,7 @@ class FNNwUtilLogItem {
 		this.hostId = hostId;
 	}
 
+	
 	/**
 	 * @return the hostLevel
 	 */
@@ -1216,6 +1439,7 @@ class FNNwUtilLogItem {
 		return hostLevel;
 	}
 
+	
 	/**
 	 * @param hostLevel the hostLevel to set
 	 */
@@ -1223,6 +1447,7 @@ class FNNwUtilLogItem {
 		this.hostLevel = hostLevel;
 	}
 
+	
 	/**
 	 * @return the fnNwUtil
 	 */
@@ -1230,6 +1455,7 @@ class FNNwUtilLogItem {
 		return fnNwUtil;
 	}
 
+	
 	/**
 	 * @param fnNwUtil the fnNwUtil to set
 	 */
@@ -1239,7 +1465,15 @@ class FNNwUtilLogItem {
 
 }
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 class LogItem {
+	
+	
 	/**
 	 * @return the datacenterId
 	 */
@@ -1247,6 +1481,7 @@ class LogItem {
 		return datacenterId;
 	}
 
+	
 	/**
 	 * @param datacenterId the datacenterId to set
 	 */
@@ -1254,6 +1489,7 @@ class LogItem {
 		this.datacenterId = datacenterId;
 	}
 
+	
 	/**
 	 * @return the hostId
 	 */
@@ -1261,6 +1497,7 @@ class LogItem {
 		return hostId;
 	}
 
+	
 	/**
 	 * @param hostId the hostId to set
 	 */
@@ -1268,6 +1505,7 @@ class LogItem {
 		this.hostId = hostId;
 	}
 
+	
 	/**
 	 * @return the vmId
 	 */
@@ -1275,6 +1513,7 @@ class LogItem {
 		return vmId;
 	}
 
+	
 	/**
 	 * @param vmId the vmId to set
 	 */
@@ -1282,6 +1521,7 @@ class LogItem {
 		this.vmId = vmId;
 	}
 
+	
 	/**
 	 * @return the taskLenght
 	 */
@@ -1289,6 +1529,7 @@ class LogItem {
 		return taskLenght;
 	}
 
+	
 	/**
 	 * @param taskLenght the taskLenght to set
 	 */
@@ -1296,6 +1537,7 @@ class LogItem {
 		this.taskLenght = taskLenght;
 	}
 
+	
 	/**
 	 * @return the taskInputType
 	 */
@@ -1303,6 +1545,7 @@ class LogItem {
 		return taskInputType;
 	}
 
+	
 	/**
 	 * @param taskInputType the taskInputType to set
 	 */
@@ -1310,6 +1553,7 @@ class LogItem {
 		this.taskInputType = taskInputType;
 	}
 
+	
 	/**
 	 * @return the taskOutputSize
 	 */
@@ -1317,6 +1561,7 @@ class LogItem {
 		return taskOutputSize;
 	}
 
+	
 	/**
 	 * @param taskOutputSize the taskOutputSize to set
 	 */
@@ -1324,6 +1569,7 @@ class LogItem {
 		this.taskOutputSize = taskOutputSize;
 	}
 
+	
 	/**
 	 * @return the numberOfHops
 	 */
@@ -1331,6 +1577,7 @@ class LogItem {
 		return numberOfHops;
 	}
 
+	
 	/**
 	 * @param numberOfHops the numberOfHops to set
 	 */
@@ -1338,6 +1585,7 @@ class LogItem {
 		this.numberOfHops = numberOfHops;
 	}
 
+	
 	/**
 	 * @return the taskStartTime
 	 */
@@ -1345,6 +1593,7 @@ class LogItem {
 		return taskStartTime;
 	}
 
+	
 	/**
 	 * @param taskStartTime the taskStartTime to set
 	 */
@@ -1352,6 +1601,7 @@ class LogItem {
 		this.taskStartTime = taskStartTime;
 	}
 
+	
 	/**
 	 * @return the taskEndTime
 	 */
@@ -1359,6 +1609,7 @@ class LogItem {
 		return taskEndTime;
 	}
 
+	
 	/**
 	 * @param taskEndTime the taskEndTime to set
 	 */
@@ -1366,6 +1617,7 @@ class LogItem {
 		this.taskEndTime = taskEndTime;
 	}
 
+	
 	/**
 	 * @return the bwCost
 	 */
@@ -1373,6 +1625,7 @@ class LogItem {
 		return bwCost;
 	}
 
+	
 	/**
 	 * @param bwCost the bwCost to set
 	 */
@@ -1380,6 +1633,7 @@ class LogItem {
 		this.bwCost = bwCost;
 	}
 
+	
 	/**
 	 * @return the cpuCost
 	 */
@@ -1387,6 +1641,7 @@ class LogItem {
 		return cpuCost;
 	}
 
+	
 	/**
 	 * @param cpuCost the cpuCost to set
 	 */
@@ -1394,6 +1649,7 @@ class LogItem {
 		this.cpuCost = cpuCost;
 	}
 
+	
 	/**
 	 * @return the taskCost
 	 */
@@ -1401,6 +1657,7 @@ class LogItem {
 		return taskCost;
 	}
 
+	
 	/**
 	 * @param taskCost the taskCost to set
 	 */
@@ -1408,6 +1665,7 @@ class LogItem {
 		this.taskCost = taskCost;
 	}
 
+	
 	/**
 	 * @return the distanceToHost
 	 */
@@ -1415,6 +1673,7 @@ class LogItem {
 		return distanceToHost;
 	}
 
+	
 	/**
 	 * @param distanceToHost the distanceToHost to set
 	 */
@@ -1422,6 +1681,7 @@ class LogItem {
 		this.distanceToHost = distanceToHost;
 	}
 
+	
 	/**
 	 * @param status the status to set
 	 */
@@ -1429,6 +1689,7 @@ class LogItem {
 		this.status = status;
 	}
 
+	
 	/**
 	 * @param vmType the vmType to set
 	 */
@@ -1436,6 +1697,7 @@ class LogItem {
 		this.vmType = vmType;
 	}
 
+	
 	/**
 	 * @param taskType the taskType to set
 	 */
@@ -1443,6 +1705,7 @@ class LogItem {
 		this.taskType = taskType;
 	}
 
+	
 	/**
 	 * @param networkDelay the networkDelay to set
 	 */
@@ -1450,6 +1713,7 @@ class LogItem {
 		this.networkDelay = networkDelay;
 	}
 
+	
 	/**
 	 * @param isInWarmUpPeriod the isInWarmUpPeriod to set
 	 */
@@ -1476,6 +1740,15 @@ class LogItem {
 	private double taskCost = 0;
 	private double distanceToHost;
 	
+	
+	/**
+	 * 
+	 * @param _taskStartTime
+	 * @param _taskType
+	 * @param _taskLenght
+	 * @param _taskInputType
+	 * @param _taskOutputSize
+	 */
 	LogItem(double _taskStartTime, int _taskType, int _taskLenght, int _taskInputType, int _taskOutputSize) {
 		taskStartTime = _taskStartTime;
 		taskType = _taskType;
@@ -1491,11 +1764,24 @@ class LogItem {
 			isInWarmUpPeriod = false;
 	}
 	
+	
+	/**
+	 * 
+	 * @param taskUploadTime
+	 */
 	public void taskUploadStarted(double taskUploadTime) {
 		networkDelay += taskUploadTime;
 		status = SimLogger.TASK_STATUS.UPLOADING;
 	}
 
+	
+	/**
+	 * 
+	 * @param _datacenterId
+	 * @param _hostId
+	 * @param _vmId
+	 * @param _vmType
+	 */
 	public void taskUploaded(int _datacenterId, int _hostId, int _vmId, int _vmType) {
 		status = SimLogger.TASK_STATUS.PROCESSING;
 		datacenterId = _datacenterId;
@@ -1504,16 +1790,32 @@ class LogItem {
 		vmType = _vmType;
 	}
 
+	
+	/**
+	 * 
+	 * @param taskDownloadTime
+	 */
 	public void taskDownloadStarted(double taskDownloadTime) {
 		networkDelay += taskDownloadTime;
 		status = SimLogger.TASK_STATUS.DOWNLOADING;
 	}
 
+	
+	/**
+	 * 
+	 * @param _taskEndTime
+	 */
 	public void taskDownloaded(double _taskEndTime) {
 		taskEndTime = _taskEndTime;
 		status = SimLogger.TASK_STATUS.COMPLETED;
 	}
 	
+	
+	/**
+	 * 
+	 * @param _taskEndTime
+	 * @param cost
+	 */
 	public void taskDownloaded(double _taskEndTime, double cost) {
 		taskEndTime = _taskEndTime;
 		taskCost = cost;
@@ -1521,66 +1823,138 @@ class LogItem {
 	}
 	
 	// Shaik added
+	/**
+	 * 
+	 * @param _taskRejectTime
+	 * @param taskStatus
+	 */
 	public void taskRejectedStatus(double _taskRejectTime, SimLogger.TASK_STATUS taskStatus) {
 		taskEndTime = _taskRejectTime;
 		status = taskStatus;				
 	}
 
+	/**
+	 * 
+	 * @param _taskRejectTime
+	 */
 	public void taskRejectedDueToVMCapacity(double _taskRejectTime) {
 		taskEndTime = _taskRejectTime;
 		status = SimLogger.TASK_STATUS.REJECTED_DUE_TO_VM_CAPACITY;
 	}
 
+	
+	/**
+	 * 
+	 * @param _taskRejectTime
+	 * @param _vmType
+	 */
 	public void taskRejectedDueToBandwidth(double _taskRejectTime, int _vmType) {
 		vmType = _vmType;
 		taskEndTime = _taskRejectTime;
 		status = SimLogger.TASK_STATUS.REJECTED_DUE_TO_BANDWIDTH;
 	}
 
+	
+	/**
+	 * 
+	 * @param _time
+	 */
 	public void taskFailedDueToBandwidth(double _time) {
 		taskEndTime = _time;
 		status = SimLogger.TASK_STATUS.UNFINISHED_DUE_TO_BANDWIDTH;
 	}
 
+	
+	/**
+	 * 
+	 * @param _time
+	 */
 	public void taskFailedDueToMobility(double _time) {
 		taskEndTime = _time;
 		status = SimLogger.TASK_STATUS.UNFINISHED_DUE_TO_MOBILITY;
 	}
 
+	
+	/**
+	 * 
+	 * @param _bwCost
+	 * @param _cpuCos
+	 */
 	public void setCost(double _bwCost, double _cpuCos) {
 		bwCost = _bwCost;
 		cpuCost = _cpuCos;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isInWarmUpPeriod() {
 		return isInWarmUpPeriod;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getCost() {
 		//return bwCost + cpuCost;
 		return taskCost;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getNetworkDelay() {
 		return networkDelay;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getServiceTime() {
 		return taskEndTime - taskStartTime;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public SimLogger.TASK_STATUS getStatus() {
 		return status;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getVmType() {
 		return vmType;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getTaskType() {
 		return taskType;
 	}
 
+	
+	/**
+	 * 
+	 * @param taskId
+	 * @return
+	 */
 	public String toString(int taskId) {
 		String result = taskId + SimSettings.DELIMITER + datacenterId + SimSettings.DELIMITER + hostId
 				+ SimSettings.DELIMITER + vmId + SimSettings.DELIMITER + vmType + SimSettings.DELIMITER + taskType
@@ -1609,18 +1983,38 @@ class LogItem {
 		return result;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getHostDist() {
 		return distanceToHost;
 	}
 	
+	
+	/**
+	 * 
+	 * @param in
+	 */
 	public void setDistance(double in) {
 		distanceToHost = in;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getHops() {
 		return numberOfHops;
 	}
 	
+	
+	/**
+	 * 
+	 * @param in
+	 */
 	public void setHops(int in) {
 		numberOfHops = in;
 	}
