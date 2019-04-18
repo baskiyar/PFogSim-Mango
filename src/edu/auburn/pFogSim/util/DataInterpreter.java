@@ -15,6 +15,11 @@ import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
 
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class DataInterpreter {
 	private static int MAX_LEVELS = 7;
 	private static String[] files= {

@@ -27,13 +27,26 @@ import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 
 	ArrayList<EdgeHost> hosts;
 	
+	
+	/**
+	 * 
+	 * @param _policy
+	 * @param _simScenario
+	 */
 	public EdgeByLatencyOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 	}
+	
 	
 	/**
 	 * get all the hosts in the network into one list
@@ -49,6 +62,7 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 
 	}
 	
+	
 	/**
 	 * get the id of the appropriate host
 	 */
@@ -61,6 +75,7 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 			return -1;
 		}
 	}
+	
 	
 	/**
 	 * the the appropriate VM to run on
@@ -75,6 +90,7 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 		}
 	}
 	
+	
 	/**
 	 * find the host
 	 * @param task
@@ -85,6 +101,7 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 		task.setPath(mb.getPath());
 		return mb.getHost();
 	}
+	
 	
 	/* 
 	 * @ author Qian Wang
@@ -122,12 +139,14 @@ public class EdgeByLatencyOrchestrator extends EdgeOrchestrator {
 			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
 	}
 	
+	
 	/**
 	 * @return the hosts
 	 */
 	public ArrayList<EdgeHost> getHosts() {
 		return hosts;
 	}
+	
 	
 	/**
 	 * @param hosts the hosts to set

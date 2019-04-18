@@ -20,6 +20,12 @@ import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.utils.Location;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class Task extends Cloudlet {
 	private SimSettings.APP_TYPES type;
 	private Location submittedLocation;
@@ -32,6 +38,22 @@ public class Task extends Cloudlet {
     public boolean sens; //added by pFogSim to say whether a device is a sensor
     public boolean act;  //added by pFogSim to say whether a device is an actuator
 
+    
+    /**
+     * 
+     * @param _mobileDeviceId
+     * @param cloudletId
+     * @param cloudletLength
+     * @param pesNumber
+     * @param cloudletFileSize
+     * @param cloudletOutputSize
+     * @param utilizationModelCpu
+     * @param utilizationModelRam
+     * @param utilizationModelBw
+     * @param _wifi
+     * @param _sens
+     * @param _act
+     */
 	public Task(int _mobileDeviceId, int cloudletId, long cloudletLength, int pesNumber,
 			long cloudletFileSize, long cloudletOutputSize,
 			UtilizationModel utilizationModelCpu,
@@ -49,34 +71,70 @@ public class Task extends Cloudlet {
     	path = null;
 	}
 
-	
+
+	/**
+	 * 
+	 * @param _submittedLocation
+	 */
 	public void setSubmittedLocation(Location _submittedLocation){
 		submittedLocation =_submittedLocation;
 	}
 	
+	
+	/**
+	 * 
+	 * @param _hostIndex
+	 */
 	public void setAssociatedHostId(int _hostIndex){
 		hostIndex=_hostIndex;
 	}
 
+	
+	/**
+	 * 
+	 * @param _type
+	 */
 	public void setTaskType(SimSettings.APP_TYPES _type){
 		type=_type;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getMobileDeviceId(){
 		return mobileDeviceId;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public Location getSubmittedLocation(){
 		return submittedLocation;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getAssociatedHostId(){
 		return hostIndex;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public SimSettings.APP_TYPES getTaskType(){
 		return type;
 	}
+	
+	
 	/**
 	 * get the maximum latency that this task will tolerate in seconds. default value is 0.600 seconds (600 miliseconds)
 	 * @return
@@ -84,6 +142,8 @@ public class Task extends Cloudlet {
 	public double getMaxDelay() {
 		return maxDelay;
 	}
+	
+	
 	/**
 	 * set the maximum latency that this task will tolerate
 	 * @param in
@@ -91,6 +151,7 @@ public class Task extends Cloudlet {
 	public void setMaxDelay(double in) {
 		maxDelay = in;
 	}
+	
 	
 	/**
 	 * set path for task
@@ -100,6 +161,7 @@ public class Task extends Cloudlet {
 		this.path = _path;
 	}
 	
+	
 	/**
 	 * get path
 	 */
@@ -107,10 +169,20 @@ public class Task extends Cloudlet {
 		return path;
 	}
 	
+	
+	/**
+	 * 
+	 * @param deviceId
+	 */
 	public void setDesMobileDeviceId(int deviceId) {
 		this.mobileDeviceId = deviceId;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getDesMobileId() {
 		return this.mobileDeviceId;
 	}

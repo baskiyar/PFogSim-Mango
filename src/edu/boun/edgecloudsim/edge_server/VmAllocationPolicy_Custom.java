@@ -30,7 +30,7 @@ import org.w3c.dom.NodeList;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
-/*
+/**
  * Same as VmAllocationPolicySimple.
  */
 public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
@@ -39,6 +39,13 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 	private static int createdVmNum;
 	private int DataCenterIndex;
 	private static int vmtotNUM;
+	
+	
+	/**
+	 * 
+	 * @param list
+	 * @param _DataCenterIndex
+	 */
 	public VmAllocationPolicy_Custom(List<? extends Host> list, int _DataCenterIndex) {
 		super(list);
 		
@@ -48,6 +55,10 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 		vmtotNUM = 0;
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public boolean allocateHostForVm(Vm vm) {
 		boolean result = false;
@@ -106,6 +117,10 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 		return result;
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public boolean allocateHostForVm(Vm vm, Host host) {
 		if (host.vmCreate(vm)) { // if vm has been successfully created in the host
@@ -120,12 +135,20 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 		return false;
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public List<Map<String, Object>> optimizeAllocation(List<? extends Vm> vmList) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void deallocateHostForVm(Vm vm) {
 		Host host = getVmTable().remove(vm.getUid());
@@ -134,19 +157,33 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 		}
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public Host getHost(Vm vm) {
 		return getVmTable().get(vm.getUid());
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public Host getHost(int vmId, int userId) {
 		return getVmTable().get(Vm.getUid(userId, vmId));
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public static int getCreatedVmNum(){
 		return createdVmNum;
 	}
+	
 	
 	/**
 	 * Gets the vm table.
@@ -157,6 +194,7 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 		return vmTable;
 	}
 
+	
 	/**
 	 * Sets the vm table.
 	 * 
@@ -166,6 +204,7 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 		this.vmTable = vmTable;
 	}
 
+	
 	/**
 	 * @return the dataCenterIndex
 	 */
@@ -173,6 +212,7 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 		return DataCenterIndex;
 	}
 
+	
 	/**
 	 * @param dataCenterIndex the dataCenterIndex to set
 	 */
@@ -180,6 +220,7 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 		DataCenterIndex = dataCenterIndex;
 	}
 
+	
 	/**
 	 * @return the vmtotNUM
 	 */
@@ -187,6 +228,7 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 		return vmtotNUM;
 	}
 
+	
 	/**
 	 * @param vmtotNUM the vmtotNUM to set
 	 */
@@ -194,6 +236,7 @@ public class VmAllocationPolicy_Custom extends VmAllocationPolicy {
 		VmAllocationPolicy_Custom.vmtotNUM = vmtotNUM;
 	}
 
+	
 	/**
 	 * @param createdVmNum the createdVmNum to set
 	 */

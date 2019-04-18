@@ -1,8 +1,13 @@
 package edu.auburn.pFogSim.clustering;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class FogParentChild {
 
-	
 	
 }//end class FogParentChild
 

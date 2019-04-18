@@ -12,6 +12,12 @@ import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.auburn.pFogSim.Exceptions.BadLinkException;
 import javafx.util.Pair;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class NodeSim {
 	
 	private ArrayList<Link> edges;
@@ -22,6 +28,8 @@ public class NodeSim {
 	private Location vector;
 	private int wlan_id;
 	//private int bandwidth;
+	
+	
 	/**
 	 * Constructor
 	 * @param inputEdges
@@ -33,15 +41,36 @@ public class NodeSim {
 			addLink(edge);
 		}
 	}
+	
+	
+	/**
+	 * 
+	 */
 	public NodeSim() {
 		edges = new ArrayList<Link>();
 		myLocation = new Location();
 	}
+	
+	
+	/**
+	 * 
+	 * @param xin
+	 * @param yin
+	 */
 	public NodeSim(double xin, double yin) {
 		edges = new ArrayList<Link>();
 		myLocation = new Location(xin, yin);
 	}
 	
+	
+	/**
+	 * 
+	 * @param xin
+	 * @param yin
+	 * @param _level
+	 * @param id
+	 * @param isAccessPoint
+	 */
 	public NodeSim(double xin, double yin, int _level, int id, boolean isAccessPoint) {
 		wlan_id = id;
 		edges = new ArrayList<Link>();
@@ -50,6 +79,16 @@ public class NodeSim {
 		wifiAccess = isAccessPoint;
 	}
 	
+	
+	/**
+	 * 
+	 * @param xin
+	 * @param yin
+	 * @param _level
+	 * @param id
+	 * @param isAccessPoint
+	 * @param isMoving
+	 */
 	public NodeSim(double xin, double yin, int _level, int id, boolean isAccessPoint, boolean isMoving) {
 		wlan_id = id;
 		edges = new ArrayList<Link>();
@@ -60,6 +99,17 @@ public class NodeSim {
 		vector = new Location(0.0,0.0);
 	}
 	
+	
+	/**
+	 * 
+	 * @param xin
+	 * @param yin
+	 * @param _level
+	 * @param id
+	 * @param isAccessPoint
+	 * @param isMoving
+	 * @param _vector
+	 */
 	public NodeSim(double xin, double yin, int _level, int id, boolean isAccessPoint, boolean isMoving, Location _vector) {
 		wlan_id = id;
 		edges = new ArrayList<Link>();
@@ -75,6 +125,7 @@ public class NodeSim {
 		}
 	}
 	
+	
 	/**
 	 * tests to make sure that at least one of the end-points for the given link is at this node
 	 * @param in
@@ -89,6 +140,8 @@ public class NodeSim {
 			return false;
 		}
 	}
+	
+	
 	/**
 	 * set myLocation by coords
 	 * @param xin
@@ -97,6 +150,8 @@ public class NodeSim {
 	public void setLocation(double xin, double yin) {
 		myLocation = new Location(xin, yin);
 	}
+	
+	
 	/**
 	 * set myLocation by designating a coordinate
 	 * @param in
@@ -104,6 +159,8 @@ public class NodeSim {
 	public void setLocation(Location in) {
 		myLocation = in;
 	}
+	
+	
 	/**
 	 * get the coordinate for this node
 	 * @return
@@ -111,6 +168,8 @@ public class NodeSim {
 	public Location getLocation() {
 		return myLocation;
 	}
+	
+	
 	/**
 	 * get the edges for this node
 	 * @return
@@ -118,6 +177,8 @@ public class NodeSim {
 	public ArrayList<Link> getEdges() {
 		return edges;
 	}
+	
+	
 	/**
 	 * make sure that all edges on this node are connected to this node
 	 * @return the offending invalid link if one is found<br>
@@ -132,6 +193,8 @@ public class NodeSim {
 		//SimLogger.printLine("returned null");
 		return null;
 	}
+	
+	
 	/**
 	 * remove a link from this node
 	 * @param victim
@@ -154,6 +217,8 @@ public class NodeSim {
 		}
 		throw new IllegalArgumentException();
 	}
+	
+	
 	/**
 	 * add a link to this node<br>
 	 * if the link is already on this node do nothing<br>
@@ -178,6 +243,8 @@ public class NodeSim {
 			throw new BadLinkException();
 		}
 	}
+	
+	
 	/**
 	 * travel from this node to an adjacent node
 	 * @param dest
@@ -192,6 +259,8 @@ public class NodeSim {
 		}
 		return -1.0;
 	}
+	
+	
 	/**
 	 * tests nodes for equality based on location and links
 	 * @param in
@@ -213,6 +282,8 @@ public class NodeSim {
 		}
 		return true;
 	}
+	
+	
 	/**
 	 * set the puddle level
 	 * @param _level
@@ -220,6 +291,8 @@ public class NodeSim {
 	public void setLevel(int _level) {
 		this.level = _level;
 	}
+	
+	
 	/**
 	 * get the puddle level
 	 * @return
@@ -227,6 +300,8 @@ public class NodeSim {
 	public int getLevel() {
 		return this.level;
 	}
+	
+	
 	/**
 	 * is this node a designated wifi access point
 	 * @return
@@ -234,6 +309,8 @@ public class NodeSim {
 	public boolean isWifiAcc() {
 		return wifiAccess;
 	}
+	
+	
 	/**
 	 * is this a mobile fog device
 	 * @return
@@ -241,6 +318,8 @@ public class NodeSim {
 	public boolean isMoving() {
 		return moving;
 	}
+	
+	
 	/**
 	 * set the motion vector for this device, if it is mobile
 	 * @param _vector
@@ -249,6 +328,8 @@ public class NodeSim {
 	{
 		this.vector = _vector;
 	}
+	
+	
 	/**
 	 * get the motion vector for this device, if it is mobile
 	 * @return
@@ -257,6 +338,8 @@ public class NodeSim {
 	{
 		return this.vector;
 	}
+	
+	
 	/**
 	 * set whether this node is a wifi access point
 	 * @param wifi
@@ -264,6 +347,8 @@ public class NodeSim {
 	public void setWifi(boolean wifi) {
 		wifiAccess = wifi;
 	}
+	
+	
 	/**
 	 * set the wlanid associated with this node
 	 * @param id
@@ -272,6 +357,8 @@ public class NodeSim {
 	{
 		this.wlan_id = id;
 	}
+	
+	
 	/**
 	 * get the wlanid associated with this node
 	 * @return
@@ -280,6 +367,8 @@ public class NodeSim {
 	{
 		return this.wlan_id;
 	}
+	
+	
 	/**
 	 * toString() for node returns the x and y coordinate of the node as a string of the form "x, y"
 	 */
@@ -287,6 +376,11 @@ public class NodeSim {
 		return getLocation().getXPos() + ", " + getLocation().getYPos();
 	}
 	
+	
+	/**
+	 * 
+	 * @param in
+	 */
 	public void combine(NodeSim in) {
 		if (!in.getLocation().equals(this.getLocation())) {
 			throw new IllegalArgumentException();
@@ -295,48 +389,64 @@ public class NodeSim {
 			this.addLink(link);
 		}
 	}
+	
+	
 	/**
 	 * @return the myLocation
 	 */
 	public Location getMyLocation() {
 		return myLocation;
 	}
+	
+	
 	/**
 	 * @param myLocation the myLocation to set
 	 */
 	public void setMyLocation(Location myLocation) {
 		this.myLocation = myLocation;
 	}
+	
+	
 	/**
 	 * @return the wifiAccess
 	 */
 	public boolean isWifiAccess() {
 		return wifiAccess;
 	}
+	
+	
 	/**
 	 * @param wifiAccess the wifiAccess to set
 	 */
 	public void setWifiAccess(boolean wifiAccess) {
 		this.wifiAccess = wifiAccess;
 	}
+	
+	
 	/**
 	 * @return the wlan_id
 	 */
 	public int getWlan_id() {
 		return wlan_id;
 	}
+	
+	
 	/**
 	 * @param wlan_id the wlan_id to set
 	 */
 	public void setWlan_id(int wlan_id) {
 		this.wlan_id = wlan_id;
 	}
+	
+	
 	/**
 	 * @param edges the edges to set
 	 */
 	public void setEdges(ArrayList<Link> edges) {
 		this.edges = edges;
 	}
+	
+	
 	/**
 	 * @param moving the moving to set
 	 */

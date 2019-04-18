@@ -15,19 +15,33 @@ package edu.auburn.pFogSim.mobility; //This line was the only changed by Auburn
 
 import edu.boun.edgecloudsim.utils.Location;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public abstract class MobilityModel {
 	protected int numberOfMobileDevices;
 	protected double simulationTime;
 	
+	
+	/**
+	 * 
+	 * @param _numberOfMobileDevices
+	 * @param _simulationTime
+	 */
 	public MobilityModel(int _numberOfMobileDevices, double _simulationTime){
 		numberOfMobileDevices=_numberOfMobileDevices;
 		simulationTime=_simulationTime;
 	};
 	
+	
 	/*
 	 * calculate location of the devices according to related mobility model
 	 */
 	public abstract void initialize();
+	
 	
 	/*
 	 * returns location of a device at a certain time
@@ -38,6 +52,7 @@ public abstract class MobilityModel {
 	public abstract int getSize();
 	public abstract int getTreeMapSize();
 
+	
 	/**
 	 * @return the numberOfMobileDevices
 	 */
@@ -45,12 +60,14 @@ public abstract class MobilityModel {
 		return numberOfMobileDevices;
 	}
 
+	
 	/**
 	 * @param numberOfMobileDevices the numberOfMobileDevices to set
 	 */
 	public void setNumberOfMobileDevices(int numberOfMobileDevices) {
 		this.numberOfMobileDevices = numberOfMobileDevices;
 	}
+	
 
 	/**
 	 * @return the simulationTime
@@ -59,6 +76,7 @@ public abstract class MobilityModel {
 		return simulationTime;
 	}
 
+	
 	/**
 	 * @param simulationTime the simulationTime to set
 	 */

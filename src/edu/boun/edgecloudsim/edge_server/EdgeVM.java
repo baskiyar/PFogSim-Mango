@@ -19,23 +19,53 @@ import org.cloudbus.cloudsim.Vm;
 import edu.auburn.pFogSim.util.ApplicationServicesManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class EdgeVM extends Vm {
 	private SimSettings.VM_TYPES type;
 	private ApplicationServicesManager appServicesManager;
 	
+	
+	/**
+	 * 
+	 * @param id
+	 * @param userId
+	 * @param mips
+	 * @param numberOfPes
+	 * @param ram
+	 * @param bw
+	 * @param size
+	 * @param vmm
+	 * @param cloudletScheduler
+	 */
 	public EdgeVM(int id, int userId, double mips, int numberOfPes, int ram,
 			long bw, long size, String vmm, CloudletScheduler cloudletScheduler) {
 		super(id, userId, mips, numberOfPes, ram, bw, size, vmm, cloudletScheduler);
 		appServicesManager = new ApplicationServicesManager();
 	}
 
+	
+	/**
+	 * 
+	 * @param _type
+	 */
 	public void setVmType(SimSettings.VM_TYPES _type){
 		type=_type;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public SimSettings.VM_TYPES getVmType(){
 		return type;
 	}
+	
 	
 	/**
 	 * Application services manager getter
@@ -45,6 +75,7 @@ public class EdgeVM extends Vm {
 		return appServicesManager;
 	}
 
+	
 	/**
 	 * @return the type
 	 */
@@ -52,12 +83,14 @@ public class EdgeVM extends Vm {
 		return type;
 	}
 
+	
 	/**
 	 * @param type the type to set
 	 */
 	public void setType(SimSettings.VM_TYPES type) {
 		this.type = type;
 	}
+	
 
 	/**
 	 * @return the appServicesManager
@@ -66,6 +99,7 @@ public class EdgeVM extends Vm {
 		return appServicesManager;
 	}
 
+	
 	/**
 	 * @param appServicesManager the appServicesManager to set
 	 */

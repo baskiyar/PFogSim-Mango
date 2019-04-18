@@ -20,12 +20,24 @@ import org.cloudbus.cloudsim.UtilizationModel;
 
 import edu.boun.edgecloudsim.core.SimSettings;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class CpuUtilizationModel_Custom implements UtilizationModel {
 	private SimSettings.APP_TYPES taskType;
 	
+	
+	/**
+	 * 
+	 * @param _taskType
+	 */
 	public CpuUtilizationModel_Custom(SimSettings.APP_TYPES _taskType){
 		taskType=_taskType;
 	}
+	
 	
 	/*
 	 * (non-Javadoc)
@@ -36,10 +48,17 @@ public class CpuUtilizationModel_Custom implements UtilizationModel {
 		return SimSettings.getInstance().getTaskLookUpTable()[taskType.ordinal()][9];
 	}
 	
+	
+	/**
+	 * 
+	 * @param _vmType
+	 * @return
+	 */
 	public double predictUtilization(SimSettings.VM_TYPES _vmType){
 		return SimSettings.getInstance().getTaskLookUpTable()[taskType.ordinal()][9];
 	}
 
+	
 	/**
 	 * @return the taskType
 	 */
@@ -47,6 +66,7 @@ public class CpuUtilizationModel_Custom implements UtilizationModel {
 		return taskType;
 	}
 
+	
 	/**
 	 * @param taskType the taskType to set
 	 */

@@ -32,6 +32,12 @@ import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.boun.edgecloudsim.utils.SimUtils;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class XYVectorMobility extends MobilityModel {
 	private List<TreeMap<Double, Location>> treeMapArray;
 	private double MAX_WIDTH;
@@ -40,16 +46,34 @@ public class XYVectorMobility extends MobilityModel {
 	private double MIN_HEIGHT;
 	private NetworkTopology network = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology();
 
-	
+		
+	/**
+	 * 
+	 * @param _numberOfMobileDevices
+	 * @param _simulationTime
+	 */
 	public XYVectorMobility(int _numberOfMobileDevices, double _simulationTime) {
 		super(_numberOfMobileDevices, _simulationTime);
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	/**
+	 * 
+	 * @param y1
+	 * @param x1
+	 * @param y2
+	 * @param x2
+	 * @return
+	 */
 	public double measure(double y1, double x1, double y2, double x2) {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 	
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void initialize() {
 		//this.MAX_LONG = SimManager.MAX_LONG;
@@ -157,7 +181,9 @@ public class XYVectorMobility extends MobilityModel {
 	}
 
 	
-
+	/**
+	 * 
+	 */
 	@Override
 	public Location getLocation(int deviceId, double time) {
 		TreeMap<Double, Location> treeMap = treeMapArray.get(deviceId);
@@ -171,6 +197,11 @@ public class XYVectorMobility extends MobilityModel {
 	    
 		return e.getValue();
 	}
+	
+	
+	/**
+	 * 
+	 */
 	public int getWlanId(int deviceId, double time) 
 	{
 		int wlan_id = -1;
@@ -193,6 +224,10 @@ public class XYVectorMobility extends MobilityModel {
 		return wlan_id;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public int getWlanId(int deviceId) 
 	{
 		int wlan_id = -1;
@@ -207,17 +242,26 @@ public class XYVectorMobility extends MobilityModel {
 		return wlan_id;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public int getSize()
 	{
 		return treeMapArray.size();
 		//return treeMapArray.get(1).size();
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public int getTreeMapSize() 
 	{
 		return treeMapArray.get(1).size();
 	}
 
+	
 	/**
 	 * @return the treeMapArray
 	 */
@@ -225,6 +269,7 @@ public class XYVectorMobility extends MobilityModel {
 		return treeMapArray;
 	}
 
+	
 	/**
 	 * @param treeMapArray the treeMapArray to set
 	 */
@@ -232,6 +277,7 @@ public class XYVectorMobility extends MobilityModel {
 		this.treeMapArray = treeMapArray;
 	}
 
+	
 	/**
 	 * @return the mAX_WIDTH
 	 */
@@ -239,6 +285,7 @@ public class XYVectorMobility extends MobilityModel {
 		return MAX_WIDTH;
 	}
 
+	
 	/**
 	 * @param mAX_WIDTH the mAX_WIDTH to set
 	 */
@@ -246,6 +293,7 @@ public class XYVectorMobility extends MobilityModel {
 		MAX_WIDTH = mAX_WIDTH;
 	}
 
+	
 	/**
 	 * @return the mIN_WIDTH
 	 */
@@ -253,6 +301,7 @@ public class XYVectorMobility extends MobilityModel {
 		return MIN_WIDTH;
 	}
 
+	
 	/**
 	 * @param mIN_WIDTH the mIN_WIDTH to set
 	 */
@@ -260,6 +309,7 @@ public class XYVectorMobility extends MobilityModel {
 		MIN_WIDTH = mIN_WIDTH;
 	}
 
+	
 	/**
 	 * @return the mAX_HEIGHT
 	 */
@@ -267,6 +317,7 @@ public class XYVectorMobility extends MobilityModel {
 		return MAX_HEIGHT;
 	}
 
+	
 	/**
 	 * @param mAX_HEIGHT the mAX_HEIGHT to set
 	 */
@@ -274,6 +325,7 @@ public class XYVectorMobility extends MobilityModel {
 		MAX_HEIGHT = mAX_HEIGHT;
 	}
 
+	
 	/**
 	 * @return the mIN_HEIGHT
 	 */
@@ -281,6 +333,7 @@ public class XYVectorMobility extends MobilityModel {
 		return MIN_HEIGHT;
 	}
 
+	
 	/**
 	 * @param mIN_HEIGHT the mIN_HEIGHT to set
 	 */
@@ -288,6 +341,7 @@ public class XYVectorMobility extends MobilityModel {
 		MIN_HEIGHT = mIN_HEIGHT;
 	}
 
+	
 	/**
 	 * @return the network
 	 */
@@ -295,6 +349,7 @@ public class XYVectorMobility extends MobilityModel {
 		return network;
 	}
 
+	
 	/**
 	 * @param network the network to set
 	 */

@@ -1,5 +1,7 @@
 package edu.auburn.pFogSim.util;
 import edu.boun.edgecloudsim.core.SimSettings;
+
+
 /**
  * This class is application service class. For every fog node, it has one VM.
  * Inside this VM, there are several application services.
@@ -7,12 +9,12 @@ import edu.boun.edgecloudsim.core.SimSettings;
  * @author Qian Wang
  * version: 1.1
  */
-
 public class ApplicationService {
 	private int serviceId;
 	//private int applicationId;
 	private SimSettings.APP_TYPES type;
 	private boolean avaliable;
+	
 	
 	/**
 	 * ApplicaitonService constructor
@@ -27,6 +29,7 @@ public class ApplicationService {
 		avaliable = true;
 	}
 	
+	
 	/**
 	 * serviceId getter
 	 * @return serviceId
@@ -34,6 +37,7 @@ public class ApplicationService {
 	public int getServiceId() {
 		return serviceId;
 	}
+	
 	
 	/**
 	 * serviceId setter
@@ -43,6 +47,7 @@ public class ApplicationService {
 		this.serviceId = serviceId;
 	}
 	
+	
 	/**
 	 * ApplicationType getter
 	 * @return ApplicationType
@@ -50,6 +55,7 @@ public class ApplicationService {
 	public SimSettings.APP_TYPES getApplicationType() {
 		return type;
 	}
+	
 	
 	/**
 	 * ApplicationType setter
@@ -59,12 +65,14 @@ public class ApplicationService {
 		this.type = applicationType;
 	}
 	
+	
 	/**
 	 * Check application service is available or not
 	 */
 	public boolean isAvaliable() {
 		return avaliable;
 	}
+	
 	
 	/**
 	 * Set availability of this Application Service
@@ -74,6 +82,7 @@ public class ApplicationService {
 		this.avaliable = avaliable;
 	}
 
+	
 	/**
 	 * @return the type
 	 */
@@ -81,13 +90,12 @@ public class ApplicationService {
 		return type;
 	}
 
+	
 	/**
 	 * @param type the type to set
 	 */
 	public void setType(SimSettings.APP_TYPES type) {
 		this.type = type;
 	}
-	
-	
-	
+
 }

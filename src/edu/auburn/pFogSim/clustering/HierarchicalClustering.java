@@ -27,6 +27,7 @@ import java.util.Queue;
 //import smile.clustering.linkage.WardLinkage;
 //import smile.sort.IntHeapSelect;
 
+
 /**
  * Agglomerative Hierarchical Clustering. Hierarchical agglomerative clustering
  * seeks to build a hierarchy of clusters in a bottom up approach: each
@@ -57,6 +58,7 @@ import java.util.Queue;
 public class HierarchicalClustering implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    
     /**
      * An n-1 by 2 matrix of which row i describes the merging of clusters at
      * step i of the clustering. If an element j in the row is less than n, then
@@ -64,12 +66,15 @@ public class HierarchicalClustering implements Serializable {
      * was with the cluster formed at the (earlier) stage j-n of the algorithm.
      */
     private int[][] merge;
+    
+    
     /**
      * A set of n-1 non-decreasing real values, which are the clustering height,
      * i.e., the value of the criterion associated with the clustering method
      * for the particular agglomeration.
      */
     private double[] height;
+    
 
     /**
      * Constructor.
@@ -113,6 +118,7 @@ public class HierarchicalClustering implements Serializable {
         }
     }
 
+    
     /**
      * Returns an n-1 by 2 matrix of which row i describes the merging of clusters at
      * step i of the clustering. If an element j in the row is less than n, then
@@ -123,6 +129,7 @@ public class HierarchicalClustering implements Serializable {
         return merge;
     }
 
+    
     /**
      * Returns a set of n-1 non-decreasing real values, which are the clustering height,
      * i.e., the value of the criterion associated with the clustering method
@@ -132,6 +139,7 @@ public class HierarchicalClustering implements Serializable {
         return height;
     }
 
+    
     /**
      * Cuts a tree into several groups by specifying the desired number.
      * @param k the number of clusters.
@@ -154,6 +162,7 @@ public class HierarchicalClustering implements Serializable {
         return membership;
     }
 
+    
     /**
      * Cuts a tree into several groups by specifying the cut height.
      * @param h the cut height.
@@ -181,6 +190,7 @@ public class HierarchicalClustering implements Serializable {
         return partition(k - 1);
     }
 
+    
     /**
      * BFS the merge tree and identify cluster membership.
      * @param membership the cluster membership array.
@@ -218,6 +228,7 @@ public class HierarchicalClustering implements Serializable {
         }
     }
 
+    
 	/**
 	 * @return the merge
 	 */
@@ -225,6 +236,7 @@ public class HierarchicalClustering implements Serializable {
 		return merge;
 	}
 
+	
 	/**
 	 * @param merge the merge to set
 	 */
@@ -232,12 +244,14 @@ public class HierarchicalClustering implements Serializable {
 		this.merge = merge;
 	}
 
+	
 	/**
 	 * @return the serialversionuid
 	 */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
 
 	/**
 	 * @param height the height to set

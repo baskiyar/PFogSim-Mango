@@ -17,12 +17,19 @@ import java.util.TreeSet;
 
 import javafx.util.Pair;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class NetworkTopology {
 	private HashSet<Link> links;
 	private HashSet<NodeSim> nodes;
 	private HashSet<NodeSim> mobileNodes;
 	private TreeSet<Location> coords;
 	private ArrayList<Puddle> pond;
+	
 	
 	/**
 	 * Constructor
@@ -41,6 +48,8 @@ public class NetworkTopology {
 			addLink(link);
 		}
 	}
+	
+	
 	/**
 	 * add a node<br>
 	 * if the node is null throw an IllegalArgumentException
@@ -69,6 +78,8 @@ public class NetworkTopology {
 		}
 		
 	}
+	
+	
 	/**
 	 * add a link<br>
 	 * link must be associated to 2 nodes to be added (always add nodes first!)<br>
@@ -94,6 +105,8 @@ public class NetworkTopology {
 			return false;
 		}
 	}
+	
+	
 	/**
 	 * run after all nodes and links have been added<br>
 	 * all nodes must have at least one link<br>
@@ -124,6 +137,7 @@ public class NetworkTopology {
 		}
 	}
 	
+	
 	/**
 	 * get the list of nodes
 	 * @return
@@ -132,6 +146,7 @@ public class NetworkTopology {
 		return nodes;
 	}
 	
+	
 	/**
 	 * get the list of links
 	 * @return
@@ -139,6 +154,7 @@ public class NetworkTopology {
 	public HashSet<Link> getLinks() {
 		return links;
 	}
+	
 	
 	/**
 	 * cleans any bad links out of the topology
@@ -159,6 +175,7 @@ public class NetworkTopology {
 			return false;
 		}
 	}
+	
 	
 	/**
 	 * find the node closest to the given location, intermediate method of getting node associated with mobile device<br>
@@ -188,6 +205,7 @@ public class NetworkTopology {
 		return closest;
 	}
 	
+	
 	/**
 	 * find the node closest to the given location, intermediate method of getting node associated with mobile device<br>
 	 * @param loc
@@ -198,6 +216,7 @@ public class NetworkTopology {
 		return findNode(loc.getXPos(), loc.getYPos(), wifi);
 	}
 	
+	
 	/**
 	 * set the list of puddles on the topology
 	 * @param puddles
@@ -207,6 +226,7 @@ public class NetworkTopology {
 		pond.addAll(puddles);
 	}
 	
+	
 	/**
 	 * get the list of puddles for the topology
 	 * @return
@@ -214,6 +234,7 @@ public class NetworkTopology {
 	public List<Puddle> getPuddles() {
 		return (List<Puddle>) pond;
 	}
+	
 	
 	/**
 	 * get the set of mobile fog nodes
@@ -223,46 +244,64 @@ public class NetworkTopology {
 		return mobileNodes;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public void setMobileNode(Set<NodeSim> in) {
 		mobileNodes = new HashSet<NodeSim>();
 		mobileNodes.addAll(in);
 	}
+	
+	
 	/**
 	 * @return the coords
 	 */
 	public TreeSet<Location> getCoords() {
 		return coords;
 	}
+	
+	
 	/**
 	 * @param coords the coords to set
 	 */
 	public void setCoords(TreeSet<Location> coords) {
 		this.coords = coords;
 	}
+	
+	
 	/**
 	 * @return the pond
 	 */
 	public ArrayList<Puddle> getPond() {
 		return pond;
 	}
+	
+	
 	/**
 	 * @param pond the pond to set
 	 */
 	public void setPond(ArrayList<Puddle> pond) {
 		this.pond = pond;
 	}
+	
+	
 	/**
 	 * @param links the links to set
 	 */
 	public void setLinks(HashSet<Link> links) {
 		this.links = links;
 	}
+	
+	
 	/**
 	 * @param nodes the nodes to set
 	 */
 	public void setNodes(HashSet<NodeSim> nodes) {
 		this.nodes = nodes;
 	}
+	
+	
 	/**
 	 * @param mobileNodes the mobileNodes to set
 	 */

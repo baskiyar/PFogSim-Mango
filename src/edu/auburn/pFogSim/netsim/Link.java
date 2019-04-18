@@ -12,6 +12,11 @@ import edu.boun.edgecloudsim.utils.SimLogger;
 import javafx.util.Pair;
 
 
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class Link {
 
 	private Location leftCoord;
@@ -19,6 +24,8 @@ public class Link {
 	private double leftLatency;
 	private double rightLatency;
 	private double LATENCY_MULTIPLIER = 0.01;//Qian data transfer at about 0.01 milliseconds per kilometer lalal
+	
+	
 	/**
 	 * Constructor<br>
 	 * Link cannot be circular, if left and right endpoints are the same throw IllegalArgumentException
@@ -40,7 +47,14 @@ public class Link {
 			throw new IllegalArgumentException();
 		}
 	}
+	
+	
+	/**
+	 * 
+	 */
 	public Link() {}
+	
+	
 	/**
 	 * get the latency as moving FROM the right node TO the left node
 	 * @return the left latency
@@ -48,6 +62,8 @@ public class Link {
 	public double getLeftLatency() {
 		return leftLatency;
 	}
+	
+	
 	/**
 	 * get the latency as moving FROM the left node TO the right node
 	 * @return the right latency
@@ -55,6 +71,8 @@ public class Link {
 	public double getRightLatency() {
 		return rightLatency;
 	}
+	
+	
 	/**
 	 * get the coords of the right node associated with this link
 	 * @return right link
@@ -62,6 +80,8 @@ public class Link {
 	public Location getRightLink() {
 		return rightCoord;
 	}
+	
+	
 	/**
 	 * get the coords of the left node associated with this link
 	 * @return left link
@@ -69,6 +89,8 @@ public class Link {
 	public Location getLeftLink() {
 		return leftCoord;
 	}
+	
+	
 	/**
 	 * Gives the opposite coordinate from the given coord on this link<br>
 	 * if the input coord is not on this link throw an IllegalArgumentException
@@ -86,6 +108,8 @@ public class Link {
 			throw new IllegalArgumentException();
 		}
 	}
+	
+	
 	/**
 	 * Gives the outgoing latency to traverse this link<br>
 	 * if the input coord is not on this link throw an IllegalArgumentException
@@ -103,6 +127,8 @@ public class Link {
 			throw new IllegalArgumentException();
 		}
 	}
+	
+	
 	/**
 	 * set the latency going TO the left node
 	 * @param in
@@ -110,6 +136,8 @@ public class Link {
 	public void setLeftLat(int in) {
 		leftLatency = in;
 	}
+	
+	
 	/**
 	 * set the latency going TO the right node
 	 * @param in
@@ -117,6 +145,8 @@ public class Link {
 	public void setRightLat(int in) {
 		rightLatency = in;
 	}
+	
+	
 	/**
 	 * set the coordinates of the left link
 	 * @param xin
@@ -125,6 +155,8 @@ public class Link {
 	public void setLeftLink(double xin, double yin) {
 		leftCoord = new Location(xin, yin);
 	}
+	
+	
 	/**
 	 * designate the left link coord
 	 * @param in
@@ -132,6 +164,8 @@ public class Link {
 	public void setLeftLink(Location in) {
 		leftCoord = in;
 	}
+	
+	
 	/**
 	 * set the coordinates of the right link
 	 * @param xin
@@ -140,6 +174,8 @@ public class Link {
 	public void setRightLink(double xin, double yin) {
 		rightCoord = new Location(xin, yin);
 	}
+	
+	
 	/**
 	 * designate the right link coord
 	 * @param in
@@ -147,6 +183,8 @@ public class Link {
 	public void setRightLink(Location in) {
 		rightCoord = in;
 	}
+	
+	
 	/**
 	 * compares test link to this link<br>
 	 * returns true if the left links are the same, and the right links are the same, and the latencies are the same.
@@ -184,6 +222,8 @@ public class Link {
 				||(this.getLeftLink().equals(test.getRightLink()) && this.getRightLink().equals(test.getLeftLink())
 				&& this.getLeftLatency() == test.getRightLatency() && this.getRightLatency() == test.getLeftLatency()));*/
 	}
+	
+	
 	/**
 	 * used to test if this link and the input link run between the same nodes without checking their latencies
 	 * @param test
@@ -202,6 +242,8 @@ public class Link {
 			return false;
 		}
 	}
+	
+	
 	/**
 	 * Link should not be circular
 	 * @return true if left and right coords are different<br>
@@ -217,6 +259,8 @@ public class Link {
 			return false;
 		}
 	}
+	
+	
 	/**
 	 * makes sure that latencies are positive
 	 * @return
@@ -224,48 +268,64 @@ public class Link {
 	public boolean validateLat() {
 		return (rightLatency >= 0 && leftLatency >= 0);
 	}
+	
+	
 	/**
 	 * @return the leftCoord
 	 */
 	public Location getLeftCoord() {
 		return leftCoord;
 	}
+	
+	
 	/**
 	 * @param leftCoord the leftCoord to set
 	 */
 	public void setLeftCoord(Location leftCoord) {
 		this.leftCoord = leftCoord;
 	}
+	
+	
 	/**
 	 * @return the rightCoord
 	 */
 	public Location getRightCoord() {
 		return rightCoord;
 	}
+	
+	
 	/**
 	 * @param rightCoord the rightCoord to set
 	 */
 	public void setRightCoord(Location rightCoord) {
 		this.rightCoord = rightCoord;
 	}
+	
+	
 	/**
 	 * @return the lATENCY_MULTIPLIER
 	 */
 	public double getLATENCY_MULTIPLIER() {
 		return LATENCY_MULTIPLIER;
 	}
+	
+	
 	/**
 	 * @param lATENCY_MULTIPLIER the lATENCY_MULTIPLIER to set
 	 */
 	public void setLATENCY_MULTIPLIER(double lATENCY_MULTIPLIER) {
 		LATENCY_MULTIPLIER = lATENCY_MULTIPLIER;
 	}
+	
+	
 	/**
 	 * @param leftLatency the leftLatency to set
 	 */
 	public void setLeftLatency(double leftLatency) {
 		this.leftLatency = leftLatency;
 	}
+	
+	
 	/**
 	 * @param rightLatency the rightLatency to set
 	 */

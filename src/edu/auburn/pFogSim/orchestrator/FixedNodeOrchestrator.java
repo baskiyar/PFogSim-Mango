@@ -20,15 +20,31 @@ import edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class FixedNodeOrchestrator extends EdgeOrchestrator{
 	
 	private static String node = "Datacenter_1";
 	EdgeHost cHost;
 	
+	
+	/**
+	 * 
+	 * @param _policy
+	 * @param _simScenario
+	 */
 	public FixedNodeOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 	}
 	
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void initialize() {
 		try {
@@ -39,6 +55,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 			}
 	}
 
+	
 	/**
 	 * get the id of the appropriate host
 	 */
@@ -51,6 +68,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 			return -1;
 		}
 	}
+	
 	
 	/**
 	 * the the appropriate VM to run on
@@ -65,6 +83,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 		}
 	}
 	
+	
 	/**
 	 * find the host
 	 * @param task
@@ -75,6 +94,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 		task.setPath(mb.getPath());
 		return mb.getHost();
 	}
+	
 	
 	/**
 	 * set cloud
@@ -88,6 +108,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 		}
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
 	 */
@@ -145,6 +166,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
 	}
 
+	
 	/**
 	 * @return the node
 	 */
@@ -152,6 +174,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 		return node;
 	}
 
+	
 	/**
 	 * @param node the node to set
 	 */

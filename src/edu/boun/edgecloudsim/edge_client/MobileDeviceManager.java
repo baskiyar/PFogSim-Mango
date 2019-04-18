@@ -46,6 +46,11 @@ import edu.boun.edgecloudsim.utils.SimLogger;
 //import edu.auburn.pFogSim.netsim.NetworkTopology;
 
 
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class MobileDeviceManager extends DatacenterBroker {
 	private static final int BASE = 100000; //start from base in order not to conflict cloudsim tag!
 	private static final int REQUEST_RECEIVED_BY_CLOUD = BASE + 1;
@@ -56,10 +61,16 @@ public class MobileDeviceManager extends DatacenterBroker {
 	private int taskIdCounter=0;
 	private ArrayList<MobileDevice> mobileDevices;
 	
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
 	public MobileDeviceManager() throws Exception {
 		super("Global_Broker");
 	}
 
+	
 	/**
 	 * Submit cloudlets to the created VMs.
 	 * 
@@ -69,6 +80,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 	protected void submitCloudlets() {
 		//do nothing!
 	}
+	
 	
 	/**
 	 * Process a cloudlet return event.
@@ -124,6 +136,10 @@ public class MobileDeviceManager extends DatacenterBroker {
 		}*/
 	}
 	
+	
+	/**
+	 * 
+	 */
 	protected void processOtherEvent(SimEvent ev) {
 		if (ev == null) {
 			SimLogger.printLine(getName() + ".processOtherEvent(): " + "Error - an event is null! Terminating simulation...");
@@ -275,6 +291,12 @@ public class MobileDeviceManager extends DatacenterBroker {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * @param task
+	 * @param delay
+	 */
 	public void submitTaskToEdgeDevice(Task task, double delay) {
 		//select a VM
 		EdgeVM selectedVM = SimManager.getInstance().getEdgeOrchestrator().getVmToOffload(task);
@@ -316,6 +338,11 @@ public class MobileDeviceManager extends DatacenterBroker {
 
 	}
 	
+	
+	/**
+	 * 
+	 * @param edgeTask
+	 */
 	public void submitTask(EdgeTask edgeTask) {
 		NetworkModel networkModel = SimManager.getInstance().getNetworkModel();
 		
@@ -419,6 +446,12 @@ public class MobileDeviceManager extends DatacenterBroker {
 		}*/
 	}
 	
+	
+	/**
+	 * 
+	 * @param edgeTask
+	 * @return
+	 */
 	public Task createTask(EdgeTask edgeTask){
 		UtilizationModel utilizationModel = new UtilizationModelFull(); /*UtilizationModelStochastic*/
 		UtilizationModel utilizationModelCPU = SimManager.getInstance().getScenarioFactory().getCpuUtilizationModel(edgeTask.taskType);
@@ -442,17 +475,28 @@ public class MobileDeviceManager extends DatacenterBroker {
 		return task;
 	}
 
+	
+	/**
+	 * 
+	 */
 	public void taskEnded(){
 		clearDatacenters();
 		finishExecution();
 	}
 	
+	
+	/**
+	 * 
+	 * @param task
+	 */
 	public void migrateTask(Task task) {
 		EdgeVM vm = SimManager.getInstance().getEdgeOrchestrator().getVmToOffload(task);
 		task.setAssociatedHostId(vm.getHost().getId());
 		bindCloudletToVm(task.getCloudletId(),vm.getId());
 		schedule(getVmsToDatacentersMap().get(task.getVmId()), 0, CloudSimTags.CLOUDLET_SUBMIT, task);
 	}
+	
+	
 	/**
 	 * create mobile devices
 	 * @author Qian
@@ -469,10 +513,16 @@ public class MobileDeviceManager extends DatacenterBroker {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<MobileDevice> getMobileDevices() {
 		return this.mobileDevices;
 	}
 
+	
 	/**
 	 * @return the taskIdCounter
 	 */
@@ -480,6 +530,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		return taskIdCounter;
 	}
 
+	
 	/**
 	 * @param taskIdCounter the taskIdCounter to set
 	 */
@@ -487,6 +538,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		this.taskIdCounter = taskIdCounter;
 	}
 
+	
 	/**
 	 * @return the base
 	 */
@@ -494,6 +546,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		return BASE;
 	}
 
+	
 	/**
 	 * @return the requestReceivedByCloud
 	 */
@@ -501,6 +554,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		return REQUEST_RECEIVED_BY_CLOUD;
 	}
 
+	
 	/**
 	 * @return the requestProcessedByCloud
 	 */
@@ -508,6 +562,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		return REQUEST_PROCESSED_BY_CLOUD;
 	}
 
+	
 	/**
 	 * @return the requestRecivedByEdgeDevice
 	 */
@@ -515,6 +570,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		return REQUEST_RECIVED_BY_EDGE_DEVICE;
 	}
 
+	
 	/**
 	 * @return the responseReceivedByMobileDevice
 	 */
@@ -522,6 +578,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		return RESPONSE_RECEIVED_BY_MOBILE_DEVICE;
 	}
 
+	
 	/**
 	 * @param mobileDevices the mobileDevices to set
 	 */

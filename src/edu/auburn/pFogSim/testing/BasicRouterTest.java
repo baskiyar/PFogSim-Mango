@@ -8,7 +8,19 @@ import javafx.util.Pair;
 import edu.auburn.pFogSim.netsim.*;
 import java.util.*;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class BasicRouterTest {
+	
+	
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		//make some coordinates
 		Pair<Integer, Integer> c1 = new Pair<Integer, Integer>(1,1);
@@ -92,6 +104,8 @@ public class BasicRouterTest {
 		
 		System.out.println(getLatency(new Router().findPath(nTest, n7, n1)));
 	}
+	
+	
 	/**
 	 * the thing that walks over the path returned from the router and calculates the latency
 	 * @param travelQueue

@@ -24,32 +24,45 @@ import edu.auburn.pFogSim.mobility.MobilityModel;
 import edu.boun.edgecloudsim.task_generator.LoadGeneratorModel;
 import edu.boun.edgecloudsim.network.NetworkModel;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public interface ScenarioFactory {
+	
+	
 	/**
 	 * provides abstract Load Generator Model
 	 */
 	public LoadGeneratorModel getLoadGeneratorModel();
 
+	
 	/**
 	 * provides abstract Edge Orchestrator
 	 */
 	public EdgeOrchestrator getEdgeOrchestrator();
 
+	
 	/**
 	 * provides abstract Mobility Model
 	 */
 	public MobilityModel getMobilityModel();
 
+	
 	/**
 	 * provides abstract Network Model
 	 */
 	public NetworkModel getNetworkModel();
 
+	
 	/**
 	 * provides abstract CPU Utilization Model
 	 */
 	public UtilizationModel getCpuUtilizationModel(SimSettings.APP_TYPES _taskType);
 
+	
 	/**
 	 * provides abstract Vm Allocation Policy
 	 */

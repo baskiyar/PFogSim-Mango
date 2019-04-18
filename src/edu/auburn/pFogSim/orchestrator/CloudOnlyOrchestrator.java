@@ -22,6 +22,12 @@ import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 
 	private static String node = "Datacenter_0";
@@ -97,7 +103,6 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 	
 	/**
 	 * set cloud
-	 * modified by Qian
 	 * @param Datacenter _cloud
 	 */
 	@Override

@@ -16,22 +16,51 @@ import java.util.concurrent.TimeUnit;
 
 import edu.boun.edgecloudsim.core.SimSettings;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class SimUtils {
 
     public static final Random RNG = new Random(System.currentTimeMillis());
     
+    
+    /**
+     * 
+     * @param start
+     * @param end
+     * @return
+     */
     public static int getRandomNumber(int start, int end) {
     	//return pd.sample();
 		long range = (long)end - (long)start + 1;
 		long fraction = (long)(range * RNG.nextDouble());
 		return (int)(fraction + start); 
     }
+    
+    
+    /**
+     * 
+     * @param start
+     * @param end
+     * @return
+     */
     public static double getRandomDoubleNumber(double start, double end) {
     	//return pd.sample();
 		double range = end - start;
 		double fraction = (range * RNG.nextDouble());
 		return (fraction + start); 
     }
+    
+    
+    /**
+     * 
+     * @param start
+     * @param end
+     * @return
+     */
     public static long getRandomLongNumber(int start, int end) {
     	//return pd.sample();
 		long range = (long)end - (long)start + 1;
@@ -39,6 +68,11 @@ public class SimUtils {
 		return (fraction + start); 
     }
 
+    
+    /**
+     * 
+     * @param outputFolder
+     */
 	public static void cleanOutputFolder(String outputFolder){
 		//clean the folder where the result files will be saved
 		File dir = new File(outputFolder);
@@ -61,6 +95,14 @@ public class SimUtils {
 			System.exit(0);
 		}
 	}
+	
+	
+	/**
+	 * 
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
 	public static String getTimeDifference(Date startDate, Date endDate){
 		String result = "";
 		long duration  = endDate.getTime() - startDate.getTime();
@@ -85,6 +127,12 @@ public class SimUtils {
 		return result;
 	}
 	
+	
+	/**
+	 * 
+	 * @param attractiveness
+	 * @return
+	 */
 	public static SimSettings.PLACE_TYPES stringToPlace(String attractiveness){
 		SimSettings.PLACE_TYPES placeType = null;
 		if(attractiveness.equals("1"))
@@ -100,6 +148,8 @@ public class SimUtils {
 		
 		return placeType;
 	}
+	
+	
 	/**
 	 * @return the rng
 	 */

@@ -22,12 +22,24 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeMap;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class Router {
 	private HashMap<String, LinkedList<NodeSim>> database;
 	
+	
+	/**
+	 * 
+	 */
 	public Router() {
 		database = new HashMap<String, LinkedList<NodeSim>>();
 	}
+	
+	
 	/**
 	 * return a path from the src to destination as a linked list
 	 * @param network
@@ -65,6 +77,8 @@ public class Router {
 		return travelQueue;
 		//return router.getLatency(dest);
 	}
+	
+	
 	/**
 	 * get a Dijkstra object to run the pathfinding
 	 * @return
@@ -73,6 +87,8 @@ public class Router {
 		Router rout = new Router();
 		return rout.getDijkstra();
 	}
+	
+	
 	/**
 	 * get a dijkstra object
 	 * @return
@@ -102,8 +118,15 @@ public class Router {
 		return latency;
 	}
 	*/
+		
 	
-	//used for early testing only, we want the router to just provide the path not calculate latency
+	/**
+	 * used for early testing only, we want the router to just provide the path not calculate latency
+	 * @param network
+	 * @param src
+	 * @param dest
+	 * @return
+	 */
 	public static double findRoute(NetworkTopology network, NodeSim src, NodeSim dest ) {
 		Dijkstra router = getAPathFinder();
 		router._dest = dest;
@@ -112,6 +135,7 @@ public class Router {
 		return router.getLatency(dest);
 		//return router.getLatency(dest);
 	}
+	
 	
 	/**
 	 * implementation of Dijkstra's algorithm
@@ -126,6 +150,8 @@ public class Router {
 		private HashSet<Pair<NodeSim, Pair<Double, NodeSim>>> completed;
 		private NodeSim src;
 		private NodeSim _dest;
+		
+		
 		/**
 		 * constructor
 		 */
@@ -136,6 +162,8 @@ public class Router {
 			queue = new PriorityQueue<Pair<NodeSim, Pair<Double, NodeSim>>>(25, new dijkstrasComparator());
 			completed = new HashSet<Pair<NodeSim, Pair<Double, NodeSim>>>();
 		}
+		
+		
 		/**
 		 * initialize graph
 		 * @param nodes
@@ -165,6 +193,8 @@ public class Router {
 				getMap.put(node, new Pair<NodeSim, Pair<Double, NodeSim>>(node, new Pair<Double, NodeSim>(Double.MAX_VALUE, null)));
 			}
 		}
+		
+		
 		/**
 		 * perform relaxation operation of Dijkstra's algorithm
 		 * @param u
@@ -186,6 +216,8 @@ public class Router {
 				verts.remove(v);
 			}
 		}
+		
+		
 		/**
 		 * run Dijkstra's algorithm
 		 * @param nodes
@@ -217,6 +249,12 @@ public class Router {
 			}
 		}
 		
+		
+		/**
+		 * 
+		 * @param dest
+		 * @return
+		 */
 		public double getLatency(NodeSim dest) {
 			for (Pair<NodeSim, Pair<Double, NodeSim>> node : completed) {
 				if (node.getKey().equals(dest)) {
@@ -225,6 +263,8 @@ public class Router {
 			}
 			return -1;
 		}
+		
+		
 		/**
 		 * get the actual path in the form of a linked list
 		 * @param dest
@@ -266,6 +306,8 @@ public class Router {
 		}
 		
 	}
+	
+	
 	/**
 	 * comparator to use a min-queue
 	 * @author jih0007
@@ -274,16 +316,18 @@ public class Router {
 	private class dijkstrasComparator implements Comparator<Pair<NodeSim, Pair<Double, NodeSim>>> {
 		public int compare(Pair<NodeSim, Pair<Double, NodeSim>> x, Pair<NodeSim, Pair<Double, NodeSim>> y) {
 			return (int)((x.getValue().getKey() - y.getValue().getKey()) * 1000);
-		}
-		
-		
+		}		
 	}
+	
+	
 	/**
 	 * @return the database
 	 */
 	public HashMap<String, LinkedList<NodeSim>> getDatabase() {
 		return database;
 	}
+	
+	
 	/**
 	 * @param database the database to set
 	 */

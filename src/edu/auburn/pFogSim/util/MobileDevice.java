@@ -12,6 +12,7 @@ import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
+
 /**
  * @author Qian
  *class for mobile device
@@ -22,6 +23,8 @@ public class MobileDevice {
 	private int id;
 	private EdgeHost host = null;
 	private SimLogger.TASK_STATUS assignHostStatus;
+	
+	
 	/**
 	 * @return the assignHostStatus
 	 */
@@ -29,6 +32,7 @@ public class MobileDevice {
 		return assignHostStatus;
 	}
 
+	
 	/**
 	 * @param assignHostStatus the assignHostStatus to set
 	 */
@@ -39,6 +43,7 @@ public class MobileDevice {
 	private SimSettings.APP_TYPES appType;
 	private LinkedList<NodeSim> path;
 	
+	
 	/**
 	 * @return the path
 	 */
@@ -46,6 +51,7 @@ public class MobileDevice {
 		return path;
 	}
 
+	
 	/**
 	 * @param path the path to set
 	 */
@@ -53,6 +59,7 @@ public class MobileDevice {
 		this.path = path;
 	}
 
+	
 	/**
 	 * @author Qian
 	 * constructor
@@ -63,6 +70,7 @@ public class MobileDevice {
 		this.appType = _appType;
 	}
 	
+	
 	/**
 	 * @return the location
 	 */
@@ -70,6 +78,7 @@ public class MobileDevice {
 		return location;
 	}
 
+	
 	/**
 	 * @param location the location to set
 	 */
@@ -77,6 +86,7 @@ public class MobileDevice {
 		this.location = location;
 	}
 
+	
 	/**
 	 * @author Qian
 	 * constructor
@@ -88,6 +98,7 @@ public class MobileDevice {
 		this.id = id;
 	}
 	
+	
 	/**
 	 * @author Qian
 	 * assign host
@@ -96,6 +107,7 @@ public class MobileDevice {
 	public void setHost(EdgeHost _host) {
 		this.host = _host;
 	}
+	
 	
 	/**
 	 * @author Qian
@@ -106,6 +118,7 @@ public class MobileDevice {
 		this.id = _id;
 	}
 	
+	
 	/**
 	 * id getter
 	 * @author Qian
@@ -115,6 +128,7 @@ public class MobileDevice {
 		return this.id;
 	}
 	
+	
 	/**
 	 * host getter
 	 * @author Qian
@@ -123,6 +137,7 @@ public class MobileDevice {
 	public EdgeHost getHost() {
 		return this.host;
 	}
+	
 	
 	/**
 	 * get Bandwith information
@@ -136,6 +151,8 @@ public class MobileDevice {
 		bw = 1 / inteArrTime * bw;
 		return bw;
 	}
+	
+	
 	/**
 	 * get task length information
 	 * @author Qian
@@ -148,6 +165,7 @@ public class MobileDevice {
 		return length;
 	}
 	
+	
 	/**
 	 * get task length information
 	 * @author Shehenaz Shaik
@@ -158,6 +176,10 @@ public class MobileDevice {
 		return latencyReq;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public void makeReservation() {
 		host.makeReservation(this);
 		for (NodeSim node: path) {
@@ -167,6 +189,7 @@ public class MobileDevice {
 		setAssignHostStatus(SimLogger.TASK_STATUS.ASSIGNED_HOST);
 	}
 
+	
 	/**
 	 * @return the appType
 	 */
@@ -174,6 +197,7 @@ public class MobileDevice {
 		return appType;
 	}
 
+	
 	/**
 	 * @param appType the appType to set
 	 */

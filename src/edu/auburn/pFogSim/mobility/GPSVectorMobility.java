@@ -32,6 +32,12 @@ import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.boun.edgecloudsim.utils.SimUtils;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class GPSVectorMobility extends MobilityModel {
 	private List<TreeMap<Double, Location>> treeMapArray;
 	private double MAX_LAT;
@@ -40,12 +46,21 @@ public class GPSVectorMobility extends MobilityModel {
 	private double MIN_LONG;
 	private NetworkTopology network = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology();
 
-	
+
+	/**
+	 * 
+	 * @param _numberOfMobileDevices
+	 * @param _simulationTime
+	 */
 	public GPSVectorMobility(int _numberOfMobileDevices, double _simulationTime) {
 		super(_numberOfMobileDevices, _simulationTime);
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void initialize() {
 		//this.MAX_LONG = SimManager.MAX_LONG;
@@ -173,7 +188,9 @@ public class GPSVectorMobility extends MobilityModel {
 	}
 
 	
-
+	/**
+	 * 
+	 */
 	@Override
 	public Location getLocation(int deviceId, double time) {
 		TreeMap<Double, Location> treeMap = treeMapArray.get(deviceId);
@@ -187,6 +204,11 @@ public class GPSVectorMobility extends MobilityModel {
 	    
 		return e.getValue();
 	}
+	
+	
+	/**
+	 * 
+	 */
 	public int getWlanId(int deviceId, double time) 
 	{
 		int wlan_id = -1;
@@ -209,6 +231,10 @@ public class GPSVectorMobility extends MobilityModel {
 		return wlan_id;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public int getWlanId(int deviceId) 
 	{
 		int wlan_id = -1;
@@ -223,16 +249,26 @@ public class GPSVectorMobility extends MobilityModel {
 		return wlan_id;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public int getSize()
 	{
 		return treeMapArray.size();
 		//return treeMapArray.get(1).size();
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public int getTreeMapSize() 
 	{
 		return treeMapArray.get(1).size();
 	}
+	
+	
 	/**
 	 * get last location for a mobile device
 	 * @author Qian
@@ -243,6 +279,7 @@ public class GPSVectorMobility extends MobilityModel {
 		return treeMapArray.get(id).lastEntry().getValue();
 	}
 
+	
 	/**
 	 * @return the treeMapArray
 	 */
@@ -250,6 +287,7 @@ public class GPSVectorMobility extends MobilityModel {
 		return treeMapArray;
 	}
 
+	
 	/**
 	 * @param treeMapArray the treeMapArray to set
 	 */
@@ -257,6 +295,7 @@ public class GPSVectorMobility extends MobilityModel {
 		this.treeMapArray = treeMapArray;
 	}
 
+	
 	/**
 	 * @return the mAX_LAT
 	 */
@@ -264,6 +303,7 @@ public class GPSVectorMobility extends MobilityModel {
 		return MAX_LAT;
 	}
 
+	
 	/**
 	 * @param mAX_LAT the mAX_LAT to set
 	 */
@@ -271,6 +311,7 @@ public class GPSVectorMobility extends MobilityModel {
 		MAX_LAT = mAX_LAT;
 	}
 
+	
 	/**
 	 * @return the mIN_LAT
 	 */
@@ -278,6 +319,7 @@ public class GPSVectorMobility extends MobilityModel {
 		return MIN_LAT;
 	}
 
+	
 	/**
 	 * @param mIN_LAT the mIN_LAT to set
 	 */
@@ -285,6 +327,7 @@ public class GPSVectorMobility extends MobilityModel {
 		MIN_LAT = mIN_LAT;
 	}
 
+	
 	/**
 	 * @return the mAX_LONG
 	 */
@@ -292,6 +335,7 @@ public class GPSVectorMobility extends MobilityModel {
 		return MAX_LONG;
 	}
 
+	
 	/**
 	 * @param mAX_LONG the mAX_LONG to set
 	 */
@@ -299,6 +343,7 @@ public class GPSVectorMobility extends MobilityModel {
 		MAX_LONG = mAX_LONG;
 	}
 
+	
 	/**
 	 * @return the mIN_LONG
 	 */
@@ -306,6 +351,7 @@ public class GPSVectorMobility extends MobilityModel {
 		return MIN_LONG;
 	}
 
+	
 	/**
 	 * @param mIN_LONG the mIN_LONG to set
 	 */
@@ -313,6 +359,7 @@ public class GPSVectorMobility extends MobilityModel {
 		MIN_LONG = mIN_LONG;
 	}
 
+	
 	/**
 	 * @return the network
 	 */
@@ -320,6 +367,7 @@ public class GPSVectorMobility extends MobilityModel {
 		return network;
 	}
 
+	
 	/**
 	 * @param network the network to set
 	 */

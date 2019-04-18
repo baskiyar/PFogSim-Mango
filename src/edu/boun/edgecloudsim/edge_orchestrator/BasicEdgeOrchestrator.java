@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.cloudbus.cloudsim.core.CloudSim;
 
+import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
@@ -24,15 +25,31 @@ import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimUtils;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 	private int numberOfHost; //used by load balancer
 	private int lastSelectedHostIndex; //used by load balancer
 	private int[] lastSelectedVmIndexes; //used by each host individually
 	
+	
+	/**
+	 * 
+	 * @param _policy
+	 * @param _simScenario
+	 */
 	public BasicEdgeOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void initialize() {
 		numberOfHost=SimSettings.getInstance().getNumOfEdgeHosts();
@@ -43,6 +60,10 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 			lastSelectedVmIndexes[i] = -1;
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public int getDeviceToOffload(Task task) {
 		int result = SimSettings.GENERIC_EDGE_DEVICE_ID;
@@ -59,6 +80,10 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		return result;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	@Override
 	public EdgeVM getVmToOffload(Task task) {
 		if(simScenario.equals("TWO_TIER_WITH_EO"))
@@ -67,6 +92,12 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 			return selectVmOnHost(task);
 	}
 	
+	
+	/**
+	 * 
+	 * @param task
+	 * @return
+	 */
 	public EdgeVM selectVmOnHost(Task task){
 		EdgeVM selectedVM = null;
 		
@@ -132,6 +163,12 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		return selectedVM;
 	}
 
+	
+	/**
+	 * 
+	 * @param task
+	 * @return
+	 */
 	public EdgeVM selectVmOnLoadBalancer(Task task){
 		EdgeVM selectedVM = null;
 		
@@ -211,6 +248,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		return selectedVM;
 	}
 
+	
 	/**
 	 * @return the numberOfHost
 	 */
@@ -218,6 +256,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		return numberOfHost;
 	}
 
+	
 	/**
 	 * @param numberOfHost the numberOfHost to set
 	 */
@@ -225,6 +264,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		this.numberOfHost = numberOfHost;
 	}
 
+	
 	/**
 	 * @return the lastSelectedHostIndex
 	 */
@@ -232,6 +272,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		return lastSelectedHostIndex;
 	}
 
+	
 	/**
 	 * @param lastSelectedHostIndex the lastSelectedHostIndex to set
 	 */
@@ -239,6 +280,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		this.lastSelectedHostIndex = lastSelectedHostIndex;
 	}
 
+	
 	/**
 	 * @return the lastSelectedVmIndexes
 	 */
@@ -246,10 +288,21 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		return lastSelectedVmIndexes;
 	}
 
+	
 	/**
 	 * @param lastSelectedVmIndexes the lastSelectedVmIndexes to set
 	 */
 	public void setLastSelectedVmIndexes(int[] lastSelectedVmIndexes) {
 		this.lastSelectedVmIndexes = lastSelectedVmIndexes;
+	}
+
+
+	/**
+	 * 
+	 */
+	@Override
+	public void assignHost(MobileDevice mobile) {
+		// TODO Auto-generated method stub
+		
 	}
 }

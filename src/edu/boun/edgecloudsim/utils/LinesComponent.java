@@ -24,15 +24,33 @@ import edu.boun.edgecloudsim.core.SimManager;
 //import edu.boun.edgecloudsim.edge_server.EdgeHost;
 //import edu.boun.edgecloudsim.network.NetworkModel;
 
-//This is testing for a visualization of NetworkTopology
+/**
+ * This is testing for a visualization of NetworkTopology 
+ *
+ */
 public class LinesComponent extends JComponent{
 	private int level;
+	
+	/**
+	 * 
+	 * @param _level
+	 */
 	public LinesComponent(int _level){
 		this.level = _level;
 	}
 		
+	
+	/**
+	 * 
+	 */
 	public LinesComponent() {}
 	
+	
+	/**
+	 * 
+	 * @author szs0117
+	 *
+	 */
 	private class Line{
 	    double x1; 
 	    double y1;
@@ -40,6 +58,15 @@ public class LinesComponent extends JComponent{
 	    double y2;   
 	    Color color;
 	
+	    
+	    /**
+	     * 
+	     * @param x1
+	     * @param x2
+	     * @param x3
+	     * @param x4
+	     * @param color
+	     */
 	    public Line(double x1, double x2, double x3, double x4, Color color) {
 	        this.x1 = x1;
 	        this.y1 = x2;
@@ -49,10 +76,33 @@ public class LinesComponent extends JComponent{
 	    }               
 	}
 
+	
+	/**
+	 * 
+	 */
 	private ArrayList<Line> lines = new ArrayList<Line>();
+	
+	
+	/**
+	 * 
+	 * @param x1
+	 * @param x2
+	 * @param x3
+	 * @param x4
+	 */
 	public void addLine(double x1, double x2, double x3, double x4) {
 	    addLine(x1, x2, x3, x4, Color.black);
 	}
+	
+	
+	/**
+	 * 
+	 * @param x1
+	 * @param x2
+	 * @param x3
+	 * @param x4
+	 * @param color
+	 */
 	public void addLine(double x1, double x2, double x3, double x4, Color color) {
 		//SimLogger.printLine("Before lines.add()");
 	    lines.add(new Line(x1,x2,x3,x4, color));        
@@ -60,7 +110,11 @@ public class LinesComponent extends JComponent{
 	    repaint();
 		//SimLogger.printLine("After repaint()");
 	}
-
+	
+	
+	/**
+	 * 
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -159,6 +213,11 @@ public class LinesComponent extends JComponent{
 	    }
 	}
 
+
+	/**
+	 * 
+	 * @param level
+	 */
 	public void drawNetworkTopology(int level) {
 	    //Go through layer and find all heads while adding their constituents 
 		LinesComponent linescomponent = new LinesComponent(level);
@@ -170,6 +229,7 @@ public class LinesComponent extends JComponent{
 	    frame.setLocationRelativeTo(null);
 	    frame.setVisible(true);
 	}
+	
 
 	/**
 	 * @return the level
@@ -177,6 +237,7 @@ public class LinesComponent extends JComponent{
 	public int getLevel() {
 		return level;
 	}
+	
 
 	/**
 	 * @param level the level to set
@@ -185,6 +246,7 @@ public class LinesComponent extends JComponent{
 		this.level = level;
 	}
 
+	
 	/**
 	 * @return the lines
 	 */
@@ -192,6 +254,7 @@ public class LinesComponent extends JComponent{
 		return lines;
 	}
 
+	
 	/**
 	 * @param lines the lines to set
 	 */

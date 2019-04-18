@@ -16,10 +16,17 @@ import cern.jet.random.Poisson;
 import cern.jet.random.engine.MersenneTwister;
 import cern.jet.random.engine.RandomEngine;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class PoissonDistr {
 	Poisson poisson;
 	RandomEngine engine;
 
+	
     /**
      * Creates a new exponential number generator.
      * 
@@ -39,6 +46,7 @@ public class PoissonDistr {
 		}
     }
 
+    
     /**
      * Generate a new random number.
      * 
@@ -48,6 +56,7 @@ public class PoissonDistr {
         	return poisson.nextDouble();
     }
 
+        
 	/**
 	 * @return the poisson
 	 */
@@ -55,6 +64,7 @@ public class PoissonDistr {
 		return poisson;
 	}
 
+	
 	/**
 	 * @param poisson the poisson to set
 	 */
@@ -62,6 +72,7 @@ public class PoissonDistr {
 		this.poisson = poisson;
 	}
 
+	
 	/**
 	 * @return the engine
 	 */
@@ -69,6 +80,7 @@ public class PoissonDistr {
 		return engine;
 	}
 
+	
 	/**
 	 * @param engine the engine to set
 	 */

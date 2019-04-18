@@ -31,6 +31,12 @@ import edu.boun.edgecloudsim.utils.SimLogger;
 
 //import edu.auburn.pFogSim.netsim.*;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class SimSettings {
 	private static SimSettings instance = null;
 	private Document edgeDevicesDoc = null;
@@ -107,6 +113,7 @@ public class SimSettings {
     private double[] mobilityLookUpTable;
     
     private double[] simulationSpace;
+    
     // following values are stored for each applications defined in applications.xml
     // [00] usage percentage (%)
     // [01] prob. of selecting cloud (%)
@@ -124,15 +131,25 @@ public class SimSettings {
     private String inputType;
     private boolean mobileDevicesMoving;
     
+    
+    /**
+     * 
+     */
 	private SimSettings() {
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public static SimSettings getInstance() {
 		if(instance == null) {
 			instance = new SimSettings();
 		}
 		return instance;
 	}
+	
 	
 	/**
 	 * Reads configuration file and stores information to local variables
@@ -227,6 +244,7 @@ public class SimSettings {
 		return result;
 	}
 	
+	
     /**
 	 * @return the selectedHostIds
 	 */
@@ -234,12 +252,14 @@ public class SimSettings {
 		return selectedHostIds;
 	}
 
+	
 	/**
 	 * @param selectedHostIds the selectedHostIds to set
 	 */
 	public void setSelectedHostIds(int[] selectedHostIds) {
 		this.selectedHostIds = selectedHostIds;
 	}
+	
 	
 	/**
 	 * @author Qian
@@ -248,6 +268,8 @@ public class SimSettings {
 	public boolean getClusterType() {
 		return this.clusterType;
 	}
+	
+	
 	/**
 	 * @author Qian
 	 *	@return
@@ -255,6 +277,8 @@ public class SimSettings {
 	public boolean getServiceReplacement() {
 		return this.serviceReplacement;
 	}
+	
+	
 	/**
 	 * returns the parsed XML document for edge_devices.xml
 	 */
@@ -262,9 +286,16 @@ public class SimSettings {
 		return edgeDevicesDoc;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public Document getLinksDocument() {
 		return linksDoc;
 	}
+	
+	
 	/**
 	 * returns simulation time (in seconds unit) from properties file
 	 */
@@ -272,6 +303,7 @@ public class SimSettings {
 	{
 		return SIMULATION_TIME;
 	}
+	
 
 	/**
 	 * returns warm up period (in seconds unit) from properties file
@@ -280,6 +312,7 @@ public class SimSettings {
 	{
 		return WARM_UP_PERIOD; 
 	}
+	
 
 	/**
 	 * returns VM utilization log collection interval (in seconds unit) from properties file
@@ -289,6 +322,7 @@ public class SimSettings {
 		return INTERVAL_TO_GET_VM_LOAD_LOG; 
 	}
 
+	
 	/**
 	 * returns VM location log collection interval (in seconds unit) from properties file
 	 */
@@ -297,6 +331,7 @@ public class SimSettings {
 		return INTERVAL_TO_GET_VM_LOCATION_LOG; 
 	}
 
+	
 	/**
 	 * returns deep statistics logging status from properties file
 	 */
@@ -305,6 +340,7 @@ public class SimSettings {
 		return DEEP_FILE_LOG_ENABLED; 
 	}
 
+	
 	/**
 	 * returns deep statistics logging status from properties file
 	 */
@@ -312,6 +348,7 @@ public class SimSettings {
 	{
 		return FILE_LOG_ENABLED; 
 	}
+	
 	
 	/**
 	 * returns WAN propogation delay (in second unit) from properties file
@@ -321,6 +358,7 @@ public class SimSettings {
 		return WAN_PROPOGATION_DELAY;
 	}
 
+	
 	/**
 	 * returns internal LAN propogation delay (in second unit) from properties file
 	 */
@@ -329,6 +367,7 @@ public class SimSettings {
 		return LAN_INTERNAL_DELAY;
 	}
 
+	
 	/**
 	 * returns WLAN bandwidth (in Mbps unit) from properties file
 	 */
@@ -337,6 +376,7 @@ public class SimSettings {
 		return BANDWITH_WLAN;
 	}
 
+	
 	/**
 	 * returns WAN bandwidth (in Mbps unit) from properties file
 	 */
@@ -345,6 +385,7 @@ public class SimSettings {
 		return BANDWITH_WAN; 
 	}
 
+	
 	/**
 	 * returns GSM bandwidth (in Mbps unit) from properties file
 	 */
@@ -352,6 +393,7 @@ public class SimSettings {
 	{
 		return BANDWITH_GSM;
 	}
+	
 	
 	/**
 	 * returns the minimum number of the mobile devices used in the simulation
@@ -361,6 +403,7 @@ public class SimSettings {
 		return MIN_NUM_OF_MOBILE_DEVICES;
 	}
 
+	
 	/**
 	 * returns the maximunm number of the mobile devices used in the simulation
 	 */
@@ -369,6 +412,7 @@ public class SimSettings {
 		return MAX_NUM_OF_MOBILE_DEVICES;
 	}
 
+	
 	/**
 	 * returns the number of increase on mobile devices
 	 * while iterating from min to max mobile device
@@ -378,6 +422,7 @@ public class SimSettings {
 		return MOBILE_DEVICE_COUNTER_SIZE;
 	}
 
+	
 	/**
 	 * returns the number of edge datacenters
 	 */
@@ -386,6 +431,7 @@ public class SimSettings {
 		return NUM_OF_EDGE_DATACENTERS;
 	}
 
+	
 	/**
 	 * returns the number of edge hosts running on the datacenters
 	 */
@@ -394,6 +440,7 @@ public class SimSettings {
 		return NUM_OF_EDGE_HOSTS;
 	}
 
+	
 	/**
 	 * returns the number of edge VMs running on the hosts
 	 */
@@ -402,6 +449,7 @@ public class SimSettings {
 		return NUM_OF_EDGE_VMS;
 	}
 
+	
 	/**
 	 * returns MIPS of the central cloud
 	 */
@@ -410,6 +458,7 @@ public class SimSettings {
 		return MIPS_FOR_CLOUD;
 	}
 
+	
 	/**
 	 * returns simulation screnarios as string
 	 */
@@ -418,6 +467,7 @@ public class SimSettings {
 		return SIMULATION_SCENARIOS;
 	}
 
+	
 	/**
 	 * returns orchestrator policies as string
 	 */
@@ -425,6 +475,7 @@ public class SimSettings {
 	{
 		return ORCHESTRATOR_POLICIES;
 	}
+	
 	
 	/**
 	 * returns mobility characteristic within an array
@@ -435,6 +486,7 @@ public class SimSettings {
 		return mobilityLookUpTable;
 	}
 
+	
 	/**
 	 * returns application characteristic within two dimensional array
 	 * the result includes the following values for each application type
@@ -455,6 +507,12 @@ public class SimSettings {
 		return taskLookUpTable;
 	}
 	
+	
+	/**
+	 * 
+	 * @param element
+	 * @param key
+	 */
 	private void isAttribtuePresent(Element element, String key) {
         String value = element.getAttribute(key);
         if (value.isEmpty() || value == null){
@@ -462,6 +520,12 @@ public class SimSettings {
         }
 	}
 
+	
+	/**
+	 * 
+	 * @param element
+	 * @param key
+	 */
 	private void isElementPresent(Element element, String key) {
 		try {
 			String value = element.getElementsByTagName(key).item(0).getTextContent();
@@ -473,6 +537,11 @@ public class SimSettings {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * @param filePath
+	 */
 	private void parseApplicatinosXML(String filePath)
 	{
 		Document doc = null;
@@ -536,6 +605,11 @@ public class SimSettings {
 		}
 	}
 
+	
+	/**
+	 * 
+	 * @param filePath
+	 */
 	private void parseEdgeDevicesXML(String filePath)
 	{
 		try {	
@@ -597,6 +671,12 @@ public class SimSettings {
 			System.exit(0);
 		}
 	}
+	
+	
+	/**
+	 * 
+	 * @param filePath
+	 */
 	public void parseLinksXML(String filePath) 
 	{
 		try {
@@ -608,10 +688,7 @@ public class SimSettings {
 		
 		NodeList linksList = linksDoc.getElementsByTagName("link");
 		for(int i = 0; i < linksList.getLength(); i++) {
-			//SimLogger.printLine("No issues yet...cross your fingers!");
-			
-			
-			
+			//SimLogger.printLine("No issues yet...cross your fingers!");			
 		}
 		
 		}
@@ -622,44 +699,94 @@ public class SimSettings {
 		}		
 	}
 
+	
+	/**
+	 * 
+	 * @param _simulationSpace
+	 */
 	public void setSimulationSpace(double[] _simulationSpace) {
 		// TODO Auto-generated method stub
 		this.simulationSpace = _simulationSpace;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double[] getSimulationSpace() {
 		// TODO Auto-generated method stub
 		return this.simulationSpace;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getMaxLevels() {
 		return MAX_LEVELS;
 	}
 	
+	
+	/**
+	 * 
+	 * @param _MAX_LEVELS
+	 */
 	public void setMaxLevels(int _MAX_LEVELS) {
 		this.MAX_LEVELS = _MAX_LEVELS;
 	}
 	
+	
+	/**
+	 * 
+	 * @param _inputType
+	 */
 	public void setInputType(String _inputType) {
 		this.inputType = _inputType;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getInputType() {
 		return this.inputType;
 	}
 	
+	
+	/**
+	 * 
+	 * @param _moving
+	 */
 	public void setMobileDevicesMoving(boolean _moving) {
 		this.mobileDevicesMoving = _moving;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean areMobileDevicesMoving() {
 		return this.mobileDevicesMoving;
 	}
-	//Qian get trace enabled infomation
+	
+	
+	/**
+	 * Qian get trace enabled infomation 
+	 * @return
+	 */
 	public boolean traceEnalbe() {
 		return TRACE_ENABLED;
 	}
-	//Qian get next selected node number
+
+	
+	/**
+	 * Qian get next selected node number
+	 * @return
+	 */
 	public int nextSelectedNode() {
 		int nodeID = Integer.parseInt(SELECTED_NODES[currentSelection]);
 		currentSelection++;
@@ -668,7 +795,12 @@ public class SimSettings {
 		}
 		return nodeID;
 	}
-	//Qian get next selected level
+	
+	
+	/**
+	 * Qian get next selected level
+	 * @return
+	 */
 	public int nextSelectedLevel() {
 		int level = Integer.parseInt(SELECTED_LEVELS[currentLevelIndex]);
 		currentLevelIndex++;
@@ -678,6 +810,7 @@ public class SimSettings {
 		return level;
 	}
 
+	
 	/**
 	 * @return the edgeDevicesDoc
 	 */
@@ -685,6 +818,7 @@ public class SimSettings {
 		return edgeDevicesDoc;
 	}
 
+	
 	/**
 	 * @param edgeDevicesDoc the edgeDevicesDoc to set
 	 */
@@ -692,6 +826,7 @@ public class SimSettings {
 		this.edgeDevicesDoc = edgeDevicesDoc;
 	}
 
+	
 	/**
 	 * @return the linksDoc
 	 */
@@ -699,6 +834,7 @@ public class SimSettings {
 		return linksDoc;
 	}
 
+	
 	/**
 	 * @param linksDoc the linksDoc to set
 	 */
@@ -706,6 +842,7 @@ public class SimSettings {
 		this.linksDoc = linksDoc;
 	}
 
+	
 	/**
 	 * @return the cLOUD_DATACENTER_ID
 	 */
@@ -713,6 +850,7 @@ public class SimSettings {
 		return CLOUD_DATACENTER_ID;
 	}
 
+	
 	/**
 	 * @param cLOUD_DATACENTER_ID the cLOUD_DATACENTER_ID to set
 	 */
@@ -720,6 +858,7 @@ public class SimSettings {
 		CLOUD_DATACENTER_ID = cLOUD_DATACENTER_ID;
 	}
 
+	
 	/**
 	 * @return the cLOUD_HOST_ID
 	 */
@@ -727,6 +866,7 @@ public class SimSettings {
 		return CLOUD_HOST_ID;
 	}
 
+	
 	/**
 	 * @param cLOUD_HOST_ID the cLOUD_HOST_ID to set
 	 */
@@ -734,6 +874,7 @@ public class SimSettings {
 		CLOUD_HOST_ID = cLOUD_HOST_ID;
 	}
 
+	
 	/**
 	 * @return the cLOUD_VM_ID
 	 */
@@ -741,6 +882,7 @@ public class SimSettings {
 		return CLOUD_VM_ID;
 	}
 
+	
 	/**
 	 * @param cLOUD_VM_ID the cLOUD_VM_ID to set
 	 */
@@ -748,6 +890,7 @@ public class SimSettings {
 		CLOUD_VM_ID = cLOUD_VM_ID;
 	}
 
+	
 	/**
 	 * @return the eDGE_ORCHESTRATOR_ID
 	 */
@@ -755,6 +898,7 @@ public class SimSettings {
 		return EDGE_ORCHESTRATOR_ID;
 	}
 
+	
 	/**
 	 * @param eDGE_ORCHESTRATOR_ID the eDGE_ORCHESTRATOR_ID to set
 	 */
@@ -762,6 +906,7 @@ public class SimSettings {
 		EDGE_ORCHESTRATOR_ID = eDGE_ORCHESTRATOR_ID;
 	}
 
+	
 	/**
 	 * @return the gENERIC_EDGE_DEVICE_ID
 	 */
@@ -769,6 +914,7 @@ public class SimSettings {
 		return GENERIC_EDGE_DEVICE_ID;
 	}
 
+	
 	/**
 	 * @param gENERIC_EDGE_DEVICE_ID the gENERIC_EDGE_DEVICE_ID to set
 	 */
@@ -776,6 +922,7 @@ public class SimSettings {
 		GENERIC_EDGE_DEVICE_ID = gENERIC_EDGE_DEVICE_ID;
 	}
 
+	
 	/**
 	 * @return the mOBILE_DEVICE_ID
 	 */
@@ -783,6 +930,7 @@ public class SimSettings {
 		return MOBILE_DEVICE_ID;
 	}
 
+	
 	/**
 	 * @param mOBILE_DEVICE_ID the mOBILE_DEVICE_ID to set
 	 */
@@ -790,6 +938,7 @@ public class SimSettings {
 		MOBILE_DEVICE_ID = mOBILE_DEVICE_ID;
 	}
 
+	
 	/**
 	 * @return the dELIMITER
 	 */
@@ -797,6 +946,7 @@ public class SimSettings {
 		return DELIMITER;
 	}
 
+	
 	/**
 	 * @param dELIMITER the dELIMITER to set
 	 */
@@ -804,12 +954,14 @@ public class SimSettings {
 		DELIMITER = dELIMITER;
 	}
 
+	
 	/**
 	 * @return the sIMULATION_TIME
 	 */
 	public double getSIMULATION_TIME() {
 		return SIMULATION_TIME;
 	}
+	
 
 	/**
 	 * @param sIMULATION_TIME the sIMULATION_TIME to set
@@ -818,6 +970,7 @@ public class SimSettings {
 		SIMULATION_TIME = sIMULATION_TIME;
 	}
 
+	
 	/**
 	 * @return the wARM_UP_PERIOD
 	 */
@@ -825,6 +978,7 @@ public class SimSettings {
 		return WARM_UP_PERIOD;
 	}
 
+	
 	/**
 	 * @param wARM_UP_PERIOD the wARM_UP_PERIOD to set
 	 */
@@ -832,6 +986,7 @@ public class SimSettings {
 		WARM_UP_PERIOD = wARM_UP_PERIOD;
 	}
 
+	
 	/**
 	 * @return the iNTERVAL_TO_GET_VM_LOAD_LOG
 	 */
@@ -839,6 +994,7 @@ public class SimSettings {
 		return INTERVAL_TO_GET_VM_LOAD_LOG;
 	}
 
+	
 	/**
 	 * @param iNTERVAL_TO_GET_VM_LOAD_LOG the iNTERVAL_TO_GET_VM_LOAD_LOG to set
 	 */
@@ -846,6 +1002,7 @@ public class SimSettings {
 		INTERVAL_TO_GET_VM_LOAD_LOG = iNTERVAL_TO_GET_VM_LOAD_LOG;
 	}
 
+	
 	/**
 	 * @return the iNTERVAL_TO_GET_VM_LOCATION_LOG
 	 */
@@ -853,6 +1010,7 @@ public class SimSettings {
 		return INTERVAL_TO_GET_VM_LOCATION_LOG;
 	}
 
+	
 	/**
 	 * @param iNTERVAL_TO_GET_VM_LOCATION_LOG the iNTERVAL_TO_GET_VM_LOCATION_LOG to set
 	 */
@@ -860,6 +1018,7 @@ public class SimSettings {
 		INTERVAL_TO_GET_VM_LOCATION_LOG = iNTERVAL_TO_GET_VM_LOCATION_LOG;
 	}
 
+	
 	/**
 	 * @return the fILE_LOG_ENABLED
 	 */
@@ -867,6 +1026,7 @@ public class SimSettings {
 		return FILE_LOG_ENABLED;
 	}
 
+	
 	/**
 	 * @param fILE_LOG_ENABLED the fILE_LOG_ENABLED to set
 	 */
@@ -874,6 +1034,7 @@ public class SimSettings {
 		FILE_LOG_ENABLED = fILE_LOG_ENABLED;
 	}
 
+	
 	/**
 	 * @return the dEEP_FILE_LOG_ENABLED
 	 */
@@ -881,6 +1042,7 @@ public class SimSettings {
 		return DEEP_FILE_LOG_ENABLED;
 	}
 
+	
 	/**
 	 * @param dEEP_FILE_LOG_ENABLED the dEEP_FILE_LOG_ENABLED to set
 	 */
@@ -888,6 +1050,7 @@ public class SimSettings {
 		DEEP_FILE_LOG_ENABLED = dEEP_FILE_LOG_ENABLED;
 	}
 
+	
 	/**
 	 * @return the tRACE_ENABLED
 	 */
@@ -895,6 +1058,7 @@ public class SimSettings {
 		return TRACE_ENABLED;
 	}
 
+	
 	/**
 	 * @param tRACE_ENABLED the tRACE_ENABLED to set
 	 */
@@ -902,6 +1066,7 @@ public class SimSettings {
 		TRACE_ENABLED = tRACE_ENABLED;
 	}
 
+	
 	/**
 	 * @return the mIN_NUM_OF_MOBILE_DEVICES
 	 */
@@ -909,6 +1074,7 @@ public class SimSettings {
 		return MIN_NUM_OF_MOBILE_DEVICES;
 	}
 
+	
 	/**
 	 * @param mIN_NUM_OF_MOBILE_DEVICES the mIN_NUM_OF_MOBILE_DEVICES to set
 	 */
@@ -916,6 +1082,7 @@ public class SimSettings {
 		MIN_NUM_OF_MOBILE_DEVICES = mIN_NUM_OF_MOBILE_DEVICES;
 	}
 
+	
 	/**
 	 * @return the mAX_NUM_OF_MOBILE_DEVICES
 	 */
@@ -923,6 +1090,7 @@ public class SimSettings {
 		return MAX_NUM_OF_MOBILE_DEVICES;
 	}
 
+	
 	/**
 	 * @param mAX_NUM_OF_MOBILE_DEVICES the mAX_NUM_OF_MOBILE_DEVICES to set
 	 */
@@ -930,6 +1098,7 @@ public class SimSettings {
 		MAX_NUM_OF_MOBILE_DEVICES = mAX_NUM_OF_MOBILE_DEVICES;
 	}
 
+	
 	/**
 	 * @return the mOBILE_DEVICE_COUNTER_SIZE
 	 */
@@ -937,6 +1106,7 @@ public class SimSettings {
 		return MOBILE_DEVICE_COUNTER_SIZE;
 	}
 
+	
 	/**
 	 * @param mOBILE_DEVICE_COUNTER_SIZE the mOBILE_DEVICE_COUNTER_SIZE to set
 	 */
@@ -944,6 +1114,7 @@ public class SimSettings {
 		MOBILE_DEVICE_COUNTER_SIZE = mOBILE_DEVICE_COUNTER_SIZE;
 	}
 
+	
 	/**
 	 * @return the nUM_OF_EDGE_DATACENTERS
 	 */
@@ -951,6 +1122,7 @@ public class SimSettings {
 		return NUM_OF_EDGE_DATACENTERS;
 	}
 
+	
 	/**
 	 * @param nUM_OF_EDGE_DATACENTERS the nUM_OF_EDGE_DATACENTERS to set
 	 */
@@ -958,6 +1130,7 @@ public class SimSettings {
 		NUM_OF_EDGE_DATACENTERS = nUM_OF_EDGE_DATACENTERS;
 	}
 
+	
 	/**
 	 * @return the nUM_OF_EDGE_HOSTS
 	 */
@@ -965,6 +1138,7 @@ public class SimSettings {
 		return NUM_OF_EDGE_HOSTS;
 	}
 
+	
 	/**
 	 * @param nUM_OF_EDGE_HOSTS the nUM_OF_EDGE_HOSTS to set
 	 */
@@ -972,6 +1146,7 @@ public class SimSettings {
 		NUM_OF_EDGE_HOSTS = nUM_OF_EDGE_HOSTS;
 	}
 
+	
 	/**
 	 * @return the nUM_OF_EDGE_VMS
 	 */
@@ -979,6 +1154,7 @@ public class SimSettings {
 		return NUM_OF_EDGE_VMS;
 	}
 
+	
 	/**
 	 * @param nUM_OF_EDGE_VMS the nUM_OF_EDGE_VMS to set
 	 */
@@ -986,6 +1162,7 @@ public class SimSettings {
 		NUM_OF_EDGE_VMS = nUM_OF_EDGE_VMS;
 	}
 
+	
 	/**
 	 * @return the wAN_PROPOGATION_DELAY
 	 */
@@ -993,6 +1170,7 @@ public class SimSettings {
 		return WAN_PROPOGATION_DELAY;
 	}
 
+	
 	/**
 	 * @param wAN_PROPOGATION_DELAY the wAN_PROPOGATION_DELAY to set
 	 */
@@ -1000,6 +1178,7 @@ public class SimSettings {
 		WAN_PROPOGATION_DELAY = wAN_PROPOGATION_DELAY;
 	}
 
+	
 	/**
 	 * @return the lAN_INTERNAL_DELAY
 	 */
@@ -1007,6 +1186,7 @@ public class SimSettings {
 		return LAN_INTERNAL_DELAY;
 	}
 
+	
 	/**
 	 * @param lAN_INTERNAL_DELAY the lAN_INTERNAL_DELAY to set
 	 */
@@ -1014,6 +1194,7 @@ public class SimSettings {
 		LAN_INTERNAL_DELAY = lAN_INTERNAL_DELAY;
 	}
 
+	
 	/**
 	 * @return the bANDWITH_WLAN
 	 */
@@ -1021,6 +1202,7 @@ public class SimSettings {
 		return BANDWITH_WLAN;
 	}
 
+	
 	/**
 	 * @param bANDWITH_WLAN the bANDWITH_WLAN to set
 	 */
@@ -1028,6 +1210,7 @@ public class SimSettings {
 		BANDWITH_WLAN = bANDWITH_WLAN;
 	}
 
+	
 	/**
 	 * @return the bANDWITH_WAN
 	 */
@@ -1035,6 +1218,7 @@ public class SimSettings {
 		return BANDWITH_WAN;
 	}
 
+	
 	/**
 	 * @param bANDWITH_WAN the bANDWITH_WAN to set
 	 */
@@ -1042,6 +1226,7 @@ public class SimSettings {
 		BANDWITH_WAN = bANDWITH_WAN;
 	}
 
+	
 	/**
 	 * @return the bANDWITH_GSM
 	 */
@@ -1049,6 +1234,7 @@ public class SimSettings {
 		return BANDWITH_GSM;
 	}
 
+	
 	/**
 	 * @param bANDWITH_GSM the bANDWITH_GSM to set
 	 */
@@ -1056,6 +1242,7 @@ public class SimSettings {
 		BANDWITH_GSM = bANDWITH_GSM;
 	}
 
+	
 	/**
 	 * @return the mIPS_FOR_CLOUD
 	 */
@@ -1063,6 +1250,7 @@ public class SimSettings {
 		return MIPS_FOR_CLOUD;
 	}
 
+	
 	/**
 	 * @param mIPS_FOR_CLOUD the mIPS_FOR_CLOUD to set
 	 */
@@ -1070,6 +1258,7 @@ public class SimSettings {
 		MIPS_FOR_CLOUD = mIPS_FOR_CLOUD;
 	}
 
+	
 	/**
 	 * @return the sELECTED_NODES
 	 */
@@ -1077,6 +1266,7 @@ public class SimSettings {
 		return SELECTED_NODES;
 	}
 
+	
 	/**
 	 * @param sELECTED_NODES the sELECTED_NODES to set
 	 */
@@ -1084,6 +1274,7 @@ public class SimSettings {
 		SELECTED_NODES = sELECTED_NODES;
 	}
 
+	
 	/**
 	 * @return the currentSelection
 	 */
@@ -1091,6 +1282,7 @@ public class SimSettings {
 		return currentSelection;
 	}
 
+	
 	/**
 	 * @param currentSelection the currentSelection to set
 	 */
@@ -1098,6 +1290,7 @@ public class SimSettings {
 		this.currentSelection = currentSelection;
 	}
 
+	
 	/**
 	 * @return the sELECTED_LEVELS
 	 */
@@ -1105,6 +1298,7 @@ public class SimSettings {
 		return SELECTED_LEVELS;
 	}
 
+	
 	/**
 	 * @param sELECTED_LEVELS the sELECTED_LEVELS to set
 	 */
@@ -1112,6 +1306,7 @@ public class SimSettings {
 		SELECTED_LEVELS = sELECTED_LEVELS;
 	}
 
+	
 	/**
 	 * @return the currentLevelIndex
 	 */
@@ -1119,6 +1314,7 @@ public class SimSettings {
 		return currentLevelIndex;
 	}
 
+	
 	/**
 	 * @param currentLevelIndex the currentLevelIndex to set
 	 */
@@ -1126,6 +1322,7 @@ public class SimSettings {
 		this.currentLevelIndex = currentLevelIndex;
 	}
 
+	
 	/**
 	 * @return the sIMULATION_SCENARIOS
 	 */
@@ -1133,6 +1330,7 @@ public class SimSettings {
 		return SIMULATION_SCENARIOS;
 	}
 
+	
 	/**
 	 * @param sIMULATION_SCENARIOS the sIMULATION_SCENARIOS to set
 	 */
@@ -1140,6 +1338,7 @@ public class SimSettings {
 		SIMULATION_SCENARIOS = sIMULATION_SCENARIOS;
 	}
 
+	
 	/**
 	 * @return the oRCHESTRATOR_POLICIES
 	 */
@@ -1147,6 +1346,7 @@ public class SimSettings {
 		return ORCHESTRATOR_POLICIES;
 	}
 
+	
 	/**
 	 * @param oRCHESTRATOR_POLICIES the oRCHESTRATOR_POLICIES to set
 	 */
@@ -1154,6 +1354,7 @@ public class SimSettings {
 		ORCHESTRATOR_POLICIES = oRCHESTRATOR_POLICIES;
 	}
 
+	
 	/**
 	 * @return the mAX_LEVELS
 	 */
@@ -1161,6 +1362,7 @@ public class SimSettings {
 		return MAX_LEVELS;
 	}
 
+	
 	/**
 	 * @param mAX_LEVELS the mAX_LEVELS to set
 	 */
@@ -1168,6 +1370,7 @@ public class SimSettings {
 		MAX_LEVELS = mAX_LEVELS;
 	}
 
+	
 	/**
 	 * @return the mobileDevicesMoving
 	 */
@@ -1175,6 +1378,7 @@ public class SimSettings {
 		return mobileDevicesMoving;
 	}
 
+	
 	/**
 	 * @param instance the instance to set
 	 */
@@ -1182,12 +1386,14 @@ public class SimSettings {
 		SimSettings.instance = instance;
 	}
 
+	
 	/**
 	 * @param clusterType the clusterType to set
 	 */
 	public void setClusterType(boolean clusterType) {
 		this.clusterType = clusterType;
 	}
+	
 
 	/**
 	 * @param serviceReplacement the serviceReplacement to set
@@ -1196,6 +1402,7 @@ public class SimSettings {
 		this.serviceReplacement = serviceReplacement;
 	}
 
+	
 	/**
 	 * @param mobilityLookUpTable the mobilityLookUpTable to set
 	 */
@@ -1203,6 +1410,7 @@ public class SimSettings {
 		this.mobilityLookUpTable = mobilityLookUpTable;
 	}
 
+	
 	/**
 	 * @param taskLookUpTable the taskLookUpTable to set
 	 */
@@ -1210,6 +1418,7 @@ public class SimSettings {
 		this.taskLookUpTable = taskLookUpTable;
 	}
 
+	
 	/**
 	 * @return the selectedLayerIds
 	 */
@@ -1217,6 +1426,7 @@ public class SimSettings {
 		return selectedLayerIds;
 	}
 
+	
 	/**
 	 * @param selectedLayerIds the selectedLayerIds to set
 	 */

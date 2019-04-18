@@ -23,6 +23,12 @@ import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class SelectedNodesOrchestrator extends EdgeOrchestrator{
 	
 	private static String node = "Datacenter_";
@@ -30,12 +36,21 @@ public class SelectedNodesOrchestrator extends EdgeOrchestrator{
 	HashMap<NodeSim,HashMap<NodeSim, LinkedList<NodeSim>>> pathTable;
 	ESBModel networkModel;
 	
-public SelectedNodesOrchestrator(String _policy, String _simScenario) {
+	
+	/**
+	 * 
+	 * @param _policy
+	 * @param _simScenario
+	 */
+	public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 		// TODO Auto-generated constructor stub
 	}
 
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void initialize() {
 
@@ -57,15 +72,24 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 		
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public int getDeviceToOffload(Task task) {
 			return getHost(task).getId();
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public EdgeVM getVmToOffload(Task task) {
 		return ((EdgeVM) getHost(task).getVmList().get(0));
 	}
+	
 	
 	/**
 	 * find the host
@@ -78,6 +102,7 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 		return mb.getHost();
 	}
 
+	
 	/* 
 	 * @ author Qian Wang
 	 * @ author Shehenaz Shaik 
@@ -197,6 +222,7 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 		}
 	}
 
+	
 	/**
 	 * @return the node
 	 */
@@ -204,13 +230,13 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 		return node;
 	}
 
+	
 	/**
 	 * @param node the node to set
 	 */
 	public static void setNode(String node) {
 		SelectedNodesOrchestrator.node = node;
 	}
-
 
 
 	/**
@@ -221,14 +247,12 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 	}
 
 
-
 	/**
 	 * @param allHosts the allHosts to set
 	 */
 	public void setAllHosts(ArrayList<EdgeHost> allHosts) {
 		this.allHosts = allHosts;
 	}
-
 
 
 	/**
@@ -239,7 +263,6 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 	}
 
 
-
 	/**
 	 * @param pathTable the pathTable to set
 	 */
@@ -248,14 +271,12 @@ public SelectedNodesOrchestrator(String _policy, String _simScenario) {
 	}
 
 
-
 	/**
 	 * @return the networkModel
 	 */
 	public ESBModel getNetworkModel() {
 		return networkModel;
 	}
-
 
 
 	/**

@@ -21,6 +21,8 @@ import edu.auburn.pFogSim.util.MobileDevice;
 import java.util.LinkedList;
 //import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
+
+
 /**
  * @author Jacob I Hall; Qian Wang; Shehenaz Shaik.
  * puddle class for separating nodes into logical hierarchies
@@ -49,11 +51,17 @@ public class Puddle {
 	private int parentPuddleId;
 	private ArrayList<Integer> childPuddleIds;
 	
+	
+	/**
+	 * 
+	 */
 	public Puddle() {
 		members = new ArrayList<EdgeHost>();
 		down = new ArrayList<Puddle>();
 		childPuddleIds = new ArrayList<Integer>();
 	}
+	
+	
 	/**
 	 * get the puddle head of the parent puddle
 	 * @return
@@ -61,6 +69,8 @@ public class Puddle {
 	public Puddle getParent() {
 		return up;
 	}
+	
+	
 	/**
 	 * get the head of this puddle
 	 * @return
@@ -68,6 +78,8 @@ public class Puddle {
 	public EdgeHost getHead() {
 		return head;
 	}
+	
+	
 	/**
 	 * get the heads of the children puddles
 	 * @return
@@ -75,6 +87,8 @@ public class Puddle {
 	public ArrayList<Puddle> getChildren() {
 		return down;
 	}
+	
+	
 	/**
 	 * get the members of this puddle
 	 * @return
@@ -82,6 +96,8 @@ public class Puddle {
 	public ArrayList<EdgeHost> getMembers() {
 		return members;
 	}
+	
+	
 	/**
 	 * choose next available puddle member as the new puddle head<br>
 	 */
@@ -103,6 +119,8 @@ public class Puddle {
 		head = newHead;
 		//members.remove(head); //see above
 	}
+	
+	
 	/**
 	 * set the puddle head, the head should be a current member of the puddle<br>
 	 * if the input host is not a member of the puddle throw an IllegalArgumentException
@@ -118,6 +136,8 @@ public class Puddle {
 		}
 		
 	}
+	
+	
 	/**
 	 * set the puddle members, all puddle members must be of the same layer as this puddle
 	 * @param _members
@@ -137,6 +157,8 @@ public class Puddle {
 			}
 		}
 	}
+	
+	
 	/**
 	 * set the children of the puddle, all children must be exactly on layer outwards 
 	 * @param _down
@@ -152,6 +174,8 @@ public class Puddle {
 			}
 		}
 	}
+	
+	
 	/**
 	 * add a puddle to the children of this puddle
 	 * @param puddle
@@ -159,6 +183,8 @@ public class Puddle {
 	public void addDown(Puddle puddle) {
 		down.add(puddle);
 	}
+	
+	
 	/**
 	 * link this puddle with its parent. parent must be exactly one layer inwards<br>
 	 * @param _up
@@ -170,6 +196,8 @@ public class Puddle {
 		up = _up;
 		up.addDown(this);
 	}
+	
+	
 	/**
 	 * update the total number of available resources in this puddle<br>
 	 * as well as the max resources available on a single instance
@@ -196,6 +224,8 @@ public class Puddle {
 			}
 		}
 	}
+	
+	
 	/**
 	 * return whether this puddle can handle the input task
 	 * @param app
@@ -209,6 +239,8 @@ public class Puddle {
 		}
 		return true;
 	}
+	
+	
 	/**
 	 * return whether this puddle can handle the mobile device
 	 * @author Qian
@@ -223,6 +255,8 @@ public class Puddle {
 		}
 		return false;
 	}
+	
+	
 	/**
 	 * update the total capacity and max single instance capacity for this puddle
 	 */
@@ -238,6 +272,8 @@ public class Puddle {
 			}
 		}
 	}
+	
+	
 	/**
 	 * get the layer that this puddle belongs to
 	 * @return
@@ -245,6 +281,8 @@ public class Puddle {
 	public int getLevel() {
 		return level;
 	}
+	
+	
 	/**
 	 * get the list nodes sorted by distance from the reference point
 	 * @param pair
@@ -255,6 +293,8 @@ public class Puddle {
 		LinkedList<EdgeHost> nodes = rad.sortNodes();
 		return nodes;
 	}
+	
+	
 	/**
 	 * set the level of this puddle
 	 * @param lvl
@@ -262,6 +302,7 @@ public class Puddle {
 	public void setLevel(int lvl) {
 		level = lvl;
 	}
+	
 	
 	/**
 	 * @author Qian
@@ -299,156 +340,208 @@ public class Puddle {
 			}
 		}
 	}
+	
+	
 	/**
 	 * @return the down
 	 */
 	public ArrayList<Puddle> getDown() {
 		return down;
 	}
+	
+	
 	/**
 	 * @param down the down to set
 	 */
 	public void setDown(ArrayList<Puddle> down) {
 		this.down = down;
 	}
+	
+	
 	/**
 	 * @return the availRam
 	 */
 	public int getAvailRam() {
 		return availRam;
 	}
+	
+	
 	/**
 	 * @param availRam the availRam to set
 	 */
 	public void setAvailRam(int availRam) {
 		this.availRam = availRam;
 	}
+	
+	
 	/**
 	 * @return the availMIPS
 	 */
 	public double getAvailMIPS() {
 		return availMIPS;
 	}
+	
+	
 	/**
 	 * @param availMIPS the availMIPS to set
 	 */
 	public void setAvailMIPS(double availMIPS) {
 		this.availMIPS = availMIPS;
 	}
+	
+	
 	/**
 	 * @return the availPES
 	 */
 	public int getAvailPES() {
 		return availPES;
 	}
+	
+	
 	/**
 	 * @param availPES the availPES to set
 	 */
 	public void setAvailPES(int availPES) {
 		this.availPES = availPES;
 	}
+	
+	
 	/**
 	 * @return the maxRam
 	 */
 	public int getMaxRam() {
 		return maxRam;
 	}
+	
+	
 	/**
 	 * @param maxRam the maxRam to set
 	 */
 	public void setMaxRam(int maxRam) {
 		this.maxRam = maxRam;
 	}
+	
+	
 	/**
 	 * @return the maxMIPS
 	 */
 	public double getMaxMIPS() {
 		return maxMIPS;
 	}
+	
+	
 	/**
 	 * @param maxMIPS the maxMIPS to set
 	 */
 	public void setMaxMIPS(double maxMIPS) {
 		this.maxMIPS = maxMIPS;
 	}
+	
+	
 	/**
 	 * @return the maxPES
 	 */
 	public int getMaxPES() {
 		return maxPES;
 	}
+	
+	
 	/**
 	 * @param maxPES the maxPES to set
 	 */
 	public void setMaxPES(int maxPES) {
 		this.maxPES = maxPES;
 	}
+	
+	
 	/**
 	 * @return the totalCapacity
 	 */
 	public double getTotalCapacity() {
 		return totalCapacity;
 	}
+	
+	
 	/**
 	 * @param totalCapacity the totalCapacity to set
 	 */
 	public void setTotalCapacity(double totalCapacity) {
 		this.totalCapacity = totalCapacity;
 	}
+	
+	
 	/**
 	 * @return the maxCapacity
 	 */
 	public double getMaxCapacity() {
 		return maxCapacity;
 	}
+	
+	
 	/**
 	 * @param maxCapacity the maxCapacity to set
 	 */
 	public void setMaxCapacity(double maxCapacity) {
 		this.maxCapacity = maxCapacity;
 	}
+	
+	
 	/**
 	 * @return the up
 	 */
 	public Puddle getUp() {
 		return up;
 	}
+	
+	
 	/**
 	 * @param members the members to set
 	 */
 	public void setMembers(ArrayList<EdgeHost> members) {
 		this.members = members;
 	}
+	
+	
 	/**
 	 * @return the puddleId
 	 */
 	public int getPuddleId() {
 		return puddleId;
 	}
+	
+	
 	/**
 	 * @param puddleId the puddleId to set
 	 */
 	public void setPuddleId(int puddleId) {
 		this.puddleId = puddleId;
 	}
+	
+	
 	/**
 	 * @return the parentPuddleId
 	 */
 	public int getParentPuddleId() {
 		return parentPuddleId;
 	}
+	
+	
 	/**
 	 * @param parentPuddleId the parentPuddleId to set
 	 */
 	public void setParentPuddleId(int parentPuddleId) {
 		this.parentPuddleId = parentPuddleId;
 	}
+	
+	
 	/**
 	 * @return the childPuddleIds
 	 */
 	public ArrayList<Integer> getChildPuddleIds() {
 		return childPuddleIds;
 	}
+	
+	
 	/**
 	 * @param childPuddleIds the childPuddleIds to set
 	 */

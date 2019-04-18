@@ -42,6 +42,7 @@ import org.cloudbus.cloudsim.Datacenter;
 //import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
 import org.cloudbus.cloudsim.core.CloudSim;
 
+
 /**
  * implementation of Edge Orchestrator for using puddles
  * @author Shehenaz Shaik
@@ -54,6 +55,7 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 	ArrayList<EdgeHost> allHosts;
 	HashMap<NodeSim,HashMap<NodeSim, LinkedList<NodeSim>>> pathTable;
 	ESBModel networkModel;
+	
 	
 	/**
 	 * constructor
@@ -93,7 +95,6 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 	/**
 	 * get the id of the appropriate host
 	 */
-
 	@Override
 	public int getDeviceToOffload(Task task) {
 		try {
@@ -368,7 +369,5 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 		}
 		return puddle;
 	}
-
-
 	
 }// end class HAFAOrchestrator

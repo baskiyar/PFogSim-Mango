@@ -21,6 +21,12 @@ import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.DataInterpreter;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class FogCluster {
 	private String[] lines = null;
 	private Double[][] points = null;

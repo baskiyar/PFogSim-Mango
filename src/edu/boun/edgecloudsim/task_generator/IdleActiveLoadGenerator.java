@@ -23,12 +23,29 @@ import edu.boun.edgecloudsim.utils.EdgeTask;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.boun.edgecloudsim.utils.SimUtils;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class IdleActiveLoadGenerator extends LoadGeneratorModel{
 
+	
+	/**
+	 * 
+	 * @param _numberOfMobileDevices
+	 * @param _simulationTime
+	 * @param _simScenario
+	 */
 	public IdleActiveLoadGenerator(int _numberOfMobileDevices, double _simulationTime, String _simScenario) {
 		super(_numberOfMobileDevices, _simulationTime, _simScenario);
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void initializeModel() {
 		taskList = new ArrayList<EdgeTask>();

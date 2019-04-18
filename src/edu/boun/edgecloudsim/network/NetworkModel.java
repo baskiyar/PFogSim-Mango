@@ -16,18 +16,36 @@ package edu.boun.edgecloudsim.network;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.utils.Location;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public abstract class NetworkModel {
 	protected int numberOfMobileDevices;
 
+	
+	/**
+	 * 
+	 */
 	public NetworkModel() {}
+	
+	
+	/**
+	 * 
+	 * @param _numberOfMobileDevices
+	 */
 	public NetworkModel(int _numberOfMobileDevices){
 		numberOfMobileDevices=_numberOfMobileDevices;
 	};
+	
 	
 	/**
 	* initializes costom network model
 	*/
 	public abstract void initialize();
+	
 	
     /**
     * calculates the upload delay from source to destination device
@@ -35,11 +53,13 @@ public abstract class NetworkModel {
 	// Shaik updated
 	public abstract double getUploadDelay(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud);
 	
+	
     /**
     * calculates the download delay from source to destination device
     */
 	//Shaik updated
 	public abstract double getDownloadDelay(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud);
+	
 	
     /**
     * Mobile device manager should inform network manager about the network operation
@@ -49,12 +69,16 @@ public abstract class NetworkModel {
 	public abstract void uploadFinished(Location accessPointLocation, int destDeviceId);
 	public abstract void downloadStarted(Location accessPointLocation, int sourceDeviceId);
 	public abstract void downloadFinished(Location accessPointLocation, int sourceDeviceId);
+	
+	
 	/**
 	 * @return the numberOfMobileDevices
 	 */
 	public int getNumberOfMobileDevices() {
 		return numberOfMobileDevices;
 	}
+	
+	
 	/**
 	 * @param numberOfMobileDevices the numberOfMobileDevices to set
 	 */

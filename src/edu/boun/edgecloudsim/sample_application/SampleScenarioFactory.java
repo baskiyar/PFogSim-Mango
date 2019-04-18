@@ -40,12 +40,26 @@ import edu.boun.edgecloudsim.task_generator.IdleActiveLoadGenerator;
 import edu.boun.edgecloudsim.task_generator.LoadGeneratorModel;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class SampleScenarioFactory implements ScenarioFactory {
 	private int numOfMobileDevice;
 	private double simulationTime;
 	private String orchestratorPolicy;
 	private String simScenario;
 	
+	
+	/**
+	 * 
+	 * @param _numOfMobileDevice
+	 * @param _simulationTime
+	 * @param _orchestratorPolicy
+	 * @param _simScenario
+	 */
 	SampleScenarioFactory(int _numOfMobileDevice,
 			double _simulationTime,
 			String _orchestratorPolicy,
@@ -56,11 +70,19 @@ public class SampleScenarioFactory implements ScenarioFactory {
 		simScenario = _simScenario;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	@Override
 	public LoadGeneratorModel getLoadGeneratorModel() {
 		return new IdleActiveLoadGenerator(numOfMobileDevice, simulationTime, simScenario);
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public EdgeOrchestrator getEdgeOrchestrator() {
 		if (simScenario.equals("HAFA_ORCHESTRATOR")) { 
@@ -93,6 +115,10 @@ public class SampleScenarioFactory implements ScenarioFactory {
 		return null;
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public MobilityModel getMobilityModel() {
 		switch(SimSettings.getInstance().getInputType())
@@ -107,21 +133,34 @@ public class SampleScenarioFactory implements ScenarioFactory {
 		}
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public NetworkModel getNetworkModel() {
 		return new ESBModel(numOfMobileDevice);
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public VmAllocationPolicy getVmAllocationPolicy(List<? extends Host> hostList, int dataCenterIndex) {
 		return new VmAllocationPolicy_Custom(hostList,dataCenterIndex);
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public UtilizationModel getCpuUtilizationModel(APP_TYPES _taskType) {
 		return new CpuUtilizationModel_Custom(_taskType);
 	}
 
+	
 	/**
 	 * @return the numOfMobileDevice
 	 */
@@ -129,6 +168,7 @@ public class SampleScenarioFactory implements ScenarioFactory {
 		return numOfMobileDevice;
 	}
 
+	
 	/**
 	 * @param numOfMobileDevice the numOfMobileDevice to set
 	 */
@@ -136,6 +176,7 @@ public class SampleScenarioFactory implements ScenarioFactory {
 		this.numOfMobileDevice = numOfMobileDevice;
 	}
 
+	
 	/**
 	 * @return the simulationTime
 	 */
@@ -150,6 +191,7 @@ public class SampleScenarioFactory implements ScenarioFactory {
 		this.simulationTime = simulationTime;
 	}
 
+	
 	/**
 	 * @return the orchestratorPolicy
 	 */
@@ -157,6 +199,7 @@ public class SampleScenarioFactory implements ScenarioFactory {
 		return orchestratorPolicy;
 	}
 
+	
 	/**
 	 * @param orchestratorPolicy the orchestratorPolicy to set
 	 */
@@ -164,6 +207,7 @@ public class SampleScenarioFactory implements ScenarioFactory {
 		this.orchestratorPolicy = orchestratorPolicy;
 	}
 
+	
 	/**
 	 * @return the simScenario
 	 */
@@ -171,6 +215,7 @@ public class SampleScenarioFactory implements ScenarioFactory {
 		return simScenario;
 	}
 
+	
 	/**
 	 * @param simScenario the simScenario to set
 	 */

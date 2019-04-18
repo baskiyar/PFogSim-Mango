@@ -31,6 +31,12 @@ import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class CentralOrchestrator extends EdgeOrchestrator {
 	
 	ArrayList<EdgeHost> hosts;

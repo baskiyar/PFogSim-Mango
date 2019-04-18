@@ -6,6 +6,7 @@ import java.util.List;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_client.Task;
 
+
 /**
  * This class is a Application manager used by EdgeVM class
  * @author Qian Wang
@@ -14,12 +15,14 @@ import edu.boun.edgecloudsim.edge_client.Task;
 public class ApplicationServicesManager {
 	private List<ApplicationService> appServicesList;
 	
+	
 	/**
 	 * constructor
 	 */
 	public ApplicationServicesManager() {
 		appServicesList = new ArrayList<ApplicationService>();
 	}
+	
 	
 	/**
 	 * add a new application service to VM
@@ -31,6 +34,7 @@ public class ApplicationServicesManager {
 		appServicesList.add(new ApplicationService(serviceId, applicationType));
 	}
 	
+	
 	/**
 	 * Application services list getter
 	 * @return appServicesList
@@ -39,6 +43,7 @@ public class ApplicationServicesManager {
 		return appServicesList;
 	}
 
+	
 	/**
 	 * @param appServicesList the appServicesList to set
 	 */

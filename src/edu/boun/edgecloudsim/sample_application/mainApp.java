@@ -29,6 +29,12 @@ import edu.boun.edgecloudsim.utils.SimUtils;
 
 import edu.auburn.pFogSim.util.*;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class mainApp {
 	
 	/**

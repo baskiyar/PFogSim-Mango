@@ -49,6 +49,12 @@ import edu.auburn.pFogSim.orchestrator.CloudOnlyOrchestrator;
 import edu.auburn.pFogSim.orchestrator.HAFAOrchestrator;
 import edu.auburn.pFogSim.util.DataInterpreter;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class EdgeServerManager {
 	private List<Datacenter> localDatacenters;
 	private List<List<EdgeVM>> vmList;
@@ -57,7 +63,6 @@ public class EdgeServerManager {
 	private NetworkTopology networkTopology;
 	private static EdgeServerManager instance = null;
 	public  Puddle[][] puddles;  //-- make it private - later
-
 	
 	//CJ Added these to make the lists of all the nodes and respective links 
 	//	to pass to topology constructor
@@ -545,6 +550,12 @@ public class EdgeServerManager {
 	}
 	
 	
+	/**
+	 * 
+	 * @param pud
+	 * @param reqFLevel
+	 * @return
+	 */
 	public ArrayList<EdgeHost> getCousins(Puddle pud, int reqFLevel){
 		ArrayList<EdgeHost> cousinHosts = new ArrayList<EdgeHost>();
 		ArrayList<Puddle> cousinPuddles = new ArrayList<Puddle>();
@@ -629,6 +640,7 @@ public class EdgeServerManager {
 		// return cousinHosts list		
 		return cousinHosts;
 	}
+	
 	
 	/**
 	 * Returns Puddle object corresponding to given Puddle ID.

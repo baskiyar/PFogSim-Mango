@@ -17,19 +17,33 @@ import java.util.List;
 
 import edu.boun.edgecloudsim.utils.EdgeTask;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public abstract class LoadGeneratorModel {
 	protected List<EdgeTask> taskList;
 	protected int numberOfMobileDevices;
 	protected double simulationTime;
 	protected String simScenario;
 	
+	
+	/**
+	 * 
+	 * @param _numberOfMobileDevices
+	 * @param _simulationTime
+	 * @param _simScenario
+	 */
 	public LoadGeneratorModel(int _numberOfMobileDevices, double _simulationTime, String _simScenario){
 		numberOfMobileDevices=_numberOfMobileDevices;
 		simulationTime=_simulationTime;
 		simScenario=_simScenario;
 	};
 	
-	/*
+	
+	/**
 	 * each task has a virtual start time
 	 * it will be used while generating task
 	 */
@@ -37,11 +51,13 @@ public abstract class LoadGeneratorModel {
 		return taskList;
 	}
 
-	/*
+	
+	/**
 	 * fill task list according to related task generation model
 	 */
 	public abstract void initializeModel();
 
+	
 	/**
 	 * @return the numberOfMobileDevices
 	 */
@@ -49,6 +65,7 @@ public abstract class LoadGeneratorModel {
 		return numberOfMobileDevices;
 	}
 
+	
 	/**
 	 * @param numberOfMobileDevices the numberOfMobileDevices to set
 	 */
@@ -56,6 +73,7 @@ public abstract class LoadGeneratorModel {
 		this.numberOfMobileDevices = numberOfMobileDevices;
 	}
 
+	
 	/**
 	 * @return the simulationTime
 	 */
@@ -63,6 +81,7 @@ public abstract class LoadGeneratorModel {
 		return simulationTime;
 	}
 
+	
 	/**
 	 * @param simulationTime the simulationTime to set
 	 */
@@ -70,6 +89,7 @@ public abstract class LoadGeneratorModel {
 		this.simulationTime = simulationTime;
 	}
 
+	
 	/**
 	 * @return the simScenario
 	 */
@@ -77,6 +97,7 @@ public abstract class LoadGeneratorModel {
 		return simScenario;
 	}
 
+	
 	/**
 	 * @param simScenario the simScenario to set
 	 */
@@ -84,6 +105,7 @@ public abstract class LoadGeneratorModel {
 		this.simScenario = simScenario;
 	}
 
+	
 	/**
 	 * @param taskList the taskList to set
 	 */

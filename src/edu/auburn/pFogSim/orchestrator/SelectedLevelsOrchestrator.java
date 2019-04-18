@@ -19,6 +19,12 @@ import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 	
 	private Map<Integer, ArrayList<EdgeHost>> hostLevelMap;
@@ -28,10 +34,19 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 	ESBModel networkModel;
 
 	
+	/**
+	 * 
+	 * @param _policy
+	 * @param _simScenario
+	 */
 	public SelectedLevelsOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void initialize() {
 
@@ -74,10 +89,8 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 			}
 			pathTable.put(src, tempMap);
 		}
-		
-
-		
 	}
+
 
 	/**
 	 * get the id of the appropriate host
@@ -91,6 +104,8 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 			return -1;
 		}
 	}
+	
+	
 	/**
 	 * the the appropriate VM to run on
 	 */
@@ -104,12 +119,22 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * @param task
+	 * @return
+	 */
 	private EdgeHost getHost(Task task) {
 		MobileDevice mb = SimManager.getInstance().getMobileDeviceManager().getMobileDevices().get(task.getMobileDeviceId());
 		task.setPath(mb.getPath());
 		return mb.getHost();
 	}
 
+	
+	/**
+	 * 
+	 */
 	/* (non-Javadoc)
 	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
 	 */
@@ -217,6 +242,7 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
 	}
 
+	
 	/**
 	 * @return the hostLevelMap
 	 */
@@ -224,6 +250,7 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 		return hostLevelMap;
 	}
 
+	
 	/**
 	 * @param hostLevelMap the hostLevelMap to set
 	 */

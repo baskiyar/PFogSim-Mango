@@ -10,6 +10,12 @@ import java.util.HashMap;
 import edu.auburn.pFogSim.netsim.*;
 import edu.boun.edgecloudsim.utils.Location;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class FogHierCluster {
 	private ArrayList<FogCluster> clusterList = new ArrayList<FogCluster>();
 	public int[][] parentCluster;
@@ -419,6 +425,7 @@ public class FogHierCluster {
 		
 	}// End main
 */
+	
 	
 	/**
 	 * Save cluster info to file in XML format.

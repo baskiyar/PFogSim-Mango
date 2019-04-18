@@ -53,6 +53,12 @@ import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import javafx.util.Pair;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class SimManager extends SimEntity {
 	private static final int CREATE_TASK = 0;
 	private static final int CHECK_ALL_VM = 1;
@@ -77,6 +83,7 @@ public class SimManager extends SimEntity {
 	private int[] wapIdList = new int [numOfMobileDevice];
 
 	private static SimManager instance = null;
+	
 	
 	/**
 	 * Constructor
@@ -119,6 +126,7 @@ public class SimManager extends SimEntity {
 		instance = this;
 	}
 	
+	
 	/**
 	 * Returns current instance of SimManager 
 	 * @return
@@ -126,6 +134,7 @@ public class SimManager extends SimEntity {
 	public static SimManager getInstance(){
 		return instance;
 	}
+	
 	
 	/**
 	 * Triggering CloudSim to start simulation
@@ -137,13 +146,17 @@ public class SimManager extends SimEntity {
 		//Start Edge Servers & Generate VMs
 		edgeServerManager.startDatacenters();
 		edgeServerManager.createVmList(mobileDeviceManager.getId());
+		
+		// Initialize service placement approach 
 		edgeOrchestrator.initialize();
+		
+		//Create devices
 		SimLogger.print("\n\tCreating device locations...");
 		mobilityModel = scenarioFactory.getMobilityModel();
 		mobilityModel.initialize();
-		SimLogger.printLine("Done,");
+		SimLogger.printLine("Done.");
 		
-		//Qian: added for service replacement
+		//Assign hosts to devices, as selected by Service placement approach
 		mobileDeviceManager.creatMobileDeviceList(numOfMobileDevice);
 		for (MobileDevice mobile: mobileDeviceManager.getMobileDevices()) {
 			edgeOrchestrator.assignHost(mobile);
@@ -152,11 +165,22 @@ public class SimManager extends SimEntity {
 		CloudSim.startSimulation();
 	}
 	
+	
+	/**
+	 * 
+	 * @param diagram
+	 */
 	public void addToVoronoiDiagramList(PowerDiagram diagram)
 	{
 		this.voronoiDiagramList.add(diagram);
 	}
 	
+	
+	/**
+	 * 
+	 * @param level
+	 * @return
+	 */
 	public PowerDiagram getVoronoiDiagramAtLevel(int level)
 	{
 		if(level < voronoiDiagramList.size())
@@ -164,39 +188,82 @@ public class SimManager extends SimEntity {
 		return null;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public ScenarioFactory getScenarioFactory(){
 		return scenarioFactory;
 	}
 	
 	//Added by Qian
+	/**
+	 * 
+	 * @return
+	 */
 	public LoadGeneratorModel getLoadGeneratorModel() {
 		return loadGeneratorModel;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getNumOfMobileDevice(){
 		return numOfMobileDevice;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public NetworkModel getNetworkModel(){
 		return networkModel;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public MobilityModel getMobilityModel(){
 		return mobilityModel;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public EdgeOrchestrator getEdgeOrchestrator(){
 		return edgeOrchestrator;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public EdgeServerManager getLocalServerManager(){
 		return edgeServerManager;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public MobileDeviceManager getMobileDeviceManager(){
 		return mobileDeviceManager;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void startEntity() {
 		
@@ -226,6 +293,10 @@ public class SimManager extends SimEntity {
 		SimLogger.printLine("Executing");
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void processEvent(SimEvent ev) {
 		synchronized(this){
@@ -365,16 +436,26 @@ public class SimManager extends SimEntity {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void shutdownEntity() {
 		edgeServerManager.terminateDatacenters();
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<PowerDiagram> getVoronoiDiagram() {
 		// TODO Auto-generated method stub
 		return this.voronoiDiagramList;
 	}
 
+		
 	/**
 	 * @return the edgeServerManager
 	 */
@@ -382,6 +463,7 @@ public class SimManager extends SimEntity {
 		return edgeServerManager;
 	}
 
+	
 	/**
 	 * @param edgeServerManager the edgeServerManager to set
 	 */
@@ -389,6 +471,7 @@ public class SimManager extends SimEntity {
 		this.edgeServerManager = edgeServerManager;
 	}
 
+	
 	/**
 	 * @return the networkTopology
 	 */
@@ -396,6 +479,7 @@ public class SimManager extends SimEntity {
 		return networkTopology;
 	}
 
+	
 	/**
 	 * @param networkTopology the networkTopology to set
 	 */
@@ -403,6 +487,7 @@ public class SimManager extends SimEntity {
 		this.networkTopology = networkTopology;
 	}
 
+	
 	/**
 	 * @return the voronoiDiagramList
 	 */
@@ -410,6 +495,7 @@ public class SimManager extends SimEntity {
 		return voronoiDiagramList;
 	}
 
+	
 	/**
 	 * @param voronoiDiagramList the voronoiDiagramList to set
 	 */
@@ -417,6 +503,7 @@ public class SimManager extends SimEntity {
 		this.voronoiDiagramList = voronoiDiagramList;
 	}
 
+	
 	/**
 	 * @return the wapIdList
 	 */
@@ -424,6 +511,7 @@ public class SimManager extends SimEntity {
 		return wapIdList;
 	}
 
+	
 	/**
 	 * @param wapIdList the wapIdList to set
 	 */
@@ -431,6 +519,7 @@ public class SimManager extends SimEntity {
 		this.wapIdList = wapIdList;
 	}
 
+	
 	/**
 	 * @return the createTask
 	 */
@@ -438,6 +527,7 @@ public class SimManager extends SimEntity {
 		return CREATE_TASK;
 	}
 
+	
 	/**
 	 * @return the checkAllVm
 	 */
@@ -445,6 +535,7 @@ public class SimManager extends SimEntity {
 		return CHECK_ALL_VM;
 	}
 
+	
 	/**
 	 * @return the getLoadLog
 	 */
@@ -452,6 +543,7 @@ public class SimManager extends SimEntity {
 		return GET_LOAD_LOG;
 	}
 
+	
 	/**
 	 * @return the printProgress
 	 */
@@ -459,6 +551,7 @@ public class SimManager extends SimEntity {
 		return PRINT_PROGRESS;
 	}
 
+	
 	/**
 	 * @return the stopSimulation
 	 */
@@ -466,6 +559,7 @@ public class SimManager extends SimEntity {
 		return STOP_SIMULATION;
 	}
 
+	
 	/**
 	 * @return the maxWidth
 	 */
@@ -473,6 +567,7 @@ public class SimManager extends SimEntity {
 		return MAX_WIDTH;
 	}
 
+	
 	/**
 	 * @return the maxHeight
 	 */
@@ -480,6 +575,7 @@ public class SimManager extends SimEntity {
 		return MAX_HEIGHT;
 	}
 
+	
 	/**
 	 * @param numOfMobileDevice the numOfMobileDevice to set
 	 */
@@ -487,6 +583,7 @@ public class SimManager extends SimEntity {
 		this.numOfMobileDevice = numOfMobileDevice;
 	}
 
+	
 	/**
 	 * @param networkModel the networkModel to set
 	 */
@@ -494,6 +591,7 @@ public class SimManager extends SimEntity {
 		this.networkModel = networkModel;
 	}
 
+	
 	/**
 	 * @param mobilityModel the mobilityModel to set
 	 */
@@ -501,6 +599,7 @@ public class SimManager extends SimEntity {
 		this.mobilityModel = mobilityModel;
 	}
 
+	
 	/**
 	 * @param scenarioFactory the scenarioFactory to set
 	 */
@@ -508,6 +607,7 @@ public class SimManager extends SimEntity {
 		this.scenarioFactory = scenarioFactory;
 	}
 
+	
 	/**
 	 * @param edgeOrchestrator the edgeOrchestrator to set
 	 */
@@ -515,6 +615,7 @@ public class SimManager extends SimEntity {
 		this.edgeOrchestrator = edgeOrchestrator;
 	}
 
+	
 	/**
 	 * @param loadGeneratorModel the loadGeneratorModel to set
 	 */
@@ -522,6 +623,7 @@ public class SimManager extends SimEntity {
 		this.loadGeneratorModel = loadGeneratorModel;
 	}
 
+	
 	/**
 	 * @param mobileDeviceManager the mobileDeviceManager to set
 	 */
@@ -529,6 +631,7 @@ public class SimManager extends SimEntity {
 		this.mobileDeviceManager = mobileDeviceManager;
 	}
 
+	
 	/**
 	 * @param instance the instance to set
 	 */

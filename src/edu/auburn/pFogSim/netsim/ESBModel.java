@@ -23,6 +23,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class ESBModel extends NetworkModel {
 	private double WlanPoissonMean; //seconds
 	private double WanPoissonMean; //seconds
@@ -33,14 +39,28 @@ public class ESBModel extends NetworkModel {
 	private static ESBModel instance = null;
 	private Router router;
 	
+	
+	/**
+	 * 
+	 */
 	public ESBModel() {
 		super();
 	}
 	
+	
+	/**
+	 * 
+	 * @param _numberOfMobileDevices
+	 */
 	public ESBModel(int _numberOfMobileDevices) {
 		super(_numberOfMobileDevices);
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public static ESBModel getInstance() {
 		if(instance == null) {
 			instance = new ESBModel();
@@ -48,6 +68,10 @@ public class ESBModel extends NetworkModel {
 		return instance;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void initialize() {
 		WlanPoissonMean=0;
@@ -80,11 +104,11 @@ public class ESBModel extends NetworkModel {
 		router = new Router();
 	}
 
+	
 	/*
 	 * Shaik - modified -- to solve the issue of failed tasks with cloud host having Host Id '0'.  
 	 * Include details of approach here. 
 	 * */
-
 	@Override
 	public double getUploadDelay(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud) {
 		double delay = 0;
@@ -175,6 +199,7 @@ public class ESBModel extends NetworkModel {
 		}
 		return delay;
 	}
+	
 
     /**
     * destination device is always mobile device in our simulation scenarios!
@@ -184,10 +209,22 @@ public class ESBModel extends NetworkModel {
 		return getUploadDelay(sourceDeviceId, destDeviceId, dataSize, wifiSrc, wifiDest, isCloud);//getUploadDelay has been made bi-directional
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getMaxNumOfClientsInPlace(){
 		return maxNumOfClientsInPlace;
 	}
 	
+	
+	/**
+	 * 
+	 * @param deviceLocation
+	 * @param time
+	 * @return
+	 */
 	private int getDeviceCount(Location deviceLocation, double time){
 		/*int deviceCount = 0;
 		
@@ -204,7 +241,17 @@ public class ESBModel extends NetworkModel {
 //		
 //		return deviceCount;
 	}
-	//calculate congestion delay.
+	
+	
+	/**
+	 * calculate congestion delay.
+	 * @param propogationDelay
+	 * @param bandwidth
+	 * @param PoissonMean
+	 * @param avgTaskSize
+	 * @param deviceCount
+	 * @return
+	 */
 	private double calculateESB(double propogationDelay, double bandwidth /*Kbps*/, double PoissonMean, double avgTaskSize /*KB*/, int deviceCount){
 		double Bps=0;
 		
@@ -216,46 +263,87 @@ public class ESBModel extends NetworkModel {
 		return result;
 	}
 	
+	
+	/**
+	 * 
+	 * @param loc
+	 * @param time
+	 * @return
+	 */
 	private double getWlanUploadDelay(Location loc, double time) {
 		return calculateESB(0, loc.getBW(), WlanPoissonMean, avgTaskInputSize, getDeviceCount(loc, time));
 	}
 	
 	//Qian add for get congestion delay
+	/**
+	 * 
+	 * @param loc
+	 * @param time
+	 * @return
+	 */
 	public double getCongestionDelay(Location loc, double time) {
 		return getWlanUploadDelay(loc, time);
 	}
 	
+	
+	/**
+	 * 
+	 * @param _networkTopology
+	 */
 	public void setNetworkTopology(NetworkTopology _networkTopology) {
 		networkTopology = _networkTopology;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public NetworkTopology getNetworkTopology() {
 		return networkTopology;
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void uploadStarted(Location accessPointLocation, int destDeviceId) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void uploadFinished(Location accessPointLocation, int destDeviceId) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void downloadStarted(Location accessPointLocation, int sourceDeviceId) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void downloadFinished(Location accessPointLocation, int sourceDeviceId) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 	/**
 	 * get the number of hops from task to the machine it is running on
 	 * @param task
@@ -267,6 +355,8 @@ public class ESBModel extends NetworkModel {
 		NodeSim src = networkTopology.findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
 		return router.findPath(networkTopology, src, dest).size();
 	}
+	
+	
 	/**
 	 * The gravity well is where we search for and find black holes. For a description <br>
 	 * of black holes and what they are see BlackHoleException. Here we will search every <br>
@@ -296,6 +386,8 @@ public class ESBModel extends NetworkModel {
 			gravityWell();
 		}
 	}
+	
+	
 	/**
 	 * find path between two NodeSim
 	 * @author Qian
@@ -306,6 +398,8 @@ public class ESBModel extends NetworkModel {
 	public LinkedList<NodeSim> findPath(NodeSim src, NodeSim dec) {
 		return router.findPath(networkTopology, src, dec);
 	}
+	
+	
 	/**
 	 * find path from mobile device to host
 	 * @author Qian
@@ -318,6 +412,8 @@ public class ESBModel extends NetworkModel {
 		NodeSim src = networkTopology.findNode(task.getLocation(), false);
 		return findPath(src, des);
 	}
+	
+	
 	/**
 	 * @author Qian
 	 * added for get delay(Congestion + Propagation) between two nodes
@@ -355,6 +451,8 @@ public class ESBModel extends NetworkModel {
 	    }
 		return delay;
 	}
+	
+	
 	/**
 	 * @author Qian
 	 * added for get delay(Congestion + Propagation) between two nodes using two locations
@@ -389,6 +487,7 @@ public class ESBModel extends NetworkModel {
 		return delay;
 	}
 
+	
 	/**
 	 * @return the wlanPoissonMean
 	 */
@@ -396,6 +495,7 @@ public class ESBModel extends NetworkModel {
 		return WlanPoissonMean;
 	}
 
+	
 	/**
 	 * @param wlanPoissonMean the wlanPoissonMean to set
 	 */
@@ -403,12 +503,14 @@ public class ESBModel extends NetworkModel {
 		WlanPoissonMean = wlanPoissonMean;
 	}
 
+	
 	/**
 	 * @return the wanPoissonMean
 	 */
 	public double getWanPoissonMean() {
 		return WanPoissonMean;
 	}
+	
 
 	/**
 	 * @param wanPoissonMean the wanPoissonMean to set
@@ -417,6 +519,7 @@ public class ESBModel extends NetworkModel {
 		WanPoissonMean = wanPoissonMean;
 	}
 
+	
 	/**
 	 * @return the avgTaskInputSize
 	 */
@@ -424,6 +527,7 @@ public class ESBModel extends NetworkModel {
 		return avgTaskInputSize;
 	}
 
+	
 	/**
 	 * @param avgTaskInputSize the avgTaskInputSize to set
 	 */
@@ -431,6 +535,7 @@ public class ESBModel extends NetworkModel {
 		this.avgTaskInputSize = avgTaskInputSize;
 	}
 
+	
 	/**
 	 * @return the avgTaskOutputSize
 	 */
@@ -438,6 +543,7 @@ public class ESBModel extends NetworkModel {
 		return avgTaskOutputSize;
 	}
 
+	
 	/**
 	 * @param avgTaskOutputSize the avgTaskOutputSize to set
 	 */
@@ -445,6 +551,7 @@ public class ESBModel extends NetworkModel {
 		this.avgTaskOutputSize = avgTaskOutputSize;
 	}
 
+	
 	/**
 	 * @return the router
 	 */
@@ -452,6 +559,7 @@ public class ESBModel extends NetworkModel {
 		return router;
 	}
 
+	
 	/**
 	 * @param router the router to set
 	 */
@@ -459,6 +567,7 @@ public class ESBModel extends NetworkModel {
 		this.router = router;
 	}
 
+	
 	/**
 	 * @param maxNumOfClientsInPlace the maxNumOfClientsInPlace to set
 	 */
@@ -466,6 +575,7 @@ public class ESBModel extends NetworkModel {
 		this.maxNumOfClientsInPlace = maxNumOfClientsInPlace;
 	}
 
+	
 	/**
 	 * @param instance the instance to set
 	 */

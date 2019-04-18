@@ -11,12 +11,27 @@ package edu.boun.edgecloudsim.utils;
 
 import edu.boun.edgecloudsim.core.SimSettings;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class Location implements Comparable {
 	private double xPos;
 	private double yPos;
 	private int servingWlanId;
 	private double bandwidth;
 	SimSettings.PLACE_TYPES placeType;
+	
+	
+	/**
+	 * 
+	 * @param _placeType
+	 * @param _servingWlanId
+	 * @param _xPos
+	 * @param _yPos
+	 */
 	public Location(SimSettings.PLACE_TYPES _placeType, int _servingWlanId, double _xPos, double _yPos){
 		servingWlanId = _servingWlanId;
 		placeType=_placeType;
@@ -24,21 +39,42 @@ public class Location implements Comparable {
 		yPos = _yPos;
 	}
 	
+	
+	/**
+	 * 
+	 * @param _servingWlanId
+	 * @param _xPos
+	 * @param _yPos
+	 */
 	public Location(int _servingWlanId, double _xPos, double _yPos) {
 		servingWlanId = _servingWlanId;
 		xPos = _xPos;
 		yPos = _yPos;
 	}
 	
+	
+	/**
+	 * 
+	 * @param _xPos
+	 * @param _yPos
+	 */
 	public Location(double _xPos, double _yPos) {
 		xPos = _xPos;
 		yPos = _yPos;
 	}
 
+	
+	/**
+	 * 
+	 */
 	public Location() {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	/**
+	 * 
+	 */
 	@Override
 	public boolean equals(Object other){
 		boolean result = false;
@@ -56,22 +92,46 @@ public class Location implements Comparable {
 	    return result;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getServingWlanId(){
 		return servingWlanId;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public SimSettings.PLACE_TYPES getPlaceType(){
 		return placeType;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getXPos(){
 		return xPos;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getYPos(){
 		return yPos;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public int compareTo(Object _in) {
 		Location in = (Location) _in;
 		if (xPos == in.getXPos() && yPos == in.getYPos()) {
@@ -83,18 +143,33 @@ public class Location implements Comparable {
 		else return -1;
 	}
 	
+	
+	/**
+	 * 
+	 */
 	public String toString() {
 		return xPos + ", " + yPos;
 	}
 	
+	
+	/**
+	 * 
+	 * @param bw
+	 */
 	public void setBW(double bw) {
 		bandwidth = bw;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getBW() {
 		return bandwidth;
 	}
 
+	
 	/**
 	 * @return the xPos
 	 */
@@ -102,6 +177,7 @@ public class Location implements Comparable {
 		return xPos;
 	}
 
+	
 	/**
 	 * @param xPos the xPos to set
 	 */
@@ -109,6 +185,7 @@ public class Location implements Comparable {
 		this.xPos = xPos;
 	}
 
+	
 	/**
 	 * @return the yPos
 	 */
@@ -116,6 +193,7 @@ public class Location implements Comparable {
 		return yPos;
 	}
 
+	
 	/**
 	 * @param yPos the yPos to set
 	 */
@@ -123,6 +201,7 @@ public class Location implements Comparable {
 		this.yPos = yPos;
 	}
 
+	
 	/**
 	 * @return the bandwidth
 	 */
@@ -130,6 +209,7 @@ public class Location implements Comparable {
 		return bandwidth;
 	}
 
+	
 	/**
 	 * @param bandwidth the bandwidth to set
 	 */
@@ -137,6 +217,7 @@ public class Location implements Comparable {
 		this.bandwidth = bandwidth;
 	}
 
+	
 	/**
 	 * @param servingWlanId the servingWlanId to set
 	 */
@@ -144,6 +225,7 @@ public class Location implements Comparable {
 		this.servingWlanId = servingWlanId;
 	}
 
+	
 	/**
 	 * @param placeType the placeType to set
 	 */

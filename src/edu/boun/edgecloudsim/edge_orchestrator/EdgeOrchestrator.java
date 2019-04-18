@@ -29,6 +29,12 @@ import edu.boun.edgecloudsim.edge_client.CpuUtilizationModel_Custom;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public abstract class EdgeOrchestrator {
 	protected String policy;
 	protected String simScenario;
@@ -39,20 +45,24 @@ public abstract class EdgeOrchestrator {
 		simScenario = _simScenario;
 	}
 	
+	
 	/*
 	 * initialize edge orchestrator if needed
 	 */
 	public abstract void initialize();
+	
 	
 	/*
 	 * decides where to offload
 	 */
 	public abstract int getDeviceToOffload(Task task);
 	
+	
 	/*
 	 * returns proper VM from the related edge orchestrator point of view
 	 */
 	public abstract EdgeVM getVmToOffload(Task task);
+	
 	
 	/**
 	 * is the host capable of servicing the task
@@ -77,16 +87,23 @@ public abstract class EdgeOrchestrator {
 		
 	}
 	
+	
+	/**
+	 * 
+	 * @param _cloud
+	 */
 	public void setCloud(Datacenter _cloud ) {
 		cloud = _cloud;
 	}
 
+	
 	/**
 	 * @author Qian
 	 *	@param mobile
 	 */
 	public abstract void assignHost(MobileDevice mobile);
 
+	
 	/**
 	 * @return the policy
 	 */
@@ -94,6 +111,7 @@ public abstract class EdgeOrchestrator {
 		return policy;
 	}
 
+	
 	/**
 	 * @param policy the policy to set
 	 */
@@ -101,6 +119,7 @@ public abstract class EdgeOrchestrator {
 		this.policy = policy;
 	}
 
+	
 	/**
 	 * @return the simScenario
 	 */
@@ -108,6 +127,7 @@ public abstract class EdgeOrchestrator {
 		return simScenario;
 	}
 
+	
 	/**
 	 * @param simScenario the simScenario to set
 	 */
@@ -115,6 +135,7 @@ public abstract class EdgeOrchestrator {
 		this.simScenario = simScenario;
 	}
 
+	
 	/**
 	 * @return the cloud
 	 */

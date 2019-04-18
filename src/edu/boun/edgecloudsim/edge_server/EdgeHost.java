@@ -31,6 +31,12 @@ import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class EdgeHost extends Host {
 	private Location location;
 	private int level;//puddle level
@@ -44,6 +50,15 @@ public class EdgeHost extends Host {
 	private ArrayList<MobileDevice> customers;//Qian: added for service replacement 
 	
 	
+	/**
+	 * 
+	 * @param id
+	 * @param ramProvisioner
+	 * @param bwProvisioner
+	 * @param storage
+	 * @param peList
+	 * @param vmScheduler
+	 */
 	public EdgeHost(int id, RamProvisioner ramProvisioner,
 			BwProvisioner bwProvisioner, long storage,
 			List<? extends Pe> peList, VmScheduler vmScheduler) {
@@ -54,7 +69,19 @@ public class EdgeHost extends Host {
 
 	}
 	
+	
 	//Qian add two parameters for centralOrchestrator
+	/**
+	 * 
+	 * @param id
+	 * @param ramProvisioner
+	 * @param bwProvisioner
+	 * @param storage
+	 * @param peList
+	 * @param vmScheduler
+	 * @param _costPerBW
+	 * @param _costPerSec
+	 */
 	public EdgeHost(int id, RamProvisioner ramProvisioner,
 			BwProvisioner bwProvisioner, long storage,
 			List<? extends Pe> peList, VmScheduler vmScheduler, double _costPerBW, double _costPerSec) {
@@ -66,39 +93,80 @@ public class EdgeHost extends Host {
 		this.customers = new ArrayList<>();
 	}
 	
+	
+	/**
+	 * 
+	 * @param _location
+	 */
 	public void setPlace(Location _location){
 		location=_location;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public Location getLocation(){
 		return location;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getLevel() {
 		return level;
 	}
 	
+	
+	/**
+	 * 
+	 * @param _level
+	 */
 	public void setLevel(int _level) {
 		level = _level;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getCostPerBW() {
 		return costPerBW;
 	}
 	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getCostPerSec() {
 		return costPerSec;
 	}
 	
+	
 	//Qian added for puddle
+	/**
+	 * 
+	 * @param id
+	 */
 	public void setPuddleId(int id) {
 		this.puddleId = id;
 	} 
 	
+	
 	//Qian added for puddle
+	/**
+	 * 
+	 * @return
+	 */
 	public int getPuddleId() {
 		return this.puddleId;
 	}
+	
 	
 	/**
 	 * @author Qian
@@ -109,6 +177,7 @@ public class EdgeHost extends Host {
 		this.parent = _parent;
 	}
 	
+	
 	/**
 	 * @author Qian
 	 * added for puddle
@@ -117,6 +186,7 @@ public class EdgeHost extends Host {
 	public EdgeHost getParent() {
 		return this.parent;
 	}
+	
 	
 	/**
 	 * @author Qian
@@ -130,6 +200,7 @@ public class EdgeHost extends Host {
 		childern.add(_child);
 	}
 	
+	
 	/**
 	 * @author Qian
 	 * @return children get children list.
@@ -137,6 +208,7 @@ public class EdgeHost extends Host {
 	public ArrayList<EdgeHost> getChildern() {
 		return this.childern;
 	}
+	
 	
 	/**
 	 * Check if free Bandwidth available for certain mobile device
@@ -156,6 +228,7 @@ public class EdgeHost extends Host {
 			return false;
 		}
 	}
+	
 	
 	/**
 	 * reserve Bandwidth for certain mobile device
@@ -185,6 +258,7 @@ public class EdgeHost extends Host {
 		}
 	}
 	
+	
 	/**
 	 * reserve Mips for certain mobile device
 	 * @author Qian
@@ -193,6 +267,7 @@ public class EdgeHost extends Host {
 	private void reserveCPUResource(MobileDevice mb) {
 		reserveMips = reserveMips + mb.getTaskLengthRequirement(); 
 	}
+	
 	
 	/**
 	 * Check if latency requirement is satisfied for certain mobile device
@@ -214,6 +289,7 @@ public class EdgeHost extends Host {
 		}
 	}
 	
+	
 	/**
 	 * make a reservation for a certain mobile device 
 	 * @author Qian
@@ -230,6 +306,7 @@ public class EdgeHost extends Host {
 		Log.printLine();
 	}
 	
+	
 	/**
 	 * @return the customers
 	 */
@@ -237,12 +314,14 @@ public class EdgeHost extends Host {
 		return customers;
 	}
 	
+	
 	/**
 	 * @param customers the customers to set
 	 */
 	public void setCustomers(ArrayList<MobileDevice> customers) {
 		this.customers = customers;
 	}
+	
 	
 	/**
 	 * for puddle canHandle
@@ -266,12 +345,14 @@ public class EdgeHost extends Host {
 		}
 	}
 	
+	
 	/**
 	 * @return the reserveBW
 	 */
 	public double getReserveBW() {
 		return reserveBW;
 	}
+	
 	
 	/**
 	 * @param reserveBW the reserveBW to set
@@ -280,12 +361,14 @@ public class EdgeHost extends Host {
 		this.reserveBW = reserveBW;
 	}
 	
+	
 	/**
 	 * @return the reserveMips
 	 */
 	public long getReserveMips() {
 		return reserveMips;
 	}
+	
 	
 	/**
 	 * @param reserveMips the reserveMips to set
@@ -294,12 +377,14 @@ public class EdgeHost extends Host {
 		this.reserveMips = reserveMips;
 	}
 	
+	
 	/**
 	 * @param location the location to set
 	 */
 	public void setLocation(Location location) {
 		this.location = location;
 	}
+	
 	
 	/**
 	 * @param costPerBW the costPerBW to set
@@ -308,12 +393,14 @@ public class EdgeHost extends Host {
 		this.costPerBW = costPerBW;
 	}
 	
+	
 	/**
 	 * @param costPerSec the costPerSec to set
 	 */
 	public void setCostPerSec(double costPerSec) {
 		this.costPerSec = costPerSec;
 	}
+	
 	
 	/**
 	 * @param childern the childern to set
@@ -322,6 +409,7 @@ public class EdgeHost extends Host {
 		this.childern = childern;
 	}
 		
+	
 	/**
 	 * @author szs0117
 	 * @return double
@@ -329,6 +417,7 @@ public class EdgeHost extends Host {
 	public double getFnMipsUtilization() {
 		return (reserveMips * 100.0 / this.getTotalMips());
 	}
+	
 	
 	/**
 	 * @author szs0117

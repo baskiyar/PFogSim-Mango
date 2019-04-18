@@ -15,6 +15,12 @@ import org.apache.commons.math3.distribution.ExponentialDistribution;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.core.SimSettings.APP_TYPES;
 
+
+/**
+ * 
+ * @author szs0117
+ *
+ */
 public class EdgeTask {
     public APP_TYPES taskType;
     public double startTime;
@@ -26,6 +32,17 @@ public class EdgeTask {
     public boolean sens; //added by pFogSim to say whether a device is a sensor
     public boolean act;  //added by pFogSim to say whether a device is an actuator
     
+    
+    /**
+     * 
+     * @param _mobileDeviceId
+     * @param _taskType
+     * @param _startTime
+     * @param expRngList
+     * @param _wifi
+     * @param _sens
+     * @param _act
+     */
     public EdgeTask(int _mobileDeviceId, APP_TYPES _taskType, double _startTime, ExponentialDistribution[][] expRngList, 
     				boolean _wifi, boolean _sens, boolean _act) {
     	mobileDeviceId=_mobileDeviceId;
@@ -43,10 +60,16 @@ public class EdgeTask {
     	act = _act;
 	}
     
+    
+    /**
+     * 
+     * @param deviceId
+     */
     public void setDesMobileDeviceId(int deviceId) {
     	this.desMobileDeviceId = deviceId;
     }
 
+    
 	/**
 	 * @return the taskType
 	 */
@@ -54,6 +77,7 @@ public class EdgeTask {
 		return taskType;
 	}
 
+	
 	/**
 	 * @param taskType the taskType to set
 	 */
@@ -61,6 +85,7 @@ public class EdgeTask {
 		this.taskType = taskType;
 	}
 
+	
 	/**
 	 * @return the startTime
 	 */
@@ -68,6 +93,7 @@ public class EdgeTask {
 		return startTime;
 	}
 
+	
 	/**
 	 * @param startTime the startTime to set
 	 */
@@ -75,6 +101,7 @@ public class EdgeTask {
 		this.startTime = startTime;
 	}
 
+	
 	/**
 	 * @return the length
 	 */
@@ -82,6 +109,7 @@ public class EdgeTask {
 		return length;
 	}
 
+	
 	/**
 	 * @param length the length to set
 	 */
@@ -89,6 +117,7 @@ public class EdgeTask {
 		this.length = length;
 	}
 
+	
 	/**
 	 * @return the inputFileSize
 	 */
@@ -96,6 +125,7 @@ public class EdgeTask {
 		return inputFileSize;
 	}
 
+	
 	/**
 	 * @param inputFileSize the inputFileSize to set
 	 */
@@ -103,6 +133,7 @@ public class EdgeTask {
 		this.inputFileSize = inputFileSize;
 	}
 
+	
 	/**
 	 * @return the outputFileSize
 	 */
@@ -110,6 +141,7 @@ public class EdgeTask {
 		return outputFileSize;
 	}
 
+	
 	/**
 	 * @param outputFileSize the outputFileSize to set
 	 */
@@ -117,6 +149,7 @@ public class EdgeTask {
 		this.outputFileSize = outputFileSize;
 	}
 
+	
 	/**
 	 * @return the pesNumber
 	 */
@@ -124,6 +157,7 @@ public class EdgeTask {
 		return pesNumber;
 	}
 
+	
 	/**
 	 * @param pesNumber the pesNumber to set
 	 */
@@ -131,6 +165,7 @@ public class EdgeTask {
 		this.pesNumber = pesNumber;
 	}
 
+	
 	/**
 	 * @return the mobileDeviceId
 	 */
@@ -138,6 +173,7 @@ public class EdgeTask {
 		return mobileDeviceId;
 	}
 
+	
 	/**
 	 * @param mobileDeviceId the mobileDeviceId to set
 	 */
@@ -145,6 +181,7 @@ public class EdgeTask {
 		this.mobileDeviceId = mobileDeviceId;
 	}
 
+	
 	/**
 	 * @return the wifi
 	 */
@@ -152,6 +189,7 @@ public class EdgeTask {
 		return wifi;
 	}
 
+	
 	/**
 	 * @param wifi the wifi to set
 	 */
@@ -159,6 +197,7 @@ public class EdgeTask {
 		this.wifi = wifi;
 	}
 
+	
 	/**
 	 * @return the sens
 	 */
@@ -166,6 +205,7 @@ public class EdgeTask {
 		return sens;
 	}
 
+	
 	/**
 	 * @param sens the sens to set
 	 */
@@ -173,6 +213,7 @@ public class EdgeTask {
 		this.sens = sens;
 	}
 
+	
 	/**
 	 * @return the act
 	 */
@@ -180,6 +221,7 @@ public class EdgeTask {
 		return act;
 	}
 
+	
 	/**
 	 * @param act the act to set
 	 */
@@ -187,6 +229,7 @@ public class EdgeTask {
 		this.act = act;
 	}
 
+	
 	/**
 	 * @return the desMobileDeviceId
 	 */
