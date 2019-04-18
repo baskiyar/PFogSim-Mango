@@ -446,7 +446,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 1][1] = "Linux";
 		nodeSpecs[MAX_LEVELS - 1][2] = "Xen";
 		nodeSpecs[MAX_LEVELS - 1][3] = hundredGbRouterCost + "";
-		nodeSpecs[MAX_LEVELS - 1][4] = "0.01319444" + ""; // Shaik modified - prev = "0.000014"
+		nodeSpecs[MAX_LEVELS - 1][4] = "0.00659722" + ""; // Shaik modified to half of city center's cost (low cost due to scale). prev = "0.000014"
 		nodeSpecs[MAX_LEVELS - 1][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 1][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 1][7] = "true";

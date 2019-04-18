@@ -277,14 +277,25 @@ public class EdgeHost extends Host {
 	 */
 	public boolean isLatencySatisfactory(MobileDevice mb) {
 		
+		double hostProcessingDelay = (double)(mb.getTaskLengthRequirement()) / this.getVmScheduler().getPeCapacity(); 
 		double acceptableLatency = mb.getLatencyRequirement();
 		double hostNetworkDelay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(mb.getLocation(), this.location);
 		
-		if (hostNetworkDelay < acceptableLatency) {
+		//Consider round trip latency - assuming user is co-located with device, in current test environment.
+		hostNetworkDelay = hostNetworkDelay * 2;
+		
+		double totalDelay = hostProcessingDelay + hostNetworkDelay; 
+		
+		System.out.print("Device acceptable delay: "+acceptableLatency+" : totalDelay: "+totalDelay+" : to host id: "+this.getId());
+		System.out.print(" host Processing delay: "+hostProcessingDelay+" : hostNetworkDelay: "+hostNetworkDelay+" : to host id: "+this.getId());
+		
+		if (totalDelay < acceptableLatency) {
+			System.out.println();
 			return true;
 		}
 		else {
 			mb.setAssignHostStatus(SimLogger.TASK_STATUS.REJECTED_DUE_TO_UNACCEPTABLE_LATENCY);
+			System.out.println(" - REJECTED_DUE_TO_UNACCEPTABLE_LATENCY");
 			return false;
 		}
 	}

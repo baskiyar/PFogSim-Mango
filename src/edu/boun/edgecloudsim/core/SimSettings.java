@@ -122,7 +122,7 @@ public class SimSettings {
     // [04] idle period (sec)
     // [05] avg data upload (KB)
     // [06] avg data download (KB)
-    // [07] avg task length (MI)
+    // [07] avg task length (MI) //Note: (KI), not MI - updated by Shaik
     // [08] required # of cores
     // [09] vm utilization (%)
     // [10] max latency (milliseconds)
