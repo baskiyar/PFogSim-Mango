@@ -147,6 +147,8 @@ public class ESBModel extends NetworkModel {
 			destDeviceId *= -1;
 			destPointLocation = SimManager.getInstance().getLocalServerManager().findHostById(destDeviceId).getLocation();
 		}
+		
+		
 		Location source;
 		Location destination;
 		NodeSim src;
@@ -173,7 +175,7 @@ public class ESBModel extends NetworkModel {
 		//SimLogger.printLine(src.toString() + " " + dest.toString());
 	    path = router.findPath(networkTopology, src, dest);
 	   // SimLogger.printLine(path.size() + "");
-		delay += getWlanUploadDelay(src.getLocation(), CloudSim.clock());
+		delay += getWlanUploadDelay(src.getLocation(), CloudSim.clock()) + SimSettings.ROUTER_PROCESSING_DELAY;
 		if (SimSettings.getInstance().traceEnalbe()) {
 			SimLogger.getInstance().printLine("**********Task Delay**********");
 			SimLogger.getInstance().printLine("Start node ID:\t" + src.getWlanId());
@@ -189,7 +191,7 @@ public class ESBModel extends NetworkModel {
 			}
 			double proDelay = current.traverse(nextHop);
 			double conDelay = getWlanUploadDelay(nextHop.getLocation(), CloudSim.clock() + delay);
-			delay += (proDelay + conDelay);
+			delay += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
 			if (SimSettings.getInstance().traceEnalbe()) {
 				SimLogger.getInstance().printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
 			}
@@ -435,7 +437,7 @@ public class ESBModel extends NetworkModel {
 		src = networkTopology.findNode(source, false);
 		dest = networkTopology.findNode(destination, false);
 	    path = router.findPath(networkTopology, src, dest);
-	    delay += getWlanUploadDelay(src.getLocation(), CloudSim.clock());
+	    delay += getWlanUploadDelay(src.getLocation(), CloudSim.clock()) + SimSettings.ROUTER_PROCESSING_DELAY;
 	    while (!path.isEmpty()) {
 			current = path.poll();
 			nextHop = path.peek();
@@ -447,7 +449,7 @@ public class ESBModel extends NetworkModel {
 			}
 			double proDelay = current.traverse(nextHop);
 			double conDelay = getWlanUploadDelay(nextHop.getLocation(), CloudSim.clock() + delay);
-			delay += (proDelay + conDelay);
+			delay += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
 	    }
 		return delay;
 	}
@@ -470,7 +472,7 @@ public class ESBModel extends NetworkModel {
 		src = networkTopology.findNode(one, false);
 		dest = networkTopology.findNode(two, false);
 	    path = router.findPath(networkTopology, src, dest);
-	    delay += getWlanUploadDelay(src.getLocation(), CloudSim.clock());
+	    delay += getWlanUploadDelay(src.getLocation(), CloudSim.clock()) + SimSettings.ROUTER_PROCESSING_DELAY;
 	    while (!path.isEmpty()) {
 			current = path.poll();
 			nextHop = path.peek();
@@ -482,7 +484,7 @@ public class ESBModel extends NetworkModel {
 			}
 			double proDelay = current.traverse(nextHop);
 			double conDelay = getWlanUploadDelay(nextHop.getLocation(), CloudSim.clock() + delay);
-			delay += (proDelay + conDelay);
+			delay += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
 	    }
 		return delay;
 	}

@@ -62,6 +62,8 @@ public class SimSettings {
 	//generic ID for mobile device
 	public static int MOBILE_DEVICE_ID = 3000000;   // Shaik modified - prior value 3000
 
+	public static double ROUTER_PROCESSING_DELAY = 1; // Assumed 1 millisec constant delay per network hop - modify as appropriate for other test environments.
+	
 	//delimiter for output file.
 	public static String DELIMITER = ";";
 	
@@ -74,8 +76,10 @@ public class SimSettings {
     
     //Qian enable the trace
     private boolean TRACE_ENABLED;
+    
     //Qian added for select how to make puddle cluster. true - distance; false - latency
     private boolean clusterType = true; 
+    
     //Qian added for service replacement
     private boolean serviceReplacement = false;
 

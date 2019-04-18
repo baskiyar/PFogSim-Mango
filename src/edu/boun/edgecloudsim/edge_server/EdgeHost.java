@@ -286,17 +286,17 @@ public class EdgeHost extends Host {
 		
 		double totalDelay = hostProcessingDelay + hostNetworkDelay; 
 		
-		System.out.print("Device acceptable delay: "+acceptableLatency+" : totalDelay: "+totalDelay+" : to host id: "+this.getId());
-		System.out.print(" host Processing delay: "+hostProcessingDelay+" : hostNetworkDelay: "+hostNetworkDelay+" : to host id: "+this.getId());
-		System.out.print(" this.getVmScheduler().getPeCapacity(): "+this.getVmScheduler().getPeCapacity());
+		//System.out.print("Device acceptable delay: "+acceptableLatency+" : totalDelay: "+totalDelay+" : to host id: "+this.getId());
+		//System.out.print(" host Processing delay: "+hostProcessingDelay+" : hostNetworkDelay: "+hostNetworkDelay+" : to host id: "+this.getId());
+		//System.out.print(" this.getVmScheduler().getPeCapacity(): "+this.getVmScheduler().getPeCapacity());
 			
 		if (totalDelay < acceptableLatency) {
-			System.out.println();
+			//System.out.println();
 			return true;
 		}
 		else {
 			mb.setAssignHostStatus(SimLogger.TASK_STATUS.REJECTED_DUE_TO_UNACCEPTABLE_LATENCY);
-			System.out.println(" - REJECTED_DUE_TO_UNACCEPTABLE_LATENCY");
+			//System.out.println(" - REJECTED_DUE_TO_UNACCEPTABLE_LATENCY");
 			return false;
 		}
 	}

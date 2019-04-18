@@ -326,6 +326,7 @@ public class Puddle {
 			}
 		}
 		else {
+			//Note: this part of if-else is not verified, as the tests so far were done only for distance based Puddle formation. this block may contain bugs / issues. 
 			if (this.up != null) {
 				for (EdgeHost node: members) {
 					double minLatency = Double.MAX_VALUE;
