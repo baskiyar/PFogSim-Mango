@@ -276,12 +276,24 @@ public class MobileDeviceManager extends DatacenterBroker {
 				//SimLogger.getInstance().getCentralizeLogPrinter().println("Task logged total cost:   "+ cost);
 				Log.printLine("Task logged total cost:   "+ cost);
 				SimLogger.getInstance().downloaded(task.getCloudletId(), CloudSim.clock(), cost);
-
+				
 				//Shaik added
 				Location devLoc = task.getSubmittedLocation();
 				Location hostLoc = SimManager.getInstance().getLocalServerManager().findHostById(task.getAssociatedHostId()).getLocation();
 				double hostDistance = DataInterpreter.measure(hostLoc.getYPos(), hostLoc.getXPos(), devLoc.getYPos(), devLoc.getXPos());
 				SimLogger.getInstance().addHostDistanceLog(task.getCloudletId(), hostDistance);
+
+				//Shaik added
+				double taskPerceivedDelay = SimLogger.getInstance().getTaskPerceivedDelay(task.getCloudletId());
+				System.out.println("taskPerceivedDelay: after execution: "+taskPerceivedDelay);
+				if (taskPerceivedDelay > task.getMaxDelay()) {
+					SimLogger.getInstance().taskRejected(task.getCloudletId(), CloudSim.clock(), SimLogger.TASK_STATUS.REJECTED_DUE_TO_UNACCEPTABLE_LATENCY ); // Shaik added
+						
+					if (SimSettings.getInstance().traceEnalbe()) {
+						SimLogger.printLine("submitTask: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to unacceptable latency. ------ After execution");
+					}
+				}
+	
 				break;
 			}
 			default:

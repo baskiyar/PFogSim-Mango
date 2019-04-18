@@ -288,7 +288,8 @@ public class EdgeHost extends Host {
 		
 		System.out.print("Device acceptable delay: "+acceptableLatency+" : totalDelay: "+totalDelay+" : to host id: "+this.getId());
 		System.out.print(" host Processing delay: "+hostProcessingDelay+" : hostNetworkDelay: "+hostNetworkDelay+" : to host id: "+this.getId());
-		
+		System.out.print(" this.getVmScheduler().getPeCapacity(): "+this.getVmScheduler().getPeCapacity());
+			
 		if (totalDelay < acceptableLatency) {
 			System.out.println();
 			return true;

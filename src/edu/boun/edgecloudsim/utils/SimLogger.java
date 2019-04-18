@@ -1024,6 +1024,19 @@ public class SimLogger {
 	} // end simStopped()
 
 	
+	
+	/**
+	 * Return perceived delay i.e. service time of a given task after completion of its execution to verify if the task execution response took longer than allowed time to reach the user. 
+	 * @param taskId
+	 * @return
+	 */
+	public double getTaskPerceivedDelay (int taskId) {
+		double perceivedDelay = taskMap.get(taskId).getServiceTime();
+		return perceivedDelay;
+	} 
+	
+	
+	
 	/**
 	 * @return the printLogEnabled
 	 */
