@@ -194,4 +194,24 @@ public abstract class EdgeOrchestrator {
 	 */
 	public abstract double getAvgNumPuddlesSearched();
 	
+	
+	/**
+	 * Return detailed metrics of HAFA orchestrator - Number of prospective hosts per service request (device)
+	 */
+	public int[] getNumProspectiveHosts() {	return null; }
+	
+
+	/**
+	 * Return detailed metrics of HAFA orchestrator - Number of messages exchanged per service request (device)
+	 */
+	public int[] getNumMessages() {	return null; }
+
+
+	/**
+	 * Return detailed metrics of HAFA orchestrator - Number of Puddles searched per service request (device)
+	 */
+	public int[] getNumPuddlesSearched() { return null; }
+
+	
+	
 }

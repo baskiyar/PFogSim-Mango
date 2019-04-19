@@ -371,9 +371,9 @@ public class SimLogger {
 		}
 	}
 	
-	//Qian add method for counting fog nodes utilization
+
 	/**
-	 * 
+	 * Qian add method for counting fog nodes utilization
 	 * @param hostId
 	 * @param host
 	 */
@@ -401,9 +401,9 @@ public class SimLogger {
 	public void simStopped() throws IOException {
 		int numOfAppTypes = SimSettings.getInstance().getTaskLookUpTable().length;
 
-		File successFile = null, failFile = null, vmLoadFile = null, fnMipsUtilFile = null, fnNwUtilFile = null, locationFile = null, distFile = null, hopFile = null;
-		FileWriter successFW = null, failFW = null, vmLoadFW = null, fnMipsUtilFW = null, fnNwUtilFW = null, locationFW = null, distFW = null, hopFW = null;
-		BufferedWriter successBW = null, failBW = null, vmLoadBW = null, fnMipsUtilBW = null, fnNwUtilBW = null, locationBW = null, distBW = null, hopBW = null;
+		File successFile = null, failFile = null, vmLoadFile = null, fnMipsUtilFile = null, fnNwUtilFile = null, locationFile = null, distFile = null, hopFile = null, hafaNumHostsFile = null, hafaNumMsgsFile = null, hafaNumPuddlesFile = null;
+		FileWriter successFW = null, failFW = null, vmLoadFW = null, fnMipsUtilFW = null, fnNwUtilFW = null, locationFW = null, distFW = null, hopFW = null, hafaNumHostsFW = null, hafaNumMsgsFW = null, hafaNumPuddlesFW = null;
+		BufferedWriter successBW = null, failBW = null, vmLoadBW = null, fnMipsUtilBW = null, fnNwUtilBW = null, locationBW = null, distBW = null, hopBW = null, hafaNumHostsBW = null, hafaNumMsgsBW = null, hafaNumPuddlesBW = null;
 
 		/*File[] vmLoadFileClay = new File[numOfAppTypes]; 
 		FileWriter[] vmLoadFWClay = new FileWriter[numOfAppTypes];
@@ -455,8 +455,9 @@ public class SimLogger {
 		
 		double[] totalDist = new double[numOfAppTypes + 1];
 		int[] totalHops = new int[numOfAppTypes + 1];
-		int[] numberOfAppTypes = new int[numOfAppTypes + 1];
+		int[] numTasksPerAppType = new int[numOfAppTypes + 1];
 
+		//Modify the following array lengths depending on number of layers in test fog environment. Currently, it is 7 layered.
 		double[] fogLayerAvgMipsUtil = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
 		double[] fogLayerTotalMipsUtil = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
 		double[] fogLayerEntryMipsCount = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
@@ -503,6 +504,20 @@ public class SimLogger {
 			hopFW = new FileWriter(hopFile, true);
 			hopBW = new BufferedWriter(hopFW);
 			
+			hafaNumHostsFile = new File(outputFolder, filePrefix + "_NUMHOSTS.log");
+			hafaNumHostsFW = new FileWriter(hafaNumHostsFile, true);
+			hafaNumHostsBW = new BufferedWriter(hafaNumHostsFW);
+			
+			hafaNumMsgsFile = new File(outputFolder, filePrefix + "_NUMMSGS.log");
+			hafaNumMsgsFW = new FileWriter(hafaNumMsgsFile, true);
+			hafaNumMsgsBW = new BufferedWriter(hafaNumMsgsFW);
+			
+			hafaNumPuddlesFile = new File(outputFolder, filePrefix + "_NUMPUDDLES.log");
+			hafaNumPuddlesFW = new FileWriter(hafaNumPuddlesFile, true);
+			hafaNumPuddlesBW = new BufferedWriter(hafaNumPuddlesFW);
+			
+			
+			
 			/*for(int i = 0; i < numOfAppTypes; i++)
 			{
 				vmLoadFileClay[i] = new File(outputFolder, "CLAYSTESTFILE" + "_" + i + ".log");
@@ -536,9 +551,12 @@ public class SimLogger {
 			appendToFile(locationBW, "#auto generated file!");
 			appendToFile(distBW, "#auto generated file!");
 			appendToFile(hopBW, "#auto generated file!");
+		
 		}
-		// Qian Print warm up tasks.
+		
+		// Print warm up tasks.
 		int warmUpTasks = 0;
+		
 		// extract the result of each task and write it to the file if required
 		for (Map.Entry<Integer, LogItem> entry : taskMap.entrySet()) {
 			Integer key = entry.getKey();
@@ -550,7 +568,7 @@ public class SimLogger {
 				continue;
 			}				
 	
-			numberOfAppTypes[value.getTaskType()]++;
+			numTasksPerAppType[value.getTaskType()]++;
 			
 			// track the number of successfully COMPLETED tasks 			
 			if (value.getStatus() == SimLogger.TASK_STATUS.COMPLETED) {
@@ -711,9 +729,9 @@ public class SimLogger {
 		
 		totalDist[numOfAppTypes] = DoubleStream.of(totalDist).sum();
 		totalHops[numOfAppTypes] = IntStream.of(totalHops).sum();
-		numberOfAppTypes[numOfAppTypes] = IntStream.of(numOfAppTypes).sum(); // Shaik modified
+		numTasksPerAppType[numOfAppTypes] = IntStream.of(numTasksPerAppType).sum(); // Shaik modified
 		
-		// calculate server load
+		// calculate server load - This value may not be valid for HAFA test environment. May ignore. 
 		double totalVmLoad = 0;
 		for (VmLoadLogItem entry : vmLoadList) {
 			totalVmLoad += entry.getLoad();
@@ -758,7 +776,38 @@ public class SimLogger {
 		for (int i=0; i < fogLayerAvgNwUtil.length; i++ ) {
 			fogLayerAvgNwUtil[i] = fogLayerTotalNwUtil[i] / fogLayerEntryNwCount[i];
 		}
+		
+		// Average fog node utilization per layer
+		double totalMipsUtil = 0;
+		for (int i = 0; i < fogLayerAvgMipsUtil.length; i++) {
+			totalMipsUtil += (double)fogLayerAvgMipsUtil[i];
+		}
+		double avgMipsUtilPrcnt = totalMipsUtil / (double)fogLayerAvgMipsUtil.length;
 
+		// Average fog network utilization per layer
+		double totalNwUtil = 0;
+		for (int i = 0; i < fogLayerAvgNwUtil.length; i++) {
+			totalNwUtil += (double)fogLayerAvgNwUtil[i];
+		}
+		double avgNwUtilPrcnt = totalNwUtil / (double)fogLayerAvgNwUtil.length;
+
+		/* HAFA Metrics - Analysis */
+		if (SimManager.getInstance().getEdgeOrchestrator() instanceof HAFAOrchestrator ) {
+			// Retrieve information regarding # of hosts, msgs, & Puddles for each service request (device)
+			int[] numProsHosts = SimManager.getInstance().getEdgeOrchestrator().getNumProspectiveHosts();
+			int[] numMsgs = SimManager.getInstance().getEdgeOrchestrator().getNumMessages();
+			int[] numPuds = SimManager.getInstance().getEdgeOrchestrator().getNumPuddlesSearched();
+			
+			int devCount = SimManager.getInstance().getNumOfMobileDevice();
+			
+			// Print info to corresponding files
+			for (int i=0; i<devCount; i++) {
+				appendToFile(hafaNumHostsBW, numProsHosts[i]+",");
+				appendToFile(hafaNumMsgsBW, numMsgs[i]+",");
+				appendToFile(hafaNumPuddlesBW, numPuds[i]+",");
+			}			
+		}
+		
 		
 //		//Qian Write require data into file
 //		//**********************************
@@ -815,11 +864,16 @@ public class SimLogger {
 				double _networkDelay = (completedTask[i] == 0) ? 0.0 : (networkDelay[i] / (double) completedTask[i]);
 				double _processingTime = (completedTask[i] == 0) ? 0.0 : (processingTime[i] / (double) completedTask[i]);
 				double _vmLoad = (vmLoadList.size() == 0) ? 0.0 : (totalVmLoad / (double) vmLoadList.size());
-				double _fnMipsUtil = (fnMipsUtilList.size() == 0) ? 0.0 : (totalFnMipsUtil / (double) fnMipsUtilList.size());				
-				double _fnNwUtil = (fnNwUtilList.size() == 0) ? 0.0 : (totalFnNwUtil / (double) fnNwUtilList.size());				
+				//double _fnMipsUtil = (fnMipsUtilList.size() == 0) ? 0.0 : (totalFnMipsUtil / (double) fnMipsUtilList.size());
+				double _fnMipsUtil = avgMipsUtilPrcnt;
+				//double _fnNwUtil = (fnNwUtilList.size() == 0) ? 0.0 : (totalFnNwUtil / (double) fnNwUtilList.size());	
+				double _fnNwUtil = avgNwUtilPrcnt;
 				double _cost = (completedTask[i] == 0) ? 0.0 : (cost[i] / (double) completedTask[i]);
 				double dist = (completedTask[i] == 0) ? 0.0 : (totalDist[i] / (double) completedTask[i]);
 				double hops = (completedTask[i] == 0) ? 0.0 : ((double) totalHops[i] / (double) completedTask[i]);
+				double numHosts = SimManager.getInstance().getEdgeOrchestrator().getAvgNumProspectiveHosts();
+				double numMsgs = SimManager.getInstance().getEdgeOrchestrator().getAvgNumMessages();
+				double numPuds = SimManager.getInstance().getEdgeOrchestrator().getAvgNumPuddlesSearched();
 
 				// write generic results
 				String genericResult1 = Integer.toString(completedTask[i]) + SimSettings.DELIMITER
@@ -870,12 +924,38 @@ public class SimLogger {
 						+ Double.toString(_processingTimeOnCloud) + SimSettings.DELIMITER 
 						+ Double.toString(_wanDelay);
 				
-				String genericResult4 = Double.toString(dist) + SimSettings.DELIMITER + Double.toString(hops);
+				String genericResult4 = Double.toString(dist) 
+						+ SimSettings.DELIMITER + Double.toString(hops)
+						+ SimSettings.DELIMITER + Double.toString(numHosts)
+						+ SimSettings.DELIMITER + Double.toString(numMsgs)
+						+ SimSettings.DELIMITER + Double.toString(numPuds);
 
+				// Tasks executed per fog layer
+				String genericResult5 = "";
+				for(int level = 1; level <= SimSettings.getInstance().getMaxLevels(); level++) {
+					genericResult5 += Integer.toString(levelCloudletCount[level]) + SimSettings.DELIMITER;
+				}
+					
+				// Average fog node utilization per layer
+				String genericResult6 = "";
+				for (int index = 0; index < fogLayerAvgMipsUtil.length; index++) {
+					genericResult6 += Double.toString(fogLayerAvgMipsUtil[index]) + SimSettings.DELIMITER;
+				}
+
+				// Average fog network utilization per layer
+				String genericResult7 = "";
+				for (int index = 0; index < fogLayerAvgNwUtil.length; index++) {
+					genericResult7 += Double.toString(fogLayerAvgNwUtil[index]) + SimSettings.DELIMITER;
+				}
+				
 				appendToFile(genericBWs[i], genericResult1);
 				appendToFile(genericBWs[i], genericResult2);
 				appendToFile(genericBWs[i], genericResult3);
 				appendToFile(genericBWs[i], genericResult4);
+				appendToFile(genericBWs[i], genericResult5);
+				appendToFile(genericBWs[i], genericResult6);
+				appendToFile(genericBWs[i], genericResult7);
+
 			}
 
 			// close open files
@@ -890,6 +970,9 @@ public class SimLogger {
 			locationBW.close();
 			distBW.close(); // Shaik added
 			hopBW.close(); // Shaik added
+			hafaNumHostsBW.close();
+			hafaNumMsgsBW.close();
+			hafaNumPuddlesBW.close();
 			
 			for (int i = 0; i < numOfAppTypes + 1; i++) {
 				if (i < numOfAppTypes) {
@@ -1016,14 +1099,14 @@ public class SimLogger {
 		}
 		
 		printLine("\nAverage fog node utilization per layer:"); // Shaik added
-		double totalMipsUtil = 0;
+		totalMipsUtil = 0;
 		for (int i = 0; i < fogLayerAvgMipsUtil.length; i++) {
 			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)fogLayerAvgMipsUtil[i])));
 			totalMipsUtil += (double)fogLayerAvgMipsUtil[i];
 		}
 
 		printLine("\nAverage fog network utilization per layer:"); // Shaik added
-		double totalNwUtil = 0;
+		totalNwUtil = 0;
 		for (int i = 0; i < fogLayerAvgNwUtil.length; i++) {
 			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)fogLayerAvgNwUtil[i])));
 			totalNwUtil += (double)fogLayerAvgNwUtil[i];

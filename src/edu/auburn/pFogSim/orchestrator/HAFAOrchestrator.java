@@ -30,6 +30,9 @@ import javafx.util.Pair;
 import edu.auburn.pFogSim.Puddle.Puddle;
 import edu.auburn.pFogSim.Radix.DistRadix;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,11 +60,16 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 	ESBModel networkModel;
 	
 	// To capture HAFA metrics
-	int[] numProspectiveHosts;
-	int[] numMessages;
-	int[] numPuddlesSearched;
+	public int[] numProspectiveHosts;
+	public int[] numMessages;
+	public int[] numPuddlesSearched;
 	
-
+	// Pring HAFA metrics to files
+	File hafaNumHostsFile = null, hafaNumMsgsFile = null, hafaNumPuddlesFile = null;
+	FileWriter hafaNumHostsFW = null, hafaNumMsgsFW = null, hafaNumPuddlesFW = null;
+	BufferedWriter hafaNumHostsBW = null, hafaNumMsgsBW = null, hafaNumPuddlesBW = null;
+	
+	
 	/**
 	 * constructor
 	 * @param _policy
@@ -69,6 +77,30 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 	 */
 	public HAFAOrchestrator(String _policy, String _simScenario) {
 		super(_policy, _simScenario);			
+	}
+
+	
+	/**
+	 * Return detailed metrics of HAFA orchestrator - Number of prospective hosts per service request (device)
+	 */
+	public int[] getNumProspectiveHosts() {	
+		return this.numProspectiveHosts;
+	}
+	
+
+	/**
+	 * Return detailed metrics of HAFA orchestrator - Number of messages exchanged per service request (device)
+	 */
+	public int[] getNumMessages() {	
+		return this.numMessages;
+	}
+
+
+	/**
+	 * Return detailed metrics of HAFA orchestrator - Number of Puddles searched per service request (device)
+	 */
+	public int[] getNumPuddlesSearched() {	
+		return this.numPuddlesSearched;
 	}
 
 	
