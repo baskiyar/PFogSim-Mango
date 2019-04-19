@@ -5,7 +5,7 @@
 function [ret_val] = getConfiguration(argType)
     if(argType == 1)
         %ret_val = 'C:\Users\jbm0085\Desktop\pFogSim-master\prelim results';
-        ret_val = 'S:\Shehenaz\FIaaSRSM-SampleTests\Run-Analysis-204-191_161-176-All';
+        ret_val = 'S:\Shehenaz\FIaaSRSM-SampleTests\Run-204-hafa-new-5000-191_161-176-All';
         % USERNAME = your username
         % FILE = File or path that your EdgeCloudSim-master folder is located in
         

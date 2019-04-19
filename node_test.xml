@@ -3,7 +3,7 @@
 <datacenter arch="Cloud" os="Linux" vmm="Xen">
 
 <costPerBw>2.4007811311696707E-6</costPerBw>
-	<costPerSec>0.01319444</costPerSec>
+	<costPerSec>0.00659722</costPerSec>
 	<costPerMem>0.05</costPerMem>
 	<costPerStorage>0.1</costPerStorage>
 <location>

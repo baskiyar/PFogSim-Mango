@@ -1,4 +1,4 @@
-function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculatePercentage)
+function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculatePercentage, graphTitle)
     folderPath = getConfiguration(1);
     numOfSimulations = getConfiguration(3);
     stepOfxAxis = getConfiguration(4);
@@ -84,7 +84,7 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
             
             markers = getConfiguration(50);
             for j=1:size(scenarioType,2)
-                plot(xIndex, results(j,i),char(markers(j)),'MarkerFaceColor',getConfiguration(20+j),'color',getConfiguration(20+j));
+                plot(xIndex, results(j,i),char(markers(j)),'MarkerEdgeColor',getConfiguration(20+j),'color',getConfiguration(20+j));
                 hold on;
             end
         end
@@ -126,5 +126,5 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
     set(get(gca,'Xlabel'),'FontSize',12)
     set(get(gca,'Ylabel'),'FontSize',12)
     set(lgnd,'FontSize',12)
-    title(appType)
+    title(graphTitle,'FontSize',10)
 end
