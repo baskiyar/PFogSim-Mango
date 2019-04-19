@@ -56,14 +56,19 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 	HashMap<NodeSim,HashMap<NodeSim, LinkedList<NodeSim>>> pathTable;
 	ESBModel networkModel;
 	
+	// To capture HAFA metrics
+	int[] numProspectiveHosts;
+	int[] numMessages;
+	int[] numPuddlesSearched;
 	
+
 	/**
 	 * constructor
 	 * @param _policy
 	 * @param _simScenario
 	 */
 	public HAFAOrchestrator(String _policy, String _simScenario) {
-		super(_policy, _simScenario);
+		super(_policy, _simScenario);			
 	}
 
 	
@@ -87,8 +92,112 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 				tempMap.put(des, tempList);
 			}
 			pathTable.put(src, tempMap);
+		}		
+		
+		// Initialize metrics
+		int devCount = SimManager.getInstance().getNumOfMobileDevice();
+		numProspectiveHosts = new int[devCount];
+		numMessages = new int[devCount];
+		numPuddlesSearched = new int[devCount];
+		
+		for (int i=0; i<devCount; i++) {
+			this.numProspectiveHosts[i] = 0;
+			this.numMessages[i] = 0;
+			this.numPuddlesSearched[i] = 0;
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param deviceId
+	 * @param hostCount
+	 */
+	public void addNumProspectiveHosts(int deviceId, int hostCount) {
+		this.numProspectiveHosts[deviceId] += hostCount;
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumProspectiveHosts() {
+		int devCount = SimManager.getInstance().getNumOfMobileDevice();
+		int assignedDevCount = 0;
+		int totalNumProspectiveHosts = 0;
+		
+		for (int i=0; i<devCount; i++) {
+			MobileDevice mb = SimManager.getInstance().getMobileDeviceManager().getMobileDevices().get(i);
+			if (mb.getHost() != null) {
+				assignedDevCount++;
+				totalNumProspectiveHosts += this.numProspectiveHosts[i];
+			}	
 		}
 		
+		return ((double)totalNumProspectiveHosts / assignedDevCount );		
+	}
+		
+
+	/**
+	 * Messages are exchanged by PuddleHeads to forward a service placement request or to respond to one. 
+	 * @param deviceId
+	 * @param msgCount
+	 */
+	public void addNumMessages(int deviceId, int msgCount) {
+		this.numMessages[deviceId] += msgCount;
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumMessages() {
+		int devCount = SimManager.getInstance().getNumOfMobileDevice();
+		int assignedDevCount = 0;
+		int totalNumMessages = 0;
+		
+		for (int i=0; i<devCount; i++) {
+			MobileDevice mb = SimManager.getInstance().getMobileDeviceManager().getMobileDevices().get(i);
+			if (mb.getHost() != null) {
+				assignedDevCount++;
+				totalNumMessages += this.numMessages[i];
+			}	
+		}
+		
+		return ((double)totalNumMessages / assignedDevCount );		
+	}
+		
+	
+	/**
+	 * 
+	 * @param deviceId
+	 * @param pudCount
+	 */
+	public void addNumPuddlesSearched(int deviceId, int pudCount) {
+		this.numPuddlesSearched[deviceId] += pudCount;
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumPuddlesSearched() {
+		int devCount = SimManager.getInstance().getNumOfMobileDevice();
+		int assignedDevCount = 0;
+		int totalPuddlesSearched = 0;
+		
+		for (int i=0; i<devCount; i++) {
+			MobileDevice mb = SimManager.getInstance().getMobileDeviceManager().getMobileDevices().get(i);
+			if (mb.getHost() != null) {
+				assignedDevCount++;
+				totalPuddlesSearched += this.numPuddlesSearched[i];
+			}	
+		}
+		
+		return ((double)totalPuddlesSearched / assignedDevCount );		
 	}
 	
 	
@@ -132,7 +241,7 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 	}
 	
 
-	/* 
+	/** 
 	 * This method identifies an efficient fog node to host the application service for given mobile device. 
 	 * @author Shaik
 	 * (non-Javadoc)
@@ -152,11 +261,18 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 			// Find corresponding puddle members i.e. puddle nearest to mobile device belonging to this fog layer. 
 			int pudId = nearest.getPuddleId();
 			Puddle pud = SimManager.getInstance().getEdgeServerManager().findPuddleById(levelIter, pudId);
+			
+			// Request sent to nearest Puddle by device / fog broker 
+			this.addNumMessages(mobile.getId(), 1);
+			this.addNumPuddlesSearched(mobile.getId(), 1);
+			
 			prospectiveNodes = pud.getMembers();
 			
 			// Identify the best (nearest) node to host the application among prospective nodes.
 			System.out.print("Level: "+levelIter+" Prospective host:  ");
 			while (prospectiveNodes.size() != 0) {
+				
+				this.addNumProspectiveHosts(mobile.getId(), prospectiveNodes.size());
 				
 				DistRadix sort = new DistRadix(prospectiveNodes, mobile.getLocation()); //use radix sort based on distance from mobile device.
 				LinkedList<EdgeHost> nodes = sort.sortNodes();
@@ -179,7 +295,7 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 				
 				// Search unsuccessful, hence expand search to siblings/neighbors using parent subtree.
 				// Get list of other prospective nodes belonging to this layer in the parent subtree
-				prospectiveNodes = SimManager.getInstance().getEdgeServerManager().getCousins(pud, levelIter);
+				prospectiveNodes = SimManager.getInstance().getEdgeServerManager().getCousins(pud, levelIter, mobile.getId());
 				
 				// If search unsuccessful in entire system
 				// i.e. no node in this fog layer has sufficient resources to host the application.

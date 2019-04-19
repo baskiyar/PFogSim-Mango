@@ -51,6 +51,10 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 	public void initialize() {
 		try {
 		cHost = (EdgeHost)(SimManager.getInstance().getLocalServerManager().findHostById(0));
+		
+		this.avgNumProspectiveHosts = 1;
+		this.avgNumMessages = this.avgNumProspectiveHosts * 2; // For each service request (i.e. per device), each host receives resource availability request & sends response.
+		
 		}
 		catch (NullPointerException e) {
 			return;
@@ -188,6 +192,59 @@ public class CloudOnlyOrchestrator extends EdgeOrchestrator {
 	 */
 	public static void setNode(String node) {
 		CloudOnlyOrchestrator.node = node;
+	}
+	
+	
+	/**
+	 * 
+	 * @param deviceId
+	 * @param hostCount
+	 */
+	public void addNumProspectiveHosts(int deviceId, int hostCount) {
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumProspectiveHosts() {
+		return ((double)this.avgNumProspectiveHosts);		
+	}
+		
+
+	/**
+	 * @param deviceId
+	 * @param msgCount
+	 */
+	public void addNumMessages(int deviceId, int msgCount) {
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumMessages() {
+		return ((double)this.avgNumMessages);		
+	}
+		
+	
+	/**
+	 * 
+	 * @param deviceId
+	 * @param pudCount
+	 */
+	public void addNumPuddlesSearched(int deviceId, int pudCount) {
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumPuddlesSearched() {
+		return ((double)0);		
 	}
 	
 }

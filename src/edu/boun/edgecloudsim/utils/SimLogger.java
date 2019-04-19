@@ -33,6 +33,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
+import edu.auburn.pFogSim.orchestrator.HAFAOrchestrator;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
@@ -901,12 +902,10 @@ public class SimLogger {
 		} // end - print metrics to log files
 		
 		printLine("Mobile Devices Moving? : " + SimSettings.getInstance().areMobileDevicesMoving());
-		// printout important results
 		printLine("# of tasks: " + (failedTask[numOfAppTypes] + completedTask[numOfAppTypes]));
 		
 		// Do not provide info regarding warmup tasks; Commenting line below. - Shaik modified
-		// Qian print warm up task
-		//printLine("# of warm up tasks: "+ warmUpTasks);
+		printLine("# of warm up tasks: "+ warmUpTasks);
 
 		// Shaik commented the following - Redundant info
 		//printLine("# of failed tasks: " + failedTask[numOfAppTypes]);
@@ -974,13 +973,13 @@ public class SimLogger {
 				+ String.format("%.6f", networkDelay[numOfAppTypes] / (double) completedTask[numOfAppTypes])
 				+ " seconds.");
 
-		printLine("\naverage server utilization: " 
+/*		printLine("\naverage server utilization: " 
 				+ String.format("%.6f", totalVmLoad / (double) vmLoadList.size()) + "%");
 		printLine("average Fog server utilization: " 
 				+ String.format("%.6f", totalFnMipsUtil / (double) fnMipsUtilList.size()) + "%"); // Shaik added
 		printLine("average Fog network utilization: " 
 				+ String.format("%.6f", totalFnNwUtil / (double) fnNwUtilList.size()) + "%"); // Shaik added
-
+*/
 		printLine("Tasks executed per fog layer: ");
 		for(int i = 1; i <= SimSettings.getInstance().getMaxLevels(); i++) //From 1 to MAX_LEVELS because there won't be network apps running on mobile devices at level 0
 			printLine(String.format("\tLayer %d:\t%d", i, levelCloudletCount[i]));
@@ -997,6 +996,17 @@ public class SimLogger {
 		double averageHops = (completedTask[numOfAppTypes] == 0) ? 0.0 : (totalHops[numOfAppTypes] / (double) completedTask[numOfAppTypes]);
 		printLine("Average number of hops from task to host: " + String.format("%.2f", averageHops));
 
+		double averageNumHosts = SimManager.getInstance().getEdgeOrchestrator().getAvgNumProspectiveHosts();
+		printLine("Average number of prospective hosts considered for placement: " + String.format("%.2f", averageNumHosts));
+
+		double averageNumMessages = SimManager.getInstance().getEdgeOrchestrator().getAvgNumMessages();
+		printLine("Average number of messages exchanged for placement: " + String.format("%.2f", averageNumMessages));
+		
+		if (SimManager.getInstance().getEdgeOrchestrator() instanceof HAFAOrchestrator) {
+			double averageNumPuddles = SimManager.getInstance().getEdgeOrchestrator().getAvgNumPuddlesSearched();
+			printLine("Average number of Puddles searched for placement: " + String.format("%.2f", averageNumPuddles));
+		}
+		
 		//Qian print average fog nodes utilization in each level.
 		getTotalFogNodesCountInEachLevel();
 		//printLine("average fog node utilization:"); // Shaik commented
@@ -1006,14 +1016,24 @@ public class SimLogger {
 		}
 		
 		printLine("\nAverage fog node utilization per layer:"); // Shaik added
+		double totalMipsUtil = 0;
 		for (int i = 0; i < fogLayerAvgMipsUtil.length; i++) {
 			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)fogLayerAvgMipsUtil[i])));
+			totalMipsUtil += (double)fogLayerAvgMipsUtil[i];
 		}
 
 		printLine("\nAverage fog network utilization per layer:"); // Shaik added
+		double totalNwUtil = 0;
 		for (int i = 0; i < fogLayerAvgNwUtil.length; i++) {
 			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)fogLayerAvgNwUtil[i])));
+			totalNwUtil += (double)fogLayerAvgNwUtil[i];
 		}
+		
+		printLine("average Fog server utilization: " 
+				+ String.format("%.6f", totalMipsUtil / (double)fogLayerAvgMipsUtil.length) + "%"); // Shaik added
+		printLine("average Fog network utilization: " 
+				+ String.format("%.6f", totalNwUtil / (double)fogLayerAvgNwUtil.length) + "%"); // Shaik added
+
 		
 		// clear related collections (map list etc.)
 		taskMap.clear();

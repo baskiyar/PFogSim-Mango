@@ -25,7 +25,7 @@ import edu.boun.edgecloudsim.utils.SimLogger;
 
 
 /**
- * 
+ * Note: This class needs to be tested thoroughly. There may be bugs / issues.
  * @author szs0117
  *
  */
@@ -69,6 +69,9 @@ public class SelectedNodesOrchestrator extends EdgeOrchestrator{
 			}
 			pathTable.put(src, tempMap);
 		}
+		
+		this.avgNumProspectiveHosts = SimSettings.getInstance().getSelectedHostIds().length;
+		this.avgNumMessages = this.avgNumProspectiveHosts * 2; // For each service request (i.e. per device), each host receives resource availability request & sends response.
 		
 	}
 
@@ -285,4 +288,59 @@ public class SelectedNodesOrchestrator extends EdgeOrchestrator{
 	public void setNetworkModel(ESBModel networkModel) {
 		this.networkModel = networkModel;
 	}
+	
+	
+	/**
+	 * 
+	 * @param deviceId
+	 * @param hostCount
+	 */
+	public void addNumProspectiveHosts(int deviceId, int hostCount) {
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumProspectiveHosts() {
+		return ((double)this.avgNumProspectiveHosts);		
+	}
+		
+
+	/**
+	 * @param deviceId
+	 * @param msgCount
+	 */
+	public void addNumMessages(int deviceId, int msgCount) {
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumMessages() {
+		return ((double)this.avgNumMessages);		
+	}
+		
+	
+	/**
+	 * 
+	 * @param deviceId
+	 * @param pudCount
+	 */
+	public void addNumPuddlesSearched(int deviceId, int pudCount) {
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumPuddlesSearched() {
+		return ((double)0);		
+	}
+	
+	
 }

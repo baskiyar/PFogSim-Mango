@@ -59,6 +59,9 @@ public class EdgeByDistanceOrchestrator extends EdgeOrchestrator {
 				hosts.add(((EdgeHost) node.getHostList().get(0)));
 			}
 		}
+		
+		this.avgNumProspectiveHosts = hosts.size();
+		this.avgNumMessages = this.avgNumProspectiveHosts * 2; // For each service request (i.e. per device), each host receives resource availability request & sends response.
 
 	}
 	
@@ -155,4 +158,57 @@ public class EdgeByDistanceOrchestrator extends EdgeOrchestrator {
 		this.hosts = hosts;
 	}
 
+	
+	/**
+	 * 
+	 * @param deviceId
+	 * @param hostCount
+	 */
+	public void addNumProspectiveHosts(int deviceId, int hostCount) {
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumProspectiveHosts() {
+		return ((double)this.avgNumProspectiveHosts);		
+	}
+		
+
+	/**
+	 * @param deviceId
+	 * @param msgCount
+	 */
+	public void addNumMessages(int deviceId, int msgCount) {
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumMessages() {
+		return ((double)this.avgNumMessages);		
+	}
+		
+	
+	/**
+	 * 
+	 * @param deviceId
+	 * @param pudCount
+	 */
+	public void addNumPuddlesSearched(int deviceId, int pudCount) {
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public double getAvgNumPuddlesSearched() {
+		return ((double)0);		
+	}
+		
 }

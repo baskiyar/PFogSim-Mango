@@ -40,9 +40,15 @@ public abstract class EdgeOrchestrator {
 	protected String simScenario;
 	protected Datacenter cloud;
 	
+	// Metrics
+	protected int avgNumMessages;
+	protected int avgNumProspectiveHosts;
+	
 	public EdgeOrchestrator(String _policy, String _simScenario){
 		policy = _policy;
 		simScenario = _simScenario;
+		this.avgNumProspectiveHosts = 0;
+		this.avgNumMessages = 0;		
 	}
 	
 	
@@ -142,4 +148,50 @@ public abstract class EdgeOrchestrator {
 	public Datacenter getCloud() {
 		return cloud;
 	}
+	
+	
+	/**
+	 * 
+	 * @param deviceId
+	 * @param hostCount
+	 */
+	public abstract void addNumProspectiveHosts(int deviceId, int hostCount);
+	
+		
+	/**
+	 * 
+	 * @return
+	 */
+	public abstract double getAvgNumProspectiveHosts();
+
+		
+	/**
+	 * 
+	 * @param deviceId
+	 * @param msgCount
+	 */
+	public abstract void addNumMessages (int deviceId, int msgCount);
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public abstract double getAvgNumMessages();
+	
+	
+	/**
+	 * 
+	 * @param deviceId
+	 * @param pudCount
+	 */
+	public abstract void addNumPuddlesSearched(int deviceId, int pudCount);
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public abstract double getAvgNumPuddlesSearched();
+	
 }

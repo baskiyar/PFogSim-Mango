@@ -551,12 +551,12 @@ public class EdgeServerManager {
 	
 	
 	/**
-	 * 
+	 * @author Shaik
 	 * @param pud
 	 * @param reqFLevel
 	 * @return
 	 */
-	public ArrayList<EdgeHost> getCousins(Puddle pud, int reqFLevel){
+	public ArrayList<EdgeHost> getCousins(Puddle pud, int reqFLevel, int deviceId){
 		ArrayList<EdgeHost> cousinHosts = new ArrayList<EdgeHost>();
 		ArrayList<Puddle> cousinPuddles = new ArrayList<Puddle>();
 		ArrayList<Integer> childPudIds;
@@ -593,6 +593,9 @@ public class EdgeServerManager {
 			// Get parent puddle
 			parentPudId = pud.getParentPuddleId();
 			parentPud = findPuddleById(parentLevel, parentPudId);
+
+			// Send message to parent
+			SimManager.getInstance().getEdgeOrchestrator().addNumMessages(deviceId, 1);
 	
 			// Get parent's child puddles 
 			// Get sibling puddles only i.e. do not consider current puddle
@@ -605,8 +608,8 @@ public class EdgeServerManager {
 				}
 				childPud = findPuddleById(parentPud.getLevel()-1, childPudIds.get(i));
 				cousinPuddles.add(childPud);
-				System.out.print(" : Cousin added : "+childPud.getPuddleId()+" at level: "+childPud.getLevel()+" : ");		
-				System.out.print(" : cousinPuddles count before : "+cousinPuddles.size());				
+				//System.out.print(" : Cousin added : "+childPud.getPuddleId()+" at level: "+childPud.getLevel()+" : ");		
+				//System.out.print(" : cousinPuddles count before : "+cousinPuddles.size());				
 			}
 		}
 
@@ -614,7 +617,10 @@ public class EdgeServerManager {
 	
 		// Process each element in cousinPuddles list
 		while (cousinPuddles.size() != 0) {
-			
+
+			// Forward message to each cousin Puddle in Puddle subtree
+			SimManager.getInstance().getEdgeOrchestrator().addNumMessages(deviceId, 1);
+
 			System.out.print(" : cousinPuddles count after : "+cousinPuddles.size());				
 
 			// Get first element from list
@@ -624,6 +630,12 @@ public class EdgeServerManager {
 			// if the puddle belongs to required fog level, add all its members to cousinHosts list.
 			if (cousinPud.getLevel() == reqFLevel) {
 				cousinHosts.addAll(cousinPud.getMembers());
+				
+				// This Puddle is being searched for prospective good Host
+				SimManager.getInstance().getEdgeOrchestrator().addNumPuddlesSearched(deviceId, 1);
+				
+				// This Puddle will send response back to requesting PuddleHead.
+				SimManager.getInstance().getEdgeOrchestrator().addNumMessages(deviceId, 1);
 			}
 			else {
 			// if not, get all its children puddles and add them to cousinPuddles list for further processing.
