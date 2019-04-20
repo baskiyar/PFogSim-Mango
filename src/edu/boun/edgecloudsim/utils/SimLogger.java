@@ -792,19 +792,25 @@ public class SimLogger {
 		double avgNwUtilPrcnt = totalNwUtil / (double)fogLayerAvgNwUtil.length;
 
 		/* HAFA Metrics - Analysis */
+		int devCount = SimManager.getInstance().getNumOfMobileDevice();
+		
+		int[] numProsHosts = new int[devCount];
+		int[] numMsgs = new int[devCount];
+		int[] numPuds = new int[devCount];
+
+		
 		if (SimManager.getInstance().getEdgeOrchestrator() instanceof HAFAOrchestrator ) {
-			// Retrieve information regarding # of hosts, msgs, & Puddles for each service request (device)
-			int[] numProsHosts = SimManager.getInstance().getEdgeOrchestrator().getNumProspectiveHosts();
-			int[] numMsgs = SimManager.getInstance().getEdgeOrchestrator().getNumMessages();
-			int[] numPuds = SimManager.getInstance().getEdgeOrchestrator().getNumPuddlesSearched();
 			
-			int devCount = SimManager.getInstance().getNumOfMobileDevice();
+			// Retrieve information regarding # of hosts, msgs, & Puddles for each service request (device)
+			numProsHosts = SimManager.getInstance().getEdgeOrchestrator().getNumProspectiveHosts();
+			numMsgs = SimManager.getInstance().getEdgeOrchestrator().getNumMessages();
+			numPuds = SimManager.getInstance().getEdgeOrchestrator().getNumPuddlesSearched();
 			
 			// Print info to corresponding files
 			for (int i=0; i<devCount; i++) {
-				appendToFile(hafaNumHostsBW, numProsHosts[i]+",");
-				appendToFile(hafaNumMsgsBW, numMsgs[i]+",");
-				appendToFile(hafaNumPuddlesBW, numPuds[i]+",");
+				appendToFile(hafaNumHostsBW, Integer.toString(numProsHosts[i]) + SimSettings.DELIMITER);
+				appendToFile(hafaNumMsgsBW, Integer.toString(numMsgs[i]) + SimSettings.DELIMITER);
+				appendToFile(hafaNumPuddlesBW, Integer.toString(numPuds[i]) + SimSettings.DELIMITER);
 			}			
 		}
 		
@@ -871,9 +877,9 @@ public class SimLogger {
 				double _cost = (completedTask[i] == 0) ? 0.0 : (cost[i] / (double) completedTask[i]);
 				double dist = (completedTask[i] == 0) ? 0.0 : (totalDist[i] / (double) completedTask[i]);
 				double hops = (completedTask[i] == 0) ? 0.0 : ((double) totalHops[i] / (double) completedTask[i]);
-				double numHosts = SimManager.getInstance().getEdgeOrchestrator().getAvgNumProspectiveHosts();
-				double numMsgs = SimManager.getInstance().getEdgeOrchestrator().getAvgNumMessages();
-				double numPuds = SimManager.getInstance().getEdgeOrchestrator().getAvgNumPuddlesSearched();
+				double avgNumHosts = SimManager.getInstance().getEdgeOrchestrator().getAvgNumProspectiveHosts();
+				double avgNumMsgs = SimManager.getInstance().getEdgeOrchestrator().getAvgNumMessages();
+				double avgNumPuds = SimManager.getInstance().getEdgeOrchestrator().getAvgNumPuddlesSearched();
 
 				// write generic results
 				String genericResult1 = Integer.toString(completedTask[i]) + SimSettings.DELIMITER
@@ -891,7 +897,7 @@ public class SimLogger {
 						+ Double.toString(_fnNwUtil) + SimSettings.DELIMITER 
 						+ Integer.toString(rejectedTaskDueToLackofNodeCapacity[i]) + SimSettings.DELIMITER 
 						+ Integer.toString(rejectedTaskDueToLackofNetworkBandwidth[i]) + SimSettings.DELIMITER 
-						+ Integer.toString(rejectedTaskDueToUnacceptableLatency[i])
+						+ Integer.toString(rejectedTaskDueToUnacceptableLatency[i]) + SimSettings.DELIMITER 
 						+ Integer.toString(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]); 
 				
 				// check if the divisor is zero in order to avoid division by zero problem
@@ -926,9 +932,9 @@ public class SimLogger {
 				
 				String genericResult4 = Double.toString(dist) 
 						+ SimSettings.DELIMITER + Double.toString(hops)
-						+ SimSettings.DELIMITER + Double.toString(numHosts)
-						+ SimSettings.DELIMITER + Double.toString(numMsgs)
-						+ SimSettings.DELIMITER + Double.toString(numPuds);
+						+ SimSettings.DELIMITER + Double.toString(avgNumHosts)
+						+ SimSettings.DELIMITER + Double.toString(avgNumMsgs)
+						+ SimSettings.DELIMITER + Double.toString(avgNumPuds);
 
 				// Tasks executed per fog layer
 				String genericResult5 = "";
