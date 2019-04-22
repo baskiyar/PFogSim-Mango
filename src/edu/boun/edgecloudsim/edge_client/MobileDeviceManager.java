@@ -288,7 +288,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 				//System.out.println("taskPerceivedDelay: after execution: "+taskPerceivedDelay);
 				if (taskPerceivedDelay > task.getMaxDelay()) {
 					SimLogger.getInstance().taskRejected(task.getCloudletId(), CloudSim.clock(), SimLogger.TASK_STATUS.REJECTED_DUE_TO_UNACCEPTABLE_LATENCY ); // Shaik added
-					System.out.println("submitTask: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to unacceptable latency.");
+					//System.out.println("submitTask: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to unacceptable latency.");
 					
 					if (SimSettings.getInstance().traceEnalbe()) {
 						SimLogger.printLine("submitTask: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to unacceptable latency.");
