@@ -434,6 +434,10 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 		//Find a cost-optimal node with available resources
 		EdgeHost selHost = null;
 		selHost = hostsSortedByCost.poll();
+		if (selHost == null) {
+			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
+			return;
+		}
 		
 		System.out.print("Prospective host:  ");
 		while(!goodHost(selHost, mobile)) {
