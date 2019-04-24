@@ -1,7 +1,8 @@
 function [] = plotAvgFailedTask()
 
     %plotGenericResult(1, 2, 'Failed Tasks (%)', 'ALL_APPS', 1);
-    plotGenericResult(1, 2, {'Failed Tasks (%)'}, 'AUGMENTED_REALITY', 1, 'AUGMENTED REALITY');
+    plotGenericResult(1, 2, {'Failed Tasks (%)'}, 'COGNITIVE_ASSISTANCE', 1, 'COGNITIVE ASSISTANCE');
+    %plotGenericResult(1, 2, {'Failed Tasks (%)'}, 'AUGMENTED_REALITY', 1, 'AUGMENTED REALITY');
     %plotGenericResult(1, 2, 'Failed Tasks for Health App (%)', 'HEALTH_APP', 1);
     %plotGenericResult(1, 2, 'Failed Tasks for Infotainment App (%)', 'INFOTAINMENT_APP', 1);
     %plotGenericResult(1, 2, 'Failed Tasks for Heavy Comp. App (%)', 'HEAVY_COMP_APP', 1);

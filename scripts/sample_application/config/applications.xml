@@ -53,7 +53,7 @@
 		<vm_utilization>10</vm_utilization>
 	</application>
 	<application name="COGNITIVE_ASSISTANCE">
-		<usage_percentage>100</usage_percentage>
+		<usage_percentage>0</usage_percentage>
 		<prob_cloud_selection>20</prob_cloud_selection>
 		<poisson_interarrival>5</poisson_interarrival>
 		<delay_sensitivity>0.010</delay_sensitivity>
@@ -64,5 +64,18 @@
 		<task_length>2000</task_length>
 		<required_core>1</required_core>
 		<vm_utilization>20</vm_utilization>
+	</application>
+	<application name="REMOTE_HEALTHCARE">
+		<usage_percentage>100</usage_percentage>
+		<prob_cloud_selection>20</prob_cloud_selection>
+		<poisson_interarrival>5</poisson_interarrival>
+		<delay_sensitivity>0.004</delay_sensitivity>
+		<active_period>45</active_period>
+		<idle_period>15</idle_period>
+		<data_upload>4</data_upload>
+		<data_download>1</data_download>
+		<task_length>400</task_length>
+		<required_core>1</required_core>
+		<vm_utilization>5</vm_utilization>
 	</application>
 </applications>

@@ -5,7 +5,7 @@
 function [ret_val] = getConfiguration(argType)
     if(argType == 1)
         %ret_val = 'C:\Users\jbm0085\Desktop\pFogSim-master\prelim results';
-        ret_val = 'S:\Shehenaz\FIaaSRSM-SampleTests\Run-255-Z-Analysis-226--255';
+        ret_val = 'S:\Shehenaz\FIaaSRSM-SampleTests\Run-255-Z-Analysis-226--255-AR';
         % USERNAME = your username
         % FILE = File or path that your EdgeCloudSim-master folder is located in
         
@@ -17,10 +17,10 @@ function [ret_val] = getConfiguration(argType)
         ret_val = 1; %x tick interval for number of mobile devices
     elseif(argType == 5)
         %ret_val = {'CENTRALIZED_ORCHESTRATOR','HAFA_ORCHESTRATOR','CLOUD_ONLY','PUDDLE_ORCHESTRATOR','SELECTED_LEVELS','EDGE_BY_LATENCY','EDGE_BY_DISTANCE','LOCAL_ONLY','FIXED_NODE','SELECTED_NODES'};
-        ret_val = {'CENTRALIZED_ORCHESTRATOR','HAFA_ORCHESTRATOR','LOCAL_ONLY','EDGE_BY_DISTANCE','FIXED_NODE'};   
+        ret_val = {'CENTRALIZED_ORCHESTRATOR','HAFA_ORCHESTRATOR','LOCAL_ONLY','EDGE_BY_DISTANCE','FIXED_NODE','CLOUD_ONLY'};   
     elseif(argType == 6)
         %ret_val = {'Centralized','HAFA','Cloud','Puddle','Sel Levels','Edge by Latency','Edge by Distance','Local','Fixed-CityCenter','Sel Nodes'};
-        ret_val = {'Centralized','HAFA','Local','Edge by Distance','CityCenter'};
+        ret_val = {'Centralized','HAFA','Local','Edge','CityCenter','Cloud'};
     elseif(argType == 7)
         ret_val=[350 60 450 450]; %position of figure
     elseif(argType == 8)

@@ -46,7 +46,7 @@ public class SimSettings {
 	//if you want to add different types on your config file,
 	//you may modify current types or add new types here. 
 	public static enum VM_TYPES { EDGE_VM, CLOUD_VM }
-	public static enum APP_TYPES { AUGMENTED_REALITY, HEALTH_APP, HEAVY_COMP_APP, INFOTAINMENT_APP, COGNITIVE_ASSISTANCE }
+	public static enum APP_TYPES { AUGMENTED_REALITY, HEALTH_APP, HEAVY_COMP_APP, INFOTAINMENT_APP, COGNITIVE_ASSISTANCE, REMOTE_HEALTHCARE }
 	public static enum PLACE_TYPES { ATTRACTIVENESS_L1, ATTRACTIVENESS_L2, ATTRACTIVENESS_L3 }
 	public static enum CLOUD_TRANSFER { IGNORE, CLOUD_UPLOAD, CLOUD_DOWNLOAD }
 	
