@@ -585,7 +585,7 @@ public class EdgeServerManager {
 
 			//Note: HAFA organization should be a single-rooted tree, not a forest.
 			if (parentLevel > 7) {
-				System.out.println("Done with searching this layer.");
+				System.out.println("Done.");
 				//System.out.println("Error. Invalid fog level for parent.");
 				return cousinHosts;
 			}
