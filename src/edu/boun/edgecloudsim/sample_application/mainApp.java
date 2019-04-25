@@ -55,7 +55,7 @@ public class mainApp {
 			e.printStackTrace();
 		}
 		
-		int iterationNumber = 2; // index for the list of n scenarios in properties file is from 0..n-1
+		int iterationNumber = 5; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
 		String edgeDevicesFile = "";

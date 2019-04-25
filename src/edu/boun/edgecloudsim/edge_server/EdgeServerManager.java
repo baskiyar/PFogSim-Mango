@@ -563,8 +563,7 @@ public class EdgeServerManager {
 		Puddle childPud, parentPud;
 		int parentPudId, childPudId, reqPudId, parentLevel;
 		
-		//cousinHosts = null;
-		System.out.print(" : Getting cousins of Puddle : "+pud.getPuddleId()+" at level: "+pud.getLevel()+" : ");
+		//System.out.print(" : Getting cousins of Puddle : "+pud.getPuddleId()+" at level: "+pud.getLevel()+" : ");
 		
 		//Get requesting Puddle Id
 		reqPudId = pud.getPuddleId();
@@ -578,7 +577,7 @@ public class EdgeServerManager {
 
 			if (parentPudId != -1) {
 				pud = parentPud;
-				System.out.print(" : Getting cousins of Puddle : "+pud.getPuddleId()+" at level: "+pud.getLevel()+" : ");
+				//System.out.print(" : Getting cousins of Puddle : "+pud.getPuddleId()+" at level: "+pud.getLevel()+" : ");
 			}
 			
 			// Get parent puddle level
@@ -586,7 +585,8 @@ public class EdgeServerManager {
 
 			//Note: HAFA organization should be a single-rooted tree, not a forest.
 			if (parentLevel > 7) {
-				System.out.println("Error. Invalid fog level for parent.");
+				System.out.println("Done with searching this layer.");
+				//System.out.println("Error. Invalid fog level for parent.");
 				return cousinHosts;
 			}
 
@@ -613,7 +613,7 @@ public class EdgeServerManager {
 			}
 		}
 
-		System.out.print(" : cousinPuddles count : "+cousinPuddles.size());				
+		//System.out.print(" : cousinPuddles count : "+cousinPuddles.size());				
 	
 		// Process each element in cousinPuddles list
 		while (cousinPuddles.size() != 0) {
@@ -621,11 +621,11 @@ public class EdgeServerManager {
 			// Forward message to each cousin Puddle in Puddle subtree
 			SimManager.getInstance().getEdgeOrchestrator().addNumMessages(deviceId, 1);
 
-			System.out.print(" : cousinPuddles count after : "+cousinPuddles.size());				
+			//System.out.print(" : cousinPuddles count after : "+cousinPuddles.size());				
 
 			// Get first element from list
 			Puddle cousinPud = cousinPuddles.get(0);
-			System.out.print(" : Processing Cousin puddle : "+cousinPud.getPuddleId()+" at level: "+cousinPud.getLevel()+" : ");				
+			//System.out.print(" : Processing Cousin puddle : "+cousinPud.getPuddleId()+" at level: "+cousinPud.getLevel()+" : ");				
 			
 			// if the puddle belongs to required fog level, add all its members to cousinHosts list.
 			if (cousinPud.getLevel() == reqFLevel) {
@@ -643,7 +643,7 @@ public class EdgeServerManager {
 				for (int i=0; i<childPudIds.size(); i++) {
 					childPud = findPuddleById(cousinPud.getLevel()-1, (int)childPudIds.get(i));
 					cousinPuddles.add(childPud);
-					System.out.print(" : Cousin added : "+childPud.getPuddleId()+" at level: "+childPud.getLevel()+" : ");	
+					//System.out.print(" : Cousin added : "+childPud.getPuddleId()+" at level: "+childPud.getLevel()+" : ");	
 				}
 			}
 			cousinPuddles.remove(0);
@@ -707,23 +707,12 @@ public class EdgeServerManager {
 			break;			
 		}
 		
-		/*
-		// Get the locations of hosts and Calculate distances from specified location
-		for (EdgeHost e : hostList ) {
-			distance = DataInterpreter.measure(xLoc, yLoc, e.getLocation().getXPos(), e.getLocation().getYPos());
-			if (distance < minDistance) {
-				// This fog node is nearer to specified location (xLoc,yLoc)
-				nearest = e;				
-			}
-		}
-		
-		*/
-		System.out.print("Fog level: "+fLevel+" hostList count: "+hostList.size());
+		//System.out.print("Fog level: "+fLevel+" hostList count: "+hostList.size());
 		DistRadix sort = new DistRadix(hostList, loc);//use radix sort based on distance from task
 		LinkedList<EdgeHost> nodes = sort.sortNodes();
 		//System.out.print("nodes size: " + nodes.size() + "  Device Id: " + mobile.getId() + "  WAP Id: " + mobile.getLocation().getServingWlanId());
 		nearest = nodes.poll();
-		System.out.println(" Nearest fog node to mobile device: "+nearest.getId());
+		//System.out.println(" Nearest fog node to mobile device: "+nearest.getId());
 
 		// Return the nearest node
 		return nearest;

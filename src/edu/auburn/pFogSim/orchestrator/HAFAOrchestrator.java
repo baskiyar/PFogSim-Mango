@@ -432,6 +432,11 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 		}
 
 		//Find a cost-optimal node with available resources
+		if (hostsSortedByCost.size() == 0) {
+			System.out.println("  Mobile device: "+mobile.getId()+"  WAP: "+mobile.getLocation().getServingWlanId()+"  Assigned host:  NULL");
+			return;
+		}
+		
 		EdgeHost selHost = null;
 		selHost = hostsSortedByCost.poll();
 		if (selHost == null) {
@@ -458,68 +463,5 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 
 		return;
 	}	
-	
-	
-	/**
-	 * get the closest level 0 puddle as a staring point -------------remove this method later - unused.
-	 * modified by Qian
-	 * @param task
-	 * @return
-	 */
-	private Puddle getNearest0Pud(MobileDevice mb) {
-		NetworkTopology network = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology();
-		Puddle puddle = null;
-		EdgeHost host;
-		Location loc = mb.getLocation();
-		double distance = Double.MAX_VALUE;
-		double newDist;
-		ArrayList<Puddle> pud0s = new ArrayList<Puddle>();
-		for (Puddle pud : network.getPuddles()) {//search through the list of puddles and pull out all the layer 0 ones
-			if (pud.getLevel() == 1) {
-				pud0s.add(pud);
-			}
-		}
-		for (Puddle pud : pud0s) {//choose the puddle whose head has the least distance to the task
-			host = pud.getClosestNodes(loc).getFirst();
-			newDist = Math.sqrt((Math.pow(loc.getXPos() - host.getLocation().getXPos(), 2) + Math.pow(loc.getYPos() - host.getLocation().getYPos(), 2)));
-			if(newDist < distance) {
-				distance = newDist;
-				puddle = pud;
-			}
-		}
-		return puddle;
-	}
-	
-	
-	/**
-	 * find an alternate puddle of a given level -------------remove this method later - unused.
-	 * modified by Qian
-	 * @param task
-	 * @param level
-	 * @return
-	 */
-	private Puddle nextBest(MobileDevice mb, int level) {
-		NetworkTopology network = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology();
-		Puddle puddle = null;
-		EdgeHost host;
-		Location loc = mb.getLocation();
-		double distance = Double.MAX_VALUE;
-		double newDist;
-		ArrayList<Puddle> pudis = new ArrayList<Puddle>();
-		for (Puddle pud : network.getPuddles()) {//search through the list of puddles and pull out all the layer i ones
-			if (pud.getLevel() == level) {
-				pudis.add(pud);
-			}
-		}
-		for (Puddle pud : pudis) {//choose the puddle whose head has the least distance to the task and can handle it
-			host = pud.getClosestNodes(loc).getFirst();
-			newDist = Math.sqrt((Math.pow(loc.getXPos() - host.getLocation().getXPos(), 2) + Math.pow(loc.getYPos() - host.getLocation().getYPos(), 2)));
-			if(newDist < distance && pud.canHandle(mb)) {
-				distance = newDist;
-				puddle = pud;
-			}
-		}
-		return puddle;
-	}
 	
 }// end class HAFAOrchestrator
