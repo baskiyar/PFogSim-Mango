@@ -1,7 +1,8 @@
 function [] = plotAvgProcessingTime()
 
     %plotGenericResult(1, 6, 'Processing Time (sec)', 'ALL_APPS', 0);
-    plotGenericResult(1, 6, 'Processing Time (msec)', 'COGNITIVE_ASSISTANCE', 0, 'COGNITIVE ASSISTANCE');
+    plotGenericResult(1, 6, 'Processing Time (msec)', 'REMOTE_HEALTHCARE', 0, 'REMOTE HEALTHCARE');
+    %plotGenericResult(1, 6, 'Processing Time (msec)', 'COGNITIVE_ASSISTANCE', 0, 'COGNITIVE ASSISTANCE');
     %plotGenericResult(1, 6, 'Processing Time (msec)', 'AUGMENTED_REALITY', 0, 'AUGMENTED REALITY');
     %plotGenericResult(1, 6, 'Processing Time for Health App (sec)', 'HEALTH_APP', 0);
     %plotGenericResult(1, 6, 'Processing Time for Infotainment App (sec)', 'INFOTAINMENT_APP', 0);

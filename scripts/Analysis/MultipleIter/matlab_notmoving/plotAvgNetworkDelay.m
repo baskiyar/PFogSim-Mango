@@ -1,7 +1,8 @@
 function [] = plotAvgNetworkDelay()
 
     %plotGenericResult(1, 7, 'Average Network Delay (sec)', 'ALL_APPS', 0);
-    plotGenericResult(1, 7, {'Average Network Delay (msec)'}, 'COGNITIVE_ASSISTANCE', 0, 'COGNITIVE ASSISTANCE');
+    plotGenericResult(1, 7, {'Average Network Delay (msec)'}, 'REMOTE_HEALTHCARE', 0, 'REMOTE HEALTHCARE');
+    %plotGenericResult(1, 7, {'Average Network Delay (msec)'}, 'COGNITIVE_ASSISTANCE', 0, 'COGNITIVE ASSISTANCE');
     %plotGenericResult(1, 7, {'Average Network Delay (msec)'}, 'AUGMENTED_REALITY', 0, 'AUGMENTED REALITY');
     %plotGenericResult(1, 7, 'Average Network Delay for Health App (sec)', 'HEALTH_APP', 0);
     %plotGenericResult(1, 7, {'Average Network Delay';'for Infotainment App (sec)'}, 'INFOTAINMENT_APP', 0);
