@@ -5,7 +5,7 @@
 function [ret_val] = getConfiguration(argType)
     if(argType == 1)
         %ret_val = 'C:\Users\jbm0085\Desktop\pFogSim-master\prelim results';
-        ret_val = 'S:\Shehenaz\FIaaSRSM-SampleTests\Run-333-RH-Z-Analysis-298--333';
+        ret_val = 'S:\Shehenaz\FIaaSRSM-SampleTests\Tests-Analysis';
         % USERNAME = your username
         % FILE = File or path that your EdgeCloudSim-master folder is located in
         
@@ -48,7 +48,7 @@ function [ret_val] = getConfiguration(argType)
     elseif(argType == 25)
         ret_val=[0.08 0.08 0.08]; %color of fifth line
     elseif(argType == 26)
-        ret_val=[0 0.8 0.8]; %color of sixth line
+        ret_val=[0.04 0.6 0.08]; %color of sixth line
     elseif(argType == 27)
         ret_val=[0.8 0.4 0]; %color of seventh line
     elseif(argType == 28)

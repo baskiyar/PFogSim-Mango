@@ -1,23 +1,9 @@
 function [] = plotAvgFailedTask()
 
-    %plotGenericResult(1, 2, 'Failed Tasks (%)', 'ALL_APPS', 1);
-    plotGenericResult(1, 2, {'Failed Tasks (%)'}, 'REMOTE_HEALTHCARE', 1, 'REMOTE HEALTHCARE');
-    %plotGenericResult(1, 2, {'Failed Tasks (%)'}, 'COGNITIVE_ASSISTANCE', 1, 'COGNITIVE ASSISTANCE');
-    %plotGenericResult(1, 2, {'Failed Tasks (%)'}, 'AUGMENTED_REALITY', 1, 'AUGMENTED REALITY');
-    %plotGenericResult(1, 2, 'Failed Tasks for Health App (%)', 'HEALTH_APP', 1);
-    %plotGenericResult(1, 2, 'Failed Tasks for Infotainment App (%)', 'INFOTAINMENT_APP', 1);
-    %plotGenericResult(1, 2, 'Failed Tasks for Heavy Comp. App (%)', 'HEAVY_COMP_APP', 1);
-    %{
-    plotGenericResult(2, 2, 'Failed Tasks on Cloudlet (%)', 'ALL_APPS', 0);
-    plotGenericResult(2, 2, {'Failed Tasks on Cloudlet';'for Augmented Reality App (%)'}, 'AUGMENTED_REALITY', 1);
-    plotGenericResult(2, 2, 'Failed Tasks on Cloudlet for Health App (%)', 'HEALTH_APP', 1);
-    plotGenericResult(2, 2, 'Failed Tasks on Cloudlet for Infotainment App (%)', 'INFOTAINMENT_APP', 1);
-    plotGenericResult(2, 2, 'Failed Tasks on Cloudlet for Heavy Comp. App (%)', 'HEAVY_COMP_APP', 1);
-    
-    plotGenericResult(3, 2, 'Failed Tasks on Cloud (%)', 'ALL_APPS', 1);
-    plotGenericResult(3, 2, {'Failed Tasks on Cloud for';'Augmented Reality App (%)'}, 'AUGMENTED_REALITY', 1);
-    plotGenericResult(3, 2, 'Failed Tasks on Cloud for Health App (%)', 'HEALTH_APP', 1);
-    plotGenericResult(3, 2, 'Failed Tasks on Cloud for Infotainment App (%)', 'INFOTAINMENT_APP', 1);
-    plotGenericResult(3, 2, 'Failed Tasks on Cloud for Heavy Comp. App (%)', 'HEAVY_COMP_APP', 1);
-    %}
+    %plotGenericResult(1, 2, 'Failed tasks (%)', 'ALL_APPS', 1, 'ALL APPS','linear');
+    plotGenericResult(1, 2, {'Failed tasks (%)'}, 'MACHINE_LEARNING', 1, 'MACHINE LEARNING APP', 'linear');
+    plotGenericResult(1, 2, {'Failed tasks (%)'}, 'REMOTE_HEALTHCARE', 1, 'REMOTE HEALTHCARE APP', 'linear');
+    plotGenericResult(1, 2, {'Failed tasks (%)'}, 'COGNITIVE_ASSISTANCE', 1, 'COGNITIVE ASSISTANCE APP', 'linear');
+    plotGenericResult(1, 2, {'Failed tasks (%)'}, 'AUGMENTED_REALITY', 1, 'AUGMENTED REALITY APP', 'linear');
+
 end

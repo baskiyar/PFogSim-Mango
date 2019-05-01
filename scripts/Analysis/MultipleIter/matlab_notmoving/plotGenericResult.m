@@ -1,4 +1,4 @@
-function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculatePercentage, graphTitle)
+function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculatePercentage, graphTitle, yScale)
     folderPath = getConfiguration(1);
     numOfSimulations = getConfiguration(3);
     stepOfxAxis = getConfiguration(4);
@@ -84,7 +84,11 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
             
             markers = getConfiguration(50);
             for j=1:size(scenarioType,2)
-                plot(xIndex, results(j,i),char(markers(j)),'MarkerEdgeColor',getConfiguration(20+j),'color',getConfiguration(20+j));
+                if strcmp(yScale,'log')
+                    semilogy(xIndex, max(1, results(j,i)),char(markers(j)),'MarkerEdgeColor',getConfiguration(20+j),'color',getConfiguration(20+j));  
+                elseif strcmp(yScale,'linear')               
+                    plot(xIndex, results(j,i),char(markers(j)),'MarkerEdgeColor',getConfiguration(20+j),'color',getConfiguration(20+j));
+                end
                 hold on;
             end
         end
