@@ -900,6 +900,16 @@ public class SimLogger {
 						+ Integer.toString(rejectedTaskDueToUnacceptableLatency[i]) + SimSettings.DELIMITER 
 						+ Integer.toString(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]); 
 				
+				// Capture failed tasks detailed info
+				String genericResult8 = "";
+				genericResult8 = 
+						Integer.toString(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]) 
+						+ Integer.toString(failedTaskDuetoMobility[i]) + SimSettings.DELIMITER
+						+ Integer.toString(rejectedTaskDueToLackofNodeCapacity[i]) + SimSettings.DELIMITER 
+						+ Integer.toString(rejectedTaskDueToLackofNetworkBandwidth[i]) + SimSettings.DELIMITER 
+						+ Integer.toString(rejectedTaskDueToUnacceptableLatency[i]) + SimSettings.DELIMITER; 
+
+				
 				// check if the divisor is zero in order to avoid division by zero problem
 				double _lanDelay = (completedTaskOnCloudlet[i] == 0) ? 0.0
 						: (lanDelay[i] / (double) completedTaskOnCloudlet[i]);
@@ -961,6 +971,7 @@ public class SimLogger {
 				appendToFile(genericBWs[i], genericResult5);
 				appendToFile(genericBWs[i], genericResult6);
 				appendToFile(genericBWs[i], genericResult7);
+				appendToFile(genericBWs[i], genericResult8);
 
 			}
 
