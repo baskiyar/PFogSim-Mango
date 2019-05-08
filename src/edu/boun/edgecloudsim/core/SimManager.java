@@ -335,7 +335,7 @@ public class SimManager extends SimEntity {
 				SimLogger.getInstance().addVmUtilizationLog(CloudSim.clock(),edgeServerManager.getAvgUtilization());
 				// for each fog node - capture current utilization - Shaik added
 				for (Datacenter node : SimManager.getInstance().getLocalServerManager().getDatacenterList()) {
-					SimLogger.getInstance().addFNMipsUtilizationLog(CloudSim.clock(), ((EdgeHost) node.getHostList().get(0)).getId(), ((EdgeHost)node.getHostList().get(0)).getLevel(), ((EdgeHost)node.getHostList().get(0)).getFnMipsUtilization());
+					SimLogger.getInstance().addFNMipsUtilizationLog(CloudSim.clock(), ((EdgeHost) node.getHostList().get(0)).getId(), ((EdgeHost)node.getHostList().get(0)).getLevel(), ((EdgeHost)node.getHostList().get(0)).getFnMipsUtilization() * 100); // Shaik added *100 - to report 100 times of current utlization, as node mips utilization is limited to 1% for our test environment.
 					SimLogger.getInstance().addFNNwUtilizationLog(CloudSim.clock(), ((EdgeHost) node.getHostList().get(0)).getId(), ((EdgeHost)node.getHostList().get(0)).getLevel(), ((EdgeHost)node.getHostList().get(0)).getFnNwUtilization());
 				}	
 				schedule(getId(), SimSettings.getInstance().getVmLoadLogInterval(), GET_LOAD_LOG);

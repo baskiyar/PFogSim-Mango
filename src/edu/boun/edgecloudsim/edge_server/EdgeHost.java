@@ -28,6 +28,7 @@ import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
+import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
@@ -249,7 +250,9 @@ public class EdgeHost extends Host {
 		long maxMips = this.getTotalMips();
 		Log.printLine("isMIPSAvailable:maxMips: "+maxMips); 
 		long tempLength = reserveMips + mb.getTaskLengthRequirement();
-		if (tempLength < maxMips) {
+		if (tempLength < (maxMips * SimSettings.MAX_NODE_MIPS_UTIL_ALLOWED / (double)100) ) {
+			// Due to large node Mips configurations, allowing only a maximum of 1% utilization, before the requests spill-over to find other node. --Shaik updated 
+			//Note: This limitation is specific to out test environment
 			return true;
 		}
 		else {

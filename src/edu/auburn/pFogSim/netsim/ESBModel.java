@@ -273,7 +273,7 @@ public class ESBModel extends NetworkModel {
 	 * @return
 	 */
 	private double getWlanUploadDelay(Location loc, double time) {
-		return calculateESB(0, loc.getBW(), WlanPoissonMean, avgTaskInputSize, getDeviceCount(loc, time));
+		return calculateESB(0, loc.getBW(), WlanPoissonMean, (avgTaskInputSize+avgTaskOutputSize), getDeviceCount(loc, time));
 	}
 	
 	//Qian add for get congestion delay

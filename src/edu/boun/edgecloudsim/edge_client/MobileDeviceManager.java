@@ -249,7 +249,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 				double cost = 0;
 
 				if (path == null || path.size() == 0) {
-					double bwCost = (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW(); 
+					//double bwCost = (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW(); 
+					double bwCost = ((task.getCloudletFileSize() + task.getCloudletOutputSize())*8 / (double)1024) * k.getCostPerBW(); //Data size in KB * 8b/B ==>Kb / 1024 = Mb; k.getCostPerBW() in $/Mb -- Shaik modified
 					double exCost = task.getActualCPUTime() * task.getCostPerSec();
 					cost = cost + bwCost;
 					//SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Level:\t" + k.getLevel() + "\tNode:\t" + k.getId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
@@ -261,7 +262,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 				else {
 					for (NodeSim node: path) {
 						k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos());
-						double bwCost = (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW();
+						//double bwCost = (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW();
+						double bwCost = ((task.getCloudletFileSize() + task.getCloudletOutputSize())*8 / (double)1024) * k.getCostPerBW(); //Data size in KB * 8b/B ==>Kb / 1024 = Mb; k.getCostPerBW() in $/Mb -- Shaik modified
 						cost = cost + bwCost;
 						//SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Level:\t" + k.getLevel() + "\tNode:\t" + k.getId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
 						//SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + (task.getCloudletFileSize() + task.getCloudletOutputSize()) + "\tBWCostPerSec:\t" + k.getCostPerBW());

@@ -62,7 +62,8 @@ public class SimSettings {
 	//generic ID for mobile device
 	public static int MOBILE_DEVICE_ID = 3000000;   // Shaik modified - prior value 3000
 
-	public static double ROUTER_PROCESSING_DELAY = 1; // Assumed 1 millisec constant delay per network hop - modify as appropriate for other test environments.
+	public static double ROUTER_PROCESSING_DELAY = 0.020; // Assumed 20 millisec constant delay per network hop - modify as appropriate for other test environments.
+	public static double MAX_NODE_MIPS_UTIL_ALLOWED = 1.0; // Maximum allowed node mips utilization before the requests spill over to a different fog node.
 	
 	//delimiter for output file.
 	public static String DELIMITER = ";";
@@ -504,7 +505,7 @@ public class SimSettings {
 	 *  [7] avg task length (MI)
 	 *  [8] required # of cores
 	 *  [9] vm utilization (%)
-	 * [10] max latency (milliseconds)
+	 * [10] max latency (Seconds)
 	 */ 
 	public double[][] getTaskLookUpTable()
 	{
@@ -598,7 +599,7 @@ public class SimSettings {
 			    taskLookUpTable[appType.ordinal()][7] = task_length; //avg task length (MI)
 			    taskLookUpTable[appType.ordinal()][8] = required_core; //required # of core
 			    taskLookUpTable[appType.ordinal()][9] = vm_utilization; //vm utilization [0-100]
-			    taskLookUpTable[appType.ordinal()][10] = delay_sensitivity * 1000; //delay_sensitivity (milliseconds) // Shaik modified to - '*1000' to convert the delay specification from seconds to milliseconds to match rest of the simulator design
+			    taskLookUpTable[appType.ordinal()][10] = delay_sensitivity; //delay_sensitivity (seconds)
 			    
 			}
 	
