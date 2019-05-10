@@ -1,4 +1,7 @@
 function [] = plotTaskFailureReason()
+
+    %---- Ignore this script.
+
     %{
     plotGenericResult(1, 10, 'Failed Task due to VM Capacity (%)', 'ALL_APPS', 1);
     plotGenericResult(1, 10, {'Failed Task due to VM Capacity';'for Augmented Reality App (%)'}, 'AUGMENTED_REALITY', 1);
