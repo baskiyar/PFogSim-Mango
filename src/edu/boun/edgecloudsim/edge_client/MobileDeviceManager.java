@@ -251,7 +251,9 @@ public class MobileDeviceManager extends DatacenterBroker {
 				if (path == null || path.size() == 0) {
 					//double bwCost = (task.getCloudletFileSize() + task.getCloudletOutputSize()) * k.getCostPerBW(); 
 					double bwCost = ((task.getCloudletFileSize() + task.getCloudletOutputSize())*8 / (double)1024) * k.getCostPerBW(); //Data size in KB * 8b/B ==>Kb / 1024 = Mb; k.getCostPerBW() in $/Mb -- Shaik modified
-					double exCost = task.getActualCPUTime() * task.getCostPerSec();
+					//double exCost = task.getActualCPUTime() * task.getCostPerSec();
+					double exCost = (double)task.getCloudletLength() / (k.getPeList().get(0).getMips()) * k.getCostPerSec(); // Shaik modified - May 09, 2019.
+
 					cost = cost + bwCost;
 					//SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Level:\t" + k.getLevel() + "\tNode:\t" + k.getId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
 					//SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + (task.getCloudletFileSize() + task.getCloudletOutputSize()) + "\tBWCostPerSec:\t" + k.getCostPerBW());
@@ -268,9 +270,10 @@ public class MobileDeviceManager extends DatacenterBroker {
 						//SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Level:\t" + k.getLevel() + "\tNode:\t" + k.getId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
 						//SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + (task.getCloudletFileSize() + task.getCloudletOutputSize()) + "\tBWCostPerSec:\t" + k.getCostPerBW());
 					}
-					double exCost = task.getActualCPUTime() * task.getCostPerSec();
-					cost = cost + exCost;
 					k = SimManager.getInstance().getLocalServerManager().findHostById(hostID);
+					double exCost = (double)task.getCloudletLength() / (k.getPeList().get(0).getMips()) * k.getCostPerSec(); // Shaik modified - May 09, 2019.
+					//double exCost = task.getActualCPUTime() * task.getCostPerSec(); //Shaik - Note: This includes task processing delay + queuing delay at fog node. We do not want to charge the tenant for queuing delay as well, as the delay itself is bad enough, adding extra cost for task execution would make it worse.  
+					cost = cost + exCost;
 					//SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Destination:\t"+ k.getId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
 					//SimLogger.getInstance().getCentralizeLogPrinter().println("Task actual CPU Time:\t" + task.getActualCPUTime() + "\tMipsCostPerSec:\t" + task.getCostPerSec());
 				}

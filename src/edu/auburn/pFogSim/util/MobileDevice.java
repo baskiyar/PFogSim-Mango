@@ -167,7 +167,7 @@ public class MobileDevice {
 	
 	
 	/**
-	 * get task length information
+	 * get task latency information
 	 * @author Shehenaz Shaik
 	 *	@return
 	 */

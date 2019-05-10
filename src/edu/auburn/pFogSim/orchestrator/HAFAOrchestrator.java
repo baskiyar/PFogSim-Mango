@@ -310,7 +310,12 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 				LinkedList<EdgeHost> nodes = sort.sortNodes();
 				EdgeHost prosHost = nodes.poll();
 				
-				//find the nearest node capable of hosting the application.
+				// All fog nodes belonging to a given layer have similar node capacity. hence, if the first one doesn't satisfy requirement, we ignore rest of the search for this layer. 
+				if (prosHost == null || !prosHost.isMIPSCapacitySufficient(mobile)) {
+					break;
+				}
+				
+				// Find the nearest node capable of hosting the application.
 				while(!goodHost(prosHost, mobile)) {
 					prosHost = nodes.poll(); 
 					if (prosHost == null) {
