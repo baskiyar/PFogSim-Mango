@@ -299,6 +299,12 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 			this.addNumPuddlesSearched(mobile.getId(), 1);
 			
 			prospectiveNodes = pud.getMembers();
+
+			// All fog nodes belonging to a given layer have similar node capacity. hence, if the first one doesn't satisfy requirement, we ignore rest of the search for this layer.
+			if ((prospectiveNodes.size() == 0) || !prospectiveNodes.get(0).isMIPSCapacitySufficient(mobile)) {
+				System.out.print("Level: "+levelIter+" Node Mips capacity insufficient.");
+				continue;
+			}
 			
 			// Identify the best (nearest) node to host the application among prospective nodes.
 			System.out.print("Level: "+levelIter+" Prospective host:  ");
@@ -309,12 +315,7 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 				DistRadix sort = new DistRadix(prospectiveNodes, mobile.getLocation()); //use radix sort based on distance from mobile device.
 				LinkedList<EdgeHost> nodes = sort.sortNodes();
 				EdgeHost prosHost = nodes.poll();
-				
-				// All fog nodes belonging to a given layer have similar node capacity. hence, if the first one doesn't satisfy requirement, we ignore rest of the search for this layer. 
-				if (prosHost == null || !prosHost.isMIPSCapacitySufficient(mobile)) {
-					break;
-				}
-				
+								
 				// Find the nearest node capable of hosting the application.
 				while(!goodHost(prosHost, mobile)) {
 					prosHost = nodes.poll(); 
