@@ -53,10 +53,10 @@
 		<vm_utilization>10</vm_utilization>
 	</application>
 	<application name="COGNITIVE_ASSISTANCE">
-		<usage_percentage>0</usage_percentage>
+		<usage_percentage>100</usage_percentage>
 		<prob_cloud_selection>20</prob_cloud_selection>
 		<poisson_interarrival>5</poisson_interarrival>
-		<delay_sensitivity>0.2</delay_sensitivity>
+		<delay_sensitivity>0.37</delay_sensitivity>
 		<active_period>45</active_period>
 		<idle_period>15</idle_period>
 		<data_upload>1500</data_upload>
@@ -79,7 +79,7 @@
 		<vm_utilization>5</vm_utilization>
 	</application>
 	<application name="MACHINE_LEARNING">
-		<usage_percentage>100</usage_percentage>
+		<usage_percentage>0</usage_percentage>
 		<prob_cloud_selection>20</prob_cloud_selection>
 		<poisson_interarrival>5</poisson_interarrival>
 		<delay_sensitivity>10000.000</delay_sensitivity>

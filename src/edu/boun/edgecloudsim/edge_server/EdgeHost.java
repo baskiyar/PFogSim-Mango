@@ -249,7 +249,7 @@ public class EdgeHost extends Host {
 	 */
 	public boolean isMIPSCapacitySufficient(MobileDevice mb) {
 		double reqMips = (double)mb.getTaskLengthRequirement();
-		double hostMipsCapacity = this.getPeList().get(0).getMips();
+		double hostMipsCapacity = this.getPeList().get(0).getMips() * (double)1 / 100.0;
 		
 		if (reqMips < hostMipsCapacity) {
 			return true;

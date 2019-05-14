@@ -305,7 +305,10 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 				System.out.print("Level: "+levelIter+" Node Mips capacity insufficient.");
 				continue;
 			}
-			
+			else {
+				
+				//set latencylimitflag to 1;
+				
 			// Identify the best (nearest) node to host the application among prospective nodes.
 			System.out.print("Level: "+levelIter+" Prospective host:  ");
 			while (prospectiveNodes.size() != 0) {
@@ -315,9 +318,14 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 				DistRadix sort = new DistRadix(prospectiveNodes, mobile.getLocation()); //use radix sort based on distance from mobile device.
 				LinkedList<EdgeHost> nodes = sort.sortNodes();
 				EdgeHost prosHost = nodes.poll();
-								
+					
+				
+				
 				// Find the nearest node capable of hosting the application.
 				while(!goodHost(prosHost, mobile)) {
+					
+					// if mobile flag is not due-to-latency --> set latencylimitflag to 0;
+					
 					prosHost = nodes.poll(); 
 					if (prosHost == null) {
 						break;
@@ -330,6 +338,12 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 					goodNodesPerLayer.add(prosHost);
 					break;
 				}
+				
+				// if latencylimitflag is 1 --> all prospective nodes has sufficient mips, but failed due to latency; 
+				// give just one more chance to expand search, beyond which we assume the nodes are too far anyway ( heuristic) & may have higher latency
+				// if latencylimitflag = 2; then print latency unacceptable for this layer; and break
+				// else set latencylimitflag ++ i.e. set to 2 i.e. give a second chance to expand search; or set to 1 to restart the racking prcess. 
+				// and continue executing the fllowing code..
 				
 				// Search unsuccessful, hence expand search to siblings/neighbors using parent subtree.
 				// Get list of other prospective nodes belonging to this layer in the parent subtree
@@ -345,6 +359,7 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 				pud = SimManager.getInstance().getEdgeServerManager().findPuddleById(pud.getLevel()+1, pud.getParentPuddleId());
 
 			}
+			}// end if
 		}// end for - levelIter
 
 		// Part-B: Find cost-optimal node from the set of good nodes identified one per fog layer
