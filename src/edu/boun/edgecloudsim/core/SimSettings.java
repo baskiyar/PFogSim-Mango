@@ -783,7 +783,7 @@ public class SimSettings {
 	 * Qian get trace enabled infomation 
 	 * @return
 	 */
-	public boolean traceEnalbe() {
+	public boolean traceEnable() {
 		return TRACE_ENABLED;
 	}
 

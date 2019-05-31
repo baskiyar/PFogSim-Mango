@@ -110,7 +110,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 				networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi);
 			}*/
 			
-			if (SimSettings.getInstance().traceEnalbe()) {
+			if (SimSettings.getInstance().traceEnable()) {
 				SimLogger.printLine("WlanDelay: "+ WlanDelay+ "  taskmaxDelay: "+task.getMaxDelay());
 				if (WlanDelay < 0)
 					SimLogger.printLine("FAILED DUE TO BANDWIDTH during Download in processCloudletReturn");
@@ -295,7 +295,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 					SimLogger.getInstance().taskRejected(task.getCloudletId(), CloudSim.clock(), SimLogger.TASK_STATUS.REJECTED_DUE_TO_UNACCEPTABLE_LATENCY ); // Shaik added
 					//System.out.println("submitTask: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to unacceptable latency.");
 					
-					if (SimSettings.getInstance().traceEnalbe()) {
+					if (SimSettings.getInstance().traceEnable()) {
 						SimLogger.printLine("submitTask: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to unacceptable latency.");
 					}
 				}
@@ -339,7 +339,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 					selectedVM.getId(),
 					selectedVM.getVmType().ordinal());
 
-			if (SimSettings.getInstance().traceEnalbe()) {
+			if (SimSettings.getInstance().traceEnable()) {
 				SimLogger.printLine("submitTaskToEdgeDevice: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+"  Selected VM: "+ selectedVM.getId());
 			}
 
@@ -348,7 +348,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 			//SimLogger.printLine("Task #" + task.getCloudletId() + " cannot assign to any VM");
 			SimLogger.getInstance().taskRejected(task.getCloudletId(), CloudSim.clock(),getMobileDevices().get(task.getMobileDeviceId()).getAssignHostStatus());
 
-			if (SimSettings.getInstance().traceEnalbe()) {
+			if (SimSettings.getInstance().traceEnable()) {
 				SimLogger.printLine("submitTaskToEdgeDevice: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to host unavailability");
 			}
 			
@@ -386,7 +386,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 			//SimLogger.getInstance().rejectedDueToVMCapacity(task.getCloudletId(), CloudSim.clock()); // Shaik commented
 			SimLogger.getInstance().taskRejected(task.getCloudletId(), CloudSim.clock(),getMobileDevices().get(task.getMobileDeviceId()).getAssignHostStatus()); // Shaik added
 			// Shaik added	
-			if (SimSettings.getInstance().traceEnalbe()) {
+			if (SimSettings.getInstance().traceEnable()) {
 				SimLogger.printLine("submitTask: Task: "+task.getCloudletId()+"  Assigned Host: "+task.getAssociatedHostId()+" - task rejected due to host unavailability");
 			}
 
@@ -437,7 +437,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 			SimSettings.CLOUD_TRANSFER isCloud = (nextHopId== 0)?SimSettings.CLOUD_TRANSFER.CLOUD_UPLOAD:SimSettings.CLOUD_TRANSFER.IGNORE;
 			double WlanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
 
-			if (SimSettings.getInstance().traceEnalbe()) {
+			if (SimSettings.getInstance().traceEnable()) {
 				SimLogger.printLine("WlanDelay: "+ WlanDelay+ "  taskmaxDelay: "+task.getMaxDelay());
 				if (WlanDelay < 0)
 					SimLogger.printLine("submitTask: FAILED DUE TO BANDWIDTH during Upload in submitTask");
