@@ -95,7 +95,7 @@ public class mainApp {
 		SS.setSimulationSpace(DataInterpreter.getSimulationSpace());
 		SS.setMaxLevels(DataInterpreter.getMaxLevels());
 		SS.setInputType(DataInterpreter.getInputType());
-		SS.setMobileDevicesMoving(iterationNumber >= 9); // 9 is the count of scenarios in properties file.
+		SS.setMobileDevicesMoving(SS.getMovingDevices()); // 9 is the count of scenarios in properties file.
 		
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date SimulationStartDate = Calendar.getInstance().getTime();

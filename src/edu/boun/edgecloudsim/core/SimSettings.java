@@ -100,6 +100,8 @@ public class SimSettings {
 
     private int MIPS_FOR_CLOUD; //MIPS
     
+    private boolean MOVING_DEVICES; //Mobile devices should be moving?
+    
     //Qian selected nodes
     private String[] SELECTED_NODES;
     private int[] selectedHostIds; // Shaik added
@@ -183,6 +185,7 @@ public class SimSettings {
 			MIN_NUM_OF_MOBILE_DEVICES = Integer.parseInt(prop.getProperty("min_number_of_mobile_devices"));
 			MAX_NUM_OF_MOBILE_DEVICES = Integer.parseInt(prop.getProperty("max_number_of_mobile_devices"));
 			MOBILE_DEVICE_COUNTER_SIZE = Integer.parseInt(prop.getProperty("mobile_device_counter_size"));
+			MOVING_DEVICES = Boolean.parseBoolean(prop.getProperty("moving_devices"));
 			
 			WAN_PROPOGATION_DELAY = Double.parseDouble(prop.getProperty("wan_propogation_delay"));
 			LAN_INTERNAL_DELAY = Double.parseDouble(prop.getProperty("lan_internal_delay"));
@@ -415,6 +418,14 @@ public class SimSettings {
 	public int getMaxNumOfMobileDev()
 	{
 		return MAX_NUM_OF_MOBILE_DEVICES;
+	}
+	
+	/**
+	 * 
+	 * @return Should low level fog nodes be mobile?
+	 */
+	public boolean getMovingDevices() {
+		return MOVING_DEVICES;
 	}
 
 	
