@@ -245,7 +245,7 @@ public class SimSettings {
 				}
 			}
 		}
-		parseApplicatinosXML(applicationsFile);
+		parseApplicationsXML(applicationsFile);
 		parseEdgeDevicesXML(edgeDevicesFile);
 		parseLinksXML(linksFile);
 		
@@ -558,7 +558,7 @@ public class SimSettings {
 	 * 
 	 * @param filePath
 	 */
-	private void parseApplicatinosXML(String filePath)
+	private void parseApplicationsXML(String filePath)
 	{
 		Document doc = null;
 		try {	
