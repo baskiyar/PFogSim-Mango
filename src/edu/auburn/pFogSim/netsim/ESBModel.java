@@ -20,6 +20,7 @@ import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -380,18 +381,31 @@ public class ESBModel extends NetworkModel {
 	 */
 	public void gravityWell() {
 		int errors = 0;
-		for (NodeSim src : networkTopology.getNodes()) {
-			for (NodeSim dest : networkTopology.getNodes()) {
+		//Pathfinding should not need to run both ways, i.e. path to j from i is the same as i -> j. This is faster.
+		NodeSim[] nodes = networkTopology.getNodes().toArray(nodes);
+		for (int i = 0; i < nodes.length-1; i++) {
+			for (int j = i; j < nodes.length; j++) {
 				try {
-					router.findPath(networkTopology, src, dest);
-				}
-				catch (BlackHoleException e) {
+					router.findPath(networkTopology, nodes[i], nodes[j]);
+				}catch(BlackHoleException e){
 					errors++;
-					SimLogger.printLine(src.toString() + ", " + dest.toString());
+					SimLogger.printLine(nodes[i].toString() + ", " + nodes[j].toString());
 					//router.findPath(networkTopology, src, dest);
 				}
 			}
 		}
+//		for (NodeSim src : networkTopology.getNodes()) {
+//			for (NodeSim dest : networkTopology.getNodes()) {
+//				try {
+//					router.findPath(networkTopology, src, dest);
+//				}
+//				catch (BlackHoleException e) {
+//					errors++;
+//					SimLogger.printLine(src.toString() + ", " + dest.toString());
+//					//router.findPath(networkTopology, src, dest);
+//				}
+//			}
+//		}
 		if (errors > 0) {
 			SimLogger.printLine("Errors: " + errors);
 			gravityWell();
