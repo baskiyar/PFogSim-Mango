@@ -190,9 +190,9 @@ public class EdgeServerManager {
 	
 	/**
 	 * 
-	 * @param brockerId
+	 * @param brokerID
 	 */
-	public void createVmList(int brockerId){
+	public void createVmList(int brokerID){
 		int hostCounter=0;
 		int vmCounter=0;
 		
@@ -201,23 +201,23 @@ public class EdgeServerManager {
 		//Create VMs for each hosts
 		Document doc = SimSettings.getInstance().getEdgeDevicesDocument();
 		NodeList datacenterList = doc.getElementsByTagName("datacenter");
-		for (int i = 0; i < datacenterList.getLength(); i++) {
-			Node datacenterNode = datacenterList.item(i);
+		for (int dataCenterIdx = 0; dataCenterIdx < datacenterList.getLength(); dataCenterIdx++) {
+			Node datacenterNode = datacenterList.item(dataCenterIdx);
 			Element datacenterElement = (Element) datacenterNode;
 			String arch = datacenterElement.getAttribute("arch");
 			NodeList hostNodeList = datacenterElement.getElementsByTagName("host");
 			
 			Element location = (Element)datacenterElement.getElementsByTagName("location").item(0); // shaik added
 			
-			for (int j = 0; j < hostNodeList.getLength(); j++) {
+			for (int hostNodeIdx = 0; hostNodeIdx < hostNodeList.getLength(); hostNodeIdx++) {
 				
 				vmList.add(hostCounter, new ArrayList<EdgeVM>());
 				
-				Node hostNode = hostNodeList.item(j);
+				Node hostNode = hostNodeList.item(hostNodeIdx);
 				Element hostElement = (Element) hostNode;
 				NodeList vmNodeList = hostElement.getElementsByTagName("VM");
-				for (int k = 0; k < vmNodeList.getLength(); k++) {
-					Node vmNode = vmNodeList.item(k);					
+				for (int vmNodeIdx = 0; vmNodeIdx < vmNodeList.getLength(); vmNodeIdx++) {
+					Node vmNode = vmNodeList.item(vmNodeIdx);					
 					Element vmElement = (Element) vmNode;
 
 					String vmm = vmElement.getAttribute("vmm");
@@ -230,7 +230,7 @@ public class EdgeServerManager {
 					long bandwidth = Long.parseLong(location.getElementsByTagName("bandwidth").item(0).getTextContent()); // shaik added
 					
 					//VM Parameters		
-					EdgeVM vm = new EdgeVM(vmCounter, brockerId, mips, numOfCores, (int) ram, bandwidth, storage, vmm, new CloudletSchedulerTimeShared());
+					EdgeVM vm = new EdgeVM(vmCounter, brokerID, mips, numOfCores, (int) ram, bandwidth, storage, vmm, new CloudletSchedulerTimeShared());
 					vm.setVmType(SimSettings.VM_TYPES.EDGE_VM);
 					vm.setArch(arch);
 					vmList.get(hostCounter).add(vm);
@@ -264,11 +264,11 @@ public class EdgeServerManager {
 		double vmCounter = 0;
 		
 		// for each datacenter...
-		for(int i= 0; i<localDatacenters.size(); i++) {
-			List<? extends Host> list = localDatacenters.get(i).getHostList();
+		for(int localDataCenterIdx= 0; localDataCenterIdx<localDatacenters.size(); localDataCenterIdx++) {
+			List<? extends Host> localDataCenterHosts = localDatacenters.get(localDataCenterIdx).getHostList();
 			// for each host...
-			for (int j=0; j < list.size(); j++) {
-				Host host = list.get(j);
+			for (int localHostIdx=0; localHostIdx < localDataCenterHosts.size(); localHostIdx++) {
+				Host host = localDataCenterHosts.get(localHostIdx);
 				List<EdgeVM> vmArray = SimManager.getInstance().getLocalServerManager().getVmList(host.getId());
 				//for each vm...
 				for(int vmIndex=0; vmIndex<vmArray.size(); vmIndex++){
