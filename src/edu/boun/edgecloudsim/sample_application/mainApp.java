@@ -103,7 +103,7 @@ public class mainApp {
 		SimLogger.printLine("Simulation started at " + now);
 		SimLogger.printLine("----------------------------------------------------------------------");
 
-		for(int j=SS.getMinNumOfMobileDev(); j<=SS.getMaxNumOfMobileDev(); j+=SS.getMobileDevCounterSize())
+		for(int iteMobileDevices=SS.getMinNumOfMobileDev(); iteMobileDevices<=SS.getMaxNumOfMobileDev(); iteMobileDevices+=SS.getMobileDevCounterSize())
 		{
 			for(int k=0; k<1; k++)
 			{
@@ -116,8 +116,8 @@ public class mainApp {
 					
 					SimLogger.printLine("Scenario started at " + now);
 					SimLogger.printLine("Scenario: " + simScenario + " - Policy: " + orchestratorPolicy + " - #iteration: " + iterationNumber);
-					SimLogger.printLine("Duration: " + SS.getSimulationTime()/3600 + " hour(s) - Poisson: " + SS.getTaskLookUpTable()[0][2] + " - #devices: " + j);
-					SimLogger.getInstance().simStarted(outputFolder,"SIMRESULT_" + simScenario + "_"  + orchestratorPolicy + "_" + j + "DEVICES");
+					SimLogger.printLine("Duration: " + SS.getSimulationTime()/3600 + " hour(s) - Poisson: " + SS.getTaskLookUpTable()[0][2] + " - #devices: " + iteMobileDevices);
+					SimLogger.getInstance().simStarted(outputFolder,"SIMRESULT_" + simScenario + "_"  + orchestratorPolicy + "_" + iteMobileDevices + "DEVICES");
 					
 					try
 					{
@@ -131,10 +131,10 @@ public class mainApp {
 						CloudSim.init(num_user, calendar, trace_flag, 0.01);
 						SimLogger.printLine("CloudSim.init reached");
 						// Generate EdgeCloudsim Scenario Factory
-						ScenarioFactory sampleFactory = new SampleScenarioFactory(j,SS.getSimulationTime(), orchestratorPolicy, simScenario);
+						ScenarioFactory sampleFactory = new SampleScenarioFactory(iteMobileDevices,SS.getSimulationTime(), orchestratorPolicy, simScenario);
 						SimLogger.printLine("ScenarioFactory reached");
 						// Generate EdgeCloudSim Simulation Manager
-						SimManager manager = new SimManager(sampleFactory, j, simScenario);
+						SimManager manager = new SimManager(sampleFactory, iteMobileDevices, simScenario);
 						SimLogger.printLine("SimManager reached");
 						// Start simulation
 						manager.startSimulation();

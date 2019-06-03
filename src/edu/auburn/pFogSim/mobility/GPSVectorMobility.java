@@ -129,6 +129,7 @@ public class GPSVectorMobility extends MobilityModel {
 				
 				if(movingDevices) 
 				{
+					Location entry = treeMap.lastEntry().getValue();
 					double x_pos = treeMap.lastEntry().getValue().getXPos();
 					double y_pos = treeMap.lastEntry().getValue().getYPos();				
 					int wlan_id = treeMap.lastEntry().getValue().getServingWlanId();
