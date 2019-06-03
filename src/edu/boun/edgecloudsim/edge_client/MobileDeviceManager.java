@@ -477,7 +477,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		Task task = new Task(edgeTask.mobileDeviceId, ++taskIdCounter,
 				edgeTask.length, edgeTask.pesNumber,
 				edgeTask.inputFileSize, edgeTask.outputFileSize,
-				utilizationModelCPU, utilizationModel, utilizationModel, edgeTask.wifi, edgeTask.sens, edgeTask.act);
+				utilizationModelCPU, utilizationModel, utilizationModel, edgeTask.wifi, edgeTask.sensor, edgeTask.actuator);
 		
 		//set the owner of this task
 		task.setUserId(this.getId());
@@ -487,7 +487,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		
 		//Qian add for sensor generated task getting destination uncomment the code inside if statement.
 		//Also please uncomment the line 81.
-		if (edgeTask.sens) {
+		if (edgeTask.sensor) {
 			//task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
 		}
 		return task;
