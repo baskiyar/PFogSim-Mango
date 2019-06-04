@@ -55,7 +55,7 @@ public class mainApp {
 			e.printStackTrace();
 		}
 		
-		int iterationNumber = 2; // index for the list of n scenarios in properties file is from 0..n-1
+		int iterationNumber = 9; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
 		String edgeDevicesFile = "";
@@ -109,7 +109,11 @@ public class mainApp {
 			{
 				for(int i=0; i<1; i++)
 				{
-					String simScenario = SS.getSimulationScenarios()[iterationNumber%9]; // 9 is the count of scenarios in properties file. 
+					if(iterationNumber > 9 || iterationNumber < 0) {
+						SimLogger.printLine("Iteration Number " + iterationNumber + " hasn't been implemented yet.");
+						System.exit(0);
+					}
+					String simScenario = SS.getSimulationScenarios()[iterationNumber]; // 9 is the count of scenarios in properties file. 
 					String orchestratorPolicy = SS.getOrchestratorPolicies()[i];
 					Date ScenarioStartDate = Calendar.getInstance().getTime();
 					now = df.format(ScenarioStartDate);
