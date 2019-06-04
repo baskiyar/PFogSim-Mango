@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.diagram.PowerDiagram;
 import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.j2d.Site;
@@ -109,15 +110,15 @@ public class XYVectorMobility extends MobilityModel {
 			//start locating user from 10th seconds
 			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos));
 		}
-
+		Random rng = new Random(SimSettings.getInstance().getRandomSeed());
 		for(int i=0; i<numberOfMobileDevices; i++) {
 			TreeMap<Double, Location> treeMap = treeMapArray.get(i);
 			//Make random numbers to make the vectors
 			double up, right;
 			if(movingDevices)
 			{
-				up = 5 * (Math.random() - 0.5) * 0.000001; //Approximates movement of 5 meters * (random constant < 1)
-				right = 5 * (Math.random() - 0.5) * 0.000001; //Same for right
+				up = 5 * (rng.nextDouble()- 0.5) * 0.000001; //Approximates movement of 5 meters * (random constant < 1)
+				right = 5 * (rng.nextDouble() - 0.5) * 0.000001; //Same for right
 			}
 			else {
 				up = 0;

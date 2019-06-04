@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -138,6 +139,8 @@ public class SimSettings {
     private String inputType;
     private boolean mobileDevicesMoving;
     
+    private int RANDOM_SEED;
+    
     
     /**
      * 
@@ -219,6 +222,13 @@ public class SimSettings {
 			ORCHESTRATOR_POLICIES = prop.getProperty("orchestrator_policies").split(",");
 			
 			SIMULATION_SCENARIOS = prop.getProperty("simulation_scenarios").split(",");
+			
+			try{
+				RANDOM_SEED = Integer.parseInt(prop.getProperty("random_seed"));
+			}catch (Exception e) {
+				Random r = new Random();
+				RANDOM_SEED = r.nextInt();// TODO: handle exception
+			}
 			
 			//avg waiting time in a place (min)
 			double place1_mean_waiting_time = Double.parseDouble(prop.getProperty("attractiveness_L1_mean_waiting_time"));
@@ -715,6 +725,15 @@ public class SimSettings {
 		}		
 	}
 
+	/**
+	 * Increments random_seed to avoid multiple distributions with the same rng.
+	 * @return Integer for seeding randoms.
+	 */
+	public int getRandomSeed() {
+		int val = RANDOM_SEED;
+		RANDOM_SEED++;
+		return val;
+	}
 	
 	/**
 	 * 
