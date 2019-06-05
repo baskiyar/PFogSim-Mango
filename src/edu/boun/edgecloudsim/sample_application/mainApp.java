@@ -39,8 +39,9 @@ public class mainApp {
 	
 	/**
 	 * Creates main() to run this example
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 				
 		// Comment the following line for detailed logging
 		Log.disable();
@@ -58,6 +59,7 @@ public class mainApp {
 		int iterationNumber = 2; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
+		String outFolder2 = "";
 		String edgeDevicesFile = "";
 		String applicationsFile = "";
 		//String linksFile = "scripts/sample_application/config/links_test.xml";
@@ -70,15 +72,19 @@ public class mainApp {
 			applicationsFile = args[2];
 			outputFolder = args[3];
 			iterationNumber = Integer.parseInt(args[4]);
+			outFolder2 = "sim_results/consoleruns";
 		}
 		else{
-			SimLogger.printLine("Simulation setting file, output folder and iteration number are not provided! Using default ones...");
+			
 			configFile = "scripts/sample_application/config/default_config.properties";
 			applicationsFile = "scripts/sample_application/config/applications.xml";
 			//edgeDevicesFile = "scripts/sample_application/config/edge_devices_test.xml";
 			//edgeDevicesFile = "small_node_test.xml";
 			edgeDevicesFile = "node_test.xml";
 			outputFolder = "sim_results/ite" + iterationNumber;
+			outFolder2 = "sim_results/consoleruns";
+			SimLogger.fileInitialize(outFolder2);
+			SimLogger.printLine("Simulation setting file, output folder and iteration number are not provided! Using default ones...");
 		}
 
 		//load settings from configuration file
