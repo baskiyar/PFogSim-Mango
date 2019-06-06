@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <applications>
 	<application name="AUGMENTED_REALITY">
-		<usage_percentage>0</usage_percentage>
+		<usage_percentage>100</usage_percentage>
 		<prob_cloud_selection>20</prob_cloud_selection>
 		<poisson_interarrival>5</poisson_interarrival>
 		<delay_sensitivity>5</delay_sensitivity>
@@ -79,7 +79,7 @@
 		<vm_utilization>5</vm_utilization>
 	</application>
 	<application name="MACHINE_LEARNING">
-		<usage_percentage>100</usage_percentage>
+		<usage_percentage>0</usage_percentage>
 		<prob_cloud_selection>20</prob_cloud_selection>
 		<poisson_interarrival>5</poisson_interarrival>
 		<delay_sensitivity>10000.000</delay_sensitivity>
