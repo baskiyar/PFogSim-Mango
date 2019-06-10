@@ -488,7 +488,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		//Qian add for sensor generated task getting destination uncomment the code inside if statement.
 		//Also please uncomment the line 81.
 		if (edgeTask.sensor) {
-			//task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
+			task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
 		}
 		return task;
 	}
