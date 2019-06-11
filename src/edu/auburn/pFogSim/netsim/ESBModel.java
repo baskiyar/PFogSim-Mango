@@ -382,7 +382,7 @@ public class ESBModel extends NetworkModel {
 	public void gravityWell() {
 		int errors = 0;
 		//Pathfinding should not need to run both ways, i.e. path to j from i is the same as i -> j. This is faster.
-		NodeSim[] nodes = networkTopology.getNodes().toArray(nodes);
+		NodeSim[] nodes = networkTopology.getNodes().toArray(new NodeSim[0]);
 		for (int i = 0; i < nodes.length-1; i++) {
 			for (int j = i; j < nodes.length; j++) {
 				try {

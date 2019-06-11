@@ -98,7 +98,7 @@ public class GPSVectorMobility extends MobilityModel {
 			int wlan_id = accessPoints.get(randDatacenterId).getWlanId();
 			double x_pos = accessPoints.get(randDatacenterId).getLocation().getXPos();
 			double y_pos = accessPoints.get(randDatacenterId).getLocation().getYPos();
-			SimLogger.printLine("#" + i + "X: " + x_pos + " Y: " + y_pos);
+			//SimLogger.printLine("#" + i + "X: " + x_pos + " Y: " + y_pos);
 			//Qian find device #1071
 			/*int wlan_id = 0;
 			double x_pos = 0;
@@ -180,7 +180,7 @@ public class GPSVectorMobility extends MobilityModel {
 					//	smaller value in there, the more it updates
 					//As it is now, allows devices to change wlan_ids around 600 times in an hour
 					treeMap.put(treeMap.lastKey()+1, new Location(wlan_id, x_pos + right, y_pos + up));
-					SimLogger.printLine("Device: " + i + " X: " + (x_pos + right) + " Y: " + (y_pos + up) + " @ Time: " + (treeMap.lastKey() + 1));
+					//SimLogger.printLine("Device: " + i + " X: " + (x_pos + right) + " Y: " + (y_pos + up) + " @ Time: " + (treeMap.lastKey() + 1));
 					//SimLogger.printLine("Length = " + treeMap.size());
 				}
 				else {
