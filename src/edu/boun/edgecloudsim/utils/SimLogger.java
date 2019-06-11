@@ -28,6 +28,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 import org.cloudbus.cloudsim.core.CloudSim;
 
@@ -55,8 +58,8 @@ public class SimLogger {
 
 	private static boolean fileLogEnabled;
 	private static boolean printLogEnabled;
-	private String filePrefix;
-	private String outputFolder;
+	private static String filePrefix;
+	private static String outputFolder;
 	private Map<Integer, LogItem> taskMap;
 	private LinkedList<VmLoadLogItem> vmLoadList;
 	private LinkedList<FNMipsUtilLogItem> fnMipsUtilList; // shaik added
@@ -64,6 +67,9 @@ public class SimLogger {
 	private File centerLogFile;
 	PrintWriter centerFileW;
 	private ArrayList<Integer> utlizationArray;
+	private static File textFile;
+	private static FileOutputStream fos;
+	private static PrintStream ps;
 	
 	private static SimLogger singleton = new SimLogger();
 	
@@ -92,10 +98,12 @@ public class SimLogger {
 
 	
 	/**
+	 * @throws IOException 
 	 * 
 	 */
-	public static void enablePrintLog() {
+	public static void enablePrintLog() throws IOException {
 		printLogEnabled = true;
+		
 	}
 
 
@@ -126,6 +134,12 @@ public class SimLogger {
 		bw.write(line);
 		bw.newLine();
 	}
+	
+	public File getConsoleTxtFile() {
+		return this.textFile;
+	}
+	
+	
 
 	
 	/**
@@ -135,6 +149,7 @@ public class SimLogger {
 	public static void printLine(String msg) {
 		if (printLogEnabled)
 			System.out.println(msg);
+			ps.println(msg);
 	}
 
 	
@@ -145,16 +160,26 @@ public class SimLogger {
 	public static void print(String msg) {
 		if (printLogEnabled)
 			System.out.print(msg);
+			ps.print(msg);
 	}
-
+	
+	public static void fileInitialize(String outputFolder) throws IOException {
+		textFile = new File(outputFolder, Long.toString(System.currentTimeMillis()) + "_console.txt");
+		//textFile = new File("_consoleOut" + Long.toString(System.currentTimeMillis()) + ".txt");
+		textFile.createNewFile();
+		fos = new FileOutputStream(textFile);
+		ps = new PrintStream(fos);
+	}
 	
 	/**
 	 * @param outFolder
 	 * @param fileName
+	 * @throws IOException 
 	 */
-	public void simStarted(String outFolder, String fileName) {
+	public void simStarted(String outFolder, String fileName) throws IOException {
 		filePrefix = fileName;
 		outputFolder = outFolder;
+		
 		taskMap = new HashMap<Integer, LogItem>();
 		vmLoadList = new LinkedList<VmLoadLogItem>();
 		fnMipsUtilList = new LinkedList<FNMipsUtilLogItem>(); // shaik added

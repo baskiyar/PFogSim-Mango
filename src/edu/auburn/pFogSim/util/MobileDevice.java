@@ -21,6 +21,7 @@ public class MobileDevice {
 
 	private Location location;
 	private int id;
+	private int desMobileUser;
 	private EdgeHost host = null;
 	private SimLogger.TASK_STATUS assignHostStatus;
 	
@@ -203,6 +204,16 @@ public class MobileDevice {
 	 */
 	public void setAppType(SimSettings.APP_TYPES appType) {
 		this.appType = appType;
+	}
+
+
+	public int getDesMobileUser() {
+		return desMobileUser;
+	}
+
+
+	public void setDesMobileUser(int desMobileUser) {
+		this.desMobileUser = desMobileUser;
 	}
 	
 }
