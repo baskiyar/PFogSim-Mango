@@ -123,8 +123,8 @@ public class GPSVectorMobility extends MobilityModel {
 			//start locating user from 10th seconds
 			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos));
 			userTreeMapArray.get(i).put((double)10, new Location(wlan_id2, x_pos2, y_pos2));
-			SimLogger.printLine("ID: " + i + " Location: " + treeMapArray.get(i).lastEntry().getValue().getXPos() + ", " + treeMapArray.get(i).lastEntry().getValue().getYPos());
-			SimLogger.printLine("---User ID: " + (i + numberOfMobileDevices) + " Location: " + userTreeMapArray.get(i).lastEntry().getValue().getXPos() + ", " + userTreeMapArray.get(i).lastEntry().getValue().getYPos());
+			//SimLogger.printLine("ID: " + i + " Location: " + treeMapArray.get(i).lastEntry().getValue().getXPos() + ", " + treeMapArray.get(i).lastEntry().getValue().getYPos());
+			//SimLogger.printLine("---User ID: " + (i + numberOfMobileDevices) + " Location: " + userTreeMapArray.get(i).lastEntry().getValue().getXPos() + ", " + userTreeMapArray.get(i).lastEntry().getValue().getYPos());
 			
 		}
 		treeMapArray.addAll(userTreeMapArray);

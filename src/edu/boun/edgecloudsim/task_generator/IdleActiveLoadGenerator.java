@@ -119,7 +119,7 @@ public class IdleActiveLoadGenerator extends LoadGeneratorModel{
 				//Also uncomment codes of line 491 inside MobileDeviceManager.jave.
 				if (sens) {		
 					newTask.setDesMobileDeviceId(i + numberOfMobileDevices);
-					SimLogger.printLine("Source: " + i + " Des: " + newTask.getDesMobileDeviceId());
+					//SimLogger.printLine("Source: " + i + " Des: " + newTask.getDesMobileDeviceId());
 				}
 				
 				taskList.add(newTask);

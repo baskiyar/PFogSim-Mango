@@ -94,9 +94,9 @@ public class MobileDeviceManager extends DatacenterBroker {
 		Task task = (Task) ev.getData();
 
 		Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock());
-		//Qian added for sensor generated tasks getting download destination. 
+		//Qian added for sensor generated tasks getting download destination. Uncomment code on line 491 (Producer/Consumer)
 		if (task.sens) {
-			//Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileId(),CloudSim.clock());
+			currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileId(),CloudSim.clock());
 		}
 		
 		//if(task.getSubmittedLocation().equals(currentLocation))
@@ -468,6 +468,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 	/**
 	 * 
 	 * @param edgeTask
+	 * 
 	 * @return
 	 */
 	public Task createTask(EdgeTask edgeTask){
@@ -486,7 +487,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		
 		
 		//Qian add for sensor generated task getting destination uncomment the code inside if statement.
-		//Also please uncomment the line 81.
+		//Also please uncomment the line 81. And IdleActiveLoadGenerator.java line 121
 		if (edgeTask.sensor) {
 			task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
 		}
