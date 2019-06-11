@@ -175,7 +175,7 @@ public class Task extends Cloudlet {
 	 * @param deviceId
 	 */
 	public void setDesMobileDeviceId(int deviceId) {
-		this.mobileDeviceId = deviceId;
+		this.desMobileDeviceId = deviceId;
 	}
 	
 	
