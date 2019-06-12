@@ -370,6 +370,10 @@ public class SimLogger {
 		taskMap.get(taskId).setDistance(dist);
 	}
 	
+	public void addUserDistanceLog(int taskId, double dist) {
+		taskMap.get(taskId).setDistanceToUser(dist);
+	}
+	
 	
 	/**
 	 * 
@@ -480,6 +484,7 @@ public class SimLogger {
 		int[] rejectedTaskDueToUnacceptableLatency = new int[numOfAppTypes+1];
 		
 		double[] totalDist = new double[numOfAppTypes + 1];
+		double[] totalUserDist = new double[numOfAppTypes +1];
 		int[] totalHops = new int[numOfAppTypes + 1];
 		int[] numTasksPerAppType = new int[numOfAppTypes + 1];
 
@@ -619,6 +624,7 @@ public class SimLogger {
 				
 				// Get info to calculate 'Average distance to host'
 				totalDist[value.getTaskType()] += value.getHostDist();
+				totalUserDist[value.getTaskType()] += value.getDistanceToUser();
 				distBW.write(value.getHostDist() + ",");
 				
 				// Get info to calculate 'Average number of hops to host'
@@ -754,6 +760,7 @@ public class SimLogger {
 		rejectedTaskDueToUnacceptableLatency[numOfAppTypes] = IntStream.of(rejectedTaskDueToUnacceptableLatency).sum();
 		
 		totalDist[numOfAppTypes] = DoubleStream.of(totalDist).sum();
+		totalUserDist[numOfAppTypes] = DoubleStream.of(totalUserDist).sum();
 		totalHops[numOfAppTypes] = IntStream.of(totalHops).sum();
 		numTasksPerAppType[numOfAppTypes] = IntStream.of(numTasksPerAppType).sum(); // Shaik modified
 		
@@ -1119,6 +1126,9 @@ public class SimLogger {
 		double averageDistance = (completedTask[numOfAppTypes] == 0) ? 0.0 : (totalDist[numOfAppTypes] / (double) completedTask[numOfAppTypes]);
 		printLine("Average Distance from task to host: " + String.format("%.2f", averageDistance));
 
+		double averageUserDistance = (completedTask[numOfAppTypes] == 0) ? 0.0 : (totalUserDist[numOfAppTypes] / (double) completedTask[numOfAppTypes]);
+		printLine("Average Distance from host to user: " + String.format("%.2f", averageUserDistance));
+		
 		double averageHops = (completedTask[numOfAppTypes] == 0) ? 0.0 : (totalHops[numOfAppTypes] / (double) completedTask[numOfAppTypes]);
 		printLine("Average number of hops from task to host: " + String.format("%.2f", averageHops));
 
@@ -1688,16 +1698,16 @@ class LogItem {
 	/**
 	 * @return the taskLenght
 	 */
-	public int getTaskLenght() {
-		return taskLenght;
+	public int getTaskLength() {
+		return taskLength;
 	}
 
 	
 	/**
-	 * @param taskLenght the taskLenght to set
+	 * @param taskLength the taskLenght to set
 	 */
-	public void setTaskLenght(int taskLenght) {
-		this.taskLenght = taskLenght;
+	public void setTaskLength(int taskLength) {
+		this.taskLength = taskLength;
 	}
 
 	
@@ -1837,6 +1847,10 @@ class LogItem {
 	}
 
 	
+	public double getDistanceToUser() {
+		return distanceToUser;
+	}
+	
 	/**
 	 * @param distanceToHost the distanceToHost to set
 	 */
@@ -1844,6 +1858,9 @@ class LogItem {
 		this.distanceToHost = distanceToHost;
 	}
 
+	public void setDistanceToUser(double distanceToUser) {
+		this.distanceToUser = distanceToUser;
+	}
 	
 	/**
 	 * @param status the status to set
@@ -1890,7 +1907,7 @@ class LogItem {
 	private int vmId;
 	private int vmType;
 	private int taskType;
-	private int taskLenght;
+	private int taskLength;
 	private int taskInputType;
 	private int taskOutputSize;
 	private int numberOfHops;
@@ -1902,7 +1919,7 @@ class LogItem {
 	private boolean isInWarmUpPeriod;
 	private double taskCost = 0;
 	private double distanceToHost;
-	
+	private double distanceToUser;
 	
 	/**
 	 * 
@@ -1915,7 +1932,7 @@ class LogItem {
 	LogItem(double _taskStartTime, int _taskType, int _taskLenght, int _taskInputType, int _taskOutputSize) {
 		taskStartTime = _taskStartTime;
 		taskType = _taskType;
-		taskLenght = _taskLenght;
+		taskLength = _taskLenght;
 		taskInputType = _taskInputType;
 		taskOutputSize = _taskOutputSize;
 		status = SimLogger.TASK_STATUS.CREATED;
@@ -2121,7 +2138,7 @@ class LogItem {
 	public String toString(int taskId) {
 		String result = taskId + SimSettings.DELIMITER + datacenterId + SimSettings.DELIMITER + hostId
 				+ SimSettings.DELIMITER + vmId + SimSettings.DELIMITER + vmType + SimSettings.DELIMITER + taskType
-				+ SimSettings.DELIMITER + taskLenght + SimSettings.DELIMITER + taskInputType + SimSettings.DELIMITER
+				+ SimSettings.DELIMITER + taskLength + SimSettings.DELIMITER + taskInputType + SimSettings.DELIMITER
 				+ taskOutputSize + SimSettings.DELIMITER + taskStartTime + SimSettings.DELIMITER + taskEndTime
 				+ SimSettings.DELIMITER;
 

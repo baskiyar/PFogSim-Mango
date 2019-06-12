@@ -98,7 +98,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		//Qian added for sensor generated tasks getting download destination. Uncomment code on line 491 (Producer/Consumer)
 		if (task.sens) {
 			//SimLogger.printLine("HMMM? X: " + currentLocation.getXPos() + " Y: " + currentLocation.getYPos() + "Prod: " + task.getMobileDeviceId() + " Cons: " + task.getDesMobileDeviceId());
-			//currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock());
+			currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock());
 			//SimLogger.printLine("GOOD? X: " + currentLocation.getXPos() + " Y: " + currentLocation.getYPos() + "Prod: " + task.getMobileDeviceId() + " Cons: " + task.getDesMobileDeviceId());
 		}
 		
@@ -290,8 +290,17 @@ public class MobileDeviceManager extends DatacenterBroker {
 				Location devLoc = task.getSubmittedLocation();
 				Location hostLoc = SimManager.getInstance().getLocalServerManager().findHostById(task.getAssociatedHostId()).getLocation();
 				double hostDistance = DataInterpreter.measure(hostLoc.getYPos(), hostLoc.getXPos(), devLoc.getYPos(), devLoc.getXPos());
+				
+				double consumerDistance = hostDistance;
+				if (task.sens) {
+					int desID = task.getDesMobileDeviceId();
+					GPSVectorMobility mb = ((GPSVectorMobility)SimManager.getInstance().getMobilityModel());
+					Location consumerLoc = mb.getLocation(desID, task.getFinishTime());
+					consumerDistance = DataInterpreter.measure(hostLoc.getYPos(), hostLoc.getXPos(), consumerLoc.getYPos(), consumerLoc.getXPos());
+				}
+				
 				SimLogger.getInstance().addHostDistanceLog(task.getCloudletId(), hostDistance);
-
+				SimLogger.getInstance().addUserDistanceLog(task.getCloudletId(), consumerDistance);
 				//Shaik added
 				double taskPerceivedDelay = SimLogger.getInstance().getTaskPerceivedDelay(task.getCloudletId());
 				//System.out.println("taskPerceivedDelay: after execution: "+taskPerceivedDelay);
@@ -494,7 +503,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		//Also please uncomment the line 81. And IdleActiveLoadGenerator.java line 121
 		if (edgeTask.sensor) {
 			//SimLogger.printLine("++++++");
-			//task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
+			task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
 		}
 		return task;
 	}
