@@ -94,10 +94,14 @@ public class MobileDeviceManager extends DatacenterBroker {
 		Task task = (Task) ev.getData();
 
 		Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock());
+		//SimLogger.printLine("-");
 		//Qian added for sensor generated tasks getting download destination. Uncomment code on line 491 (Producer/Consumer)
 		if (task.sens) {
-			currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileId(),CloudSim.clock());
+			//SimLogger.printLine("HMMM? X: " + currentLocation.getXPos() + " Y: " + currentLocation.getYPos() + "Prod: " + task.getMobileDeviceId() + " Cons: " + task.getDesMobileDeviceId());
+			//currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock());
+			//SimLogger.printLine("GOOD? X: " + currentLocation.getXPos() + " Y: " + currentLocation.getYPos() + "Prod: " + task.getMobileDeviceId() + " Cons: " + task.getDesMobileDeviceId());
 		}
+		
 		
 		//if(task.getSubmittedLocation().equals(currentLocation))
 		//{
@@ -489,7 +493,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 		//Qian add for sensor generated task getting destination uncomment the code inside if statement.
 		//Also please uncomment the line 81. And IdleActiveLoadGenerator.java line 121
 		if (edgeTask.sensor) {
-			task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
+			//SimLogger.printLine("++++++");
+			//task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
 		}
 		return task;
 	}

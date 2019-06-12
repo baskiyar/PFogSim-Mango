@@ -232,20 +232,21 @@ public class SimLogger {
 	 * @param taskStartTime
 	 * @param taskId
 	 * @param taskType
-	 * @param taskLenght
+	 * @param taskLength
 	 * @param taskInputType
 	 * @param taskOutputSize
 	 */
-	public void addLog(double taskStartTime, int taskId, int taskType, int taskLenght, int taskInputType,
+	public void addLog(double taskStartTime, int taskId, int taskType, int taskLength, int taskInputType,
 			int taskOutputSize) {
 		// printLine(taskId+"->"+taskStartTime);
-		taskMap.put(taskId, new LogItem(taskStartTime, taskType, taskLenght, taskInputType, taskOutputSize));
+		taskMap.put(taskId, new LogItem(taskStartTime, taskType, taskLength, taskInputType, taskOutputSize));
 	}
 
 	
 	/**
 	 * 
 	 * @param taskId
+	 * 
 	 * @param taskUploadTime
 	 */
 	public void uploadStarted(int taskId, double taskUploadTime) {
