@@ -385,6 +385,7 @@ public class SimLogger {
 	}
 	
 	public void addHopsBack(int taskId, int hops) {
+		//System.out.println(hops);
 		taskMap.get(taskId).setHopsToUser(hops);
 	}
 	
@@ -769,7 +770,7 @@ public class SimLogger {
 		totalDist[numOfAppTypes] = DoubleStream.of(totalDist).sum();
 		totalUserDist[numOfAppTypes] = DoubleStream.of(totalUserDist).sum();
 		totalHops[numOfAppTypes] = IntStream.of(totalHops).sum();
-		totalHopsBack[numOfAppTypes] = IntStream.of(totalHops).sum();
+		totalHopsBack[numOfAppTypes] = IntStream.of(totalHopsBack).sum();
 		numTasksPerAppType[numOfAppTypes] = IntStream.of(numTasksPerAppType).sum(); // Shaik modified
 		
 		// calculate server load - This value may not be valid for HAFA test environment. May ignore. 
