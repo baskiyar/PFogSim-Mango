@@ -368,6 +368,14 @@ public class ESBModel extends NetworkModel {
 		return router.findPath(networkTopology, src, dest).size();
 	}
 	
+	public int getHopsBack(Task task, int hostID) {
+		NodeSim dest = networkTopology.findNode(SimManager.getInstance().getLocalServerManager().findHostById(hostID).getLocation(), false);
+		NodeSim src = networkTopology.findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
+		if (task.sens) {
+			src = networkTopology.findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock()), false);
+		}
+		return router.findPath(networkTopology, src, dest).size();
+	}
 	
 	/**
 	 * The gravity well is where we search for and find black holes. For a description <br>

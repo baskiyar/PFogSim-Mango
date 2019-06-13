@@ -384,6 +384,10 @@ public class SimLogger {
 		taskMap.get(taskId).setHops(hops);
 	}
 	
+	public void addHopsBack(int taskId, int hops) {
+		taskMap.get(taskId).setHopsToUser(hops);
+	}
+	
 	//	
 	int[] totalNodesNmuberInEachLevel = {0, 0, 0, 0, 0, 0, 0};
 
@@ -486,6 +490,7 @@ public class SimLogger {
 		double[] totalDist = new double[numOfAppTypes + 1];
 		double[] totalUserDist = new double[numOfAppTypes +1];
 		int[] totalHops = new int[numOfAppTypes + 1];
+		int[] totalHopsBack = new int[numOfAppTypes + 1];
 		int[] numTasksPerAppType = new int[numOfAppTypes + 1];
 
 		//Modify the following array lengths depending on number of layers in test fog environment. Currently, it is 7 layered.
@@ -629,7 +634,9 @@ public class SimLogger {
 				
 				// Get info to calculate 'Average number of hops to host'
 				totalHops[value.getTaskType()] += value.getHops();
+				totalHopsBack[value.getTaskType()] += value.getHopsToUser();
 				hopBW.write(value.getHops() + ",");
+				
 				
 				cost[value.getTaskType()] += value.getCost();
 				serviceTime[value.getTaskType()] += value.getServiceTime();
@@ -762,6 +769,7 @@ public class SimLogger {
 		totalDist[numOfAppTypes] = DoubleStream.of(totalDist).sum();
 		totalUserDist[numOfAppTypes] = DoubleStream.of(totalUserDist).sum();
 		totalHops[numOfAppTypes] = IntStream.of(totalHops).sum();
+		totalHopsBack[numOfAppTypes] = IntStream.of(totalHops).sum();
 		numTasksPerAppType[numOfAppTypes] = IntStream.of(numTasksPerAppType).sum(); // Shaik modified
 		
 		// calculate server load - This value may not be valid for HAFA test environment. May ignore. 
@@ -1131,7 +1139,10 @@ public class SimLogger {
 		
 		double averageHops = (completedTask[numOfAppTypes] == 0) ? 0.0 : (totalHops[numOfAppTypes] / (double) completedTask[numOfAppTypes]);
 		printLine("Average number of hops from task to host: " + String.format("%.2f", averageHops));
-
+		
+		double averageHopsBack = (completedTask[numOfAppTypes] == 0) ? 0.0 : (totalHopsBack[numOfAppTypes] / (double) completedTask[numOfAppTypes]);
+		printLine("Average number of hops from host to user: " + String.format("%.2f", averageHopsBack));
+		
 		double averageNumHosts = SimManager.getInstance().getEdgeOrchestrator().getAvgNumProspectiveHosts();
 		printLine("Average number of prospective hosts considered for placement: " + String.format("%.2f", averageNumHosts));
 
@@ -1911,6 +1922,7 @@ class LogItem {
 	private int taskInputType;
 	private int taskOutputSize;
 	private int numberOfHops;
+	private int hopsToUser;
 	private double taskStartTime;
 	private double taskEndTime;
 	private double networkDelay;
@@ -2190,6 +2202,9 @@ class LogItem {
 		return numberOfHops;
 	}
 	
+	public int getHopsToUser() {
+		return hopsToUser;
+	}
 	
 	/**
 	 * 
@@ -2197,6 +2212,10 @@ class LogItem {
 	 */
 	public void setHops(int in) {
 		numberOfHops = in;
+	}
+	
+	public void setHopsToUser(int in) {
+		hopsToUser = in;
 	}
 
 
