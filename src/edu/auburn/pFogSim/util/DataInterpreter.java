@@ -458,6 +458,9 @@ public class DataInterpreter {
 		//nodeSpecs[MAX_LEVELS - 1][11] = "1500";
 		nodeSpecs[MAX_LEVELS - 1][12] = "1046898278400";
 		nodeSpecs[MAX_LEVELS - 1][13] = "104857600"; // Shaik modified to 1/100th - prev = 104857600 // Shaik fixed back to 100% value
+		nodeSpecs[MAX_LEVELS - 1][14] = "11000"; //Cameron and Matthew modified to add idle power (watt) 
+		nodeSpecs[MAX_LEVELS - 1][15] = "12.6"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 1][16] = "12.6"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
 		
 		nodeSpecs[MAX_LEVELS - 2][0] = "City Hall";
 		nodeSpecs[MAX_LEVELS - 2][1] = "Linux";
@@ -475,6 +478,9 @@ public class DataInterpreter {
 		//nodeSpecs[MAX_LEVELS - 2][11] = "1500";
 		nodeSpecs[MAX_LEVELS - 2][12] = "10468982784";
 		nodeSpecs[MAX_LEVELS - 2][13] = "104857600"; // Shaik modified to 1/100th - prev = 104857600 // Shaik fixed back to 100% value
+		nodeSpecs[MAX_LEVELS - 2][14] = "11000"; //Cameron and Matthew modified to add idle power (watt) 
+		nodeSpecs[MAX_LEVELS - 2][15] = "12.6"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 2][16] = "12.6"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
 		
 		nodeSpecs[MAX_LEVELS - 3][0] = "University";
 		nodeSpecs[MAX_LEVELS - 3][1] = "Linux";
@@ -492,6 +498,9 @@ public class DataInterpreter {
 		//nodeSpecs[MAX_LEVELS - 3][11] = "1500";
 		nodeSpecs[MAX_LEVELS - 3][12] = "2617245696";
 		nodeSpecs[MAX_LEVELS - 3][13] = "10485760"; // Shaik modified to 1/100th - prev = 10485760 // Shaik fixed back to 100% value
+		nodeSpecs[MAX_LEVELS - 3][14] = "4000"; //Cameron and Matthew modified to add idle power (watt) 
+		nodeSpecs[MAX_LEVELS - 3][15] = "37"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 3][16] = "37"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
 		
 		nodeSpecs[MAX_LEVELS - 4][0] = "Ward";
 		nodeSpecs[MAX_LEVELS - 4][1] = "Linux";
@@ -508,6 +517,9 @@ public class DataInterpreter {
 		//nodeSpecs[MAX_LEVELS - 4][11] = "1500";
 		nodeSpecs[MAX_LEVELS - 4][12] = "1677721600";
 		nodeSpecs[MAX_LEVELS - 4][13] = "10485760"; // Shaik modified to 1/100th - prev = 10485760 // Shaik fixed back to 100% value
+		nodeSpecs[MAX_LEVELS - 4][14] = "4000"; //Cameron and Matthew modified to add idle power (watt) 
+		nodeSpecs[MAX_LEVELS - 4][15] = "37"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 4][16] = "37"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
 		
 		nodeSpecs[MAX_LEVELS - 5][0] = "Library";
 		nodeSpecs[MAX_LEVELS - 5][1] = "Linux";
@@ -524,6 +536,9 @@ public class DataInterpreter {
 		//nodeSpecs[MAX_LEVELS - 5][11] = "1500";
 		nodeSpecs[MAX_LEVELS - 5][12] = "167772160";
 		nodeSpecs[MAX_LEVELS - 5][13] = "10485760"; // Shaik modified to 1/100th - prev = 10485760 // Shaik fixed back to 100% value
+		nodeSpecs[MAX_LEVELS - 5][14] = "4000"; //Cameron and Matthew modified to add idle power (watt) 
+		nodeSpecs[MAX_LEVELS - 5][15] = "37"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 5][16] = "37"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
 		
 		nodeSpecs[MAX_LEVELS - 6][0] = "Community Center";
 		nodeSpecs[MAX_LEVELS - 6][1] = "Linux";
@@ -539,6 +554,9 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 6][11] = "16384";
 		nodeSpecs[MAX_LEVELS - 6][12] = "167772160";
 		nodeSpecs[MAX_LEVELS - 6][13] = "1048576"; // Shaik modified to 1/100th - prev = 1048576 // Shaik fixed back to 100% value
+		nodeSpecs[MAX_LEVELS - 6][14] = "1589"; //Cameron and Matthew modified to add idle power (watt) 
+		nodeSpecs[MAX_LEVELS - 6][15] = "31.7"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 6][16] = "31.7"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
 		
 		nodeSpecs[MAX_LEVELS - 7][0] = "School";
 		nodeSpecs[MAX_LEVELS - 7][1] = "Linux";
@@ -554,6 +572,10 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 7][11] = "4096";
 		nodeSpecs[MAX_LEVELS - 7][12] = "41943040";
 		nodeSpecs[MAX_LEVELS - 7][13] = "1048576"; // Shaik modified to 1/100th - prev = 1048576 // Shaik fixed back to 100% value
+		nodeSpecs[MAX_LEVELS - 7][14] = "1589"; //Cameron and Matthew modified to add idle power (watt) 
+		nodeSpecs[MAX_LEVELS - 7][15] = "31.7"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 7][16] = "31.7"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
+
 	}
 
 	
