@@ -71,10 +71,10 @@ public class NodeSim {
 	 * @param id
 	 * @param isAccessPoint
 	 */
-	public NodeSim(double xin, double yin, int _level, int id, boolean isAccessPoint) {
+	public NodeSim(double xin, double yin, double _altitude, int _level, int id, boolean isAccessPoint) {
 		wlan_id = id;
 		edges = new ArrayList<Link>();
-		myLocation = new Location(id, xin, yin);
+		myLocation = new Location(id, xin, yin, _altitude);
 		level = _level;
 		wifiAccess = isAccessPoint;
 	}
@@ -89,10 +89,10 @@ public class NodeSim {
 	 * @param isAccessPoint
 	 * @param isMoving
 	 */
-	public NodeSim(double xin, double yin, int _level, int id, boolean isAccessPoint, boolean isMoving) {
+	public NodeSim(double xin, double yin, double _altitude, int _level, int id, boolean isAccessPoint, boolean isMoving) {
 		wlan_id = id;
 		edges = new ArrayList<Link>();
-		myLocation = new Location(xin, yin);
+		myLocation = new Location(xin, yin, _altitude);
 		level = _level;
 		wifiAccess = isAccessPoint;
 		moving = isMoving;
@@ -110,10 +110,10 @@ public class NodeSim {
 	 * @param isMoving
 	 * @param _vector
 	 */
-	public NodeSim(double xin, double yin, int _level, int id, boolean isAccessPoint, boolean isMoving, Location _vector) {
+	public NodeSim(double xin, double yin, double _altitude, int _level, int id, boolean isAccessPoint, boolean isMoving, Location _vector) {
 		wlan_id = id;
 		edges = new ArrayList<Link>();
-		myLocation = new Location(xin, yin);
+		myLocation = new Location(xin, yin, _altitude);
 		level = _level;
 		wifiAccess = isAccessPoint;
 		moving = isMoving;

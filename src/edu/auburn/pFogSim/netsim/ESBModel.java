@@ -236,7 +236,9 @@ public class ESBModel extends NetworkModel {
 			if(location.equals(deviceLocation))
 				deviceCount++;
 		}*/
-		EdgeHost host = SimManager.getInstance().getLocalServerManager().findHostByLoc(deviceLocation.getXPos(), deviceLocation.getYPos());
+		EdgeHost host = SimManager.getInstance().getLocalServerManager().findHostByLoc(deviceLocation.getXPos(), deviceLocation.getYPos(), deviceLocation.getAltitude());
+		if (host == null)
+			SimLogger.printLine("Null Host");
 		return host.getCustomers().size();
 		//record max number of client just for debugging
 //		if(maxNumOfClientsInPlace<deviceCount)

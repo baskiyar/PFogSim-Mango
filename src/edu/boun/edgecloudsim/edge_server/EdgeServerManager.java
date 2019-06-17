@@ -147,14 +147,16 @@ public class EdgeServerManager {
 			Element leftLinkss = (Element)leftLinks;
 			double x_pos1 = Double.parseDouble(leftLinkss.getElementsByTagName("x_pos").item(0).getTextContent());
 			double y_pos1 = Double.parseDouble(leftLinkss.getElementsByTagName("y_pos").item(0).getTextContent());
-			Location leftCoor = new Location(x_pos1, y_pos1);
+			double alt1 = Double.parseDouble(leftLinkss.getElementsByTagName("altitude").item(0).getTextContent());
+			Location leftCoor = new Location(x_pos1, y_pos1, alt1);
 			
 			NodeList rightLinksList = linkElement.getElementsByTagName("right");
 			Node rightLinks = rightLinksList.item(0);
 			Element rightLinkss = (Element)rightLinks;
 			double x_pos2 = Double.parseDouble(rightLinkss.getElementsByTagName("x_pos").item(0).getTextContent());
 			double y_pos2 = Double.parseDouble(rightLinkss.getElementsByTagName("y_pos").item(0).getTextContent());
-			Location rightCoor = new Location(x_pos2, y_pos2);
+			double alt2 = Double.parseDouble(rightLinkss.getElementsByTagName("altitude").item(0).getTextContent());
+			Location rightCoor = new Location(x_pos2, y_pos2, alt2);
 			
 			double left_lat = Double.parseDouble(linkElement.getElementsByTagName("left_latency").item(0).getTextContent());
 			double right_lat = Double.parseDouble(linkElement.getElementsByTagName("right_latency").item(0).getTextContent());
@@ -343,6 +345,7 @@ public class EdgeServerManager {
 		int wlan_id = Integer.parseInt(location.getElementsByTagName("wlan_id").item(0).getTextContent());
 		double x_pos = Double.parseDouble(location.getElementsByTagName("x_pos").item(0).getTextContent());
 		double y_pos = Double.parseDouble(location.getElementsByTagName("y_pos").item(0).getTextContent());
+		double altitude = Double.parseDouble(location.getElementsByTagName("altitude").item(0).getTextContent());
 		int level =Integer.parseInt(location.getElementsByTagName("level").item(0).getTextContent());
 		boolean wap = Boolean.parseBoolean(location.getElementsByTagName("wap").item(0).getTextContent());
 		boolean moving = Boolean.parseBoolean(location.getElementsByTagName("moving").item(0).getTextContent());
@@ -382,11 +385,11 @@ public class EdgeServerManager {
 			NodeSim newNode;
 			if(moving)
 			{
-				newNode = new NodeSim(x_pos, y_pos, level, wlan_id, wap, moving, new Location(dx, dy));
+				newNode = new NodeSim(x_pos, y_pos, altitude, level, wlan_id, wap, moving, new Location(dx, dy));
 			}
 			else 
 			{
-				newNode = new NodeSim(x_pos, y_pos, level, wlan_id, wap);
+				newNode = new NodeSim(x_pos, y_pos, altitude, level, wlan_id, wap);
 			}
 			newNode.getLocation().setBW(bw);
 			nodesForTopography.add(newNode);
@@ -403,7 +406,7 @@ public class EdgeServerManager {
 					costPerBW,
 					costPerSec
 				);
-			Location loc = new Location(wlan_id, x_pos, y_pos);
+			Location loc = new Location(wlan_id, x_pos, y_pos, altitude);
 			loc.setBW(bw);
 			host.setPlace(loc);
 			host.setLevel(level);
@@ -429,7 +432,7 @@ public class EdgeServerManager {
 		ArrayList<EdgeHost> hosts;
 		Puddle puddle;
 		
-		double x, y;		
+		double x, y, a;		
 		double staticLatency = Double.MAX_VALUE;
 		
 		//Create Puddles
@@ -456,7 +459,8 @@ public class EdgeServerManager {
 				for (int j = 0; j < cluster.getCluster()[i].length; j++) {//for each host in the puddle
 					x = cluster.getCluster()[i][j][0];
 					y = cluster.getCluster()[i][j][1];
-					host = findHostByLoc(x, y);
+					a = cluster.getCluster()[i][j][2];
+					host = findHostByLoc(x, y, a);
 					if (host != null) {
 						host.setPuddleId(i);
 						hosts.add(host);
@@ -726,13 +730,16 @@ public class EdgeServerManager {
 	 * @param double2
 	 * @return
 	 */
-	public EdgeHost findHostByLoc(Double double1, Double double2) {
+	public EdgeHost findHostByLoc(Double x, Double y, Double z) {
+		Location match = new Location(x,y,z);
+
 		for (Datacenter node : SimManager.getInstance().getLocalServerManager().getDatacenterList()) {
-			if (((EdgeHost) node.getHostList().get(0)).getLocation().getXPos() == double1 && ((EdgeHost) node.getHostList().get(0)).getLocation().getYPos() == double2) {
+			
+			if (((EdgeHost) node.getHostList().get(0)).getLocation().equals(match)) {
 				return ((EdgeHost) node.getHostList().get(0));
 			}
 		}
-		return findMovingHost(double1, double2);
+		return findMovingHost(x, y, z);
 	}
 	
 	
@@ -742,9 +749,13 @@ public class EdgeServerManager {
 	 * @param double2
 	 * @return
 	 */
-	public EdgeHost findMovingHost(Double double1, Double double2) {
+	public EdgeHost findMovingHost(Double x, Double y, Double z) {
+		Location match = new Location(x,y,z);
+
 		for (EdgeHost node : hostList) {
-			if(node.getLocation().getXPos() == double1 && node.getLocation().getYPos() == double2) {
+			
+			if(node.getLocation().equals(match)) {
+				
 				return node;
 			}
 		}
@@ -776,8 +787,10 @@ public class EdgeServerManager {
 	 *	@return
 	 */
 	public EdgeHost findHostByWlanId(int id) {
+		
 		for (Datacenter node: SimManager.getInstance().getLocalServerManager().getDatacenterList()) {
 			EdgeHost host = (EdgeHost) node.getHostList().get(0);
+			
 			if (host.getLocation().getServingWlanId()== id) {
 				return host;
 			}

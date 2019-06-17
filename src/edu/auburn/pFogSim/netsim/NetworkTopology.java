@@ -102,6 +102,7 @@ public class NetworkTopology {
 			return links.add(in);
 		}
 		else {
+			SimLogger.printLine("Failed to add link");
 			return false;
 		}
 	}
@@ -115,11 +116,13 @@ public class NetworkTopology {
 	 */
 	public boolean validateTopology() {
 		if (nodes == null || links == null) {
+			SimLogger.printLine("False 1");
 			return false;
 		}
 		try {
 			for (NodeSim node : nodes) {
 				if (node.getEdges().size() == 0) {
+					SimLogger.printLine("False 2");
 					return false;
 				}
 			}
@@ -127,12 +130,14 @@ public class NetworkTopology {
 				if (!coords.contains(link.getRightLink()) || !coords.contains(link.getLeftLink())
 						|| !link.validateCoords() || !link.validateLat()) {
 					coords.add(link.getLeftLink());
+					SimLogger.printLine("False 3");
 					return false;
 				}
 			}
 			return true;
 		}
 		catch (NullPointerException e) {
+			SimLogger.printLine("False 4");
 			return false;
 		}
 	}
@@ -184,7 +189,7 @@ public class NetworkTopology {
 	 * @param wifi
 	 * @return the closest node to the location
 	 */
-	public NodeSim findNode(double d, double e, boolean wifi) {
+	public NodeSim findNode(double d, double e, double z, boolean wifi) {
 		NodeSim closest = null;
 		double distanceNew = Double.MAX_VALUE;
 		double distance = Double.MAX_VALUE;
@@ -192,7 +197,7 @@ public class NetworkTopology {
 			if (wifi && !node.isWifiAcc()) {
 				continue;
 			}
-			if (d == node.getLocation().getXPos() && e == node.getLocation().getYPos()) {
+			if (d == node.getLocation().getXPos() && e == node.getLocation().getYPos() && z == node.getLocation().getAltitude()) {
 				closest = node;
 				return closest;
 			}
@@ -213,7 +218,7 @@ public class NetworkTopology {
 	 * @return the closest node to the location
 	 */
 	public NodeSim findNode(Location loc, boolean wifi) {
-		return findNode(loc.getXPos(), loc.getYPos(), wifi);
+		return findNode(loc.getXPos(), loc.getYPos(), loc.getAltitude(), wifi);
 	}
 	
 	

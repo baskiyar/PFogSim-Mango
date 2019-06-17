@@ -121,8 +121,8 @@ public class GPSVectorMobility extends MobilityModel {
 			}
 			*/
 			//start locating user from 10th seconds
-			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos));
-			userTreeMapArray.get(i).put((double)10, new Location(wlan_id2, x_pos2, y_pos2));
+			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos, 0));
+			userTreeMapArray.get(i).put((double)10, new Location(wlan_id2, x_pos2, y_pos2,0));
 			//SimLogger.printLine("ID: " + i + " Location: " + treeMapArray.get(i).lastEntry().getValue().getXPos() + ", " + treeMapArray.get(i).lastEntry().getValue().getYPos());
 			//SimLogger.printLine("---User ID: " + (i + numberOfMobileDevices) + " Location: " + userTreeMapArray.get(i).lastEntry().getValue().getXPos() + ", " + userTreeMapArray.get(i).lastEntry().getValue().getYPos());
 			
@@ -130,7 +130,8 @@ public class GPSVectorMobility extends MobilityModel {
 		treeMapArray.addAll(userTreeMapArray);
 
 		Random rng = new Random(SimSettings.getInstance().getRandomSeed());
-		for(int i=0; i<numberOfMobileDevices; i++) {
+		int iterations = numberOfMobileDevices*2;
+		for(int i=0; i<iterations; i++) {
 			TreeMap<Double, Location> treeMap = treeMapArray.get(i);
 			//Make random numbers to make the vectors
 			double up, right;

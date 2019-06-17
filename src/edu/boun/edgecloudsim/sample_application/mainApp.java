@@ -56,14 +56,14 @@ public class mainApp {
 			e.printStackTrace();
 		}
 		
-		int iterationNumber = 2; // index for the list of n scenarios in properties file is from 0..n-1
+		int iterationNumber = 0; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
 		String outFolder2 = "";
 		String edgeDevicesFile = "";
 		String applicationsFile = "";
 		//String linksFile = "scripts/sample_application/config/links_test.xml";
-		//String linksFile = "small_link_test.xml";
+		//Strin g linksFile = "small_link_test.xml";
 		String linksFile = "links_test.xml";
 
 		if (args.length == 5){

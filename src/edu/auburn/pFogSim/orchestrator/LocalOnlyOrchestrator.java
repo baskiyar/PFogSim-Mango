@@ -157,7 +157,9 @@ public class LocalOnlyOrchestrator extends EdgeOrchestrator {
 		
 		// Get local host
 		EdgeHost localHost = (EdgeHost) (SimManager.getInstance().getLocalServerManager().findHostByWlanId(wapId));
-
+		if(localHost == null) {
+			SimLogger.printLine("Null Host");
+		}
 		if (goodHost(localHost,mobile)) {
 			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(localHost, mobile);
 			mobile.setPath(path);

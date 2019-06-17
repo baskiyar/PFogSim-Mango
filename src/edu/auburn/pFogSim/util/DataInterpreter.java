@@ -30,7 +30,7 @@ public class DataInterpreter {
 			"Chicago_Libraries.csv", 
 			"Chicago_Connect.csv", 
 			"Chicago_Schools.csv"};
-	private static String[][] nodeSpecs = new String[MAX_LEVELS][14];// the specs for all layers of the fog devices
+	private static String[][] nodeSpecs = new String[MAX_LEVELS][17];// the specs for all layers of the fog devices
 	private static ArrayList<Double[]> nodeList = new ArrayList<Double[]>();
 	private static ArrayList<Double[]> tempList = new ArrayList<Double[]>();
 	private static ArrayList<Double[]> universitiesCircle = new ArrayList<Double[]>();
@@ -68,6 +68,24 @@ public class DataInterpreter {
 	    return d * 1000; // meters
 	}
 	
+	public static double measure(double lat1, double lon1, double alt1, double lat2, double lon2, double alt2){  // generally used geo measurement function
+		final Double r = 6376.5 *1000;//radius of earth in meaters
+
+		//Convert polar to cartesian coordinates
+		double x_1 = r * Math.sin(lon1) * Math.cos(lat1);
+		double y_1 = r * Math.sin(lon1) * Math.sin(lat1);
+		double z_1 = r * Math.cos(alt1);
+
+		double x_2 = r * Math.sin(lon2) * Math.cos(lat2);
+		double y_2 = r * Math.sin(lon2) * Math.sin(lat2);
+		double z_2 = r * Math.cos(alt2);
+		
+		//Euclidean Distance Formula
+		double dist = Math.sqrt((x_2 - x_1) * (x_2 - x_1) + (y_2 - y_1) *    
+	                               (y_2 - y_1) + (z_2 - z_1) * (z_2 - z_1));
+		return dist;
+	}
+	
 	
 	/**
 	 * Creates input files for node and link configurations - as per specified system configuration.
@@ -85,8 +103,8 @@ public class DataInterpreter {
 	    links.println("<links>");
 	    
 		String rawNode = null;
-		String[] nodeLoc = new String[3];
-		Double[] temp = new Double[3];
+		String[] nodeLoc = new String[4];
+		Double[] temp = new Double[4];
 		int counter = 0;
 		int prevCounter = 0;
 		for(int i = 0; i < MAX_LEVELS; i++)
@@ -102,12 +120,13 @@ public class DataInterpreter {
 			dataBR.readLine(); //Gets rid of title data
 			while(dataBR.ready()) {
 
-				////SimLogger.printLine("Importing " + files[i]);
+				//SimLogger.printLine("Importing " + files[i]);
 				rawNode = dataBR.readLine();
 				nodeLoc = rawNode.split(",");
 				temp[0] = (double)counter; //ID
 				temp[2] = Double.parseDouble(nodeLoc[1]); //Y Coord
 				temp[1] = Double.parseDouble(nodeLoc[2]); //X Coord
+				temp[3] = Double.parseDouble(nodeLoc[3]); //Altitude
 				if(MAX_LONG == -100000 || temp[1] > MAX_LONG)	MAX_LONG = temp[1];		
 				if(MIN_LONG == -100000 || temp[1] < MIN_LONG)	MIN_LONG = temp[1];	
 				if(MAX_LAT == -100000 || temp[2] > MAX_LAT)	MAX_LAT = temp[2];	
@@ -117,7 +136,7 @@ public class DataInterpreter {
 			    node.println(String.format("<datacenter arch=\"%s\" os=\"%s\" vmm=\"%s\">\n", nodeSpecs[MAX_LEVELS - i - 1][0], nodeSpecs[MAX_LEVELS - i - 1][1], nodeSpecs[MAX_LEVELS - i - 1][2]));
 			    node.println(String.format("<costPerBw>%s</costPerBw>\n\t<costPerSec>%s</costPerSec>\n\t<costPerMem>%s</costPerMem>\n\t<costPerStorage>%s</costPerStorage>", nodeSpecs[MAX_LEVELS - i - 1][3], nodeSpecs[MAX_LEVELS - i - 1][4], nodeSpecs[MAX_LEVELS - i - 1][5], nodeSpecs[MAX_LEVELS - i - 1][6]));
 			    //Qian change level start from 1
-			    node.println(String.format("<location>\n\t<x_pos>%s</x_pos>\n\t<y_pos>%s</y_pos>\n\t<level>%s</level>\t<wlan_id>%s</wlan_id>\n\t<wap>%s</wap>\n\t<moving>%s</moving>\n\t<bandwidth>%s</bandwidth>/n</location>", nodeLoc[2], nodeLoc[1], MAX_LEVELS - i, counter, nodeSpecs[MAX_LEVELS - i - 1][7], nodeSpecs[MAX_LEVELS - i - 1][8], nodeSpecs[MAX_LEVELS - i - 1][13]));
+			    node.println(String.format("<location>\n\t<x_pos>%s</x_pos>\n\t<y_pos>%s</y_pos>\n\t<altitude>%s</altitude>\n\t<level>%s</level>\t<wlan_id>%s</wlan_id>\n\t<wap>%s</wap>\n\t<moving>%s</moving>\n\t<bandwidth>%s</bandwidth>/n</location>", nodeLoc[2], nodeLoc[1],nodeLoc[3], MAX_LEVELS - i, counter, nodeSpecs[MAX_LEVELS - i - 1][7], nodeSpecs[MAX_LEVELS - i - 1][8], nodeSpecs[MAX_LEVELS - i - 1][13]));
 			    node.println(String.format("<host>\n\t<core>%s</core>\n\t<mips>%s</mips>\n\t<ram>%s</ram>\n\t<storage>%s</storage>\n", nodeSpecs[MAX_LEVELS - i - 1][9], nodeSpecs[MAX_LEVELS - i - 1][10], nodeSpecs[MAX_LEVELS - i - 1][11], nodeSpecs[MAX_LEVELS - i - 1][12]));
 			    node.println(String.format("\t<VM vmm=\"%s\">\n\t\t\t<core>%s</core>\n\t\t\t<mips>%s</mips>\n\t\t\t<ram>%s</ram>\n\t\t\t<storage>%s</storage>\n\t\t</VM>\n\t</host>\n</datacenter>", nodeSpecs[MAX_LEVELS - i - 1][2], nodeSpecs[MAX_LEVELS - i - 1][9], nodeSpecs[MAX_LEVELS - i - 1][10], nodeSpecs[MAX_LEVELS - i - 1][11], nodeSpecs[MAX_LEVELS - i - 1][12]));
 	
@@ -141,7 +160,7 @@ public class DataInterpreter {
 					{
 						//SimLogger.printLine("Layer: "+(i+1)+"    nodeList.size = " + nodeList.size());
 
-						distance = measure(nodeList.get(j)[2], nodeList.get(j)[1], temp[2], temp[1]);
+						distance = measure(nodeList.get(j)[2], nodeList.get(j)[1], nodeList.get(j)[3], temp[2], temp[1], temp[3]);
 						//SimLogger.print("\nFog node Id: "+counter+" - Layer i: "+i+" - Parent Node Id: "+nodeList.get(j)[0]+" - Distance: " + distance);
 						if(distance < minDistance)
 						{
@@ -159,17 +178,19 @@ public class DataInterpreter {
 							//SimLogger.printLine("Yep, they're the same thing");
 							System.exit(0);
 						}
-						double dis = measure(temp[2], temp[1], nodeList.get(index)[2], nodeList.get(index)[1]) / 1000;
+						double dis = measure(temp[2], temp[1], temp[3], nodeList.get(index)[2], nodeList.get(index)[1], nodeList.get(index)[3]) / 1000;
 						double latency = dis * 0.01;
 						links.println("<link>\n" + 
 					    		"		<name>L" + nodeList.get(index)[0] + "_" + temp[0] + "</name>\n" + 
 					    		"		<left>\n" + 
 					    		"			<x_pos>" + temp[1] + "</x_pos>\n" + 
-					    		"			<y_pos>" + temp[2] + "</y_pos>\n" + 
+					    		"			<y_pos>" + temp[2] + "</y_pos>\n" +
+					    		"			<altitude>" + temp[3] + "</altitude>" +
 					    		"		</left>\n" + 
 					    		"		<right>\n" + 
 					    		"			<x_pos>" + nodeList.get(index)[1] + "</x_pos>\n" + 
-					    		"			<y_pos>" + nodeList.get(index)[2] + "</y_pos>\n" + 
+					    		"			<y_pos>" + nodeList.get(index)[2] + "</y_pos>\n" +
+					    		"			<altitude>" + nodeList.get(index)[3] + "</altitude>" +
 					    		"		</right>\n" + 
 					    		"		<left_latency>" + latency + "</left_latency>\n" + 
 					    		"		<right_latency>" + latency + "</right_latency>\n" + 
@@ -186,7 +207,7 @@ public class DataInterpreter {
 					//	SimLogger.printLine("University Fog node Id: "+tempList.get(kk)[0]+" Lat: "+tempList.get(kk)[1]+" Lon: "+tempList.get(kk)[2]);
 				}
 
-				tempList.add(new Double[] {(double)temp[0], (double)temp[1], (double)temp[2]});
+				tempList.add(new Double[] {(double)temp[0], (double)temp[1], (double)temp[2], (double)temp[3]});
 				//tempList.add(temp);				
 				counter++;
 				
@@ -222,7 +243,7 @@ public class DataInterpreter {
 					{
 						//SimLogger.printLine("nodeList.size = " + nodeList.size());
 
-						distance = measure(tempList.get(j)[2], tempList.get(j)[1], input[2], input[1]);
+						distance = measure(tempList.get(j)[2], tempList.get(j)[1], tempList.get(j)[3], input[2], input[1], input[3]);
 						//SimLogger.print("\nFog node Id (from): "+input[0]+" Fog node Id (to): "+tempList.get(j)[0]+" - Distance: " + distance+" - MinDistance: " + minDistance+" - SecMinDistance: " + secondminDistance);
 
 						if(distance < minDistance && distance != 0)
@@ -251,17 +272,19 @@ public class DataInterpreter {
 							//SimLogger.printLine("Yep, they're the same thing");
 							System.exit(0);
 						}
-						double dis = measure(input[2], input[1], tempList.get(index1)[2], tempList.get(index1)[1]) / 1000;
+						double dis = measure(input[2], input[1], input[3], tempList.get(index1)[2], tempList.get(index1)[1], tempList.get(index1)[3]) / 1000;
 						double latency = dis * 0.01;
 						links.println("<link>\n" + 
 					    		"		<name>L" + tempList.get(index1)[0] + "_" + input[0] + "</name>\n" + 
 						   		"		<left>\n" + 
 					    		"			<x_pos>" + input[1] + "</x_pos>\n" + 
 						   		"			<y_pos>" + input[2] + "</y_pos>\n" + 
+					   			"			<altitude>" + input[3] + "</altitude>" +
 						   		"		</left>\n" + 
 						   		"		<right>\n" + 
 						    	"			<x_pos>" + tempList.get(index1)[1] + "</x_pos>\n" + 
 						   		"			<y_pos>" + tempList.get(index1)[2] + "</y_pos>\n" + 
+						   		"			<altitude>" + tempList.get(index1)[3] + "</altitude>" +
 						   		"		</right>\n" + 
 						   		"		<left_latency>"+latency+"</left_latency>\n" + 
 						   		"		<right_latency>"+latency+"</right_latency>\n" + 
@@ -278,17 +301,19 @@ public class DataInterpreter {
 							System.exit(0);
 						}
 						//SimLogger.getInstance().print("Find second min index2: " + index2);
-						double dis = measure(input[2], input[1], tempList.get(index2)[2], tempList.get(index2)[1]) / 1000;
+						double dis = measure(input[2], input[1], input[3], tempList.get(index2)[2], tempList.get(index2)[1], tempList.get(index2)[3]) / 1000;
 						double latency = dis * 0.01;
 						links.println("<link>\n" + 
 					    		"		<name>L" + tempList.get(index2)[0] + "_" + input[0] + "</name>\n" + 
 						   		"		<left>\n" + 
 					    		"			<x_pos>" + input[1] + "</x_pos>\n" + 
-						   		"			<y_pos>" + input[2] + "</y_pos>\n" + 
+						   		"			<y_pos>" + input[2] + "</y_pos>\n" +
+						   		"			<altitude>" + input[3] + "</altitude>" +
 						   		"		</left>\n" + 
 						   		"		<right>\n" + 
 						    	"			<x_pos>" + tempList.get(index2)[1] + "</x_pos>\n" + 
-						   		"			<y_pos>" + tempList.get(index2)[2] + "</y_pos>\n" + 
+						   		"			<y_pos>" + tempList.get(index2)[2] + "</y_pos>\n" +
+						   		"			<altitude>" + tempList.get(index2)[3] + "</altitude>" +
 						   		"		</right>\n" + 
 						   		"		<left_latency>"+latency+"</left_latency>\n" + 
 						   		"		<right_latency>"+latency+"</right_latency>\n" + 
@@ -304,7 +329,7 @@ public class DataInterpreter {
 			if(i == 2) { 
 				universitiesList.clear();
 				for(Double[] input : tempList) 	{
-					universitiesList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
+					universitiesList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2], (double)input[3]});
 					//SimLogger.printLine("University Fog node Id: "+input[0]+" Lat: "+input[1]+" Lon: "+input[2]);
 				}
 				universitiesCircle.clear();
@@ -313,7 +338,7 @@ public class DataInterpreter {
 			// Qian - create universities circle to let Connect centers and Schools to connect to nearest University / Ward / Library.
 			if(i == 2 || i == 3 || i == 4) { 
 				for(Double[] input : tempList) 	{
-					universitiesCircle.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
+					universitiesCircle.add(new Double[] {(double)input[0], (double)input[1], (double)input[2], (double)input[3]});
 				}
 			}
 			
@@ -321,7 +346,7 @@ public class DataInterpreter {
 			if (i == 2 || i==3) { 
 				nodeList.clear();
 				for(Double[] input : universitiesList) 	{
-					nodeList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
+					nodeList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2], (double)input[3]});
 				}
 			}
 
@@ -329,7 +354,7 @@ public class DataInterpreter {
 			else if (i == 4 || i==5) { 
 				nodeList.clear();
 				for(Double[] input : universitiesCircle) 	{
-					nodeList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
+					nodeList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2], (double)input[3]});
 				}
 			}
 			
@@ -338,7 +363,7 @@ public class DataInterpreter {
 				nodeList.clear();
 				//nodeList.addAll(tempList);
 				for(Double[] input : tempList) 	{
-					nodeList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2]});
+					nodeList.add(new Double[] {(double)input[0], (double)input[1], (double)input[2], (double)input[3]});
 				}
 			}
 			
