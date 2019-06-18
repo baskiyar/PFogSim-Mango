@@ -56,9 +56,10 @@ public class FogCluster {
 		
 		for(Location pair : arrayList)
 		{
-			Double[] point = new Double[2];
+			Double[] point = new Double[3];
 			point[0] = pair.getXPos();
 			point[1] = pair.getYPos();
+			point[2] = pair.getAltitude();
 			
 			_points.add(point);
 		}
@@ -128,7 +129,7 @@ public class FogCluster {
 	 */
 	void calcProximity(){
 		
-		double x1=0.0, y1=0.0, x2=0.0, y2=0.0;
+		double x1=0.0, y1=0.0, x2=0.0, y2=0.0,a1=0,a2=0;
 		double distance, delay;
 		Location first;
 		Location second;
@@ -144,23 +145,26 @@ public class FogCluster {
 		
 		if(SimSettings.getInstance().getClusterType()) {//Qian changed for cluster type. {TRUE - Distance; FALSE - Latency}
 			System.out.println("Populating proximity matrix with distances.");
-			for (int i=0; i<n; i++){// distance based
+			for (int i=0; i<n-1; i++){// distance based
 				// First point
 				x1 = points[i][0];
 				y1 = points[i][1];
+				a1 = points[i][2];
 				
-				for (int j=0; j<n; j++){
+				for (int j=i; j<n; j++){
 					//Second point
 					x2 = points[j][0];
 					y2 = points[j][1];
+					a2 = points[j][2];
 					
 					//Calculate distance
 					//distance = Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1)));
-					distance = DataInterpreter.measure(x1, y1, x2, y2); //Qian added
+					distance = DataInterpreter.measure(x1, y1,a1, x2, y2,a2); //Qian added
 					//--printlater--System.out.print(distance+" , ");
 					
 					//Update entry in proximityMatrix
 					proximityMatrix[i][j] = distance;
+					proximityMatrix[j][i] = distance;
 					
 				}// end for j
 				//--printlater--System.out.println();
@@ -171,14 +175,17 @@ public class FogCluster {
 			for (int i = 0; i < n; i++) {// latency based.
 				x1 = points[i][0];
 				y1 = points[i][1];
-				first = new Location(x1, y1);
+				a1 = points[i][2];
+				first = new Location(x1, y1, a1);
 				firstNode = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(first, false);
 				delay = 0;
 				//delay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getCongestionDelay(first, CloudSim.clock());
 				for (int j = 0; j < n; j++) {
 					x2 = points[j][0];
 					y2 = points[j][1];
-					second = new Location(x2, y2);
+					a2 = points[j][2];
+					
+					second = new Location(x2, y2, a2);
 					secondNode = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(second, false);
 					LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(firstNode, secondNode);
 					while (!path.isEmpty()) {

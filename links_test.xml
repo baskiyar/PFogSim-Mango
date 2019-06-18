@@ -2094,17 +2094,17 @@
 		<right_latency>4.0154725638394915</right_latency>
 	</link>
 <link>
-		<name>L99.0_142.0</name>
+		<name>L118.0_142.0</name>
 		<left>
-			<x_pos>-87.6443547</x_pos>
-			<y_pos>41.7794943</y_pos>
-			<altitude>0.0</altitude>		</left>
+			<x_pos>-87.6222322</x_pos>
+			<y_pos>41.7216776</y_pos>
+			<altitude>2.0</altitude>		</left>
 		<right>
-			<x_pos>-87.63740787</x_pos>
-			<y_pos>41.78217163</y_pos>
+			<x_pos>-87.61826066</x_pos>
+			<y_pos>41.69440641</y_pos>
 			<altitude>0.0</altitude>		</right>
-		<left_latency>0.42345261181593563</left_latency>
-		<right_latency>0.42345261181593563</right_latency>
+		<left_latency>90.30282561336578</left_latency>
+		<right_latency>90.30282561336578</right_latency>
 	</link>
 <link>
 		<name>L118.0_143.0</name>

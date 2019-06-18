@@ -147,8 +147,8 @@ public class NodeSim {
 	 * @param xin
 	 * @param yin
 	 */
-	public void setLocation(double xin, double yin) {
-		myLocation = new Location(xin, yin);
+	public void setLocation(double xin, double yin, double alt) {
+		myLocation = new Location(xin, yin, alt);
 	}
 	
 	
@@ -210,7 +210,7 @@ public class NodeSim {
 		for (Link edge : edges) {
 			if (edge.equals(victim)) {
 				edges.remove(victim);
-				SimLogger.printLine(victim.getLeftLink().getXPos() + ", " + victim.getLeftLink().getYPos() + " " + victim.getRightLink().getXPos() + ", " + victim.getRightLink().getYPos());
+				SimLogger.printLine(victim.getLeftLink().toString() + "->" + victim.getRightLink().toString());
 				//SimLogger.printLine("removeLink return true");
 				return true;
 			}
@@ -373,7 +373,7 @@ public class NodeSim {
 	 * toString() for node returns the x and y coordinate of the node as a string of the form "x, y"
 	 */
 	public String toString() {
-		return getLocation().getXPos() + ", " + getLocation().getYPos();
+		return getLocation().getXPos() + ", " + getLocation().getYPos() + "," + getLocation().getAltitude();
 	}
 	
 	
