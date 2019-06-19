@@ -136,15 +136,17 @@ public class GPSVectorMobility extends MobilityModel {
 		for(int i=0; i<iterations; i++) {
 			TreeMap<Double, Location> treeMap = treeMapArray.get(i);
 			//Make random numbers to make the vectors
-			double up, right;
+			double lat_movement, long_movement, alt_movement;
 			if(movingDevices)
 			{
-				up = 5 * (rng.nextDouble() - 0.5) * 0.000001; //Approximates movement of 5 meters * (random constant < 1)
-				right = 5 * (rng.nextDouble() - 0.5) * 0.000001; //Same for right
+				lat_movement = 5 * (rng.nextDouble() - 0.5) * 0.000001; //Approximates movement of 5 meters * (random constant < 1)
+				long_movement = 5 * (rng.nextDouble() - 0.5) * 0.000001; //Same for right
+				alt_movement = 5 * (rng.nextDouble()-0.5)*0.000001;
 			}
 			else {
-				up = 0;
-				right = 0;
+				lat_movement = 0;
+				long_movement = 0;
+				alt_movement = 0;
 			}
 			while(treeMap.lastKey() < SimSettings.getInstance().getSimulationTime()) {		
 				
@@ -157,8 +159,8 @@ public class GPSVectorMobility extends MobilityModel {
 					int wlan_id = treeMap.lastEntry().getValue().getServingWlanId();
 					
 					  
-					if(x_pos + right > this.MAX_LONG || x_pos + right < this.MIN_LONG) right = right * -1;
-					if(y_pos + up > this.MAX_LAT || y_pos + up < this.MIN_LAT) up = up * -1;
+					if(x_pos + long_movement > this.MAX_LONG || x_pos + long_movement < this.MIN_LONG) long_movement = long_movement * -1;
+					if(y_pos + lat_movement > this.MAX_LAT || y_pos + lat_movement < this.MIN_LAT) lat_movement = lat_movement * -1;
 					double distance = 0, minDistance = Double.MAX_VALUE;
 					NodeSim closestNode = new NodeSim();
 					for(NodeSim node : accessPoints)
@@ -196,7 +198,7 @@ public class GPSVectorMobility extends MobilityModel {
 					//This first argument kind of dictates the speed at which the device moves, higher it is, slower the devices are
 					//	smaller value in there, the more it updates
 					//As it is now, allows devices to change wlan_ids around 600 times in an hour
-					treeMap.put(treeMap.lastKey()+1, new Location(wlan_id, x_pos + right, y_pos + up));
+					treeMap.put(treeMap.lastKey()+1, new Location(wlan_id, x_pos + long_movement, y_pos + lat_movement, alt+alt_movement));
 					//SimLogger.printLine("," + i + "," + (x_pos + right) + "," + (y_pos + up) + "," + (treeMap.lastKey() + 1));
 					//SimLogger.printLine("Length = " + treeMap.size());
 				}
