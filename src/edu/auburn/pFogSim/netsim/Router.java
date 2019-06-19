@@ -228,21 +228,30 @@ public class Router {
 			Pair<NodeSim, Pair<Double, NodeSim>> u;
 			ArrayList<Pair<NodeSim, Pair<Double, NodeSim>>> adj = new ArrayList<Pair<NodeSim, Pair<Double, NodeSim>>>();
 			ArrayList<Double> w = new ArrayList<Double>();
+			//int count3 = 0;
+			//int count4 = 0;
 			for (Pair<NodeSim, Pair<Double, NodeSim>> vertice : verts.keySet()) {
+				//SimLogger.printLine(count4++ + " " + vertice.toString());
 				queue.add(vertice);
+				//count3++;
 			}
+			//int count2 = 0;
 			while (!queue.isEmpty()) {
 				u = queue.poll();
+				//SimLogger.printLine(u.toString());
 				/*if (u.getKey().getWlanId() == 184 && u.getKey().equals(_dest)) {
 					SimLogger.printLine("this one");
 				}*/
 				completed.add(u);
 				w = new ArrayList<Double>();
 				adj = new ArrayList<Pair<NodeSim, Pair<Double, NodeSim>>>();
+				//int count = 0;
 				for (Pair<Double, NodeSim> d : verts.get(u)) {
+					//SimLogger.printLine("" + count++ + " " + count2 + " " + count3);
 					w.add(d.getKey());
 					adj.add(getMap.get(d.getValue()));
 				}
+				//count2++;
 				for (int i = 0; i < w.size(); i++) {
 					relax(u, adj.get(i), w.get(i));
 				}

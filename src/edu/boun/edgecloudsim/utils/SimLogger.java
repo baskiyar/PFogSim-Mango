@@ -436,9 +436,9 @@ public class SimLogger {
 	public void simStopped() throws IOException {
 		int numOfAppTypes = SimSettings.getInstance().getTaskLookUpTable().length;
 
-		File successFile = null, failFile = null, vmLoadFile = null, fnMipsUtilFile = null, fnNwUtilFile = null, locationFile = null, distFile = null, hopFile = null, hafaNumHostsFile = null, hafaNumMsgsFile = null, hafaNumPuddlesFile = null;
-		FileWriter successFW = null, failFW = null, vmLoadFW = null, fnMipsUtilFW = null, fnNwUtilFW = null, locationFW = null, distFW = null, hopFW = null, hafaNumHostsFW = null, hafaNumMsgsFW = null, hafaNumPuddlesFW = null;
-		BufferedWriter successBW = null, failBW = null, vmLoadBW = null, fnMipsUtilBW = null, fnNwUtilBW = null, locationBW = null, distBW = null, hopBW = null, hafaNumHostsBW = null, hafaNumMsgsBW = null, hafaNumPuddlesBW = null;
+		File successFile = null, failFile = null, vmLoadFile = null, fnMipsUtilFile = null, fnNwUtilFile = null, locationFile = null, distFile = null, distBackFile = null, hopFile = null, hopsBackFile = null, hafaNumHostsFile = null, hafaNumMsgsFile = null, hafaNumPuddlesFile = null;
+		FileWriter successFW = null, failFW = null, vmLoadFW = null, fnMipsUtilFW = null, fnNwUtilFW = null, locationFW = null, distFW = null, distBackFW = null, hopFW = null, hopsBackFW = null, hafaNumHostsFW = null, hafaNumMsgsFW = null, hafaNumPuddlesFW = null;
+		BufferedWriter successBW = null, failBW = null, vmLoadBW = null, fnMipsUtilBW = null, fnNwUtilBW = null, locationBW = null, distBW = null, distBackBW = null, hopBW = null, hopsBackBW = null, hafaNumHostsBW = null, hafaNumMsgsBW = null, hafaNumPuddlesBW = null;
 
 		/*File[] vmLoadFileClay = new File[numOfAppTypes]; 
 		FileWriter[] vmLoadFWClay = new FileWriter[numOfAppTypes];
@@ -537,9 +537,17 @@ public class SimLogger {
 			distFW = new FileWriter(distFile, true);
 			distBW = new BufferedWriter(distFW);
 			
+			distBackFile = new File(outputFolder, filePrefix + "_DISTANCES_BACK.log");
+			distBackFW = new FileWriter(distBackFile, true);
+			distBackBW = new BufferedWriter(distBackFW);
+			
 			hopFile = new File(outputFolder, filePrefix + "_HOPS.log");
 			hopFW = new FileWriter(hopFile, true);
 			hopBW = new BufferedWriter(hopFW);
+			
+			hopsBackFile = new File(outputFolder, filePrefix + "_HOPS_BACK.log");
+			hopsBackFW = new FileWriter(hopsBackFile, true);
+			hopsBackBW = new BufferedWriter(hopsBackFW);
 			
 			hafaNumHostsFile = new File(outputFolder, filePrefix + "_NUMHOSTS.log");
 			hafaNumHostsFW = new FileWriter(hafaNumHostsFile, true);
@@ -588,6 +596,8 @@ public class SimLogger {
 			appendToFile(locationBW, "#auto generated file!");
 			appendToFile(distBW, "#auto generated file!");
 			appendToFile(hopBW, "#auto generated file!");
+			appendToFile(distBackBW, "#auto generated file!");
+			appendToFile(hopsBackBW, "#auto generated file!");
 		
 		}
 		
@@ -632,11 +642,13 @@ public class SimLogger {
 				totalDist[value.getTaskType()] += value.getHostDist();
 				totalUserDist[value.getTaskType()] += value.getDistanceToUser();
 				distBW.write(value.getHostDist() + ",");
+				distBackBW.write(value.getDistanceToUser() + ",");
 				
 				// Get info to calculate 'Average number of hops to host'
 				totalHops[value.getTaskType()] += value.getHops();
 				totalHopsBack[value.getTaskType()] += value.getHopsToUser();
 				hopBW.write(value.getHops() + ",");
+				hopsBackBW.write(value.getHopsToUser() + ",");
 				
 				
 				cost[value.getTaskType()] += value.getCost();
@@ -894,7 +906,7 @@ public class SimLogger {
 				locationBW.write(time.toString()+"-");
 				for (int i = 0; i < SimManager.getInstance().getNumOfMobileDevice(); i++) {
 					Location loc = SimManager.getInstance().getMobilityModel().getLocation(i, time);
-					locationBW.write(loc.getXPos()+","+loc.getYPos()+SimSettings.DELIMITER);
+					locationBW.write(loc.getXPos()+","+loc.getYPos()+","+loc.getAltitude()+SimSettings.DELIMITER);
 				}
 				locationBW.newLine();
 			}
@@ -918,7 +930,9 @@ public class SimLogger {
 				double _fnNwUtil = avgNwUtilPrcnt;
 				double _cost = (completedTask[i] == 0) ? 0.0 : (cost[i] / (double) completedTask[i]);
 				double dist = (completedTask[i] == 0) ? 0.0 : (totalDist[i] / (double) completedTask[i]);
+				double distBack = (completedTask[i] == 0) ? 0.0 : (totalUserDist[i] / (double) completedTask[i]);
 				double hops = (completedTask[i] == 0) ? 0.0 : ((double) totalHops[i] / (double) completedTask[i]);
+				double hopsBack = (completedTask[i] == 0) ? 0.0 : ((double) totalHopsBack[i] / (double) completedTask[i]);
 				double avgNumHosts = SimManager.getInstance().getEdgeOrchestrator().getAvgNumProspectiveHosts();
 				double avgNumMsgs = SimManager.getInstance().getEdgeOrchestrator().getAvgNumMessages();
 				double avgNumPuds = SimManager.getInstance().getEdgeOrchestrator().getAvgNumPuddlesSearched();
@@ -1006,6 +1020,9 @@ public class SimLogger {
 					genericResult7 += Double.toString(fogLayerAvgNwUtil[index]) + SimSettings.DELIMITER;
 				}
 				
+				String genericResult9 = Double.toString(distBack) 
+						+ SimSettings.DELIMITER + Double.toString(hopsBack);
+				
 				appendToFile(genericBWs[i], genericResult1);
 				appendToFile(genericBWs[i], genericResult2);
 				appendToFile(genericBWs[i], genericResult3);
@@ -1014,6 +1031,7 @@ public class SimLogger {
 				appendToFile(genericBWs[i], genericResult6);
 				appendToFile(genericBWs[i], genericResult7);
 				appendToFile(genericBWs[i], genericResult8);
+				appendToFile(genericBWs[i], genericResult9);
 
 			}
 
@@ -1027,8 +1045,10 @@ public class SimLogger {
 			fnMipsUtilBW.close(); // Shaik added
 			fnNwUtilBW.close(); // Shaik added
 			locationBW.close();
-			distBW.close(); // Shaik added
+			distBW.close();// Shaik added
+			distBackBW.close();
 			hopBW.close(); // Shaik added
+			hopsBackBW.close();
 			hafaNumHostsBW.close();
 			hafaNumMsgsBW.close();
 			hafaNumPuddlesBW.close();

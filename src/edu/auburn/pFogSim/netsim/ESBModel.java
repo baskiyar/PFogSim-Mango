@@ -376,7 +376,7 @@ public class ESBModel extends NetworkModel {
 		if (task.sens) {
 			src = networkTopology.findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock()), false);
 		}
-		return router.findPath(networkTopology, src, dest).size();
+		return router.findPath(networkTopology, dest, src).size();
 	}
 	
 	/**
