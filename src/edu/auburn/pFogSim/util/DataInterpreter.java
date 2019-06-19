@@ -74,11 +74,11 @@ public class DataInterpreter {
 		//Convert polar to cartesian coordinates
 		double x_1 = r * Math.sin(lon1) * Math.cos(lat1);
 		double y_1 = r * Math.sin(lon1) * Math.sin(lat1);
-		double z_1 = r * Math.cos(alt1);
+		double z_1 = r + alt1;
 
 		double x_2 = r * Math.sin(lon2) * Math.cos(lat2);
 		double y_2 = r * Math.sin(lon2) * Math.sin(lat2);
-		double z_2 = r * Math.cos(alt2);
+		double z_2 = r + alt2;
 		
 		//Euclidean Distance Formula
 		double dist = Math.sqrt((x_2 - x_1) * (x_2 - x_1) + (y_2 - y_1) *    

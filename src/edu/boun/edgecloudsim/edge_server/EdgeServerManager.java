@@ -142,6 +142,7 @@ public class EdgeServerManager {
 			Node links = linksList.item(i);
 			Element linkElement = (Element) links;
 			
+			
 			NodeList leftLinksList = linkElement.getElementsByTagName("left");
 			Node leftLinks = leftLinksList.item(0);
 			Element leftLinkss = (Element)leftLinks;

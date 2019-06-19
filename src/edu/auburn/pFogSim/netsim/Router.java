@@ -170,7 +170,6 @@ public class Router {
 		 * @param source
 		 */
 		private void initialize (Set<NodeSim> nodes, NodeSim source) {
-			
 			ArrayList<Pair<Double, NodeSim>> edges;
 			for (NodeSim node : nodes) {
 				index.put(node.getLocation(), node);
@@ -216,8 +215,6 @@ public class Router {
 				verts.put(temp, verts.get(v));
 				verts.remove(v);
 			}
-			
-			
 		}
 		
 		
@@ -231,31 +228,32 @@ public class Router {
 			Pair<NodeSim, Pair<Double, NodeSim>> u;
 			ArrayList<Pair<NodeSim, Pair<Double, NodeSim>>> adj = new ArrayList<Pair<NodeSim, Pair<Double, NodeSim>>>();
 			ArrayList<Double> w = new ArrayList<Double>();
+			//int count3 = 0;
+			//int count4 = 0;
 			for (Pair<NodeSim, Pair<Double, NodeSim>> vertice : verts.keySet()) {
+				//SimLogger.printLine(count4++ + " " + vertice.toString());
 				queue.add(vertice);
+				//count3++;
 			}
+			//int count2 = 0;
 			while (!queue.isEmpty()) {
 				u = queue.poll();
-				if(u==null) {
-					SimLogger.printLine("NULL FOUND");
-				}else {
-					//SimLogger.printLine(u.toString());
-				}
+				//SimLogger.printLine(u.toString());
 				/*if (u.getKey().getWlanId() == 184 && u.getKey().equals(_dest)) {
 					SimLogger.printLine("this one");
 				}*/
 				completed.add(u);
 				w = new ArrayList<Double>();
 				adj = new ArrayList<Pair<NodeSim, Pair<Double, NodeSim>>>();
-				if(verts.get(u) != null) { //For whatever reason, if x&y are the same for any 2 fog nodes with different altitudes, verts.get(u) returns null at least once.
-					for (Pair<Double, NodeSim> d : verts.get(u)) {
-						
-						w.add(d.getKey());
-						adj.add(getMap.get(d.getValue()));
-					}
-					for (int i = 0; i < w.size(); i++) {
-						relax(u, adj.get(i), w.get(i));
-					}
+				//int count = 0;
+				for (Pair<Double, NodeSim> d : verts.get(u)) {
+					//SimLogger.printLine("" + count++ + " " + count2 + " " + count3);
+					w.add(d.getKey());
+					adj.add(getMap.get(d.getValue()));
+				}
+				//count2++;
+				for (int i = 0; i < w.size(); i++) {
+					relax(u, adj.get(i), w.get(i));
 				}
 			}
 		}
