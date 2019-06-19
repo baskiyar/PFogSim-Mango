@@ -2103,8 +2103,8 @@
 			<x_pos>-87.61826066</x_pos>
 			<y_pos>41.69440641</y_pos>
 			<altitude>0.0</altitude>		</right>
-		<left_latency>90.30282561336578</left_latency>
-		<right_latency>90.30282561336578</right_latency>
+		<left_latency>0.6335658908990068</left_latency>
+		<right_latency>0.6335658908990068</right_latency>
 	</link>
 <link>
 		<name>L118.0_143.0</name>

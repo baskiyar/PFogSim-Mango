@@ -129,7 +129,25 @@ public class NetworkTopology {
 			for (Link link : links) {
 				if (!coords.contains(link.getRightLink()) || !coords.contains(link.getLeftLink())
 						|| !link.validateCoords() || !link.validateLat()) {
-					coords.add(link.getLeftLink());
+					
+					
+					if (!coords.contains(link.getRightLink()))
+						SimLogger.printLine("rlink not in coords");
+					if (!coords.contains(link.getLeftLink())) {
+						/*final int x = 0;
+						x++;
+						SimLogger.printLine("Called " + Integer.toString(x) + " times");*/
+						coords.add(link.getLeftLink());
+						continue;
+						//SimLogger.printLine("llink not in coords");
+						}
+					if (!link.validateCoords())
+						SimLogger.printLine("Validate Coords fail");
+					if (!link.validateLat())
+						SimLogger.printLine("validate lat fail");
+					
+					
+					
 					SimLogger.printLine("False 3");
 					return false;
 				}

@@ -80,8 +80,8 @@ public class DistRadix {
 	 */
 	private void buildCoords() {
 		for(EdgeHost node : input) {
-			coordMap.put(new Location(node.getLocation().getXPos(), node.getLocation().getYPos()), node);
-			coords.add(new Location(node.getLocation().getXPos(), node.getLocation().getYPos()));
+			coordMap.put(new Location(node.getLocation().getXPos(), node.getLocation().getYPos(), node.getLocation().getAltitude()), node);
+			coords.add(new Location(node.getLocation().getXPos(), node.getLocation().getYPos()), node.getLocation().getAltitude());
 		}
 	}
 	
@@ -93,7 +93,7 @@ public class DistRadix {
 		double dist = 0;
 		for (Location loc : coords) {
 			//dist = Math.sqrt((Math.pow(ref.getXPos() - loc.getXPos(), 2) + Math.pow(ref.getYPos() - loc.getYPos(), 2)));
-			dist = DataInterpreter.measure(ref.getYPos(), ref.getXPos(), loc.getYPos(), loc.getXPos());
+			dist = DataInterpreter.measure(ref.getYPos(), ref.getXPos(), ref.getAltitude(), loc.getYPos(), loc.getXPos(), loc.getAltitude());
 			dist = Math.floor(dist);
 			while(distMap.keySet().contains(dist)) {
 				dist += 0.001;

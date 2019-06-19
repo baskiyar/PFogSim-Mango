@@ -148,7 +148,7 @@ public class Location implements Comparable {
 	 */
 	public int compareTo(Object _in) {
 		Location in = (Location) _in;
-		if (xPos == in.getXPos() && yPos == in.getYPos()) {
+		if (xPos == in.getXPos() && yPos == in.getYPos() && altitude ==  in.altitude) {
 			return 0;
 		}
 		else if (xPos > in.getXPos()) {
