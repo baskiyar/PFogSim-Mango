@@ -103,8 +103,10 @@ public class GPSVectorMobility extends MobilityModel {
 			int wlan_id2 = accessPoints.get(randDatacenterId2).getWlanId();
 			double x_pos = accessPoints.get(randDatacenterId).getLocation().getXPos();
 			double y_pos = accessPoints.get(randDatacenterId).getLocation().getYPos();
+			double alt = accessPoints.get(randDatacenterId).getLocation().getAltitude();
 			double x_pos2 = accessPoints.get(randDatacenterId2).getLocation().getXPos();
 			double y_pos2 = accessPoints.get(randDatacenterId2).getLocation().getYPos();
+			double alt2 = accessPoints.get(randDatacenterId2).getLocation().getAltitude();
 			
 			//SimLogger.printLine("," + i + "," + x_pos + "," + y_pos + ",0");
 			//Qian find device #1071
@@ -121,8 +123,8 @@ public class GPSVectorMobility extends MobilityModel {
 			}
 			*/
 			//start locating user from 10th seconds
-			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos, 0));
-			userTreeMapArray.get(i).put((double)10, new Location(wlan_id2, x_pos2, y_pos2,0));
+			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos, alt));
+			userTreeMapArray.get(i).put((double)10, new Location(wlan_id2, x_pos2, y_pos2,alt2));
 			//SimLogger.printLine("ID: " + i + " Location: " + treeMapArray.get(i).lastEntry().getValue().getXPos() + ", " + treeMapArray.get(i).lastEntry().getValue().getYPos());
 			//SimLogger.printLine("---User ID: " + (i + numberOfMobileDevices) + " Location: " + userTreeMapArray.get(i).lastEntry().getValue().getXPos() + ", " + userTreeMapArray.get(i).lastEntry().getValue().getYPos());
 			
@@ -151,6 +153,7 @@ public class GPSVectorMobility extends MobilityModel {
 					Location entry = treeMap.lastEntry().getValue();
 					double x_pos = treeMap.lastEntry().getValue().getXPos();
 					double y_pos = treeMap.lastEntry().getValue().getYPos();				
+					double alt = treeMap.lastEntry().getValue().getAltitude();
 					int wlan_id = treeMap.lastEntry().getValue().getServingWlanId();
 					
 					  
@@ -160,7 +163,7 @@ public class GPSVectorMobility extends MobilityModel {
 					NodeSim closestNode = new NodeSim();
 					for(NodeSim node : accessPoints)
 					{
-						distance = DataInterpreter.measure(node.getLocation().getYPos(), node.getLocation().getXPos(), y_pos, x_pos);
+						distance = DataInterpreter.measure(node.getLocation().getYPos(), node.getLocation().getXPos(), node.getLocation().getAltitude(), y_pos, x_pos,alt);
 						if (distance < minDistance) 
 						{
 							minDistance = distance;
