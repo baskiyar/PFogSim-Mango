@@ -37,7 +37,6 @@ import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
-import edu.boun.edgecloudsim.energy.EnergyModel;
 import edu.boun.edgecloudsim.network.NetworkModel;
 import edu.boun.edgecloudsim.utils.EdgeTask;
 import edu.boun.edgecloudsim.utils.Location;
@@ -92,17 +91,18 @@ public class MobileDeviceManager extends DatacenterBroker {
 	 */
 	protected void processCloudletReturn(SimEvent ev) {
 		NetworkModel networkModel = SimManager.getInstance().getNetworkModel();
-		
 		Task task = (Task) ev.getData();
 
 		Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock());
+		boolean sepa = false;
 		//SimLogger.printLine("-");
 		//Qian added for sensor generated tasks getting download destination. Uncomment code on line 491 (Producer/Consumer)
-		if (task.sens) {
+		/*if (task.sens) {
+		 *  sepa = true;
 			//SimLogger.printLine("HMMM? X: " + currentLocation.getXPos() + " Y: " + currentLocation.getYPos() + "Prod: " + task.getMobileDeviceId() + " Cons: " + task.getDesMobileDeviceId());
-			//currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock());
+			currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock());
 			//SimLogger.printLine("GOOD? X: " + currentLocation.getXPos() + " Y: " + currentLocation.getYPos() + "Prod: " + task.getMobileDeviceId() + " Cons: " + task.getDesMobileDeviceId());
-		}
+		} */
 		
 		
 		//if(task.getSubmittedLocation().equals(currentLocation))
@@ -110,9 +110,10 @@ public class MobileDeviceManager extends DatacenterBroker {
 			//SimLogger.printLine(CloudSim.clock() + ": " + getName() + ": Cloudlet " + task.getCloudletId() + " received");
 			SimSettings.CLOUD_TRANSFER isCloud = (task.getAssociatedHostId() == 0)?SimSettings.CLOUD_TRANSFER.CLOUD_DOWNLOAD:SimSettings.CLOUD_TRANSFER.IGNORE;
 			double WlanDelay = networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
-			double downloadEnergy = EnergyModel.getDownloadEnergy(task.getCloudletFileSize(), 0);
+			SimLogger.printLine("" + task.getAssociatedHostId());
+			SimLogger.printLine("" + task.getAssociatedHostId());
 			SimLogger.getInstance().addHops(task.getCloudletId(), ((ESBModel) networkModel).getHops(task, task.getAssociatedHostId()));
-			SimLogger.getInstance().addHopsBack(task.getCloudletId(), ((ESBModel) networkModel).getHopsBack(task, task.getAssociatedHostId()));
+			SimLogger.getInstance().addHopsBack(task.getCloudletId(), ((ESBModel) networkModel).getHopsBack(task, task.getAssociatedHostId(), sepa));
 			/*if (((ESBModel) networkModel).getHops(task, task.getAssociatedHostId()) == 0) {
 				((ESBModel) networkModel).getHops(task, task.getAssociatedHostId());
 				networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi);

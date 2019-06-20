@@ -15,6 +15,7 @@ import edu.boun.edgecloudsim.utils.SimLogger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 
@@ -40,10 +41,11 @@ public class BinaryHeap {
     public BinaryHeap(int capacity, Location _ref, ArrayList<EdgeHost> in)
     {
         heapSize = 0;
-        distanceHeap = new BinaryHeapElement[capacity+1];
-        latencyHeap = new BinaryHeapElement[capacity+1];
-        
+        distanceHeap = new BinaryHeapElement[capacity];
+        latencyHeap = new BinaryHeapElement[capacity];
+        ref = _ref;
         nodes = in;
+        init();
     }
     
     private void init() {
@@ -91,12 +93,13 @@ public class BinaryHeap {
 		Location l = new Location(x.getLocation().getXPos(), x.getLocation().getYPos(), x.getLocation().getAltitude());
 		e.distance = DataInterpreter.measure(ref.getXPos(), ref.getYPos(), ref.getAltitude(), l.getXPos(), l.getYPos(), l.getAltitude());
 		e.latency = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(ref, l);
-
+		e.edgeHost = x;
     	
     	
         if (isFull( ) )
             throw new NoSuchElementException("Overflow Exception");
         /** Percolate up **/
+        
         distanceHeap[heapSize] = e;
         latencyHeap[heapSize++] = e;
         heapifyUp(HeapChoice.Distance, heapSize - 1);
@@ -121,7 +124,7 @@ public class BinaryHeap {
     /** Function heapifyUp  **/
     private void heapifyUp(HeapChoice mode, int childInd)
     {
-    	BinaryHeapElement tmp;
+    	BinaryHeapElement tmp = null;
     	
     	switch (mode) {
 		case Distance:
@@ -144,8 +147,7 @@ public class BinaryHeap {
 			break;
 		default:
 			break;
-		}
-        
+		}        
     }
  
     /** Function heapifyDown **/
@@ -241,5 +243,27 @@ public class BinaryHeap {
 			break;
 		}
         
-    }     
+    }
+    
+    public LinkedList<EdgeHost> getDistanceList() {
+    	LinkedList<EdgeHost> ret = new LinkedList<EdgeHost>();
+    	for (int i = 0; i < distanceHeap.length; i++) {
+			ret.add(distanceHeap[i].edgeHost);
+		}
+    	return ret;
+    }
+    
+    public LinkedList<EdgeHost> getLatencyList() {
+    	LinkedList<EdgeHost> ret = new LinkedList<EdgeHost>();
+    	for (int i = 0; i < latencyHeap.length; i++) {
+			ret.add(latencyHeap[i].edgeHost);
+		}
+    	return ret;
+    }
+    
+    public LinkedList<EdgeHost> sortNodes(){
+    	return this.getDistanceList();
+    }
+    
+    
 }

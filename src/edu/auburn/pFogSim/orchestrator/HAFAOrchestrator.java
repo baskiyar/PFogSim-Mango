@@ -28,6 +28,7 @@ import edu.boun.edgecloudsim.utils.SimLogger;
 //import edu.boun.edgecloudsim.utils.SimLogger;
 import javafx.util.Pair;
 import edu.auburn.pFogSim.Puddle.Puddle;
+import edu.auburn.pFogSim.Radix.BinaryHeap;
 import edu.auburn.pFogSim.Radix.DistRadix;
 
 import java.io.BufferedWriter;
@@ -315,7 +316,8 @@ public class HAFAOrchestrator extends EdgeOrchestrator {
 				
 				this.addNumProspectiveHosts(mobile.getId(), prospectiveNodes.size());
 				
-				DistRadix sort = new DistRadix(prospectiveNodes, mobile.getLocation()); //use radix sort based on distance from mobile device.
+				//DistRadix sort = new DistRadix(prospectiveNodes, mobile.getLocation()); //use radix sort based on distance from mobile device.
+				BinaryHeap sort = new BinaryHeap(prospectiveNodes.size(), mobile.getLocation(), prospectiveNodes);
 				LinkedList<EdgeHost> nodes = sort.sortNodes();
 				EdgeHost prosHost = nodes.poll();
 					

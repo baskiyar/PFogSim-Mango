@@ -201,7 +201,7 @@ public class DistRadix {
 	
 	
 	/**
-	 * get the sorted list
+	 * get the list sorted by distance
 	 * @return
 	 */
 	private LinkedList<EdgeHost> getList() {
@@ -222,7 +222,7 @@ public class DistRadix {
 	/**
 	 * @author Shaik
 	 * modified by Qian
-	 * get the sorted list
+	 * get the list sorted by latency
 	 * @return
 	 */
 	private LinkedList<EdgeHost> getLatenciesList() {

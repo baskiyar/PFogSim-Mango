@@ -370,10 +370,10 @@ public class ESBModel extends NetworkModel {
 		return router.findPath(networkTopology, src, dest).size();
 	}
 	
-	public int getHopsBack(Task task, int hostID) {
+	public int getHopsBack(Task task, int hostID, boolean sepa) {
 		NodeSim dest = networkTopology.findNode(SimManager.getInstance().getLocalServerManager().findHostById(hostID).getLocation(), false);
 		NodeSim src = networkTopology.findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
-		if (task.sens) {
+		if (sepa) {
 			src = networkTopology.findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock()), false);
 		}
 		return router.findPath(networkTopology, dest, src).size();

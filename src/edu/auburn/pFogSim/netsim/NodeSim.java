@@ -18,7 +18,7 @@ import javafx.util.Pair;
  * @author szs0117
  *
  */
-public class NodeSim {
+public class NodeSim{
 	
 	private ArrayList<Link> edges;
 	private Location myLocation;
