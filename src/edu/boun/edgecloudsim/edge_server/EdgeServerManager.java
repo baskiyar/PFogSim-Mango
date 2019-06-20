@@ -42,6 +42,7 @@ import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.boun.edgecloudsim.utils.SimUtils;
 import edu.auburn.pFogSim.Puddle.Puddle;
+import edu.auburn.pFogSim.Radix.BinaryHeap;
 import edu.auburn.pFogSim.Radix.DistRadix;
 import edu.auburn.pFogSim.clustering.*;
 import edu.auburn.pFogSim.netsim.*;
@@ -713,7 +714,8 @@ public class EdgeServerManager {
 		}
 		
 		//System.out.print("Fog level: "+fLevel+" hostList count: "+hostList.size());
-		DistRadix sort = new DistRadix(hostList, loc);//use radix sort based on distance from task
+		//DistRadix sort = new DistRadix(hostList, loc);//use radix sort based on distance from task
+		BinaryHeap sort = new BinaryHeap(hostList.size(), loc, hostList);
 		LinkedList<EdgeHost> nodes = sort.sortNodes();
 		//System.out.print("nodes size: " + nodes.size() + "  Device Id: " + mobile.getId() + "  WAP Id: " + mobile.getLocation().getServingWlanId());
 		nearest = nodes.poll();
