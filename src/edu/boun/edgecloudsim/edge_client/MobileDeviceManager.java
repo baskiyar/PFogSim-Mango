@@ -94,7 +94,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		Task task = (Task) ev.getData();
 
 		Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock());
-		boolean sepa = false;
+		boolean sepa = SimSettings.getInstance().getDeviceSeparation();
 		//SimLogger.printLine("-");
 		//Qian added for sensor generated tasks getting download destination. Uncomment code on line 491 (Producer/Consumer)
 		/*if (task.sens) {

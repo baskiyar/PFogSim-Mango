@@ -130,14 +130,13 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 	 * @ author Qian Wang
 	 * @ author Shehenaz Shaik 
 	 * (non-Javadoc)
-	 * @see edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator#assignHost(edu.auburn.pFogSim.util.MobileDevice)
 	 */
 	@Override
 	public void assignHost(MobileDevice mobile) {
 		// Find the total cost of execution at each prospective fog node
 		// cost of execution and cost of data transfer depends on the type of application accessed from mobile device
 		Map<Double, List<NodeSim>> costMap = new HashMap<>();
-		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(mobile.getLocation().getXPos(),mobile.getLocation().getYPos(), false);
+		NodeSim src = ((ESBModel)SimManager.getInstance().getNetworkModel()).getNetworkTopology().findNode(mobile.getLocation().getXPos(),mobile.getLocation().getYPos(), mobile.getLocation().getAltitude(), false);
 		//System.out.println("assignHost: mobile device location: "+mobile.getLocation().getXPos()+"  "+mobile.getLocation().getYPos()+"  "+mobile.getLocation().getServingWlanId());
 		//System.out.println("initialize: host location: "+hostLoc.getXPos()+"  "+hostLoc.getYPos());
 		//System.out.println("NodeSim src WLANId: "+ src.getWlanId() + "This should match id from above line.");
@@ -149,7 +148,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 			NodeSim des = entry.getKey();
 			LinkedList<NodeSim> path = entry.getValue();
 			if (path == null || path.size() == 0) {
-				EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(mobile.getLocation().getXPos(), mobile.getLocation().getYPos());
+				EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(mobile.getLocation().getXPos(), mobile.getLocation().getYPos(), mobile.getLocation().getAltitude());
 				double bwCost = (mobile.getBWRequirement()*8 / (double)1024) * k.getCostPerBW(); //mobile.getBWRequirement() in KB * 8b/B ==>Kb / 1024 = Mb; k.getCostPerBW() in $/Mb -- Shaik modified
 				//double exCost = (double)mobile.getTaskLengthRequirement() / k.getTotalMips() * k.getCostPerSec(); 
 				double exCost = (double)mobile.getTaskLengthRequirement() / (k.getPeList().get(0).getMips()) * k.getCostPerSec(); // Shaik modified - May 07, 2019.
@@ -164,14 +163,14 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 			else {
 				//SimLogger.getInstance().getCentralizeLogPrinter().println("**********Path From " + src.getWlanId() + " To " + des.getWlanId() + "**********");
 				for (NodeSim node: path) {
-					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos());
+					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos(), node.getLocation().getAltitude());
 					double bwCost = (mobile.getBWRequirement()*8 / (double)1024) * k.getCostPerBW(); //mobile.getBWRequirement() in KB * 8b/B ==>Kb / 1024 = Mb; k.getCostPerBW() in $/Mb -- Shaik modified
 					//double bwCost = mobile.getBWRequirement() * k.getCostPerBW();
 					cost = cost + bwCost;
 					//SimLogger.getInstance().getCentralizeLogPrinter().println("Level:\t" + node.getLevel() + "\tNode:\t" + node.getWlanId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
 					//SimLogger.getInstance().getCentralizeLogPrinter().println("Total data:\t" + mobile.getBWRequirement() + "\tBWCostPerSec:\t" + k.getCostPerBW());
 				}				
-				EdgeHost desHost = SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos());
+				EdgeHost desHost = SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos(), des.getLocation().getAltitude());
 				//double exCost = desHost.getCostPerSec() * ((double)mobile.getTaskLengthRequirement() / desHost.getTotalMips());
 				double exCost = (double)mobile.getTaskLengthRequirement() / (desHost.getPeList().get(0).getMips()) * desHost.getCostPerSec(); // Shaik modified - May 07, 2019.
 
@@ -204,7 +203,7 @@ public class CentralOrchestrator extends EdgeOrchestrator {
 		for (Double totalCost : costList) {
 			// Get the list of prospective nodes available at that cost
 			for(NodeSim desNode: costMap.get(totalCost)) {
-				host = SimManager.getInstance().getLocalServerManager().findHostByLoc(desNode.getLocation().getXPos(), desNode.getLocation().getYPos());
+				host = SimManager.getInstance().getLocalServerManager().findHostByLoc(desNode.getLocation().getXPos(), desNode.getLocation().getYPos(), desNode.getLocation().getAltitude());
 				hostsSortedByCost.add(host);
 				//System.out.println("Hosts in sorted order of costs:  "+host.getId()+"  at cost:  "+totalCost);
 			}

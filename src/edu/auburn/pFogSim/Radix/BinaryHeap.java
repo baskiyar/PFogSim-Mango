@@ -32,7 +32,7 @@ public class BinaryHeap {
 	/** The number of children each node has **/
     private static final int d = 2;
     private int heapSize;
-    /* To those who come after, This binary heap maintains to separate heaps due to the requirement
+    /* To those who come after, This binary heap maintains two separate heaps due to the requirement
      * to sort by latency and distance both. When this class was starting to be created, this requirement was 
      * not known. As such, using this class instead of the Radix sort is a trade off, Radix is slower but uses
      * less memory in this case. */
