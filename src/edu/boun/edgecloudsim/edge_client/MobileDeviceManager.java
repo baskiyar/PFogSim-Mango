@@ -112,7 +112,6 @@ public class MobileDeviceManager extends DatacenterBroker {
 			SimSettings.CLOUD_TRANSFER isCloud = (task.getAssociatedHostId() == 0)?SimSettings.CLOUD_TRANSFER.CLOUD_DOWNLOAD:SimSettings.CLOUD_TRANSFER.IGNORE;
 			double WlanDelay = networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
 			double downloadEnergy = EnergyModel.getDownloadEnergy(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
-			System.out.println(downloadEnergy + "dlf");
 			SimLogger.printLine("" + task.getAssociatedHostId());
 			SimLogger.printLine("" + task.getAssociatedHostId());
 			SimLogger.getInstance().addHops(task.getCloudletId(), ((ESBModel) networkModel).getHops(task, task.getAssociatedHostId()));
