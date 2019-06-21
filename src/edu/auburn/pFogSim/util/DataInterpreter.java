@@ -460,6 +460,9 @@ public class DataInterpreter {
 	 *  11 - ram<br>
 	 *  12 - storage
 	 *  13 - bandwidth - Kbps
+	 *  14 - idle power consumption (watt)<br>
+	 *  15 - energy for downloads (nJ/bit)<br>
+	 *  16 - energy for uploads (nJ/bit)<br>
 	 */
 	public static void initialize() {
 		double tenGbRouterCost = 151.67/2692915200.0 * 100; // $/Mb numbers taken from cisco ASR 901 10G router at $151.67 per month
