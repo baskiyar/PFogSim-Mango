@@ -148,8 +148,16 @@ public class EnergyModel {
 	}
 	
 	//calculates the dynamic energy consumption of a task computation
-	public static double calculateDynamicEnergyConsumption(Task task) {
-		double exCost = (double)task.getCloudletLength() / (k.getPeList().get(0).getMips()) * k.getCostPerSec()
+	public static double calculateDynamicEnergyConsumption(Task task, EdgeHost device) {
+//		double exCost = (double)task.getCloudletLength() / (k.getPeList().get(0).getMips()) * k.getCostPerSec()
+		int numCores = Integer.parseInt(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][9]);
+		int idleEnergy = Integer.parseInt(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][14]);
+		int maxEnergy = Integer.parseInt(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][17]);
+		double energyConsumptionFunction = (maxEnergy - idleEnergy) / numCores;
+		double coresRequired = SimSettings.getInstance().getTaskLookUpTable()[task.getTaskType().ordinal()][8];
+		/*this result is computed by using Equation (4) located on page 6 of Estimating Energy Consumption of Cloud, Fog and
+			Edge Computing Infrastructures by Ehsan Ahvar.  */
+		double result = energyConsumptionFunction + ((coresRequired + 1) * energyConsumptionFunction * coresRequired - ((coresRequired * energyConsumptionFunction) * coresRequired));  
 		return 0;
 	}
 }
