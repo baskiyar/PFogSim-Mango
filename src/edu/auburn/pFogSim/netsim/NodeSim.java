@@ -373,7 +373,7 @@ public class NodeSim{
 	 * toString() for node returns the x and y coordinate of the node as a string of the form "x, y"
 	 */
 	public String toString() {
-		return getLocation().getXPos() + ", " + getLocation().getYPos() + ", " + getLocation().getAltitude();
+		return "(" + getLocation().getXPos() + ", " + getLocation().getYPos() + ", " + getLocation().getAltitude() + ")";
 	}
 	
 	
