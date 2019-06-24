@@ -97,19 +97,25 @@ public class MobileDeviceManager extends DatacenterBroker {
 		boolean sepa = false;
 		//SimLogger.printLine("-");
 		//Qian added for sensor generated tasks getting download destination. Uncomment code on line 491 (Producer/Consumer)
-		/*if (task.sens) {
-		 *  sepa = true;
+		if (task.sens) {
+		    sepa = true;
 			//SimLogger.printLine("HMMM? X: " + currentLocation.getXPos() + " Y: " + currentLocation.getYPos() + "Prod: " + task.getMobileDeviceId() + " Cons: " + task.getDesMobileDeviceId());
 			currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock());
 			//SimLogger.printLine("GOOD? X: " + currentLocation.getXPos() + " Y: " + currentLocation.getYPos() + "Prod: " + task.getMobileDeviceId() + " Cons: " + task.getDesMobileDeviceId());
-		} */
+		} 
 		
 		
 		//if(task.getSubmittedLocation().equals(currentLocation))
 		//{
 			//SimLogger.printLine(CloudSim.clock() + ": " + getName() + ": Cloudlet " + task.getCloudletId() + " received");
 			SimSettings.CLOUD_TRANSFER isCloud = (task.getAssociatedHostId() == 0)?SimSettings.CLOUD_TRANSFER.CLOUD_DOWNLOAD:SimSettings.CLOUD_TRANSFER.IGNORE;
+			
 			double WlanDelay = networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
+			
+			if(sepa) {
+				WlanDelay = networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getDesMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
+			}
+			
 			SimLogger.printLine("" + task.getAssociatedHostId());
 			SimLogger.printLine("" + task.getAssociatedHostId());
 			SimLogger.getInstance().addHops(task.getCloudletId(), ((ESBModel) networkModel).getHops(task, task.getAssociatedHostId()));
@@ -183,11 +189,12 @@ public class MobileDeviceManager extends DatacenterBroker {
 			case REQUEST_PROCESSED_BY_CLOUD:
 			{
 				Task task = (Task) ev.getData();
-
+				
 				//SimLogger.printLine(CloudSim.clock() + ": " + getName() + ": Cloudlet " + task.getCloudletId() + " received");
 				//SimLogger.printLine("SourceID: " + SimSettings.CLOUD_DATACENTER_ID);
 				SimSettings.CLOUD_TRANSFER isCloud = SimSettings.CLOUD_TRANSFER.IGNORE;
 				double WanDelay = networkModel.getDownloadDelay(SimSettings.CLOUD_DATACENTER_ID, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
+				
 				if(WanDelay >= 0 && WanDelay <= task.getMaxDelay())
 				{
 					Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()+WanDelay);
@@ -508,7 +515,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		//Also please uncomment the line 81. And IdleActiveLoadGenerator.java line 121
 		if (edgeTask.sensor) {
 			//SimLogger.printLine("++++++");
-			//task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
+			task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
 		}
 		return task;
 	}
