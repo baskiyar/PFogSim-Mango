@@ -582,9 +582,9 @@ public class DataInterpreter {
 		//nodeSpecs[MAX_LEVELS - 5][11] = "1500";
 		nodeSpecs[MAX_LEVELS - 5][12] = "167772160";
 		nodeSpecs[MAX_LEVELS - 5][13] = "10485760"; // Shaik modified to 1/100th - prev = 10485760 // Shaik fixed back to 100% value
-		nodeSpecs[MAX_LEVELS - 5][14] = "4000"; //Cameron and Matthew modified to add idle power (watt) 
-		nodeSpecs[MAX_LEVELS - 5][15] = "37"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 5][16] = "37"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 5][14] = "4000"; // Cameron and Matthew modified to add idle power (watt) 
+		nodeSpecs[MAX_LEVELS - 5][15] = "37"; // Cameron and Matthew modified to add energy for downloads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 5][16] = "37"; // Cameron and Matthew modified to add energy for uploads (nJ/bit)
 		nodeSpecs[MAX_LEVELS - 5][17] = "4550"; // Cameron and Matthew modified to add max power consumption (watt)
 		nodeSpecs[MAX_LEVELS - 5][18] = "170.08"; // Cameron and Matthew modified to add idle power consumption (watt)
 		nodeSpecs[MAX_LEVELS - 5][19] = "524.48"; // Cameron and Matthew modified to add max power consumption (watt)
@@ -604,9 +604,9 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 6][11] = "16384";
 		nodeSpecs[MAX_LEVELS - 6][12] = "167772160";
 		nodeSpecs[MAX_LEVELS - 6][13] = "1048576"; // Shaik modified to 1/100th - prev = 1048576 // Shaik fixed back to 100% value
-		nodeSpecs[MAX_LEVELS - 6][14] = "1589"; //Cameron and Matthew modified to add idle power (watt) 
-		nodeSpecs[MAX_LEVELS - 6][15] = "31.7"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 6][16] = "31.7"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 6][14] = "1589"; // Cameron and Matthew modified to add idle power (watt) 
+		nodeSpecs[MAX_LEVELS - 6][15] = "31.7"; // Cameron and Matthew modified to add energy for downloads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 6][16] = "31.7"; // Cameron and Matthew modified to add energy for uploads (nJ/bit)
 		nodeSpecs[MAX_LEVELS - 6][17] = "1766"; // Cameron and Matthew modified to add max power consumption (watt)
 		nodeSpecs[MAX_LEVELS - 6][18] = "71.5"; // Cameron and Matthew modified to add idle power consumption (watt)
 		nodeSpecs[MAX_LEVELS - 6][19] = "230.64"; // Cameron and Matthew modified to add max power consumption (watt)
@@ -626,9 +626,9 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 7][11] = "4096";
 		nodeSpecs[MAX_LEVELS - 7][12] = "41943040";
 		nodeSpecs[MAX_LEVELS - 7][13] = "1048576"; // Shaik modified to 1/100th - prev = 1048576 // Shaik fixed back to 100% value
-		nodeSpecs[MAX_LEVELS - 7][14] = "1589"; //Cameron and Matthew modified to add idle power (watt) 
-		nodeSpecs[MAX_LEVELS - 7][15] = "31.7"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 7][16] = "31.7"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 7][14] = "1589"; // Cameron and Matthew modified to add idle power (watt) 
+		nodeSpecs[MAX_LEVELS - 7][15] = "31.7"; // Cameron and Matthew modified to add energy for downloads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 7][16] = "31.7"; // Cameron and Matthew modified to add energy for uploads (nJ/bit)
 		nodeSpecs[MAX_LEVELS - 7][17] = "1766"; // Cameron and Matthew modified to add max power consumption (watt)
 		nodeSpecs[MAX_LEVELS - 7][18] = "50.72"; // Cameron and Matthew modified to add idle power consumption (watt)
 		nodeSpecs[MAX_LEVELS - 7][19] = "197.22"; // Cameron and Matthew modified to add max power consumption (watt)
