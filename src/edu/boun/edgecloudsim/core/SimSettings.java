@@ -28,6 +28,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import edu.boun.edgecloudsim.utils.SimLogger;
 
 //import edu.auburn.pFogSim.netsim.*;
@@ -102,6 +104,7 @@ public class SimSettings {
     private int MIPS_FOR_CLOUD; //MIPS
     
     private boolean MOVING_DEVICES; //Mobile devices should be moving?
+    private boolean PRODUCER_CONSUMER_SEP; // Should producer and consumer be same device?
     
     //Qian selected nodes
     private String[] SELECTED_NODES;
@@ -229,6 +232,8 @@ public class SimSettings {
 				Random r = new Random();
 				RANDOM_SEED = r.nextInt();// TODO: handle exception
 			}
+			
+			PRODUCER_CONSUMER_SEP = Boolean.parseBoolean(prop.getProperty("Producer_Consumer_Separation"));
 			
 			//avg waiting time in a place (min)
 			double place1_mean_waiting_time = Double.parseDouble(prop.getProperty("attractiveness_L1_mean_waiting_time"));
@@ -531,6 +536,11 @@ public class SimSettings {
 	public double[][] getTaskLookUpTable()
 	{
 		return taskLookUpTable;
+	}
+	
+	
+	public boolean getDeviceSeparation() {
+		return PRODUCER_CONSUMER_SEP;
 	}
 	
 	

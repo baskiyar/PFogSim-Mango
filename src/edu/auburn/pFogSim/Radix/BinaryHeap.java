@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
 
 public class BinaryHeap {
 	
-	public class BinaryHeapElement{
+	public class BinaryHeapElement{ //Java has no structs.
 		public Double distance, latency;
 		public EdgeHost edgeHost;
 	}
@@ -32,7 +32,11 @@ public class BinaryHeap {
 	/** The number of children each node has **/
     private static final int d = 2;
     private int heapSize;
-    private BinaryHeapElement[] distanceHeap;
+    /* To those who come after, This binary heap maintains two separate heaps due to the requirement
+     * to sort by latency and distance both. When this class was starting to be created, this requirement was 
+     * not known. As such, using this class instead of the Radix sort is a trade off, Radix is slower but uses
+     * less memory in this case. */
+    private BinaryHeapElement[] distanceHeap; 
     private BinaryHeapElement[] latencyHeap;
     private ArrayList<EdgeHost> nodes;
     private Location ref;
@@ -48,6 +52,7 @@ public class BinaryHeap {
         init();
     }
     
+    //Insert each node into heaps
     private void init() {
     	for (EdgeHost node : nodes) {
 			this.insert(node);
@@ -90,6 +95,7 @@ public class BinaryHeap {
     	
     	BinaryHeapElement e = new BinaryHeapElement();
     	
+    	//Fill out a HeapElement for EdgeHost x
 		Location l = new Location(x.getLocation().getXPos(), x.getLocation().getYPos(), x.getLocation().getAltitude());
 		e.distance = DataInterpreter.measure(ref.getXPos(), ref.getYPos(), ref.getAltitude(), l.getXPos(), l.getYPos(), l.getAltitude());
 		e.latency = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(ref, l);
@@ -98,10 +104,12 @@ public class BinaryHeap {
     	
         if (isFull( ) )
             throw new NoSuchElementException("Overflow Exception");
-        /** Percolate up **/
         
+        // Store new element in both heaps
         distanceHeap[heapSize] = e;
         latencyHeap[heapSize++] = e;
+        
+        //Percolate Up
         heapifyUp(HeapChoice.Distance, heapSize - 1);
         heapifyUp(HeapChoice.Latency, heapSize - 1);
     }
@@ -126,7 +134,7 @@ public class BinaryHeap {
     {
     	BinaryHeapElement tmp = null;
     	
-    	switch (mode) {
+    	switch (mode) { //Maintain BOTH heaps
 		case Distance:
 			tmp = distanceHeap[childInd];    
 	        while (childInd > 0 && tmp.distance < distanceHeap[parent(childInd)].distance)
@@ -155,7 +163,7 @@ public class BinaryHeap {
     {
     	int child;
     	BinaryHeapElement tmp;
-    	switch (mode){
+    	switch (mode){ //Maintain BOTH heaps
 		case Distance:
 	        tmp = distanceHeap[ ind ];
 	        while (kthChild(ind, 1) < heapSize)
@@ -193,7 +201,7 @@ public class BinaryHeap {
     private int minChild(HeapChoice mode, int ind) 
     {
     	int bestChild, k, pos;
-    	switch (mode) {
+    	switch (mode) { //Maintain BOTH heaps
 		case Distance:
 			bestChild = kthChild(ind, 1);
 	        k = 2;
@@ -225,7 +233,7 @@ public class BinaryHeap {
     /** Function to print heap **/
     public void printHeap(HeapChoice mode)
     {
-    	switch (mode) {
+    	switch (mode) { //Maintain BOTH heaps
 		case Distance:
 			System.out.print("\nHeap = ");
 	        for (int i = 0; i < heapSize; i++)
@@ -245,7 +253,7 @@ public class BinaryHeap {
         
     }
     
-    public LinkedList<EdgeHost> getDistanceList() {
+    public LinkedList<EdgeHost> getDistanceList() { //Compatibility with DistRadix code
     	LinkedList<EdgeHost> ret = new LinkedList<EdgeHost>();
     	for (int i = 0; i < distanceHeap.length; i++) {
 			ret.add(distanceHeap[i].edgeHost);
@@ -253,7 +261,7 @@ public class BinaryHeap {
     	return ret;
     }
     
-    public LinkedList<EdgeHost> getLatencyList() {
+    public LinkedList<EdgeHost> getLatencyList() { //Compatibility with DistRadix code
     	LinkedList<EdgeHost> ret = new LinkedList<EdgeHost>();
     	for (int i = 0; i < latencyHeap.length; i++) {
 			ret.add(latencyHeap[i].edgeHost);
@@ -261,7 +269,7 @@ public class BinaryHeap {
     	return ret;
     }
     
-    public LinkedList<EdgeHost> sortNodes(){
+    public LinkedList<EdgeHost> sortNodes(){ //Compatibility with DistRadix code
     	return this.getDistanceList();
     }
     

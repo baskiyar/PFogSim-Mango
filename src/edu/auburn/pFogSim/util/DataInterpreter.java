@@ -30,7 +30,7 @@ public class DataInterpreter {
 			"Chicago_Libraries.csv", 
 			"Chicago_Connect.csv", 
 			"Chicago_Schools.csv"};
-	private static String[][] nodeSpecs = new String[MAX_LEVELS][17];// the specs for all layers of the fog devices
+	private static String[][] nodeSpecs = new String[MAX_LEVELS][18];// the specs for all layers of the fog devices
 	private static ArrayList<Double[]> nodeList = new ArrayList<Double[]>();
 	private static ArrayList<Double[]> tempList = new ArrayList<Double[]>();
 	private static ArrayList<Double[]> universitiesCircle = new ArrayList<Double[]>();
@@ -460,6 +460,10 @@ public class DataInterpreter {
 	 *  11 - ram<br>
 	 *  12 - storage
 	 *  13 - bandwidth - Kbps
+	 *  14 - idle power consumption (watt)<br>
+	 *  15 - energy for downloads (nJ/bit)<br>
+	 *  16 - energy for uploads (nJ/bit)<br>
+	 *  17 - max power consumption (watt)<br>
 	 */
 	public static void initialize() {
 		double tenGbRouterCost = 151.67/2692915200.0 * 100; // $/Mb numbers taken from cisco ASR 901 10G router at $151.67 per month
@@ -486,6 +490,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 1][14] = "11000"; //Cameron and Matthew modified to add idle power (watt) 
 		nodeSpecs[MAX_LEVELS - 1][15] = "12.6"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
 		nodeSpecs[MAX_LEVELS - 1][16] = "12.6"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 1][17] = "12300"; // Cameron and Matthew modified to add max energy value (watt)
 		
 		nodeSpecs[MAX_LEVELS - 2][0] = "City Hall";
 		nodeSpecs[MAX_LEVELS - 2][1] = "Linux";
@@ -506,6 +511,8 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 2][14] = "11000"; //Cameron and Matthew modified to add idle power (watt) 
 		nodeSpecs[MAX_LEVELS - 2][15] = "12.6"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
 		nodeSpecs[MAX_LEVELS - 2][16] = "12.6"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 2][17] = "12300"; // Cameron and Matthew modified to add max energy value (watt)
+
 		
 		nodeSpecs[MAX_LEVELS - 3][0] = "University";
 		nodeSpecs[MAX_LEVELS - 3][1] = "Linux";
@@ -526,6 +533,8 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 3][14] = "4000"; //Cameron and Matthew modified to add idle power (watt) 
 		nodeSpecs[MAX_LEVELS - 3][15] = "37"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
 		nodeSpecs[MAX_LEVELS - 3][16] = "37"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 3][17] = "4550"; // Cameron and Matthew modified to add max energy value (watt)
+
 		
 		nodeSpecs[MAX_LEVELS - 4][0] = "Ward";
 		nodeSpecs[MAX_LEVELS - 4][1] = "Linux";
@@ -545,6 +554,8 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 4][14] = "4000"; //Cameron and Matthew modified to add idle power (watt) 
 		nodeSpecs[MAX_LEVELS - 4][15] = "37"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
 		nodeSpecs[MAX_LEVELS - 4][16] = "37"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 4][17] = "4550"; // Cameron and Matthew modified to add max energy value (watt)
+
 		
 		nodeSpecs[MAX_LEVELS - 5][0] = "Library";
 		nodeSpecs[MAX_LEVELS - 5][1] = "Linux";
@@ -564,6 +575,8 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 5][14] = "4000"; //Cameron and Matthew modified to add idle power (watt) 
 		nodeSpecs[MAX_LEVELS - 5][15] = "37"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
 		nodeSpecs[MAX_LEVELS - 5][16] = "37"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 5][17] = "4550"; // Cameron and Matthew modified to add max energy value (watt)
+
 		
 		nodeSpecs[MAX_LEVELS - 6][0] = "Community Center";
 		nodeSpecs[MAX_LEVELS - 6][1] = "Linux";
@@ -582,6 +595,8 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 6][14] = "1589"; //Cameron and Matthew modified to add idle power (watt) 
 		nodeSpecs[MAX_LEVELS - 6][15] = "31.7"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
 		nodeSpecs[MAX_LEVELS - 6][16] = "31.7"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 6][17] = "1766"; // Cameron and Matthew modified to add max energy value (watt)
+
 		
 		nodeSpecs[MAX_LEVELS - 7][0] = "School";
 		nodeSpecs[MAX_LEVELS - 7][1] = "Linux";
@@ -600,6 +615,8 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 7][14] = "1589"; //Cameron and Matthew modified to add idle power (watt) 
 		nodeSpecs[MAX_LEVELS - 7][15] = "31.7"; //Cameron and Matthew modified to add energy for downloads (nJ/bit)
 		nodeSpecs[MAX_LEVELS - 7][16] = "31.7"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
+		nodeSpecs[MAX_LEVELS - 7][17] = "1766"; // Cameron and Matthew modified to add max energy value (watt)
+
 
 	}
 
