@@ -114,6 +114,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 				WlanDelay = networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getDesMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
 				downloadEnergy = EnergyModel.getDownloadEnergy(task.getAssociatedHostId() * -1, task.getDesMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
 			}
+			EnergyModel.appendRouterEnergy(downloadEnergy);
+
 			SimLogger.printLine("" + task.getAssociatedHostId());
 			SimLogger.printLine("" + task.getAssociatedHostId());
 			SimLogger.getInstance().addHops(task.getCloudletId(), ((ESBModel) networkModel).getHops(task, task.getAssociatedHostId()));
@@ -285,6 +287,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 					}
 					k = SimManager.getInstance().getLocalServerManager().findHostById(hostID);
 					double exCost = (double)task.getCloudletLength() / (k.getPeList().get(0).getMips()) * k.getCostPerSec(); // Shaik modified - May 09, 2019.
+					double dynamicEnergy = EnergyModel.calculateDynamicEnergyConsumption(task, k);
+					EnergyModel.appendFogNodeEnergy(dynamicEnergy);
 					//double exCost = task.getActualCPUTime() * task.getCostPerSec(); //Shaik - Note: This includes task processing delay + queuing delay at fog node. We do not want to charge the tenant for queuing delay as well, as the delay itself is bad enough, adding extra cost for task execution would make it worse.  
 					cost = cost + exCost;
 					//SimLogger.getInstance().getCentralizeLogPrinter().println("Task exec: Destination:\t"+ k.getId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
@@ -425,7 +429,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 			
 			SimSettings.CLOUD_TRANSFER isCloud = SimSettings.CLOUD_TRANSFER.IGNORE;
 			double WanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
-			
+			double uploadEnergy = EnergyModel.getUploadEnergy(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
+			EnergyModel.appendRouterEnergy(uploadEnergy);
 			if(WanDelay>0){
 				networkModel.uploadStarted(currentLocation, nextHopId);
 				schedule(getId(), WanDelay, REQUEST_RECEIVED_BY_CLOUD, task);
@@ -458,7 +463,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 		else /*(nextHopId == SimSettings.GENERIC_EDGE_DEVICE_ID)*/ {
 			SimSettings.CLOUD_TRANSFER isCloud = (nextHopId== 0)?SimSettings.CLOUD_TRANSFER.CLOUD_UPLOAD:SimSettings.CLOUD_TRANSFER.IGNORE;
 			double WlanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
-
+			double uploadEnergy = EnergyModel.getUploadEnergy(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
+			EnergyModel.appendRouterEnergy(uploadEnergy);
 			if (SimSettings.getInstance().traceEnable()) {
 				SimLogger.printLine("WlanDelay: "+ WlanDelay+ "  taskmaxDelay: "+task.getMaxDelay());
 				if (WlanDelay < 0)

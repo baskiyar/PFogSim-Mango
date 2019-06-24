@@ -44,6 +44,7 @@ import edu.boun.edgecloudsim.edge_server.EdgeHost;
 //import edu.boun.edgecloudsim.utils.*;
 //import edu.auburn.pFogSim.Puddle.Puddle;
 //import edu.auburn.pFogSim.netsim.*;
+import edu.boun.edgecloudsim.energy.EnergyModel;
 
 
 /**
@@ -436,9 +437,9 @@ public class SimLogger {
 	public void simStopped() throws IOException {
 		int numOfAppTypes = SimSettings.getInstance().getTaskLookUpTable().length;
 
-		File successFile = null, failFile = null, vmLoadFile = null, fnMipsUtilFile = null, fnNwUtilFile = null, locationFile = null, distFile = null, distBackFile = null, hopFile = null, hopsBackFile = null, hafaNumHostsFile = null, hafaNumMsgsFile = null, hafaNumPuddlesFile = null;
-		FileWriter successFW = null, failFW = null, vmLoadFW = null, fnMipsUtilFW = null, fnNwUtilFW = null, locationFW = null, distFW = null, distBackFW = null, hopFW = null, hopsBackFW = null, hafaNumHostsFW = null, hafaNumMsgsFW = null, hafaNumPuddlesFW = null;
-		BufferedWriter successBW = null, failBW = null, vmLoadBW = null, fnMipsUtilBW = null, fnNwUtilBW = null, locationBW = null, distBW = null, distBackBW = null, hopBW = null, hopsBackBW = null, hafaNumHostsBW = null, hafaNumMsgsBW = null, hafaNumPuddlesBW = null;
+		File successFile = null, failFile = null, vmLoadFile = null, fnMipsUtilFile = null, fnNwUtilFile = null, locationFile = null, distFile = null, distBackFile = null, hopFile = null, hopsBackFile = null, hafaNumHostsFile = null, hafaNumMsgsFile = null, hafaNumPuddlesFile = null, energyUsageFile = null;
+		FileWriter successFW = null, failFW = null, vmLoadFW = null, fnMipsUtilFW = null, fnNwUtilFW = null, locationFW = null, distFW = null, distBackFW = null, hopFW = null, hopsBackFW = null, hafaNumHostsFW = null, hafaNumMsgsFW = null, hafaNumPuddlesFW = null, energyUsageFW = null;
+		BufferedWriter successBW = null, failBW = null, vmLoadBW = null, fnMipsUtilBW = null, fnNwUtilBW = null, locationBW = null, distBW = null, distBackBW = null, hopBW = null, hopsBackBW = null, hafaNumHostsBW = null, hafaNumMsgsBW = null, hafaNumPuddlesBW = null, energyUsageBW = null;
 
 		/*File[] vmLoadFileClay = new File[numOfAppTypes]; 
 		FileWriter[] vmLoadFWClay = new FileWriter[numOfAppTypes];
@@ -560,6 +561,12 @@ public class SimLogger {
 			hafaNumPuddlesFile = new File(outputFolder, filePrefix + "_NUMPUDDLES.log");
 			hafaNumPuddlesFW = new FileWriter(hafaNumPuddlesFile, true);
 			hafaNumPuddlesBW = new BufferedWriter(hafaNumPuddlesFW);
+			
+			energyUsageFile = new File(outputFolder, filePrefix + "_ENERGY_USAGE.log");
+			energyUsageFW = new FileWriter(energyUsageFile, true);
+			energyUsageBW = new BufferedWriter(energyUsageFW);
+			
+			
 			
 			
 			
@@ -1034,6 +1041,11 @@ public class SimLogger {
 				appendToFile(genericBWs[i], genericResult9);
 
 			}
+			
+			energyUsageBW.write(Double.toString(EnergyModel.getTotalEnergy()) + ", ");
+			energyUsageBW.write(Double.toString(EnergyModel.getTotalRouterEnergy()) + ", ");
+			energyUsageBW.write(Double.toString(EnergyModel.getTotalFogNodeEnergy()) + ", ");
+			energyUsageBW.write(Double.toString(EnergyModel.getIdleEnergy()));
 
 			// close open files
 			if (SimSettings.getInstance().getDeepFileLoggingEnabled()) {
@@ -1052,6 +1064,7 @@ public class SimLogger {
 			hafaNumHostsBW.close();
 			hafaNumMsgsBW.close();
 			hafaNumPuddlesBW.close();
+			energyUsageBW.close();
 			
 			for (int i = 0; i < numOfAppTypes + 1; i++) {
 				if (i < numOfAppTypes) {

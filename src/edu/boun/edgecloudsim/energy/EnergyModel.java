@@ -33,7 +33,10 @@ import java.util.HashSet;
 public class EnergyModel {
 	
 	//All private values are values to be logged
-	private static double totalEnergy;
+	private static double totalEnergy = 0;
+	private static double totalRouterEnergy = 0;
+	private static double totalFogNodeEnergy = 0;
+	private static double totalIdleEnergy = EnergyModel.calculateTotalIdleEnergy();
 
 	//taken and modified from getUploadDelay in ESBModel.java
 	public static double getDownloadEnergy(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud) {
@@ -134,14 +137,14 @@ public class EnergyModel {
 	}
 	
 	//Returns total idle energy of all fog nodes (power for each node * total simulation time) 
-	public static double calculateTotalIdleEnergy() {
+	private static double calculateTotalIdleEnergy() {
 		NetworkTopology networkTopology = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology(); 
 		HashSet<NodeSim> nodes = networkTopology.getNodes();	
 		double totalEnergy = 0;
 		double totalTime = SimSettings.getInstance().getSIMULATION_TIME();
 		for (NodeSim node: nodes) {
 			int level = node.getLevel();
-			double idleWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][14]);
+			double idleWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][18]);
 			totalEnergy += idleWatts;
 		}
 		return totalEnergy * totalTime;
@@ -151,13 +154,44 @@ public class EnergyModel {
 	public static double calculateDynamicEnergyConsumption(Task task, EdgeHost device) {
 //		double exCost = (double)task.getCloudletLength() / (k.getPeList().get(0).getMips()) * k.getCostPerSec()
 		int numCores = Integer.parseInt(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][9]);
-		int idleEnergy = Integer.parseInt(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][14]);
-		int maxEnergy = Integer.parseInt(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][17]);
+		double idleEnergy = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][18]);
+		double maxEnergy = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][19]);
 		double energyConsumptionFunction = (maxEnergy - idleEnergy) / numCores;
 		double coresRequired = SimSettings.getInstance().getTaskLookUpTable()[task.getTaskType().ordinal()][8];
 		/*this result is computed by using Equation (4) located on page 6 of Estimating Energy Consumption of Cloud, Fog and
 			Edge Computing Infrastructures by Ehsan Ahvar.  */
-		double result = energyConsumptionFunction + ((coresRequired + 1) * energyConsumptionFunction * coresRequired - ((coresRequired * energyConsumptionFunction) * coresRequired));  
-		return 0;
+		double result = energyConsumptionFunction * coresRequired;  
+		return result;
 	}
+	
+	private static void appendTotalEnergy(double num) {
+		totalEnergy += num;
+	}
+	
+	public static void appendRouterEnergy(double num) {
+		totalRouterEnergy += num;
+		appendTotalEnergy(num);
+	}
+	
+	public static void appendFogNodeEnergy(double num) {
+		totalFogNodeEnergy += num;
+		appendTotalEnergy(num);
+	}
+
+	public static double getTotalEnergy() {
+		return totalEnergy;
+	}
+	
+	public static double getTotalRouterEnergy() {
+		return totalRouterEnergy;
+	}
+	
+	public static double getTotalFogNodeEnergy() {
+		return totalFogNodeEnergy;
+	}
+	
+	public static double getIdleEnergy() {
+		return totalIdleEnergy;
+	}
+	
 }
