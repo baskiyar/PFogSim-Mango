@@ -19,6 +19,7 @@ import edu.auburn.pFogSim.netsim.NetworkTopology;
 import edu.auburn.pFogSim.netsim.Router;
 import edu.auburn.pFogSim.netsim.ESBModel;
 
+import java.util.Set;
 import java.util.HashSet;
 
 
@@ -32,11 +33,13 @@ import java.util.HashSet;
  */
 public class EnergyModel {
 	
-	//All private values are values to be logged
+	//All of these private values are values to be logged
 	private static double totalRouterEnergy = 0;
 	private static double totalFogNodeEnergy = 0;
 	private static double totalIdleEnergy = EnergyModel.calculateTotalIdleEnergy();	
 	private static double totalEnergy = EnergyModel.getIdleEnergy(); //perhaps slightly unnecessary use of getter to retrieve totalIdleEnergy
+	
+	private static Set<NodeSim> routerSet = new HashSet<>();
 
 	//taken and modified from getUploadDelay in ESBModel.java
 	public static double getDownloadEnergy(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud) {
@@ -143,8 +146,6 @@ public class EnergyModel {
 		double totalEnergy = 0;
 		double totalTimeMinutes = SimSettings.getInstance().getSIMULATION_TIME();
 		double totalTimeSeconds = totalTimeMinutes * 60;
-		System.out.println(totalTimeMinutes);
-		System.out.println(totalTimeSeconds);
 		for (NodeSim node: nodes) {
 			int level = node.getLevel();
 			double idleWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][18]);
