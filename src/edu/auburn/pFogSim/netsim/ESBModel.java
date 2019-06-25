@@ -133,7 +133,6 @@ public class ESBModel extends NetworkModel {
 		catch (IndexOutOfBoundsException e) {
 			sourceDeviceId *= -1;
 			accessPointLocation = SimManager.getInstance().getLocalServerManager().findHostById(sourceDeviceId).getLocation();
-			//SimLogger.printLine(accessPointLocation.toString());
 		}
 		try {
 			if (isCloud == SimSettings.CLOUD_TRANSFER.CLOUD_UPLOAD)
@@ -178,8 +177,8 @@ public class ESBModel extends NetworkModel {
 	   // SimLogger.printLine(path.size() + "");
 		delay += getWlanUploadDelay(src.getLocation(), dataSize, CloudSim.clock()) + SimSettings.ROUTER_PROCESSING_DELAY;
 		if (SimSettings.getInstance().traceEnable()) {
-			SimLogger.getInstance().printLine("**********Task Delay**********");
-			SimLogger.getInstance().printLine("Start node ID:\t" + src.getWlanId());
+			SimLogger.printLine("**********Task Delay**********");
+			SimLogger.printLine("Start node ID:\t" + src.getWlanId());
 		}
 		while (!path.isEmpty()) {
 			current = path.poll();
@@ -194,11 +193,11 @@ public class ESBModel extends NetworkModel {
 			double conDelay = getWlanUploadDelay(nextHop.getLocation(), dataSize, CloudSim.clock() + delay);
 			delay += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
 			if (SimSettings.getInstance().traceEnable()) {
-				SimLogger.getInstance().printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
+				SimLogger.printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
 			}
 		}
 		if (SimSettings.getInstance().traceEnable()) {
-			SimLogger.getInstance().printLine("Target Node ID:\t" + dest.getWlanId());
+			SimLogger.printLine("Target Node ID:\t" + dest.getWlanId());
 		}
 		return delay;
 	}
@@ -229,22 +228,10 @@ public class ESBModel extends NetworkModel {
 	 * @return
 	 */
 	private int getDeviceCount(Location deviceLocation, double time){
-		/*int deviceCount = 0;
-		
-		for(int i=0; i<numberOfMobileDevices; i++) {
-			Location location = SimManager.getInstance().getMobilityModel().getLocation(i,time);
-			if(location.equals(deviceLocation))
-				deviceCount++;
-		}*/
 		EdgeHost host = SimManager.getInstance().getLocalServerManager().findHostByLoc(deviceLocation.getXPos(), deviceLocation.getYPos(), deviceLocation.getAltitude());
 		if (host == null)
 			SimLogger.printLine("Null Host");
 		return host.getCustomers().size();
-		//record max number of client just for debugging
-//		if(maxNumOfClientsInPlace<deviceCount)
-//			maxNumOfClientsInPlace = deviceCount;
-//		
-//		return deviceCount;
 	}
 	
 	
