@@ -36,10 +36,9 @@ public class EnergyModel {
 	//All of these private values are values to be logged
 	private static double totalRouterEnergy = 0;
 	private static double totalFogNodeEnergy = 0;
-	private static double totalIdleEnergy = EnergyModel.calculateTotalIdleEnergy();	
-	private static double totalEnergy = EnergyModel.getIdleEnergy(); //perhaps slightly unnecessary use of getter to retrieve totalIdleEnergy
+	private static double totalIdleEnergy = 0;	
+	private static double totalEnergy = 0; 
 	
-	private static Set<NodeSim> routerSet = new HashSet<>();
 
 	//taken and modified from getUploadDelay in ESBModel.java
 	public static double getDownloadEnergy(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud) {
@@ -140,7 +139,7 @@ public class EnergyModel {
 	}
 	
 	//Returns total idle energy of all fog nodes (power for each node * total simulation time) 
-	private static double calculateTotalIdleEnergy() {
+	public static void calculateTotalIdleEnergy() {
 		NetworkTopology networkTopology = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology(); 
 		HashSet<NodeSim> nodes = networkTopology.getNodes();	
 		double totalEnergy = 0;
@@ -148,10 +147,17 @@ public class EnergyModel {
 		double totalTimeSeconds = totalTimeMinutes * 60;
 		for (NodeSim node: nodes) {
 			int level = node.getLevel();
-			double idleWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][18]);
-			totalEnergy += idleWatts;
+			double idleFogWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][18]);
+			double idleRouterWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][14]);
+
+			totalEnergy += idleFogWatts;
+			totalEnergy += idleRouterWatts;
 		}
-		return totalEnergy * totalTimeSeconds;
+		
+		
+		double idle = totalEnergy * totalTimeSeconds;
+		totalIdleEnergy = idle;
+		EnergyModel.totalEnergy += idle;
 	}
 	
 	//calculates the dynamic energy consumption of a task computation
