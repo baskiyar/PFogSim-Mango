@@ -280,7 +280,6 @@ public class FogCluster {
 		int[] clusterSize = new int[clusterNumber];
 		for (int i=0; i< membership.length; i++){
 			clusterSize[membership[i]]++;
-			//SimLogger.printLine("i membership[i] clusterSize: "+i+"   "+membership[i]+"   "+clusterSize[membership[i]]);
 		} 
 		
 		cluster = new Double[clusterNumber][][];
@@ -308,7 +307,6 @@ public class FogCluster {
 	 */
 	public FogCluster(String fn, int cNum) {
 		super();
-		//SimLogger.printLine("String and int constructor FogCluster() reached");
 		setClusterNumber(cNum);
 		//csvInput(fn);
 		calcProximity();
@@ -350,7 +348,6 @@ public class FogCluster {
 		
 		//Make the voronoi diagram for that level and add it to the list
 		//PowerDiagram voronoi = new PowerDiagram(arrayList);
-		//SimLogger.printLine("ArrayList : " + arrayList);
 		//------later------SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
 		
 	}
@@ -391,7 +388,6 @@ public class FogCluster {
 		
 		//Make the voronoi diagram for that level and add it to the list
 		//PowerDiagram voronoi = new PowerDiagram(arrayList);
-		//SimLogger.printLine("ArrayList : " + arrayList);
 		//------later------SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
 	} // end FogCluster (max)
 

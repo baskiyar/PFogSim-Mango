@@ -1190,7 +1190,6 @@ public class SimLogger {
 		
 		//Qian print average fog nodes utilization in each level.
 		getTotalFogNodesCountInEachLevel();
-		//printLine("average fog node utilization:"); // Shaik commented
 		printLine("\nPercentage of fog nodes executing atleast one task:"); // Shaik modified
 		for (int i = 0; i < 7; i++) {
 			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)levelFogNodeCount[i] / (double)totalNodesNmuberInEachLevel[i] * 100)) + " %");
