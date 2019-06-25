@@ -723,9 +723,6 @@ public class SimSettings {
 		linksDoc.getDocumentElement().normalize();
 		
 		NodeList linksList = linksDoc.getElementsByTagName("link");
-		for(int i = 0; i < linksList.getLength(); i++) {
-			//SimLogger.printLine("No issues yet...cross your fingers!");			
-		}
 		
 		}
 		catch (Exception e) {

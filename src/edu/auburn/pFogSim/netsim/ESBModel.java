@@ -141,7 +141,6 @@ public class ESBModel extends NetworkModel {
 			else	
 				destPointLocation = SimManager.getInstance().getMobilityModel().getLocation(destDeviceId,CloudSim.clock());
 			
-			//SimLogger.printLine(destPointLocation.toString());
 		}
 		catch (IndexOutOfBoundsException e) {
 			destDeviceId *= -1;
@@ -164,7 +163,6 @@ public class ESBModel extends NetworkModel {
 		}
 		else {
 			src = networkTopology.findNode(source, false);
-			//SimLogger.printLine(src.toString());
 		}
 		if(wifiDest) {
 			dest = networkTopology.findNode(destination, true);
@@ -172,9 +170,7 @@ public class ESBModel extends NetworkModel {
 		else {
 			dest = networkTopology.findNode(destination, false);
 		}
-		//SimLogger.printLine(src.toString() + " " + dest.toString());
 	    path = router.findPath(networkTopology, src, dest);
-	   // SimLogger.printLine(path.size() + "");
 		delay += getWlanUploadDelay(src.getLocation(), dataSize, CloudSim.clock()) + SimSettings.ROUTER_PROCESSING_DELAY;
 		if (SimSettings.getInstance().traceEnable()) {
 			SimLogger.printLine("**********Task Delay**********");
@@ -398,7 +394,6 @@ public class ESBModel extends NetworkModel {
 //				}
 //				catch (BlackHoleException e) {
 //					errors++;
-//					SimLogger.printLine(src.toString() + ", " + dest.toString());
 //					//router.findPath(networkTopology, src, dest);
 //				}
 //			}

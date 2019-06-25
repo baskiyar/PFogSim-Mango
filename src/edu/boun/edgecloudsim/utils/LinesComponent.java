@@ -104,11 +104,8 @@ public class LinesComponent extends JComponent{
 	 * @param color
 	 */
 	public void addLine(double x1, double x2, double x3, double x4, Color color) {
-		//SimLogger.printLine("Before lines.add()");
 	    lines.add(new Line(x1,x2,x3,x4, color));        
-		//SimLogger.printLine("Before repaint()");
 	    repaint();
-		//SimLogger.printLine("After repaint()");
 	}
 	
 	

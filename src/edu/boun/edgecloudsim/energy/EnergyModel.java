@@ -96,7 +96,6 @@ public class EnergyModel {
 		else {
 			dest = networkTopology.findNode(destination, false);
 		}
-		//SimLogger.printLine(src.toString() + " " + dest.toString());
 		Router router = ((ESBModel) SimManager.getInstance().getNetworkModel()).getRouter();
 	    path = router.findPath(networkTopology, src, dest);
 	    
