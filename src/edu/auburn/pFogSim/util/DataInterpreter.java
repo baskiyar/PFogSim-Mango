@@ -462,7 +462,7 @@ public class DataInterpreter {
 	 *  13 - bandwidth - Kbps
 	 *  14 - idle power consumption of router (watt)<br>
 	 *  15 - energy for downloads (nJ/bit)<br>
-	 *  16 - energy for uploads (nJ/bit)<br>
+	 *  16 - energy for uploads (nJ/bit)<br>. IF DOWNLOAD AND UPLOAD nJ/bit BECOME DIFFERENT FOR ANY LAYER, CHANGE getDownloadEnergy in EnergyModel.java
 	 *  17 - max power consumption of router (watt)<br>
 	 *  18 - idle power consumption of fog node (watt)<br>
 	 *  19 - max power consumption of fog node (watt)<br>

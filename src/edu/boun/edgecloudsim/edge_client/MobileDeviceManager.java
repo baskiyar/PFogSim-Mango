@@ -287,7 +287,8 @@ public class MobileDeviceManager extends DatacenterBroker {
 					}
 					k = SimManager.getInstance().getLocalServerManager().findHostById(hostID);
 					double exCost = (double)task.getCloudletLength() / (k.getPeList().get(0).getMips()) * k.getCostPerSec(); // Shaik modified - May 09, 2019.
-					double dynamicEnergy = EnergyModel.calculateDynamicEnergyConsumption(task, k);
+					double time = (double)task.getCloudletLength() / (k.getPeList().get(0).getMips());
+					double dynamicEnergy = EnergyModel.calculateDynamicEnergyConsumption(task, k, time);
 					EnergyModel.appendFogNodeEnergy(dynamicEnergy);
 					//double exCost = task.getActualCPUTime() * task.getCostPerSec(); //Shaik - Note: This includes task processing delay + queuing delay at fog node. We do not want to charge the tenant for queuing delay as well, as the delay itself is bad enough, adding extra cost for task execution would make it worse.  
 					cost = cost + exCost;
