@@ -136,7 +136,6 @@ public class NodeSim{
 			return true;
 		}
 		else {
-			//SimLogger.printLine(in.getLeftLink().getKey() + ", " + in.getLeftLink().getValue());
 			return false;
 		}
 	}
@@ -190,7 +189,6 @@ public class NodeSim{
 				return edges.get(i);
 			}
 		}
-		//SimLogger.printLine("returned null");
 		return null;
 	}
 	
@@ -204,14 +202,12 @@ public class NodeSim{
 	 */
 	public boolean removeLink(Link victim) {
 		if (victim == null) {
-			//SimLogger.printLine("removeLink return false");
 			return false;
 		}
 		for (Link edge : edges) {
 			if (edge.equals(victim)) {
 				edges.remove(victim);
 				SimLogger.printLine(victim.getLeftLink().getXPos() + ", " + victim.getLeftLink().getYPos() + " " + victim.getRightLink().getXPos() + ", " + victim.getRightLink().getYPos());
-				//SimLogger.printLine("removeLink return true");
 				return true;
 			}
 		}

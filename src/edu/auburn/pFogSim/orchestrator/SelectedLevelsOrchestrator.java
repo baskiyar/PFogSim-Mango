@@ -71,7 +71,6 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 			SimLogger.print(i+" ");
 			selLayerHosts.addAll(hostLevelMap.get(i));
 		}
-		SimLogger.printLine(" ");
 		
 
 		allHosts = new ArrayList<EdgeHost>();
@@ -166,7 +165,6 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 			// for each such NodeSim object, retrieve the row and add it to selectedDesMap
 			selectedDesMap.put(hostNode, desMap.get(hostNode));	
 		}
-		SimLogger.printLine(" ");
 
 		// continue with processing as earlier.
 		for (Entry<NodeSim, LinkedList<NodeSim>> entry: selectedDesMap.entrySet()) {

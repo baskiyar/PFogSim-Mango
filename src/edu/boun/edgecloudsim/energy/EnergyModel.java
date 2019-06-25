@@ -33,7 +33,10 @@ import java.util.HashSet;
 public class EnergyModel {
 	
 	//All private values are values to be logged
-	private static double totalEnergy;
+	private static double totalRouterEnergy = 0;
+	private static double totalFogNodeEnergy = 0;
+	private static double totalIdleEnergy = EnergyModel.calculateTotalIdleEnergy();	
+	private static double totalEnergy = EnergyModel.getIdleEnergy(); //perhaps slightly unnecessary use of getter to retrieve totalIdleEnergy
 
 	//taken and modified from getUploadDelay in ESBModel.java
 	public static double getDownloadEnergy(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud) {
@@ -91,7 +94,6 @@ public class EnergyModel {
 		else {
 			dest = networkTopology.findNode(destination, false);
 		}
-		//SimLogger.printLine(src.toString() + " " + dest.toString());
 		Router router = ((ESBModel) SimManager.getInstance().getNetworkModel()).getRouter();
 	    path = router.findPath(networkTopology, src, dest);
 	    
@@ -125,7 +127,7 @@ public class EnergyModel {
 		if (SimSettings.getInstance().traceEnable()) {
 			SimLogger.getInstance().printLine("Target Node ID:\t" + dest.getWlanId());
 		}
-		return energy; //energy in nano joules for download of entire path
+		return energy / 1000000000; //energy in nano joules for download of entire path converted to joules by dividing by 1e+9
 	}
 	
 	//uploadEnergy and downloadEnergy are basically the same because nJperBit upload and download are the same
@@ -134,30 +136,63 @@ public class EnergyModel {
 	}
 	
 	//Returns total idle energy of all fog nodes (power for each node * total simulation time) 
-	public static double calculateTotalIdleEnergy() {
+	private static double calculateTotalIdleEnergy() {
 		NetworkTopology networkTopology = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology(); 
 		HashSet<NodeSim> nodes = networkTopology.getNodes();	
 		double totalEnergy = 0;
-		double totalTime = SimSettings.getInstance().getSIMULATION_TIME();
+		double totalTimeMinutes = SimSettings.getInstance().getSIMULATION_TIME();
+		double totalTimeSeconds = totalTimeMinutes * 60;
 		for (NodeSim node: nodes) {
 			int level = node.getLevel();
-			double idleWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][14]);
+			double idleWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][18]);
 			totalEnergy += idleWatts;
 		}
-		return totalEnergy * totalTime;
+		return totalEnergy * totalTimeSeconds;
 	}
 	
 	//calculates the dynamic energy consumption of a task computation
-	public static double calculateDynamicEnergyConsumption(Task task, EdgeHost device) {
+	public static double calculateDynamicEnergyConsumption(Task task, EdgeHost device, double time) {
 //		double exCost = (double)task.getCloudletLength() / (k.getPeList().get(0).getMips()) * k.getCostPerSec()
 		int numCores = Integer.parseInt(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][9]);
-		int idleEnergy = Integer.parseInt(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][14]);
-		int maxEnergy = Integer.parseInt(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][17]);
-		double energyConsumptionFunction = (maxEnergy - idleEnergy) / numCores;
+		double idlePower = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][18]);
+		double maxPower = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - device.getLevel()][19]);
+		double powerConsumptionFunction = (maxPower - idlePower) / numCores;
 		double coresRequired = SimSettings.getInstance().getTaskLookUpTable()[task.getTaskType().ordinal()][8];
 		/*this result is computed by using Equation (4) located on page 6 of Estimating Energy Consumption of Cloud, Fog and
 			Edge Computing Infrastructures by Ehsan Ahvar.  */
-		double result = energyConsumptionFunction + ((coresRequired + 1) * energyConsumptionFunction * coresRequired - ((coresRequired * energyConsumptionFunction) * coresRequired));  
-		return 0;
+		double totalPower = powerConsumptionFunction * coresRequired; 
+		double joules = totalPower * time;
+		return joules;
 	}
+	
+	private static void appendTotalEnergy(double num) {
+		totalEnergy += num;
+	}
+	
+	public static void appendRouterEnergy(double num) {
+		totalRouterEnergy += num;
+		appendTotalEnergy(num);
+	}
+	
+	public static void appendFogNodeEnergy(double num) {
+		totalFogNodeEnergy += num;
+		appendTotalEnergy(num);
+	}
+
+	public static double getTotalEnergy() {
+		return totalEnergy;
+	}
+	
+	public static double getTotalRouterEnergy() {
+		return totalRouterEnergy;
+	}
+	
+	public static double getTotalFogNodeEnergy() {
+		return totalFogNodeEnergy;
+	}
+	
+	public static double getIdleEnergy() {
+		return totalIdleEnergy;
+	}
+	
 }
