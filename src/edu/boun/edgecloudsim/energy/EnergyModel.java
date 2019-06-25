@@ -104,8 +104,8 @@ public class EnergyModel {
 	   // SimLogger.printLine(path.size() + "");
 	//	energy += getWlanUploadDelay(src.getLocation(), dataSize, CloudSim.clock()) + SimSettings.ROUTER_PROCESSING_DELAY;
 		if (SimSettings.getInstance().traceEnable()) {
-			SimLogger.getInstance().printLine("**********Task Delay**********");
-			SimLogger.getInstance().printLine("Start node ID:\t" + src.getWlanId());
+			SimLogger.printLine("**********Task Delay**********");
+			SimLogger.printLine("Start node ID:\t" + src.getWlanId());
 		}
 		while (!path.isEmpty()) {
 			current = path.poll();
@@ -121,13 +121,13 @@ public class EnergyModel {
 //			energy += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
 			int level = current.getLevel();
 			double nJperBit = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][15]);
-			energy = (dataSize * 8000) * nJperBit; //dataSize is in kilobytes. multiply by 8000 to convert to bits
+			energy += (dataSize * 8000) * nJperBit; //dataSize is in kilobytes. multiply by 8000 to convert to bits
 //			if (SimSettings.getInstance().traceEnable()) {
 //				SimLogger.getInstance().printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
 //			}
 		}
 		if (SimSettings.getInstance().traceEnable()) {
-			SimLogger.getInstance().printLine("Target Node ID:\t" + dest.getWlanId());
+			SimLogger.printLine("Target Node ID:\t" + dest.getWlanId());
 		}
 		return energy / 1000000000; //energy in nano joules for download of entire path converted to joules by dividing by 1e+9
 	}
