@@ -143,8 +143,6 @@ public class EnergyModel {
 		double totalEnergy = 0;
 		double totalTimeMinutes = SimSettings.getInstance().getSIMULATION_TIME();
 		double totalTimeSeconds = totalTimeMinutes * 60;
-		System.out.println(totalTimeMinutes);
-		System.out.println(totalTimeSeconds);
 		for (NodeSim node: nodes) {
 			int level = node.getLevel();
 			double idleWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][18]);

@@ -116,8 +116,6 @@ public class MobileDeviceManager extends DatacenterBroker {
 			}
 			EnergyModel.appendRouterEnergy(downloadEnergy);
 
-			SimLogger.printLine("" + task.getAssociatedHostId());
-			SimLogger.printLine("" + task.getAssociatedHostId());
 			SimLogger.getInstance().addHops(task.getCloudletId(), ((ESBModel) networkModel).getHops(task, task.getAssociatedHostId()));
 			SimLogger.getInstance().addHopsBack(task.getCloudletId(), ((ESBModel) networkModel).getHopsBack(task, task.getAssociatedHostId(), sepa));
 			/*if (((ESBModel) networkModel).getHops(task, task.getAssociatedHostId()) == 0) {
