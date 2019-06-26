@@ -104,7 +104,6 @@ public class MobileDeviceManager extends DatacenterBroker {
 		
 		//if(task.getSubmittedLocation().equals(currentLocation))
 		//{
-			//SimLogger.printLine(CloudSim.clock() + ": " + getName() + ": Cloudlet " + task.getCloudletId() + " received");
 			SimSettings.CLOUD_TRANSFER isCloud = (task.getAssociatedHostId() == 0)?SimSettings.CLOUD_TRANSFER.CLOUD_DOWNLOAD:SimSettings.CLOUD_TRANSFER.IGNORE;
 			double WlanDelay = networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
 			double downloadEnergy = EnergyModel.getDownloadEnergy(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
@@ -138,14 +137,6 @@ public class MobileDeviceManager extends DatacenterBroker {
 			else {
 				SimLogger.getInstance().failedDueToBandwidth(task.getCloudletId(), CloudSim.clock());
 			}
-		/*}
-		else
-		{
-			//SimLogger.printLine("task cannot be finished due to mobility of user!");
-			//SimLogger.printLine("device: " +task.getMobileDeviceId()+" - submitted " + task.getSubmissionTime() + " @ " + task.getSubmittedLocation().getXPos() + " handled " + CloudSim.clock() + " @ " + currentLocation.getXPos());
-			SimLogger.getInstance().failedDueToMobility(task.getCloudletId(), CloudSim.clock());
-			SimLogger.printLine("?");
-		}*/
 	}
 	
 	
@@ -303,7 +294,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 				double hostDistance = DataInterpreter.measure(hostLoc.getYPos(), hostLoc.getXPos(), devLoc.getYPos(), devLoc.getXPos());
 				
 				double consumerDistance = hostDistance;
-				if (task.sens) {
+				if (task.sens && SimSettings.getInstance().getDeviceSeparation()) {
 					int desID = task.getDesMobileDeviceId();
 					GPSVectorMobility mb = ((GPSVectorMobility)SimManager.getInstance().getMobilityModel());
 					Location consumerLoc = mb.getLocation(desID, task.getFinishTime());
@@ -428,7 +419,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 			SimSettings.CLOUD_TRANSFER isCloud = SimSettings.CLOUD_TRANSFER.IGNORE;
 			double WanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
 			double uploadEnergy = EnergyModel.getUploadEnergy(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
-			EnergyModel.appendRouterEnergy(uploadEnergy);
+			//EnergyModel.appendRouterEnergy(uploadEnergy);
 			if(WanDelay>0){
 				networkModel.uploadStarted(currentLocation, nextHopId);
 				schedule(getId(), WanDelay, REQUEST_RECEIVED_BY_CLOUD, task);

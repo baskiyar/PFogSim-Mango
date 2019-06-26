@@ -426,7 +426,7 @@ public class FogHierCluster {
 		
 
 		
-		SimLogger.printLine("No issues so far...");
+
 		
 	}// End main
 */

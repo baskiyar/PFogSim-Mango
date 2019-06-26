@@ -252,7 +252,6 @@ public class Link {
 	 */
 	public boolean validateCoords() {
 		try {
-			//SimLogger.printLine(leftCoord.getXPos() + "\t" + rightCoord.getXPos());
 			return !leftCoord.equals(rightCoord);
 		}
 		catch (NullPointerException e) {

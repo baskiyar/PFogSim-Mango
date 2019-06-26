@@ -134,12 +134,8 @@ public class NetworkTopology {
 					if (!coords.contains(link.getRightLink()))
 						SimLogger.printLine("rlink not in coords");
 					if (!coords.contains(link.getLeftLink())) {
-						/*final int x = 0;
-						x++;
-						SimLogger.printLine("Called " + Integer.toString(x) + " times");*/
 						coords.add(link.getLeftLink());
 						continue;
-						//SimLogger.printLine("llink not in coords");
 						}
 					if (!link.validateCoords())
 						SimLogger.printLine("Validate Coords fail");
@@ -185,10 +181,8 @@ public class NetworkTopology {
 	 */
 	public boolean cleanNodes() {
 		try {
-			//SimLogger.printLine("for loop reached");
 			for (NodeSim node : nodes) {
 				while (node.removeLink(node.validateNode())) {
-					//SimLogger.printLine(node.toString());
 				}
 			}
 			return validateTopology();
