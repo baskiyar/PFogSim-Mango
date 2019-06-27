@@ -287,7 +287,7 @@ public class Router {
 							//it will cause a NullPointerException in about 0.3 seconds
 							//throwing here allows us to pass some data out if we want
 							//use the gravityWell() method in ESBModel to find out what's going on
-							//There is a commented call in EdgeServerManager line 132
+							//There is a commented call in EdgeServerManager line 176
 							//just uncomment that call and it will show you what nodes are messing up.
 						}
 						reversed.add(current);

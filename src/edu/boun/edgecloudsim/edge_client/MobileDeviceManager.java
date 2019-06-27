@@ -95,13 +95,12 @@ public class MobileDeviceManager extends DatacenterBroker {
 		Task task = (Task) ev.getData();
 
 		Location currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock());
-		boolean sepa = SimSettings.getInstance().getDeviceSeparation();
+		boolean sepa = false;
 		//Qian added for sensor generated tasks getting download destination. Uncomment code on line 491 (Producer/Consumer)
-		if (task.sens) {
+		if (task.sens && SimSettings.getInstance().getDeviceSeparation()) {
 			sepa = true;
 			currentLocation = SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock());
 		} 
-		
 		
 		//if(task.getSubmittedLocation().equals(currentLocation))
 		//{
@@ -295,7 +294,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 				double hostDistance = DataInterpreter.measure(hostLoc.getYPos(), hostLoc.getXPos(), devLoc.getYPos(), devLoc.getXPos());
 				
 				double consumerDistance = hostDistance;
-				if (task.sens) {
+				if (task.sens && SimSettings.getInstance().getDeviceSeparation()) {
 					int desID = task.getDesMobileDeviceId();
 					GPSVectorMobility mb = ((GPSVectorMobility)SimManager.getInstance().getMobilityModel());
 					Location consumerLoc = mb.getLocation(desID, task.getFinishTime());
@@ -420,7 +419,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 			SimSettings.CLOUD_TRANSFER isCloud = SimSettings.CLOUD_TRANSFER.IGNORE;
 			double WanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
 			double uploadEnergy = EnergyModel.getUploadEnergy(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
-			EnergyModel.appendRouterEnergy(uploadEnergy);
+			//EnergyModel.appendRouterEnergy(uploadEnergy);
 			if(WanDelay>0){
 				networkModel.uploadStarted(currentLocation, nextHopId);
 				schedule(getId(), WanDelay, REQUEST_RECEIVED_BY_CLOUD, task);
@@ -506,7 +505,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 		
 		//Qian add for sensor generated task getting destination uncomment the code inside if statement.
 		//Also please uncomment the line 81. And IdleActiveLoadGenerator.java line 121
-		if (edgeTask.sensor) {
+		if (edgeTask.sensor && SimSettings.getInstance().getDeviceSeparation()) {
 			task.setDesMobileDeviceId(edgeTask.desMobileDeviceId);
 		}
 		return task;

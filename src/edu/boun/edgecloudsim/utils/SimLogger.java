@@ -1042,6 +1042,7 @@ public class SimLogger {
 
 			}
 			
+			EnergyModel.calculateTotalIdleEnergy();
 			energyUsageBW.write(Double.toString(EnergyModel.getTotalEnergy()) + ", ");
 			energyUsageBW.write(Double.toString(EnergyModel.getTotalRouterEnergy()) + ", ");
 			energyUsageBW.write(Double.toString(EnergyModel.getTotalFogNodeEnergy()) + ", ");

@@ -19,6 +19,7 @@ import edu.auburn.pFogSim.netsim.NetworkTopology;
 import edu.auburn.pFogSim.netsim.Router;
 import edu.auburn.pFogSim.netsim.ESBModel;
 
+import java.util.Set;
 import java.util.HashSet;
 
 
@@ -32,11 +33,12 @@ import java.util.HashSet;
  */
 public class EnergyModel {
 	
-	//All private values are values to be logged
+	//All of these private values are values to be logged
 	private static double totalRouterEnergy = 0;
 	private static double totalFogNodeEnergy = 0;
-	private static double totalIdleEnergy = EnergyModel.calculateTotalIdleEnergy();	
-	private static double totalEnergy = EnergyModel.getIdleEnergy(); //perhaps slightly unnecessary use of getter to retrieve totalIdleEnergy
+	private static double totalIdleEnergy = 0;	
+	private static double totalEnergy = 0; 
+	
 
 	//taken and modified from getUploadDelay in ESBModel.java
 	public static double getDownloadEnergy(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud) {
@@ -102,8 +104,8 @@ public class EnergyModel {
 	   // SimLogger.printLine(path.size() + "");
 	//	energy += getWlanUploadDelay(src.getLocation(), dataSize, CloudSim.clock()) + SimSettings.ROUTER_PROCESSING_DELAY;
 		if (SimSettings.getInstance().traceEnable()) {
-			SimLogger.getInstance().printLine("**********Task Delay**********");
-			SimLogger.getInstance().printLine("Start node ID:\t" + src.getWlanId());
+			SimLogger.printLine("**********Task Delay**********");
+			SimLogger.printLine("Start node ID:\t" + src.getWlanId());
 		}
 		while (!path.isEmpty()) {
 			current = path.poll();
@@ -119,13 +121,13 @@ public class EnergyModel {
 //			energy += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
 			int level = current.getLevel();
 			double nJperBit = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][15]);
-			energy = (dataSize * 8000) * nJperBit; //dataSize is in kilobytes. multiply by 8000 to convert to bits
+			energy += (dataSize * 8000) * nJperBit; //dataSize is in kilobytes. multiply by 8000 to convert to bits
 //			if (SimSettings.getInstance().traceEnable()) {
 //				SimLogger.getInstance().printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
 //			}
 		}
 		if (SimSettings.getInstance().traceEnable()) {
-			SimLogger.getInstance().printLine("Target Node ID:\t" + dest.getWlanId());
+			SimLogger.printLine("Target Node ID:\t" + dest.getWlanId());
 		}
 		return energy / 1000000000; //energy in nano joules for download of entire path converted to joules by dividing by 1e+9
 	}
@@ -136,18 +138,25 @@ public class EnergyModel {
 	}
 	
 	//Returns total idle energy of all fog nodes (power for each node * total simulation time) 
-	private static double calculateTotalIdleEnergy() {
+	public static void calculateTotalIdleEnergy() {
 		NetworkTopology networkTopology = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology(); 
 		HashSet<NodeSim> nodes = networkTopology.getNodes();	
 		double totalEnergy = 0;
-		double totalTimeMinutes = SimSettings.getInstance().getSIMULATION_TIME();
-		double totalTimeSeconds = totalTimeMinutes * 60;
+		double totalTimeSeconds = SimSettings.getInstance().getSIMULATION_TIME();
 		for (NodeSim node: nodes) {
 			int level = node.getLevel();
-			double idleWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][18]);
-			totalEnergy += idleWatts;
+			double idleFogWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][18]);
+			double idleRouterWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][14]);
+
+			totalEnergy += idleFogWatts;
+			totalEnergy += idleRouterWatts;
 		}
-		return totalEnergy * totalTimeSeconds;
+		
+		
+		double idle = totalEnergy * totalTimeSeconds;
+		totalIdleEnergy = idle;
+		System.out.println(nodes.size() + "number");
+		EnergyModel.totalEnergy += idle;
 	}
 	
 	//calculates the dynamic energy consumption of a task computation
