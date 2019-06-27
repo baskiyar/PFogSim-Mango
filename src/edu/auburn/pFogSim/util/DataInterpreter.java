@@ -134,7 +134,7 @@ public class DataInterpreter {
 			    node.println(String.format("<datacenter arch=\"%s\" os=\"%s\" vmm=\"%s\">\n", nodeSpecs[MAX_LEVELS - i - 1][0], nodeSpecs[MAX_LEVELS - i - 1][1], nodeSpecs[MAX_LEVELS - i - 1][2]));
 			    node.println(String.format("<costPerBw>%s</costPerBw>\n\t<costPerSec>%s</costPerSec>\n\t<costPerMem>%s</costPerMem>\n\t<costPerStorage>%s</costPerStorage>", nodeSpecs[MAX_LEVELS - i - 1][3], nodeSpecs[MAX_LEVELS - i - 1][4], nodeSpecs[MAX_LEVELS - i - 1][5], nodeSpecs[MAX_LEVELS - i - 1][6]));
 			    //Qian change level start from 1
-			    node.println(String.format("<location>\n\t<x_pos>%s</x_pos>\n\t<y_pos>%s</y_pos>\n\t<altitude>%s</altitude>\n\t<level>%s</level>\t<wlan_id>%s</wlan_id>\n\t<wap>%s</wap>\n\t<moving>%s</moving>\n\t<bandwidth>%s</bandwidth>/n</location>", nodeLoc[2], nodeLoc[1],nodeLoc[3], MAX_LEVELS - i, counter, nodeSpecs[MAX_LEVELS - i - 1][7], nodeSpecs[MAX_LEVELS - i - 1][8], nodeSpecs[MAX_LEVELS - i - 1][13]));
+			    node.println(String.format("<location>\n\t<x_pos>%s</x_pos>\n\t<y_pos>%s</y_pos>\n\t<altitude>%s</altitude>\n\t<level>%s</level>\t<wlan_id>%s</wlan_id>\n\t<wap>%s</wap>\n\t<moving>%s</moving>\n\t<bandwidth>%s</bandwidth>\n\t<dx>%s</dx>\n\t<dy>%s</dy>/n</location>", nodeLoc[2], nodeLoc[1],nodeLoc[3], MAX_LEVELS - i, counter, nodeSpecs[MAX_LEVELS - i - 1][7], nodeSpecs[MAX_LEVELS - i - 1][8], nodeSpecs[MAX_LEVELS - i - 1][13], nodeLoc[4], nodeLoc[5]));
 			    node.println(String.format("<host>\n\t<core>%s</core>\n\t<mips>%s</mips>\n\t<ram>%s</ram>\n\t<storage>%s</storage>\n", nodeSpecs[MAX_LEVELS - i - 1][9], nodeSpecs[MAX_LEVELS - i - 1][10], nodeSpecs[MAX_LEVELS - i - 1][11], nodeSpecs[MAX_LEVELS - i - 1][12]));
 			    node.println(String.format("\t<VM vmm=\"%s\">\n\t\t\t<core>%s</core>\n\t\t\t<mips>%s</mips>\n\t\t\t<ram>%s</ram>\n\t\t\t<storage>%s</storage>\n\t\t</VM>\n\t</host>\n</datacenter>", nodeSpecs[MAX_LEVELS - i - 1][2], nodeSpecs[MAX_LEVELS - i - 1][9], nodeSpecs[MAX_LEVELS - i - 1][10], nodeSpecs[MAX_LEVELS - i - 1][11], nodeSpecs[MAX_LEVELS - i - 1][12]));
 	
@@ -434,7 +434,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 1][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 1][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 1][7] = "true";
-		nodeSpecs[MAX_LEVELS - 1][8] = "false";
+		nodeSpecs[MAX_LEVELS - 1][8] = "true";
 		nodeSpecs[MAX_LEVELS - 1][9] = "28672"; // Shaik modified to 1/100th - prev = 2867200
 		//nodeSpecs[MAX_LEVELS - 1][9] = "500";
 		nodeSpecs[MAX_LEVELS - 1][10] = "13056000"; // Shaik modified to 1/100th (52224000) - prev = 4874240000 // same m/c as that as WARD
@@ -457,7 +457,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 2][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 2][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 2][7] = "true";
-		nodeSpecs[MAX_LEVELS - 2][8] = "false";
+		nodeSpecs[MAX_LEVELS - 2][8] = "true";
 		nodeSpecs[MAX_LEVELS - 2][9] = "286"; // Shaik modified to 1/100th - prev = 28672
 		//nodeSpecs[MAX_LEVELS - 2][9] = "500";
 		nodeSpecs[MAX_LEVELS - 2][10] = "1305600"; // Shaik modified to 1/100th (522240) - prev = 48742400 // same m/c as that as WARD
@@ -481,7 +481,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 3][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 3][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 3][7] = "true";
-		nodeSpecs[MAX_LEVELS - 3][8] = "false";
+		nodeSpecs[MAX_LEVELS - 3][8] = "true";
 		nodeSpecs[MAX_LEVELS - 3][9] = "71"; // Shaik modified to 1/100th - prev = 7168
 		//nodeSpecs[MAX_LEVELS - 3][9] = "500";
 		nodeSpecs[MAX_LEVELS - 3][10] = "816000"; // Shaik modified to 1/100th (130560) - prev = 12185600 // same m/c as that as WARD
@@ -505,7 +505,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 4][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 4][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 4][7] = "true";
-		nodeSpecs[MAX_LEVELS - 4][8] = "false";
+		nodeSpecs[MAX_LEVELS - 4][8] = "true";
 		nodeSpecs[MAX_LEVELS - 4][9] = "7"; // Shaik modified to 1/100th - prev = 768
 		nodeSpecs[MAX_LEVELS - 4][10] = "544000"; // Shaik modified to 1/100th - prev = 1305600
 		nodeSpecs[MAX_LEVELS - 4][11] = "100663296";
@@ -528,7 +528,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 5][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 5][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 5][7] = "true";
-		nodeSpecs[MAX_LEVELS - 5][8] = "false";
+		nodeSpecs[MAX_LEVELS - 5][8] = "true";
 		nodeSpecs[MAX_LEVELS - 5][9] = "2"; // Shaik modified to 1/100th - prev = 192 
 		nodeSpecs[MAX_LEVELS - 5][10] = "326400"; // Shaik modified to 1/100th - prev = 326400 
 		nodeSpecs[MAX_LEVELS - 5][11] = "25165824";
@@ -551,7 +551,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 6][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 6][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 6][7] = "true";
-		nodeSpecs[MAX_LEVELS - 6][8] = "false";
+		nodeSpecs[MAX_LEVELS - 6][8] = "true";
 		nodeSpecs[MAX_LEVELS - 6][9] = "1"; // Shaik modified to 1/100th - prev = 128
 		nodeSpecs[MAX_LEVELS - 6][10] = "217600"; // Shaik modified to 1/100th - prev = 217600
 		nodeSpecs[MAX_LEVELS - 6][11] = "16384";
@@ -573,7 +573,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 7][5] = "1";
 		nodeSpecs[MAX_LEVELS - 7][6] = "1";
 		nodeSpecs[MAX_LEVELS - 7][7] = "true";
-		nodeSpecs[MAX_LEVELS - 7][8] = "false";
+		nodeSpecs[MAX_LEVELS - 7][8] = "true";
 		nodeSpecs[MAX_LEVELS - 7][9] = "1"; // Shaik modified to 1/100th - prev = 32
 		nodeSpecs[MAX_LEVELS - 7][10] = "54400"; // Shaik modified to 1/100th - prev = 54400 
 		nodeSpecs[MAX_LEVELS - 7][11] = "4096";

@@ -674,6 +674,10 @@ public class SimSettings {
 				isElementPresent(location, "wlan_id");
 				isElementPresent(location, "x_pos");
 				isElementPresent(location, "y_pos");
+				isElementPresent(location, "altitude");
+				isElementPresent(location, "dx");
+				isElementPresent(location, "dy");
+				isElementPresent(location, "moving");
 
 				NodeList hostList = datacenterElement.getElementsByTagName("host");
 				for (int j = 0; j < hostList.getLength(); j++) {

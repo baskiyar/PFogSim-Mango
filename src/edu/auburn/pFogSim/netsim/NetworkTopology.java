@@ -70,12 +70,7 @@ public class NetworkTopology {
 				}
 			}
 		}
-		if (!in.isMoving()){
-			nodes.add(in);
-		}
-		else {
-			mobileNodes.add(in);
-		}
+		nodes.add(in);
 		
 	}
 	

@@ -63,7 +63,7 @@ public class mainApp {
 		String edgeDevicesFile = "";
 		String applicationsFile = "";
 		//String linksFile = "scripts/sample_application/config/links_test.xml";
-		//Strin g linksFile = "small_link_test.xml";
+		//String linksFile = "small_link_test.xml";
 		String linksFile = "links_test.xml";
 
 		if (args.length == 6){
