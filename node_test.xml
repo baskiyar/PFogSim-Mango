@@ -3983,9 +3983,9 @@
 	<costPerMem>0.05</costPerMem>
 	<costPerStorage>0.1</costPerStorage>
 <location>
-	<x_pos>-87.6222322</x_pos>
-	<y_pos>41.7216776</y_pos>
-	<altitude>2</altitude>
+	<x_pos>-87.6443547</x_pos>
+	<y_pos>41.7794943</y_pos>
+	<altitude>0</altitude>
 	<level>2</level>	<wlan_id>142</wlan_id>
 	<wap>true</wap>
 	<moving>false</moving>

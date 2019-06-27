@@ -157,7 +157,7 @@ public class SimManager extends SimEntity {
 		SimLogger.printLine("Done.");
 		
 		//Assign hosts to devices, as selected by Service placement approach
-		mobileDeviceManager.creatMobileDeviceList(numOfMobileDevice*2);
+		mobileDeviceManager.creatMobileDeviceList(numOfMobileDevice);
 		for (MobileDevice mobile: mobileDeviceManager.getMobileDevices()) {
 			edgeOrchestrator.assignHost(mobile);
 		}
