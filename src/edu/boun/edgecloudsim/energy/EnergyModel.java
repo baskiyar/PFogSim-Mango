@@ -142,8 +142,7 @@ public class EnergyModel {
 		NetworkTopology networkTopology = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology(); 
 		HashSet<NodeSim> nodes = networkTopology.getNodes();	
 		double totalEnergy = 0;
-		double totalTimeMinutes = SimSettings.getInstance().getSIMULATION_TIME();
-		double totalTimeSeconds = totalTimeMinutes * 60;
+		double totalTimeSeconds = SimSettings.getInstance().getSIMULATION_TIME();
 		for (NodeSim node: nodes) {
 			int level = node.getLevel();
 			double idleFogWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][18]);
@@ -156,6 +155,7 @@ public class EnergyModel {
 		
 		double idle = totalEnergy * totalTimeSeconds;
 		totalIdleEnergy = idle;
+		System.out.println(nodes.size() + "number");
 		EnergyModel.totalEnergy += idle;
 	}
 	
