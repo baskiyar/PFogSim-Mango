@@ -69,20 +69,9 @@ public class DataInterpreter {
 	}
 	
 	public static double measure(double lat1, double lon1, double alt1, double lat2, double lon2, double alt2){  // generally used geo measurement function
-		final Double r = 6376.5 *1000;//radius of earth in meaters
-
-		//Convert polar to cartesian coordinates
-		double x_1 = r * Math.sin(lon1) * Math.cos(lat1);
-		double y_1 = r * Math.sin(lon1) * Math.sin(lat1);
-		double z_1 = r + alt1;
-
-		double x_2 = r * Math.sin(lon2) * Math.cos(lat2);
-		double y_2 = r * Math.sin(lon2) * Math.sin(lat2);
-		double z_2 = r + alt2;
-		
-		//Euclidean Distance Formula
-		double dist = Math.sqrt((x_2 - x_1) * (x_2 - x_1) + (y_2 - y_1) *    
-	                               (y_2 - y_1) + (z_2 - z_1) * (z_2 - z_1));
+		double d = DataInterpreter.measure(lat1,lon1,lat2,lon2);
+		//Pythagoras
+		double dist = Math.sqrt((d*d)+(alt1-alt2)*(alt1-alt2));    
 		return dist;
 	}
 	
