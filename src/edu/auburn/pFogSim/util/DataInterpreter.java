@@ -13,6 +13,7 @@ import java.util.List;
 
 import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.boun.edgecloudsim.utils.SimLogger;
+import edu.boun.edgecloudsim.core.SimSettings;
 
 
 /**
@@ -71,7 +72,7 @@ public class DataInterpreter {
 	public static double measure(double lat1, double lon1, double alt1, double lat2, double lon2, double alt2){  // generally used geo measurement function
 		double d = DataInterpreter.measure(lat1,lon1,lat2,lon2);
 		//Pythagoras
-		double dist = Math.sqrt((d*d)+(alt1-alt2)*(alt1-alt2));    
+		double dist = Math.sqrt((d*d)+((alt1-alt2)*(alt1-alt2)));    
 		return dist;
 	}
 	
@@ -423,7 +424,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 1][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 1][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 1][7] = "true";
-		nodeSpecs[MAX_LEVELS - 1][8] = "true";
+		nodeSpecs[MAX_LEVELS - 1][8] = Boolean.toString(SimSettings.getInstance().isMOVING_CLOUD());
 		nodeSpecs[MAX_LEVELS - 1][9] = "28672"; // Shaik modified to 1/100th - prev = 2867200
 		//nodeSpecs[MAX_LEVELS - 1][9] = "500";
 		nodeSpecs[MAX_LEVELS - 1][10] = "13056000"; // Shaik modified to 1/100th (52224000) - prev = 4874240000 // same m/c as that as WARD
@@ -446,7 +447,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 2][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 2][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 2][7] = "true";
-		nodeSpecs[MAX_LEVELS - 2][8] = "true";
+		nodeSpecs[MAX_LEVELS - 2][8] = Boolean.toString(SimSettings.getInstance().isMOVING_CITY_HALL());
 		nodeSpecs[MAX_LEVELS - 2][9] = "286"; // Shaik modified to 1/100th - prev = 28672
 		//nodeSpecs[MAX_LEVELS - 2][9] = "500";
 		nodeSpecs[MAX_LEVELS - 2][10] = "1305600"; // Shaik modified to 1/100th (522240) - prev = 48742400 // same m/c as that as WARD
@@ -470,7 +471,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 3][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 3][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 3][7] = "true";
-		nodeSpecs[MAX_LEVELS - 3][8] = "true";
+		nodeSpecs[MAX_LEVELS - 3][8] = Boolean.toString(SimSettings.getInstance().isMOVING_UNIVERSITY());
 		nodeSpecs[MAX_LEVELS - 3][9] = "71"; // Shaik modified to 1/100th - prev = 7168
 		//nodeSpecs[MAX_LEVELS - 3][9] = "500";
 		nodeSpecs[MAX_LEVELS - 3][10] = "816000"; // Shaik modified to 1/100th (130560) - prev = 12185600 // same m/c as that as WARD
@@ -494,7 +495,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 4][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 4][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 4][7] = "true";
-		nodeSpecs[MAX_LEVELS - 4][8] = "true";
+		nodeSpecs[MAX_LEVELS - 4][8] = Boolean.toString(SimSettings.getInstance().isMOVING_WARD());
 		nodeSpecs[MAX_LEVELS - 4][9] = "7"; // Shaik modified to 1/100th - prev = 768
 		nodeSpecs[MAX_LEVELS - 4][10] = "544000"; // Shaik modified to 1/100th - prev = 1305600
 		nodeSpecs[MAX_LEVELS - 4][11] = "100663296";
@@ -517,7 +518,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 5][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 5][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 5][7] = "true";
-		nodeSpecs[MAX_LEVELS - 5][8] = "true";
+		nodeSpecs[MAX_LEVELS - 5][8] = Boolean.toString(SimSettings.getInstance().isMOVING_LIBRARY());
 		nodeSpecs[MAX_LEVELS - 5][9] = "2"; // Shaik modified to 1/100th - prev = 192 
 		nodeSpecs[MAX_LEVELS - 5][10] = "326400"; // Shaik modified to 1/100th - prev = 326400 
 		nodeSpecs[MAX_LEVELS - 5][11] = "25165824";
@@ -540,7 +541,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 6][5] = "0.05";
 		nodeSpecs[MAX_LEVELS - 6][6] = "0.1";
 		nodeSpecs[MAX_LEVELS - 6][7] = "true";
-		nodeSpecs[MAX_LEVELS - 6][8] = "true";
+		nodeSpecs[MAX_LEVELS - 6][8] = Boolean.toString(SimSettings.getInstance().isMOVING_COMMUNITY_CENTER());
 		nodeSpecs[MAX_LEVELS - 6][9] = "1"; // Shaik modified to 1/100th - prev = 128
 		nodeSpecs[MAX_LEVELS - 6][10] = "217600"; // Shaik modified to 1/100th - prev = 217600
 		nodeSpecs[MAX_LEVELS - 6][11] = "16384";
@@ -562,7 +563,7 @@ public class DataInterpreter {
 		nodeSpecs[MAX_LEVELS - 7][5] = "1";
 		nodeSpecs[MAX_LEVELS - 7][6] = "1";
 		nodeSpecs[MAX_LEVELS - 7][7] = "true";
-		nodeSpecs[MAX_LEVELS - 7][8] = "true";
+		nodeSpecs[MAX_LEVELS - 7][8] = Boolean.toString(SimSettings.getInstance().isMOVING_SCHOOL());
 		nodeSpecs[MAX_LEVELS - 7][9] = "1"; // Shaik modified to 1/100th - prev = 32
 		nodeSpecs[MAX_LEVELS - 7][10] = "54400"; // Shaik modified to 1/100th - prev = 54400 
 		nodeSpecs[MAX_LEVELS - 7][11] = "4096";

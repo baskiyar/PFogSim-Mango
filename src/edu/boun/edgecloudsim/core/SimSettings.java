@@ -104,9 +104,53 @@ public class SimSettings {
     private int MIPS_FOR_CLOUD; //MIPS
     
     private boolean MOVING_DEVICES; //Mobile devices should be moving?
-    private boolean PRODUCER_CONSUMER_SEP; // Should producer and consumer be same device?
+    private boolean PRODUCER_CONSUMER_SEP;// Should producer and consumer be same device?
+
+    //which level nodes are moving?
+    private boolean MOVING_CLOUD;
+    private boolean MOVING_CITY_HALL;
+    private boolean MOVING_UNIVERSITY;
+    private boolean MOVING_WARD;
+    private boolean MOVING_LIBRARY;
+    private boolean MOVING_COMMUNITY_CENTER;
+    private boolean MOVING_SCHOOL;
     
-    //Qian selected nodes
+    public boolean isMOVING_CLOUD() {
+		return MOVING_CLOUD;
+	}
+
+
+	public boolean isMOVING_CITY_HALL() {
+		return MOVING_CITY_HALL;
+	}
+
+
+	public boolean isMOVING_UNIVERSITY() {
+		return MOVING_UNIVERSITY;
+	}
+
+
+	public boolean isMOVING_WARD() {
+		return MOVING_WARD;
+	}
+
+
+	public boolean isMOVING_LIBRARY() {
+		return MOVING_LIBRARY;
+	}
+
+
+	public boolean isMOVING_COMMUNITY_CENTER() {
+		return MOVING_COMMUNITY_CENTER;
+	}
+
+
+	public boolean isMOVING_SCHOOL() {
+		return MOVING_SCHOOL;
+	}
+
+
+	//Qian selected nodes
     private String[] SELECTED_NODES;
     private int[] selectedHostIds; // Shaik added
 	private int currentSelection = 0;
@@ -234,6 +278,16 @@ public class SimSettings {
 			}
 			
 			PRODUCER_CONSUMER_SEP = Boolean.parseBoolean(prop.getProperty("Producer_Consumer_Separation"));
+			MOVING_CLOUD = Boolean.parseBoolean(prop.getProperty("moving_cloud"));
+			if (MOVING_CLOUD) {
+				System.out.println("------------------------------------");
+			}
+			MOVING_CITY_HALL = Boolean.parseBoolean(prop.getProperty("moving_city_hall"));
+			MOVING_UNIVERSITY = Boolean.parseBoolean(prop.getProperty("moving_university"));
+			MOVING_WARD = Boolean.parseBoolean(prop.getProperty("moving_ward"));
+			MOVING_LIBRARY = Boolean.parseBoolean(prop.getProperty("moving_library"));
+			MOVING_COMMUNITY_CENTER = Boolean.parseBoolean(prop.getProperty("moving_community_center"));
+			MOVING_SCHOOL = Boolean.parseBoolean(prop.getProperty("moving_school"));
 			
 			//avg waiting time in a place (min)
 			double place1_mean_waiting_time = Double.parseDouble(prop.getProperty("attractiveness_L1_mean_waiting_time"));
@@ -541,6 +595,10 @@ public class SimSettings {
 	
 	public boolean getDeviceSeparation() {
 		return PRODUCER_CONSUMER_SEP;
+	}
+	
+	public boolean getNodeMobility() {
+		return MOVING_NODES;
 	}
 	
 	

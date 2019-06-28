@@ -48,15 +48,8 @@ public class mainApp {
 
 		//enable console output and file output of this application
 		SimLogger.enablePrintLog();
-		DataInterpreter.initialize();
-		try {
-			DataInterpreter.readFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		int iterationNumber = 3; // index for the list of n scenarios in properties file is from 0..n-1
+		int iterationNumber = 2; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
 		String outFolder2 = "";
@@ -93,6 +86,15 @@ public class mainApp {
 			SimLogger.printLine("cannot initialize simulation settings!");
 			System.exit(0);
 		}
+		
+		DataInterpreter.initialize();
+		try {
+			DataInterpreter.readFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		if(SS.getFileLoggingEnabled()){
 			SimLogger.enableFileLog();
