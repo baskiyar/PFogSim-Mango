@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.diagram.PowerDiagram;
 import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.j2d.Site;
@@ -40,6 +41,7 @@ import edu.boun.edgecloudsim.utils.SimUtils;
  */
 public class GPSVectorMobility extends MobilityModel {
 	private List<TreeMap<Double, Location>> treeMapArray;
+	private List<TreeMap<Double, Location>> userTreeMapArray;
 	private double MAX_LAT;
 	private double MIN_LAT;
 	private double MAX_LONG;
@@ -72,6 +74,7 @@ public class GPSVectorMobility extends MobilityModel {
 		this.MAX_LAT = simSpace[3];
 		boolean movingDevices = SimSettings.getInstance().areMobileDevicesMoving();
 		treeMapArray = new ArrayList<TreeMap<Double, Location>>();
+		userTreeMapArray = new ArrayList<TreeMap<Double, Location>>();
 		//Qian find key number of node with wlan_id #1071 
 		int keyNumber = 0;
 				
@@ -82,19 +85,25 @@ public class GPSVectorMobility extends MobilityModel {
 			if(node.isWifiAcc()) 
 				accessPoints.add(node);
 		}
-			
+				
 		//initialize tree maps and position of mobile devices
 		for(int i=0; i<numberOfMobileDevices; i++) {
 			treeMapArray.add(i, new TreeMap<Double, Location>());
+			userTreeMapArray.add(i, new TreeMap<Double, Location>());
 			
 			//Picks a random wireless access point to start at
 			//Shaik modified - to set all mobile devices to same host Fog node - int randDatacenterId = SimUtils.getRandomNumber(0, accessPoints.size()-1);
             int randDatacenterId = SimUtils.getRandomNumber(0, accessPoints.size()-1);
-			//int randDatacenterId = 954;
-			//SimLogger.printLine("Mobile Device id: "+i+"    Host id: "+randDatacenterId);
+            int randDatacenterId2 = SimUtils.getRandomNumber(0, accessPoints.size()-1);
 			int wlan_id = accessPoints.get(randDatacenterId).getWlanId();
+			int wlan_id2 = accessPoints.get(randDatacenterId2).getWlanId();
 			double x_pos = accessPoints.get(randDatacenterId).getLocation().getXPos();
 			double y_pos = accessPoints.get(randDatacenterId).getLocation().getYPos();
+			double alt = accessPoints.get(randDatacenterId).getLocation().getAltitude();
+			double x_pos2 = accessPoints.get(randDatacenterId2).getLocation().getXPos();
+			double y_pos2 = accessPoints.get(randDatacenterId2).getLocation().getYPos();
+			double alt2 = accessPoints.get(randDatacenterId2).getLocation().getAltitude();
+			
 			//Qian find device #1071
 			/*int wlan_id = 0;
 			double x_pos = 0;
@@ -109,37 +118,47 @@ public class GPSVectorMobility extends MobilityModel {
 			}
 			*/
 			//start locating user from 10th seconds
-			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos));
+			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos, alt));
+			userTreeMapArray.get(i).put((double)10, new Location(wlan_id2, x_pos2, y_pos2,alt2));
+			
 		}
+		treeMapArray.addAll(userTreeMapArray);
 
-		for(int i=0; i<numberOfMobileDevices; i++) {
+		Random rng = new Random(SimSettings.getInstance().getRandomSeed());
+		int iterations = numberOfMobileDevices*2;
+		for(int i=0; i<iterations; i++) {
 			TreeMap<Double, Location> treeMap = treeMapArray.get(i);
 			//Make random numbers to make the vectors
-			double up, right;
+			double lat_movement, long_movement, alt_movement;
 			if(movingDevices)
 			{
-				up = 5 * (Math.random() - 0.5) * 0.000001; //Approximates movement of 5 meters * (random constant < 1)
-				right = 5 * (Math.random() - 0.5) * 0.000001; //Same for right
+				lat_movement = 5 * (rng.nextDouble() - 0.5) * 0.000001; //Approximates movement of 5 meters * (random constant < 1)
+				long_movement = 5 * (rng.nextDouble() - 0.5) * 0.000001; //Same for right
+				alt_movement = 5 * (rng.nextDouble()-0.5)*0.000001;
 			}
 			else {
-				up = 0;
-				right = 0;
+				lat_movement = 0;
+				long_movement = 0;
+				alt_movement = 0;
 			}
 			while(treeMap.lastKey() < SimSettings.getInstance().getSimulationTime()) {		
 				
 				if(movingDevices) 
 				{
+					Location entry = treeMap.lastEntry().getValue();
 					double x_pos = treeMap.lastEntry().getValue().getXPos();
 					double y_pos = treeMap.lastEntry().getValue().getYPos();				
+					double alt = treeMap.lastEntry().getValue().getAltitude();
 					int wlan_id = treeMap.lastEntry().getValue().getServingWlanId();
+					
 					  
-					if(x_pos + right > this.MAX_LONG || x_pos + right < this.MIN_LONG) right = right * -1;
-					if(y_pos + up > this.MAX_LAT || y_pos + up < this.MIN_LAT) up = up * -1;
+					if(x_pos + long_movement > this.MAX_LONG || x_pos + long_movement < this.MIN_LONG) long_movement = long_movement * -1;
+					if(y_pos + lat_movement > this.MAX_LAT || y_pos + lat_movement < this.MIN_LAT) lat_movement = lat_movement * -1;
 					double distance = 0, minDistance = Double.MAX_VALUE;
 					NodeSim closestNode = new NodeSim();
 					for(NodeSim node : accessPoints)
 					{
-						distance = DataInterpreter.measure(node.getLocation().getYPos(), node.getLocation().getXPos(), y_pos, x_pos);
+						distance = DataInterpreter.measure(node.getLocation().getYPos(), node.getLocation().getXPos(), node.getLocation().getAltitude(), y_pos, x_pos,alt);
 						if (distance < minDistance) 
 						{
 							minDistance = distance;
@@ -172,18 +191,15 @@ public class GPSVectorMobility extends MobilityModel {
 					//This first argument kind of dictates the speed at which the device moves, higher it is, slower the devices are
 					//	smaller value in there, the more it updates
 					//As it is now, allows devices to change wlan_ids around 600 times in an hour
-					treeMap.put(treeMap.lastKey()+1, new Location(wlan_id, x_pos + right, y_pos + up));		
-					//SimLogger.printLine("Length = " + treeMap.size());
+					treeMap.put(treeMap.lastKey()+1, new Location(wlan_id, x_pos + long_movement, y_pos + lat_movement, alt+alt_movement));
 				}
 				else {
 					treeMap.put(treeMap.lastKey() + 1,  treeMap.lastEntry().getValue());
 				}
 			}
 			//Qian print final start position of every mobile device
-			//SimLogger.printLine("Final start location of mobile device " + i + " : X:" + treeMap.lastEntry().getValue().getXPos() + " Y:" + treeMap.lastEntry().getValue().getYPos());;
 		}
 		//Qian: Print begin address of 
-		//SimLogger.printLine("Location of Fog node with wlan_id #1071 X:" + accessPoints.get(keyNumber).getLocation().getXPos() + " Y:" + accessPoints.get(keyNumber).getLocation().getYPos());;
 		
 	}
 
@@ -255,7 +271,7 @@ public class GPSVectorMobility extends MobilityModel {
 	 */
 	public int getSize()
 	{
-		return treeMapArray.size();
+		return treeMapArray.size()/2;
 		//return treeMapArray.get(1).size();
 	}
 	

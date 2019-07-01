@@ -12,6 +12,7 @@ import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.utils.Location;
+import edu.auburn.pFogSim.Radix.BinaryHeap;
 import edu.auburn.pFogSim.Radix.DistRadix;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
@@ -289,7 +290,8 @@ public class Puddle {
 	 * @return
 	 */
 	public LinkedList<EdgeHost> getClosestNodes(Location pair) {
-		DistRadix rad = new DistRadix(members, pair);
+		//DistRadix rad = new DistRadix(members, pair);
+		BinaryHeap rad = new BinaryHeap(members.size(), pair, members);
 		LinkedList<EdgeHost> nodes = rad.sortNodes();
 		return nodes;
 	}
@@ -315,8 +317,8 @@ public class Puddle {
 					double minDistance = Double.MAX_VALUE;
 					for (EdgeHost parentNode: up.getMembers()) {
 						double distance = DataInterpreter.measure(
-								node.getLocation().getXPos(), node.getLocation().getYPos(), 
-									parentNode.getLocation().getXPos(), parentNode.getLocation().getYPos());
+								node.getLocation().getXPos(), node.getLocation().getYPos(), node.getLocation().getAltitude(), 
+									parentNode.getLocation().getXPos(), parentNode.getLocation().getYPos(), parentNode.getLocation().getAltitude());
 						if (distance < minDistance) {
 							node.setParent(parentNode);
 						}

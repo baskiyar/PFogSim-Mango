@@ -277,7 +277,6 @@ public class SimManager extends SimEntity {
 		}
 		
 		//Get all of the initial wireless access points ids for all the mobile devices
-		//SimLogger.printLine("treeMap.size() = " + mobilityModel.getSize());
 
 		for(int i = 0; i < mobilityModel.getSize(); i++)
 		{
@@ -302,7 +301,6 @@ public class SimManager extends SimEntity {
 		synchronized(this){
 			switch (ev.getTag()) {
 			case CREATE_TASK:
-				//SimLogger.printLine("CREATE_TASK reached");
 				try {
 					EdgeTask edgeTask = (EdgeTask) ev.getData();
 					mobileDeviceManager.submitTask(edgeTask);						

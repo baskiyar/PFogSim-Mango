@@ -1,2 +1,2 @@
-Id,latitude,longitude
-1,41.2215833,-95.8638667
+Id,latitude,longitude,altitude,dx,dy
+1,41.2215833,-95.8638667,0,0,0

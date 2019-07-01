@@ -15,6 +15,7 @@ import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
 
+import edu.auburn.pFogSim.Radix.BinaryHeap;
 import edu.auburn.pFogSim.Radix.DistRadix;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
@@ -115,7 +116,8 @@ public class EdgeByDistanceOrchestrator extends EdgeOrchestrator {
 	@Override
 	public void assignHost(MobileDevice mobile) {
 
-		DistRadix sort = new DistRadix(hosts, mobile.getLocation());//use radix sort based on distance from task
+		//DistRadix sort = new DistRadix(hosts, mobile.getLocation());//use radix sort based on distance from task
+		BinaryHeap sort = new BinaryHeap(hosts.size(), mobile.getLocation(), hosts);
 		LinkedList<EdgeHost> nodes = sort.sortNodes();
 		//System.out.print("nodes size: " + nodes.size() + "  Device Id: " + mobile.getId() + "  WAP Id: " + mobile.getLocation().getServingWlanId());
 		EdgeHost host = nodes.poll();
