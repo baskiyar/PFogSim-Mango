@@ -81,7 +81,7 @@ public class DistRadix {
 	private void buildCoords() {
 		for(EdgeHost node : input) {
 			coordMap.put(new Location(node.getLocation().getXPos(), node.getLocation().getYPos(), node.getLocation().getAltitude()), node);
-			coords.add(new Location(node.getLocation().getXPos(), node.getLocation().getYPos()), node.getLocation().getAltitude());
+			coords.add(new Location(node.getLocation().getXPos(), node.getLocation().getYPos(),node.getLocation().getAltitude()));
 		}
 	}
 	

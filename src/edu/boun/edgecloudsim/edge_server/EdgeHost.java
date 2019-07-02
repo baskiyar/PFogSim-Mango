@@ -335,7 +335,7 @@ public class EdgeHost extends Host {
 		reserveCPUResource(mb);
 		Log.print(" After Reservation: Host Id: "+this.getId()+" Current Reserved Mips: "+this.getReserveMips()+" Current Reserved BW: "+this.getReserveBW());
 		customers.add(mb);
-		System.out.println("  Mobile device: "+mb.getId()+"  WAP: "+mb.getLocation().getServingWlanId()+"  Assigned host: "+this.getId());
+		SimLogger.printLine("  Mobile device: "+mb.getId()+"  WAP: "+mb.getLocation().getServingWlanId()+"  Assigned host: "+this.getId());
 		Log.printLine();
 	}
 	

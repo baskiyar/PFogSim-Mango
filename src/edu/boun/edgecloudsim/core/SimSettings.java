@@ -597,9 +597,6 @@ public class SimSettings {
 		return PRODUCER_CONSUMER_SEP;
 	}
 	
-	public boolean getNodeMobility() {
-		return MOVING_NODES;
-	}
 	
 	
 	/**

@@ -305,4 +305,46 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	@Override
+	public void addNumProspectiveHosts(int deviceId, int hostCount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public double getAvgNumProspectiveHosts() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void addNumMessages(int deviceId, int msgCount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public double getAvgNumMessages() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void addNumPuddlesSearched(int deviceId, int pudCount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public double getAvgNumPuddlesSearched() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

@@ -6,8 +6,6 @@
  * which extends from (-1 * (MAX_LAT / 2) to MAX_LAT / 2 to make it MAX_LAT wide and permit
  * negative coordinates to resemble GPS coordinates as much as possible.
  * Devices are placed at a random Wireless Access Point (WAP) and given a random vector to move in.
- * It updates which access point a device is connected to by using the Voronoi Diagram to organize
- * the simulation space.
  * 
  * License:      GPL - http://www.gnu.org/copyleft/gpl.html
  */
@@ -20,12 +18,10 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.diagram.PowerDiagram;
-import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.j2d.Site;
+
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NetworkTopology;
 import edu.auburn.pFogSim.netsim.NodeSim;
-import edu.auburn.pFogSim.orchestrator.HAFAOrchestrator;
 import edu.auburn.pFogSim.util.DataInterpreter;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
@@ -166,28 +162,6 @@ public class GPSVectorMobility extends MobilityModel {
 						}
 					}
 					wlan_id = closestNode.getWlanId();
-					//If we are still in the same polygon, don't change (We haven't moved out of range of the wap)
-					int levelNum = SimManager.getInstance().getVoronoiDiagram().size();
-					//SimLogger.printLine("Size of voronoidiagram list : " + levelNum);
-					PowerDiagram diagram = SimManager.getInstance().getVoronoiDiagramAtLevel(levelNum);
-					//diagram.showDiagram();
-					
-					if (SimManager.getInstance().getEdgeOrchestrator() instanceof HAFAOrchestrator) {
-						for(Site site : diagram.getSites())
-						{
-							SimLogger.printLine("\ndiagram.getSites.size() : " + diagram.getSites().size);
-							SimLogger.printLine("x_pos : " + x_pos + "\ny_pos : " + y_pos);
-							//Qian get non-clipped polygen
-							SimLogger.printLine("" + site.getNonClippedPolyon());
-							//if(site.getPolygon() != null && site.getPolygon().contains(x_pos, y_pos))
-							if(site.getNonClippedPolyon().contains(x_pos, y_pos))
-							{ 
-								//We know that the site.getX and Y pos is location of WAP
-								//Find wlan id to assign
-								wlan_id = (network.findNode(new Location(site.getX(), site.getY()), true)).getWlanId();
-							}
-						}
-					}
 					//This first argument kind of dictates the speed at which the device moves, higher it is, slower the devices are
 					//	smaller value in there, the more it updates
 					//As it is now, allows devices to change wlan_ids around 600 times in an hour
