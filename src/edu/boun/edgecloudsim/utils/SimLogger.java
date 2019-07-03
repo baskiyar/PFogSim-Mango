@@ -1030,6 +1030,16 @@ public class SimLogger {
 				String genericResult9 = Double.toString(distBack) 
 						+ SimSettings.DELIMITER + Double.toString(hopsBack);
 				
+				EnergyModel.calculateTotalIdleEnergy();
+				energyUsageBW.write(Double.toString(EnergyModel.getTotalEnergy()) + ", ");
+				energyUsageBW.write(Double.toString(EnergyModel.getTotalRouterEnergy()) + ", ");
+				energyUsageBW.write(Double.toString(EnergyModel.getTotalFogNodeEnergy()) + ", ");
+				energyUsageBW.write(Double.toString(EnergyModel.getIdleEnergy()));
+				
+				String genericResult10 = Double.toString(EnergyModel.getTotalEnergy()) + SimSettings.DELIMITER +
+Double.toString(EnergyModel.getTotalRouterEnergy()) + SimSettings.DELIMITER + Double.toString(EnergyModel.getTotalFogNodeEnergy()) + 
+SimSettings.DELIMITER;
+				
 				appendToFile(genericBWs[i], genericResult1);
 				appendToFile(genericBWs[i], genericResult2);
 				appendToFile(genericBWs[i], genericResult3);
@@ -1039,6 +1049,7 @@ public class SimLogger {
 				appendToFile(genericBWs[i], genericResult7);
 				appendToFile(genericBWs[i], genericResult8);
 				appendToFile(genericBWs[i], genericResult9);
+				appendToFile(genericBWs[i], genericResult10);
 
 			}
 			
