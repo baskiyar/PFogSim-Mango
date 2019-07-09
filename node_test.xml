@@ -12,7 +12,7 @@
 	<altitude>0</altitude>
 	<level>7</level>	<wlan_id>0</wlan_id>
 	<wap>true</wap>
-	<moving>true</moving>
+	<moving>false</moving>
 	<bandwidth>104857600</bandwidth>
 	<dx>0</dx>
 	<dy>0</dy>/n</location>

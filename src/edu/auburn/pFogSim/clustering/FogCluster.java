@@ -16,7 +16,6 @@ import edu.boun.edgecloudsim.core.SimSettings;
 //import edu.boun.edgecloudsim.utils.*;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
-import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.diagram.*;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.DataInterpreter;
@@ -346,9 +345,6 @@ public class FogCluster {
 		if(arrayList.size() > 0)
 			learn();
 		
-		//Make the voronoi diagram for that level and add it to the list
-		//PowerDiagram voronoi = new PowerDiagram(arrayList);
-		//------later------SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
 		
 	}
 	
@@ -386,9 +382,6 @@ public class FogCluster {
 			learnByMaxHeight();
 		}
 		
-		//Make the voronoi diagram for that level and add it to the list
-		//PowerDiagram voronoi = new PowerDiagram(arrayList);
-		//------later------SimManager.getInstance().addToVoronoiDiagramList(PowerDiagram.makeVoronoiDiagram(arrayList));
 	} // end FogCluster (max)
 
 
