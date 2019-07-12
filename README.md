@@ -13,7 +13,7 @@ Last Edit by Clayton Johnson on 7/17/2018
 
 ## **Quick Summary**
  - General Outline of Classes
-![Class Diagram](https://github.com/jihall77/pFogSim/blob/master/class_diagram.png)
+![Class Diagram](https://github.com/AgentEnder/pFogSim/blob/master/Class_Interactions.jpg)
  - This may not appear to be straight-forward, however it will make more sense down below
 
 ## **How to Run** 
