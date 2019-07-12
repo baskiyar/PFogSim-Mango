@@ -48,6 +48,7 @@ Last Edit by Clayton Johnson on 7/17/2018
 		- Will output to console
 		- It is the same file given by EdgeCloudSim with some additions
 		- pFogSim/sim_results/ite(#) directory should exist at time of run (or run with appropriate permissions)
+		- pFogSim/sim_results/consoleruns directory should also exist.
 ## **Creating Custom Scenarios**
  - Customizable Files: 
  	- Change DataInterpreter to fit data sets into XML formats
@@ -178,7 +179,7 @@ And with that said, here is everything on pFogSim. Most of the follow can be gat
 		- This is insanely helpful when the network grows with few access points.
 	- All mobile devices are given random starting wireless access points with which they are connected.
 	- All devices are given random vectors that change for every entry into the large array.
-	- All device positions are then updated for the next moment in time for the simulator and WAPs are updated to connect to the closest nearby. Voronoi implementations should exist here to follow along with the HAFA structure however there have been issues with our implementation of the code. (Insert link here for Voronoi stuffs)
+	- All device positions are then updated for the next moment in time for the simulator and WAPs are updated to connect to the closest nearby.
  - Quick note on the treeMapArray:
  	- This structure was made to hold all of the positions of all the mobile devices for all time *t* in the simulator.
 	- Let's take a look at a specific line of code in the initialization function:
