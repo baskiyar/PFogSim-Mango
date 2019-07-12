@@ -1036,9 +1036,15 @@ public class SimLogger {
 				energyUsageBW.write(Double.toString(EnergyModel.getTotalFogNodeEnergy()) + ", ");
 				energyUsageBW.write(Double.toString(EnergyModel.getIdleEnergy()));
 				
+				
+				/*The 10th line of information in the generic results file is formatted as: 
+				 * total energy;dynamic network energy;dynamic fog node energy;
+				 */
 				String genericResult10 = Double.toString(EnergyModel.getTotalEnergy()) + SimSettings.DELIMITER +
 Double.toString(EnergyModel.getTotalRouterEnergy()) + SimSettings.DELIMITER + Double.toString(EnergyModel.getTotalFogNodeEnergy()) + 
 SimSettings.DELIMITER;
+				
+		
 				
 				appendToFile(genericBWs[i], genericResult1);
 				appendToFile(genericBWs[i], genericResult2);
@@ -1053,6 +1059,10 @@ SimSettings.DELIMITER;
 
 			}
 			
+			/*this prints to the ENERGY_USAGE FILE. 
+			 * IMPORTANT: the first FOUR values are correct for: total energy, dynamic network energy, dynamic fog energy, idle energy
+			 * this is inside a for loop, so there may be more than four entries in the ENERGY_USAGE file -- ignore those
+			 */
 			EnergyModel.calculateTotalIdleEnergy();
 			energyUsageBW.write(Double.toString(EnergyModel.getTotalEnergy()) + ", ");
 			energyUsageBW.write(Double.toString(EnergyModel.getTotalRouterEnergy()) + ", ");
