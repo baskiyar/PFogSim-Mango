@@ -181,7 +181,7 @@ public class SimSettings {
     // [08] required # of cores
     // [09] vm utilization (%)
     // [10] max latency (milliseconds)
-    private double[][] taskLookUpTable = new double[APP_TYPES.values().length][11];
+    private double[][] taskLookUpTable = new double[APP_TYPES.values().length][12];
     private int MAX_LEVELS;
     private String inputType;
     private boolean mobileDevicesMoving;
@@ -660,6 +660,7 @@ public class SimSettings {
 				isElementPresent(appElement, "required_core");
 				isElementPresent(appElement, "vm_utilization");
 				isElementPresent(appElement, "delay_sensitivity");
+				isElementPresent(appElement, "max_distance");
 
 				String appName = appElement.getAttribute("name");
 				SimSettings.APP_TYPES appType = APP_TYPES.valueOf(appName);
@@ -674,6 +675,7 @@ public class SimSettings {
 				double required_core = Double.parseDouble(appElement.getElementsByTagName("required_core").item(0).getTextContent());
 				double vm_utilization = Double.parseDouble(appElement.getElementsByTagName("vm_utilization").item(0).getTextContent());
 				double delay_sensitivity = Double.parseDouble(appElement.getElementsByTagName("delay_sensitivity").item(0).getTextContent());
+				double max_distance = Double.parseDouble(appElement.getElementsByTagName("max_distance").item(0).getTextContent());
 				
 			    taskLookUpTable[appType.ordinal()][0] = usage_percentage; //usage percentage [0-100]
 			    taskLookUpTable[appType.ordinal()][1] = prob_cloud_selection; //prob. of selecting cloud [0-100]
@@ -686,6 +688,7 @@ public class SimSettings {
 			    taskLookUpTable[appType.ordinal()][8] = required_core; //required # of core
 			    taskLookUpTable[appType.ordinal()][9] = vm_utilization; //vm utilization [0-100]
 			    taskLookUpTable[appType.ordinal()][10] = delay_sensitivity; //delay_sensitivity (seconds)
+			    taskLookUpTable[appType.ordinal()][11] = max_distance; //max distance in meters
 			    
 			}
 	
