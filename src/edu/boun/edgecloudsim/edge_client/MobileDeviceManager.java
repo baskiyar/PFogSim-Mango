@@ -455,7 +455,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 //		}
 		else /*(nextHopId == SimSettings.GENERIC_EDGE_DEVICE_ID)*/ {
 			SimSettings.CLOUD_TRANSFER isCloud = (nextHopId== 0)?SimSettings.CLOUD_TRANSFER.CLOUD_UPLOAD:SimSettings.CLOUD_TRANSFER.IGNORE;
-			double WlanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);\
+			double WlanDelay = networkModel.getUploadDelay(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
 			//calculate the dynamic router energy used to upload a task from a mobile device to its destination.
 			double uploadEnergy = EnergyModel.getUploadEnergy(task.getMobileDeviceId(), nextHopId * -1, task.getCloudletFileSize(), task.wifi, false, isCloud);
 			EnergyModel.appendRouterEnergy(uploadEnergy);
