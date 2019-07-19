@@ -49,7 +49,7 @@ public class mainApp {
 		//enable console output and file output of this application
 		SimLogger.enablePrintLog();
 		
-		int iterationNumber = 2; // index for the list of n scenarios in properties file is from 0..n-1
+		int iterationNumber = 0; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
 		String outFolder2 = "";
@@ -103,7 +103,7 @@ public class mainApp {
 		SS.setSimulationSpace(DataInterpreter.getSimulationSpace());
 		SS.setMaxLevels(DataInterpreter.getMaxLevels());
 		SS.setInputType(DataInterpreter.getInputType());
-		SS.setMobileDevicesMoving(SS.getMovingDevices()); // 9 is the count of scenarios in properties file.
+		SS.setMobileDevicesMoving(SS.getMovingDevices()); 
 		
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date SimulationStartDate = Calendar.getInstance().getTime();

@@ -24,8 +24,8 @@ import java.util.HashSet;
 
 
 /**
- * Class for energy measurement
- * Written by Matthew Merck and Cameron Berry
+ * Class for energy consumption measurement in PFogSim. Measures idle and dynamic energy of network and fog nodes in system
+ * Written by Matthew Merck and Cameron Berry during the Auburn REU in Distributed and Parallel Computing 2019
  * 
  * @author mlm0175
  * @author cmb0220
@@ -33,7 +33,10 @@ import java.util.HashSet;
  */
 public class EnergyModel {
 	
-	//All of these private values are values to be logged
+	//All of these private values are values to be logged.
+	//NOTE: totalRouterEnergy and totalFogNodeEnergy denote the total DYNAMIC energy consumption of network and fog nodes (joules)
+	//totalIdleEnergy is total idle energy consumption of fog+network
+	//totalEnergy is totalIdleEnergy + totalRouterEnergy + totalFogNodeEnergy
 	private static double totalRouterEnergy = 0;
 	private static double totalFogNodeEnergy = 0;
 	private static double totalIdleEnergy = 0;	
@@ -99,7 +102,8 @@ public class EnergyModel {
 		Router router = ((ESBModel) SimManager.getInstance().getNetworkModel()).getRouter();
 	    path = router.findPath(networkTopology, src, dest);
 	    
-	    //////////////////////////////////////////////////////////////PATH IS CALCULATED ABOVE. ENERGY OF PATH IS CALCULATED BELOW
+	    //////////////////////////////////////////////////////////////PATH IS CALCULATED ABOVE AS IN getUploadDelay. 
+	    //ENERGY OF PATH IS CALCULATED BELOW
 	    
 	   // SimLogger.printLine(path.size() + "");
 	//	energy += getWlanUploadDelay(src.getLocation(), dataSize, CloudSim.clock()) + SimSettings.ROUTER_PROCESSING_DELAY;
@@ -116,15 +120,12 @@ public class EnergyModel {
 			if (current.traverse(nextHop) < 0) {
 				SimLogger.printLine("not adjacent");
 			}
-//			double proDelay = current.traverse(nextHop);
-//			double conDelay = getWlanUploadDelay(nextHop.getLocation(), dataSize, CloudSim.clock() + energy);
-//			energy += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
+
+			//get level of the current network node, and find its corresponding nJperBit value form DataInterpreter
 			int level = current.getLevel();
 			double nJperBit = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][15]);
+			//convert dataSize of task to bits, and multiply by nJperBit to get total nanojoules of transfer
 			energy += (dataSize * 8000) * nJperBit; //dataSize is in kilobytes. multiply by 8000 to convert to bits
-//			if (SimSettings.getInstance().traceEnable()) {
-//				SimLogger.getInstance().printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
-//			}
 		}
 		if (SimSettings.getInstance().traceEnable()) {
 			SimLogger.printLine("Target Node ID:\t" + dest.getWlanId());
@@ -132,17 +133,22 @@ public class EnergyModel {
 		return energy / 1000000000; //energy in nano joules for download of entire path converted to joules by dividing by 1e+9
 	}
 	
-	//uploadEnergy and downloadEnergy are basically the same because nJperBit upload and download are the same
+	//uploadEnergy and downloadEnergy are basically the same because nJperBit upload and download are the same.
+	//if these values become different, fully implement this method
 	public static double getUploadEnergy(int sourceDeviceId, int destDeviceId, double dataSize, boolean wifiSrc, boolean wifiDest, SimSettings.CLOUD_TRANSFER isCloud) {
 		return getDownloadEnergy(sourceDeviceId, destDeviceId, dataSize, wifiSrc, wifiDest, isCloud);
 	}
 	
-	//Returns total idle energy of all fog nodes (power for each node * total simulation time) 
+	//Returns total idle energy (joules) of all fog nodes (power for each node * total simulation time) 
 	public static void calculateTotalIdleEnergy() {
 		NetworkTopology networkTopology = ((ESBModel) SimManager.getInstance().getNetworkModel()).getNetworkTopology(); 
 		HashSet<NodeSim> nodes = networkTopology.getNodes();	
 		double totalEnergy = 0;
 		double totalTimeSeconds = SimSettings.getInstance().getSIMULATION_TIME();
+		/*Important: this simulator assumes that routers and fog nodes are paired. As a result, the network topology contains nodes that
+		 * represent one fog node, and one network node. DataInterpreter.java contains idle power consumption values for network and fog nodes
+		 * of all levels, so for each NodeSim in NetworkTopology, we add the router and fog power to the total power
+		 * */
 		for (NodeSim node: nodes) {
 			int level = node.getLevel();
 			double idleFogWatts = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][18]);
@@ -152,7 +158,7 @@ public class EnergyModel {
 			totalEnergy += idleRouterWatts;
 		}
 		
-		
+		//After getting all power values, we multiply them by the time in seconds to get energy in joules
 		double idle = totalEnergy * totalTimeSeconds;
 		totalIdleEnergy = idle;
 		System.out.println(nodes.size() + "number");
@@ -169,11 +175,16 @@ public class EnergyModel {
 		double coresRequired = SimSettings.getInstance().getTaskLookUpTable()[task.getTaskType().ordinal()][8];
 		/*this result is computed by using Equation (4) located on page 6 of Estimating Energy Consumption of Cloud, Fog and
 			Edge Computing Infrastructures by Ehsan Ahvar.  */
+		/*the powerConsumptionFunction represents the rough amount of energy that a fog node uses to utilize another core.
+		 * we then multiply this by the number of cores required for a certain task to get the tasks dynamic energy consumption.
+		 * as of right now, however, each task only requires one core.
+		 */
 		double totalPower = powerConsumptionFunction * coresRequired; 
 		double joules = totalPower * time;
 		return joules;
 	}
 	
+	//We use append here to mean "add to"
 	private static void appendTotalEnergy(double num) {
 		totalEnergy += num;
 	}
