@@ -11,6 +11,19 @@ Last Edit by Craigory Coppola on 2018-7-19
  - A simulator made to handle large-scale FOG networks with the HAFA Puddle Strategy to help evaluate the potential advantages/disadvantages within user-customizable scenarios
  - Simulator is still in progress but what is seen here should already be present and tested in the simulator
 
+## Supported by
+Faculty supervisor:
+
+Dr. Sanjeev Baskiyar <br />
+Professor <br />
+Department of Computer Science and Software Engineering<br />
+Samuel Ginn College of Engineering<br />
+Auburn University<br />
+Auburn, AL 36849<br />
+baskisa@auburn.edu
+
+This research was supported by NSF award # 1659845.
+
 ## Contributors
 1. Shehenaz Shaik
 1. Jacob Hall
