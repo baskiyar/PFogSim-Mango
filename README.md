@@ -11,8 +11,8 @@ Last Edit by Craigory Coppola on 2018-7-19
  - A simulator made to handle large-scale FOG networks with the HAFA Puddle Strategy to help evaluate the potential advantages/disadvantages within user-customizable scenarios
  - Simulator is still in progress but what is seen here should already be present and tested in the simulator
 
-## Supported by
-Faculty supervisor:
+# Project Participants
+## Faculty supervisor
 
 Dr. Sanjeev Baskiyar <br />
 Professor <br />
@@ -25,22 +25,22 @@ baskisa@auburn.edu
 This research was supported by NSF award # 1659845.
 
 ## Contributors
-1. Shehenaz Shaik
-1. Jacob Hall
-1. Clayton Johnson
-1. Qian Wang
-1. Craigory Coppolla
-1. Jordon Cox
-1. Matthew Merck
-1. Cameron Berry
+1. Shehenaz Shaik  		(AU Graduate Research Assistant) 
+1. Jacob Hall     		(REU Participant)
+1. Clayton Johnson 		(REU Participant)
+1. Qian Wang        	(AU Graduate Student)
+1. Craigory Coppolla 	(REU Participant)
+1. Jordon Cox			(REU Participant)
+1. Matthew Merck		(REU Participant)
+1. Cameron Berry		(REU Participant)
 
 Prior effort on development of simulator for fog computing environment by extending iFogSim was contributed by following members. That project is incomplete and has been abandoned. 
 
-1. Shehenaz Shaik
-1. Jessica Knezha
-1. Avraham Rynderman
-1. William McCarthy
-1. Denver Strong
+1. Shehenaz Shaik(AU Graduate Research Assistant)
+1. Jessica Knezha(REU Participant)
+1. Avraham Rynderman(REU Participant)
+1. William McCarthy(REU Participant)
+1. Denver Strong(REU Participant)
 
 
 ## **Quick Summary**
