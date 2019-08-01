@@ -22,14 +22,14 @@ Auburn University<br />
 Auburn, AL 36849<br />
 baskisa@auburn.edu
 
-This research was supported by NSF award # 1659845.
+This research was supported by NSF award OAC 1659845.
 
-## Contributors
+## Student Contributors (at Auburn University)
 1. Shehenaz Shaik  		(AU Graduate Research Assistant) 
 1. Jacob Hall     		(REU Participant)
 1. Clayton Johnson 		(REU Participant)
-1. Qian Wang        	(AU Graduate Student)
-1. Craigory Coppolla 	(REU Participant)
+1. Qian Wang        		(AU Graduate Student)
+1. Craigory Coppolla 		(REU Participant)
 1. Jordon Cox			(REU Participant)
 1. Matthew Merck		(REU Participant)
 1. Cameron Berry		(REU Participant)
