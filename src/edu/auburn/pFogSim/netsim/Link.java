@@ -38,7 +38,7 @@ public class Link {
 		rightCoord = rLink;
 		leftCoord = lLink;
 		//double dist = Math.sqrt(Math.pow(rLink.getXPos() - lLink.getXPos(), 2) + Math.pow(rLink.getYPos() - lLink.getYPos(), 2));
-		double dist = DataInterpreter.measure(rLink.getYPos(), rLink.getXPos(), lLink.getYPos(), lLink.getXPos()) / 1000;
+		double dist = DataInterpreter.measure(rLink.getYPos(), rLink.getXPos(), rLink.getAltitude(), lLink.getYPos(), lLink.getXPos(), lLink.getAltitude()) / 1000;
 		rightLatency = dist * LATENCY_MULTIPLIER;
 		leftLatency = dist * LATENCY_MULTIPLIER;
 		/*rightLatency = rLat;
@@ -252,7 +252,6 @@ public class Link {
 	 */
 	public boolean validateCoords() {
 		try {
-			//SimLogger.printLine(leftCoord.getXPos() + "\t" + rightCoord.getXPos());
 			return !leftCoord.equals(rightCoord);
 		}
 		catch (NullPointerException e) {

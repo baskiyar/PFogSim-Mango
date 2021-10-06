@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <applications>
 	<application name="AUGMENTED_REALITY">
-		<usage_percentage>0</usage_percentage>
+		<usage_percentage>100</usage_percentage>
 		<prob_cloud_selection>20</prob_cloud_selection>
 		<poisson_interarrival>5</poisson_interarrival>
 		<delay_sensitivity>5</delay_sensitivity>
@@ -12,6 +12,7 @@
 		<task_length>2000</task_length>
 		<required_core>1</required_core>
 		<vm_utilization>20</vm_utilization>
+		<max_distance>800000</max_distance>
 	</application>
 	<application name="HEALTH_APP">
 		<usage_percentage>0</usage_percentage>
@@ -25,6 +26,7 @@
 		<task_length>400</task_length>
 		<required_core>1</required_core>
 		<vm_utilization>5</vm_utilization>
+		<max_distance>800000</max_distance>
 	</application>
 	<application name="HEAVY_COMP_APP">
 		<usage_percentage>0</usage_percentage>
@@ -38,6 +40,7 @@
 		<task_length>3000</task_length>
 		<required_core>1</required_core>
 		<vm_utilization>30</vm_utilization>
+		<max_distance>800000</max_distance>
 	</application>
 	<application name="INFOTAINMENT_APP">
 		<usage_percentage>0</usage_percentage>
@@ -51,6 +54,7 @@
 		<task_length>750</task_length>
 		<required_core>1</required_core>
 		<vm_utilization>10</vm_utilization>
+		<max_distance>800000</max_distance>
 	</application>
 	<application name="COGNITIVE_ASSISTANCE">
 		<usage_percentage>0</usage_percentage>
@@ -64,9 +68,10 @@
 		<task_length>2000</task_length>
 		<required_core>1</required_core>
 		<vm_utilization>20</vm_utilization>
+		<max_distance>800000</max_distance>
 	</application>
 	<application name="REMOTE_HEALTHCARE">
-		<usage_percentage>100</usage_percentage>
+		<usage_percentage>0</usage_percentage>
 		<prob_cloud_selection>20</prob_cloud_selection>
 		<poisson_interarrival>5</poisson_interarrival>
 		<delay_sensitivity>0.100</delay_sensitivity>
@@ -77,6 +82,7 @@
 		<task_length>300</task_length>
 		<required_core>1</required_core>
 		<vm_utilization>5</vm_utilization>
+		<max_distance>800000</max_distance>
 	</application>
 	<application name="MACHINE_LEARNING">
 		<usage_percentage>0</usage_percentage>
@@ -86,9 +92,10 @@
 		<active_period>45</active_period>
 		<idle_period>15</idle_period>
 		<data_upload>1500</data_upload>
-		<data_download>25</data_download>
+		<data_download>15</data_download>
 		<task_length>6000</task_length>
 		<required_core>1</required_core>
 		<vm_utilization>20</vm_utilization>
+		<max_distance>800000</max_distance>
 	</application>
 </applications>

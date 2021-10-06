@@ -7,3 +7,9 @@
 *.log
 scripts/Analysis/MultipleIter/matlab_notmoving/plotAvgVmUtilization.asv
 scripts/Analysis/MultipleIter/matlab_notmoving/plotAvgVmUtilization.asv
+simresults/ite/*
+simresults/ite2/*
+simresults/ite3/*
+simresults/ite4/*
+simresults/ite5/*
+simresults/ite6/*

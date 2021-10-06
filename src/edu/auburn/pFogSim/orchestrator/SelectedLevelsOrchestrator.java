@@ -71,7 +71,6 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 			SimLogger.print(i+" ");
 			selLayerHosts.addAll(hostLevelMap.get(i));
 		}
-		SimLogger.printLine(" ");
 		
 
 		allHosts = new ArrayList<EdgeHost>();
@@ -166,7 +165,6 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 			// for each such NodeSim object, retrieve the row and add it to selectedDesMap
 			selectedDesMap.put(hostNode, desMap.get(hostNode));	
 		}
-		SimLogger.printLine(" ");
 
 		// continue with processing as earlier.
 		for (Entry<NodeSim, LinkedList<NodeSim>> entry: selectedDesMap.entrySet()) {
@@ -174,7 +172,7 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 			NodeSim des = entry.getKey();
 			LinkedList<NodeSim> path = entry.getValue();
 			if (path == null || path.size() == 0) {
-				EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(mobile.getLocation().getXPos(), mobile.getLocation().getYPos());
+				EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(mobile.getLocation().getXPos(), mobile.getLocation().getYPos(), mobile.getLocation().getAltitude());
 				//des = ((ESBModel)(SimManager.getInstance().getNetworkModel())).getNetworkTopology().findNode(task.getSubmittedLocation(), false);
 				//cost = (mobile.getTaskLengthRequirement() / k.getTotalMips() * k.getCostPerSec() + mobile.getBWRequirement() * k.getCostPerBW());
 				double bwCost = (mobile.getBWRequirement()*8 / (double)1024) * k.getCostPerBW(); //mobile.getBWRequirement() in KB * 8b/B ==>Kb / 1024 = Mb; k.getCostPerBW() in $/Mb -- Shaik modified
@@ -191,7 +189,7 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 			else {
 				//SimLogger.getInstance().getCentralizeLogPrinter().println("**********Path From " + src.getWlanId() + " To " + des.getWlanId() + "**********");
 				for (NodeSim node: path) {
-					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos());
+					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos(), node.getLocation().getAltitude());
 					//double bwCost = mobile.getBWRequirement() * k.getCostPerBW();
 					double bwCost = (mobile.getBWRequirement()*8 / (double)1024) * k.getCostPerBW(); //mobile.getBWRequirement() in KB * 8b/B ==>Kb / 1024 = Mb; k.getCostPerBW() in $/Mb -- Shaik modified
 
@@ -199,7 +197,7 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 					//SimLogger.getInstance().getCentralizeLogPrinter().println("Level:\t" + node.getLevel() + "\tNode:\t" + node.getWlanId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
 				}
 				//des = path.peekLast();
-				EdgeHost desHost = SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos());
+				EdgeHost desHost = SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos(), des.getLocation().getAltitude());
 				//double exCost = desHost.getCostPerSec() * (mobile.getTaskLengthRequirement() / desHost.getTotalMips());
 				double exCost = (double)mobile.getTaskLengthRequirement() / (desHost.getPeList().get(0).getMips()) * desHost.getCostPerSec(); // Shaik modified - May 07, 2019.
 
@@ -231,7 +229,7 @@ public class SelectedLevelsOrchestrator extends EdgeOrchestrator {
 		for (Double totalCost : costList) {
 			// Get the list of prospective nodes available at that cost
 			for(NodeSim desNode: costMap.get(totalCost)) {
-				host = SimManager.getInstance().getLocalServerManager().findHostByLoc(desNode.getLocation().getXPos(), desNode.getLocation().getYPos());
+				host = SimManager.getInstance().getLocalServerManager().findHostByLoc(desNode.getLocation().getXPos(), desNode.getLocation().getYPos(), desNode.getLocation().getAltitude());
 				hostsSortedByCost.add(host);
 				//System.out.println("Hosts in sorted order of costs:  "+host.getId()+"  at cost:  "+totalCost);
 			}

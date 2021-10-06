@@ -20,6 +20,7 @@ import edu.boun.edgecloudsim.core.SimSettings;
 public class Location implements Comparable {
 	private double xPos;
 	private double yPos;
+	private double altitude;
 	private int servingWlanId;
 	private double bandwidth;
 	SimSettings.PLACE_TYPES placeType;
@@ -46,10 +47,11 @@ public class Location implements Comparable {
 	 * @param _xPos
 	 * @param _yPos
 	 */
-	public Location(int _servingWlanId, double _xPos, double _yPos) {
+	public Location(int _servingWlanId, double _xPos, double _yPos, double _altitude) {
 		servingWlanId = _servingWlanId;
 		xPos = _xPos;
 		yPos = _yPos;
+		altitude = _altitude;
 	}
 	
 	
@@ -58,9 +60,16 @@ public class Location implements Comparable {
 	 * @param _xPos
 	 * @param _yPos
 	 */
-	public Location(double _xPos, double _yPos) {
+	public Location(double _xPos, double _yPos, double _altitude) {
 		xPos = _xPos;
 		yPos = _yPos;
+		altitude = _altitude;
+	}
+	
+	public Location (double _xPos, double _yPos) {
+		xPos = _xPos;
+		yPos = _yPos;
+		altitude = 0;
 	}
 
 	
@@ -86,7 +95,7 @@ public class Location implements Comparable {
 	    }
 	    
 	    Location otherLocation = (Location)other;
-	    if(xPos == otherLocation.getXPos() && yPos == otherLocation.getYPos()) {
+	    if(xPos == otherLocation.getXPos() && yPos == otherLocation.getYPos() && altitude == otherLocation.altitude) {
 	    	result = true;
 	    }
 	    return result;
@@ -129,12 +138,17 @@ public class Location implements Comparable {
 	}
 	
 	
+	public double getAltitude() {
+		return altitude;
+	}
+	
+	
 	/**
 	 * 
 	 */
 	public int compareTo(Object _in) {
 		Location in = (Location) _in;
-		if (xPos == in.getXPos() && yPos == in.getYPos()) {
+		if (xPos == in.getXPos() && yPos == in.getYPos() && altitude ==  in.altitude) {
 			return 0;
 		}
 		else if (xPos > in.getXPos()) {
@@ -148,7 +162,7 @@ public class Location implements Comparable {
 	 * 
 	 */
 	public String toString() {
-		return xPos + ", " + yPos;
+		return xPos + ", " + yPos + "," + altitude;
 	}
 	
 	

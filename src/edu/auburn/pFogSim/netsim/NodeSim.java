@@ -18,7 +18,7 @@ import javafx.util.Pair;
  * @author szs0117
  *
  */
-public class NodeSim {
+public class NodeSim{
 	
 	private ArrayList<Link> edges;
 	private Location myLocation;
@@ -71,10 +71,10 @@ public class NodeSim {
 	 * @param id
 	 * @param isAccessPoint
 	 */
-	public NodeSim(double xin, double yin, int _level, int id, boolean isAccessPoint) {
+	public NodeSim(double xin, double yin, double _altitude, int _level, int id, boolean isAccessPoint) {
 		wlan_id = id;
 		edges = new ArrayList<Link>();
-		myLocation = new Location(id, xin, yin);
+		myLocation = new Location(id, xin, yin, _altitude);
 		level = _level;
 		wifiAccess = isAccessPoint;
 	}
@@ -89,10 +89,10 @@ public class NodeSim {
 	 * @param isAccessPoint
 	 * @param isMoving
 	 */
-	public NodeSim(double xin, double yin, int _level, int id, boolean isAccessPoint, boolean isMoving) {
+	public NodeSim(double xin, double yin, double _altitude, int _level, int id, boolean isAccessPoint, boolean isMoving) {
 		wlan_id = id;
 		edges = new ArrayList<Link>();
-		myLocation = new Location(xin, yin);
+		myLocation = new Location(xin, yin, _altitude);
 		level = _level;
 		wifiAccess = isAccessPoint;
 		moving = isMoving;
@@ -110,10 +110,10 @@ public class NodeSim {
 	 * @param isMoving
 	 * @param _vector
 	 */
-	public NodeSim(double xin, double yin, int _level, int id, boolean isAccessPoint, boolean isMoving, Location _vector) {
+	public NodeSim(double xin, double yin, double _altitude, int _level, int id, boolean isAccessPoint, boolean isMoving, Location _vector) {
 		wlan_id = id;
 		edges = new ArrayList<Link>();
-		myLocation = new Location(xin, yin);
+		myLocation = new Location(xin, yin, _altitude);
 		level = _level;
 		wifiAccess = isAccessPoint;
 		moving = isMoving;
@@ -136,7 +136,6 @@ public class NodeSim {
 			return true;
 		}
 		else {
-			//SimLogger.printLine(in.getLeftLink().getKey() + ", " + in.getLeftLink().getValue());
 			return false;
 		}
 	}
@@ -190,7 +189,6 @@ public class NodeSim {
 				return edges.get(i);
 			}
 		}
-		//SimLogger.printLine("returned null");
 		return null;
 	}
 	
@@ -204,14 +202,12 @@ public class NodeSim {
 	 */
 	public boolean removeLink(Link victim) {
 		if (victim == null) {
-			//SimLogger.printLine("removeLink return false");
 			return false;
 		}
 		for (Link edge : edges) {
 			if (edge.equals(victim)) {
 				edges.remove(victim);
 				SimLogger.printLine(victim.getLeftLink().getXPos() + ", " + victim.getLeftLink().getYPos() + " " + victim.getRightLink().getXPos() + ", " + victim.getRightLink().getYPos());
-				//SimLogger.printLine("removeLink return true");
 				return true;
 			}
 		}
@@ -373,7 +369,7 @@ public class NodeSim {
 	 * toString() for node returns the x and y coordinate of the node as a string of the form "x, y"
 	 */
 	public String toString() {
-		return getLocation().getXPos() + ", " + getLocation().getYPos();
+		return "(" + getLocation().getXPos() + ", " + getLocation().getYPos() + ", " + getLocation().getAltitude() + ")";
 	}
 	
 	

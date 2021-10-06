@@ -1,5 +1,5 @@
 # pFogSim : A Simulator For Evaluating Dynamic and Layered Fog-Computing Environments
-Last Edit by Clayton Johnson on 7/17/2018
+Last Edit by Craigory Coppola on 2018-7-19
 
 ## **What is pFogSim?**
 
@@ -11,9 +11,41 @@ Last Edit by Clayton Johnson on 7/17/2018
  - A simulator made to handle large-scale FOG networks with the HAFA Puddle Strategy to help evaluate the potential advantages/disadvantages within user-customizable scenarios
  - Simulator is still in progress but what is seen here should already be present and tested in the simulator
 
+# Project Participants
+## Faculty supervisor
+
+Dr. Sanjeev Baskiyar <br />
+Professor <br />
+Department of Computer Science and Software Engineering<br />
+Samuel Ginn College of Engineering<br />
+Auburn University<br />
+Auburn, AL 36849<br />
+baskisa@auburn.edu
+
+This research was supported by NSF award OAC 1659845.
+
+## Student Contributors (at Auburn University)
+1. Shehenaz Shaik  		(AU Graduate Research Assistant) 
+1. Jacob Hall     		(REU Participant)
+1. Clayton Johnson 		(REU Participant)
+1. Qian Wang        		(AU Graduate Student)
+1. Craigory Coppolla 		(REU Participant)
+1. Jordon Cox			(REU Participant)
+1. Matthew Merck		(REU Participant)
+1. Cameron Berry		(REU Participant)
+
+Prior effort on development of simulator for fog computing environment by extending iFogSim was contributed by following members. That project is incomplete and has been abandoned. 
+
+1. Shehenaz Shaik(AU Graduate Research Assistant)
+1. Jessica Knezha(REU Participant)
+1. Avraham Rynderman(REU Participant)
+1. William McCarthy(REU Participant)
+1. Denver Strong(REU Participant)
+
+
 ## **Quick Summary**
  - General Outline of Classes
-![Class Diagram](https://github.com/jihall77/pFogSim/blob/master/class_diagram.png)
+![Class Diagram](https://github.com/AgentEnder/pFogSim/blob/master/Class_Interactions.jpg)
  - This may not appear to be straight-forward, however it will make more sense down below
 
 ## **How to Run** 
@@ -48,6 +80,7 @@ Last Edit by Clayton Johnson on 7/17/2018
 		- Will output to console
 		- It is the same file given by EdgeCloudSim with some additions
 		- pFogSim/sim_results/ite(#) directory should exist at time of run (or run with appropriate permissions)
+		- pFogSim/sim_results/consoleruns directory should also exist.
 ## **Creating Custom Scenarios**
  - Customizable Files: 
  	- Change DataInterpreter to fit data sets into XML formats
@@ -65,7 +98,7 @@ And with that said, here is everything on pFogSim. Most of the follow can be gat
 
 ### **The Flow**
 
-#### [DataInterpreter](#datainterpreter) → [EdgeServerManager](#edgeservermanager) → [GPSVectorMobility](#GPSVectorMobility) → [NetworkTopology](#networktopology) → [Clustering](#clustering) → [Puddles](#puddles) → [SimManager](#simmanager) → [SimLogger](#simlogger)
+#### [DataInterpreter](#datainterpreter) → [EdgeServerManager](#edgeservermanager) → [GPSVectorMobility](#GPSVectorMobility) → [NetworkTopology](#networktopology) → [SimManager](#simmanager) → [SimLogger](#simlogger)
 
 #### Note: When I say mobile devices, I mean mobile devices, sensors, actuators; anything that is on the lowest level of the network and is interacting with the network.
 ### DataInterpreter:
@@ -96,16 +129,6 @@ And with that said, here is everything on pFogSim. Most of the follow can be gat
 	- All will update in SimManager
  - Lets clustering be created
  - [More Below](#networktopology-details)
- 
-### Clustering:
- - Goes through each level and clusters local nodes together to allow for local nodes to share puddles
- - Hierarchical Clustering Algorithm
- - Creates ability for Puddles
- - [More Below](#clustering-details)
- 
-### Puddles:
- - Takes local puddles and attaches pieces to each other
- - [More Below](#puddles-details)
  
 ### SimManager: 
  - Creates all the tasks
@@ -178,7 +201,7 @@ And with that said, here is everything on pFogSim. Most of the follow can be gat
 		- This is insanely helpful when the network grows with few access points.
 	- All mobile devices are given random starting wireless access points with which they are connected.
 	- All devices are given random vectors that change for every entry into the large array.
-	- All device positions are then updated for the next moment in time for the simulator and WAPs are updated to connect to the closest nearby. Voronoi implementations should exist here to follow along with the HAFA structure however there have been issues with our implementation of the code. (Insert link here for Voronoi stuffs)
+	- All device positions are then updated for the next moment in time for the simulator and WAPs are updated to connect to the closest nearby.
  - Quick note on the treeMapArray:
  	- This structure was made to hold all of the positions of all the mobile devices for all time *t* in the simulator.
 	- Let's take a look at a specific line of code in the initialization function:
@@ -206,24 +229,6 @@ And with that said, here is everything on pFogSim. Most of the follow can be gat
   - NodeSim findNode() : Locates the closest node to the given location. One can request specifically a wireless access point if desired.
 ---	
 	
-### Clustering Details:
- - This code was ported over from other work done at Auburn regarding HAFA Puddles and thus was plugged in minimally. 
- 
- #### Order of Operations:
-  - *FogHierCluster* object is made in *EdgeServerManager* and is passed the list of all nodes within the network. 
-  - *FogHierCluster* creates a *FogCluster object* and passes it each layer of nodes. Clusters are made at each level based on their proximity to other nodes. The ending result for each layer is a bunch of connected nodes that are group in accordance to their location. Each cluster has a varying number of nodes within it, but this is expected because if there were constraints some strange and unintuitive designs may arise.
-  - This section of the code is in need of cleaning to make sure there are no vestigial files laying around.
----  
-  
-### Puddles Details:
- - The simulator is meant to be tested with the HAFA Puddle Structure proposed by Sanjeev Baskiyar and Shehenaz Shaik at Auburn University. The simulator is made to test the usability of Puddles in these Fog Architectures, however may be extended to various other task-placement strategies such as Cloud-only or Edge-only (both of which are also built into this simulator). 
- - The following image should demonstrate how Puddles are supposed to work:
- ![Puddle Diagram](https://github.com/jihall77/pFogSim/blob/master/puddlelayout.jpg)
- - All of these Puddles and groups are logical units and don't require a change in the physical network. The overall goal of Puddles in the Fog Architecture is to shorten the physcial distance a task must travel to be executed. This is especially during execution of latency-sensative applications.
- #### Structure:
-  - Each Puddle has a Puddle Head (denoted PH in the image) which keeps track of the local resource information. Every Puddle has one link going upwards in the network, or moving closer to the Cloud, and at least one link downward, closer to the mobile devices/users. This obviously excludes the Cloud (as it is the analogous to the root of a tree) and the bottom-level nodes (which are at the edge of the tree). Additionally, the Puddles may connect with other local Puddles sharing the same parent, allowing for improved service migration that maintains execution of tasks a short distance away from the user.
-  ###### Definitely Read the Paper introducing this idea if you want to understand this idea in depth linked here (insert link)
---- 
  
 ### SimManager Details:
  - SimManager is essentially the 2nd main function in this program since it is the central command center for just about everything in this program.

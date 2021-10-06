@@ -20,6 +20,7 @@ import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -132,7 +133,6 @@ public class ESBModel extends NetworkModel {
 		catch (IndexOutOfBoundsException e) {
 			sourceDeviceId *= -1;
 			accessPointLocation = SimManager.getInstance().getLocalServerManager().findHostById(sourceDeviceId).getLocation();
-			//SimLogger.printLine(accessPointLocation.toString());
 		}
 		try {
 			if (isCloud == SimSettings.CLOUD_TRANSFER.CLOUD_UPLOAD)
@@ -141,7 +141,6 @@ public class ESBModel extends NetworkModel {
 			else	
 				destPointLocation = SimManager.getInstance().getMobilityModel().getLocation(destDeviceId,CloudSim.clock());
 			
-			//SimLogger.printLine(destPointLocation.toString());
 		}
 		catch (IndexOutOfBoundsException e) {
 			destDeviceId *= -1;
@@ -156,15 +155,14 @@ public class ESBModel extends NetworkModel {
 		NodeSim current;
 		NodeSim nextHop;
 		LinkedList<NodeSim> path = null;
-		source = new Location(accessPointLocation.getXPos(), accessPointLocation.getYPos());
-		destination = new Location(destPointLocation.getXPos(), destPointLocation.getYPos());
+		source = new Location(accessPointLocation.getXPos(), accessPointLocation.getYPos(), accessPointLocation.getAltitude());
+		destination = new Location(destPointLocation.getXPos(), destPointLocation.getYPos(), destPointLocation.getAltitude());
 		
 		if(wifiSrc) {
 			src = networkTopology.findNode(source, true);
 		}
 		else {
 			src = networkTopology.findNode(source, false);
-			//SimLogger.printLine(src.toString());
 		}
 		if(wifiDest) {
 			dest = networkTopology.findNode(destination, true);
@@ -172,13 +170,11 @@ public class ESBModel extends NetworkModel {
 		else {
 			dest = networkTopology.findNode(destination, false);
 		}
-		//SimLogger.printLine(src.toString() + " " + dest.toString());
 	    path = router.findPath(networkTopology, src, dest);
-	   // SimLogger.printLine(path.size() + "");
 		delay += getWlanUploadDelay(src.getLocation(), dataSize, CloudSim.clock()) + SimSettings.ROUTER_PROCESSING_DELAY;
-		if (SimSettings.getInstance().traceEnalbe()) {
-			SimLogger.getInstance().printLine("**********Task Delay**********");
-			SimLogger.getInstance().printLine("Start node ID:\t" + src.getWlanId());
+		if (SimSettings.getInstance().traceEnable()) {
+			SimLogger.printLine("**********Task Delay**********");
+			SimLogger.printLine("Start node ID:\t" + src.getWlanId());
 		}
 		while (!path.isEmpty()) {
 			current = path.poll();
@@ -192,12 +188,12 @@ public class ESBModel extends NetworkModel {
 			double proDelay = current.traverse(nextHop);
 			double conDelay = getWlanUploadDelay(nextHop.getLocation(), dataSize, CloudSim.clock() + delay);
 			delay += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
-			if (SimSettings.getInstance().traceEnalbe()) {
-				SimLogger.getInstance().printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
+			if (SimSettings.getInstance().traceEnable()) {
+				SimLogger.printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
 			}
 		}
-		if (SimSettings.getInstance().traceEnalbe()) {
-			SimLogger.getInstance().printLine("Target Node ID:\t" + dest.getWlanId());
+		if (SimSettings.getInstance().traceEnable()) {
+			SimLogger.printLine("Target Node ID:\t" + dest.getWlanId());
 		}
 		return delay;
 	}
@@ -228,20 +224,10 @@ public class ESBModel extends NetworkModel {
 	 * @return
 	 */
 	private int getDeviceCount(Location deviceLocation, double time){
-		/*int deviceCount = 0;
-		
-		for(int i=0; i<numberOfMobileDevices; i++) {
-			Location location = SimManager.getInstance().getMobilityModel().getLocation(i,time);
-			if(location.equals(deviceLocation))
-				deviceCount++;
-		}*/
-		EdgeHost host = SimManager.getInstance().getLocalServerManager().findHostByLoc(deviceLocation.getXPos(), deviceLocation.getYPos());
+		EdgeHost host = SimManager.getInstance().getLocalServerManager().findHostByLoc(deviceLocation.getXPos(), deviceLocation.getYPos(), deviceLocation.getAltitude());
+		if (host == null)
+			SimLogger.printLine("Null Host");
 		return host.getCustomers().size();
-		//record max number of client just for debugging
-//		if(maxNumOfClientsInPlace<deviceCount)
-//			maxNumOfClientsInPlace = deviceCount;
-//		
-//		return deviceCount;
 	}
 	
 	
@@ -367,6 +353,14 @@ public class ESBModel extends NetworkModel {
 		return router.findPath(networkTopology, src, dest).size();
 	}
 	
+	public int getHopsBack(Task task, int hostID, boolean sepa) {
+		NodeSim dest = networkTopology.findNode(SimManager.getInstance().getLocalServerManager().findHostById(hostID).getLocation(), false);
+		NodeSim src = networkTopology.findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
+		if (sepa) {
+			src = networkTopology.findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock()), false);
+		}
+		return router.findPath(networkTopology, dest, src).size();
+	}
 	
 	/**
 	 * The gravity well is where we search for and find black holes. For a description <br>
@@ -380,18 +374,30 @@ public class ESBModel extends NetworkModel {
 	 */
 	public void gravityWell() {
 		int errors = 0;
-		for (NodeSim src : networkTopology.getNodes()) {
-			for (NodeSim dest : networkTopology.getNodes()) {
+		//Pathfinding should not need to run both ways, i.e. path to j from i is the same as i -> j. This is faster.
+		NodeSim[] nodes = networkTopology.getNodes().toArray(new NodeSim[0]);
+		for (int i = 0; i < nodes.length-1; i++) {
+			for (int j = i; j < nodes.length; j++) {
 				try {
-					router.findPath(networkTopology, src, dest);
-				}
-				catch (BlackHoleException e) {
+					router.findPath(networkTopology, nodes[i], nodes[j]);
+				}catch(BlackHoleException e){
 					errors++;
-					SimLogger.printLine(src.toString() + ", " + dest.toString());
+					SimLogger.printLine(nodes[i].toString() + ", " + nodes[j].toString());
 					//router.findPath(networkTopology, src, dest);
 				}
 			}
 		}
+//		for (NodeSim src : networkTopology.getNodes()) {
+//			for (NodeSim dest : networkTopology.getNodes()) {
+//				try {
+//					router.findPath(networkTopology, src, dest);
+//				}
+//				catch (BlackHoleException e) {
+//					errors++;
+//					//router.findPath(networkTopology, src, dest);
+//				}
+//			}
+//		}
 		if (errors > 0) {
 			SimLogger.printLine("Errors: " + errors);
 			gravityWell();
@@ -441,8 +447,8 @@ public class ESBModel extends NetworkModel {
 		NodeSim current;
 		NodeSim nextHop;
 		LinkedList<NodeSim> path = null;
-		source = new Location(one.getLocation().getXPos(), one.getLocation().getYPos());
-		destination = new Location(two.getLocation().getXPos(), two.getLocation().getYPos());
+		source = new Location(one.getLocation().getXPos(), one.getLocation().getYPos(), one.getLocation().getAltitude());
+		destination = new Location(two.getLocation().getXPos(), two.getLocation().getYPos(),two.getLocation().getAltitude());
 		src = networkTopology.findNode(source, false);
 		dest = networkTopology.findNode(destination, false);
 	    path = router.findPath(networkTopology, src, dest);

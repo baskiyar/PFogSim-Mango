@@ -24,7 +24,7 @@ import edu.boun.edgecloudsim.core.SimSettings;
  */
 public class SimUtils {
 
-    public static final Random RNG = new Random(System.currentTimeMillis());
+    public static final Random RNG = new Random(SimSettings.getInstance().getRandomSeed());
     
     
     /**

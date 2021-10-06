@@ -80,8 +80,8 @@ public class DistRadix {
 	 */
 	private void buildCoords() {
 		for(EdgeHost node : input) {
-			coordMap.put(new Location(node.getLocation().getXPos(), node.getLocation().getYPos()), node);
-			coords.add(new Location(node.getLocation().getXPos(), node.getLocation().getYPos()));
+			coordMap.put(new Location(node.getLocation().getXPos(), node.getLocation().getYPos(), node.getLocation().getAltitude()), node);
+			coords.add(new Location(node.getLocation().getXPos(), node.getLocation().getYPos(),node.getLocation().getAltitude()));
 		}
 	}
 	
@@ -93,7 +93,7 @@ public class DistRadix {
 		double dist = 0;
 		for (Location loc : coords) {
 			//dist = Math.sqrt((Math.pow(ref.getXPos() - loc.getXPos(), 2) + Math.pow(ref.getYPos() - loc.getYPos(), 2)));
-			dist = DataInterpreter.measure(ref.getYPos(), ref.getXPos(), loc.getYPos(), loc.getXPos());
+			dist = DataInterpreter.measure(ref.getYPos(), ref.getXPos(), ref.getAltitude(), loc.getYPos(), loc.getXPos(), loc.getAltitude());
 			dist = Math.floor(dist);
 			while(distMap.keySet().contains(dist)) {
 				dist += 0.001;
@@ -114,7 +114,6 @@ public class DistRadix {
 		int index=0;
 		//latencies = new double[coords.size()];
 		for (Location loc: coords) {
-			//SimLogger.printLine("Loc: " + loc.getXPos()+"  "+loc.getYPos());
 			latency = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(ref, loc);
 			// Shaik *** this may overwrite the previous entry with same latency. hence, entry-value should be a list of locs(of nodes) with same latency, rather than a single loc.
 			//SimLogger.printLine("Latency: " + latency+"  Index: "+index);
@@ -201,7 +200,7 @@ public class DistRadix {
 	
 	
 	/**
-	 * get the sorted list
+	 * get the list sorted by distance
 	 * @return
 	 */
 	private LinkedList<EdgeHost> getList() {
@@ -222,7 +221,7 @@ public class DistRadix {
 	/**
 	 * @author Shaik
 	 * modified by Qian
-	 * get the sorted list
+	 * get the list sorted by latency
 	 * @return
 	 */
 	private LinkedList<EdgeHost> getLatenciesList() {

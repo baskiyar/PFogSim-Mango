@@ -39,46 +39,45 @@ public class mainApp {
 	
 	/**
 	 * Creates main() to run this example
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 				
 		// Comment the following line for detailed logging
 		Log.disable();
 
 		//enable console output and file output of this application
 		SimLogger.enablePrintLog();
-		DataInterpreter.initialize();
-		try {
-			DataInterpreter.readFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		int iterationNumber = 5; // index for the list of n scenarios in properties file is from 0..n-1
+		int iterationNumber = 0; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
+		String outFolder2 = "";
 		String edgeDevicesFile = "";
 		String applicationsFile = "";
 		//String linksFile = "scripts/sample_application/config/links_test.xml";
 		//String linksFile = "small_link_test.xml";
 		String linksFile = "links_test.xml";
 
-		if (args.length == 5){
+		if (args.length == 6){
 			configFile = args[0];
 			edgeDevicesFile = args[1];
 			applicationsFile = args[2];
 			outputFolder = args[3];
 			iterationNumber = Integer.parseInt(args[4]);
+			outFolder2 = "sim_results/consoleruns";
 		}
 		else{
-			SimLogger.printLine("Simulation setting file, output folder and iteration number are not provided! Using default ones...");
+			
 			configFile = "scripts/sample_application/config/default_config.properties";
 			applicationsFile = "scripts/sample_application/config/applications.xml";
 			//edgeDevicesFile = "scripts/sample_application/config/edge_devices_test.xml";
 			//edgeDevicesFile = "small_node_test.xml";
 			edgeDevicesFile = "node_test.xml";
 			outputFolder = "sim_results/ite" + iterationNumber;
+			outFolder2 = "sim_results/consoleruns";
+			SimLogger.fileInitialize(outFolder2);
+			SimLogger.printLine("Simulation setting file, output folder and iteration number are not provided! Using default ones...");
 		}
 
 		//load settings from configuration file
@@ -88,6 +87,15 @@ public class mainApp {
 			System.exit(0);
 		}
 		
+		DataInterpreter.initialize();
+		try {
+			DataInterpreter.readFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		if(SS.getFileLoggingEnabled()){
 			SimLogger.enableFileLog();
 			SimUtils.cleanOutputFolder(outputFolder);
@@ -95,7 +103,7 @@ public class mainApp {
 		SS.setSimulationSpace(DataInterpreter.getSimulationSpace());
 		SS.setMaxLevels(DataInterpreter.getMaxLevels());
 		SS.setInputType(DataInterpreter.getInputType());
-		SS.setMobileDevicesMoving(iterationNumber >= 9); // 9 is the count of scenarios in properties file.
+		SS.setMobileDevicesMoving(SS.getMovingDevices()); 
 		
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date SimulationStartDate = Calendar.getInstance().getTime();
@@ -103,21 +111,25 @@ public class mainApp {
 		SimLogger.printLine("Simulation started at " + now);
 		SimLogger.printLine("----------------------------------------------------------------------");
 
-		for(int j=SS.getMinNumOfMobileDev(); j<=SS.getMaxNumOfMobileDev(); j+=SS.getMobileDevCounterSize())
+		for(int iteMobileDevices=SS.getMinNumOfMobileDev(); iteMobileDevices<=SS.getMaxNumOfMobileDev(); iteMobileDevices+=SS.getMobileDevCounterSize())
 		{
 			for(int k=0; k<1; k++)
 			{
 				for(int i=0; i<1; i++)
 				{
-					String simScenario = SS.getSimulationScenarios()[iterationNumber%9]; // 9 is the count of scenarios in properties file. 
+					if(iterationNumber > 9 || iterationNumber < 0) {
+						SimLogger.printLine("Iteration Number " + iterationNumber + " hasn't been implemented yet.");
+						System.exit(0);
+					}
+					String simScenario = SS.getSimulationScenarios()[iterationNumber]; // 9 is the count of scenarios in properties file. 
 					String orchestratorPolicy = SS.getOrchestratorPolicies()[i];
 					Date ScenarioStartDate = Calendar.getInstance().getTime();
 					now = df.format(ScenarioStartDate);
 					
 					SimLogger.printLine("Scenario started at " + now);
 					SimLogger.printLine("Scenario: " + simScenario + " - Policy: " + orchestratorPolicy + " - #iteration: " + iterationNumber);
-					SimLogger.printLine("Duration: " + SS.getSimulationTime()/3600 + " hour(s) - Poisson: " + SS.getTaskLookUpTable()[0][2] + " - #devices: " + j);
-					SimLogger.getInstance().simStarted(outputFolder,"SIMRESULT_" + simScenario + "_"  + orchestratorPolicy + "_" + j + "DEVICES");
+					SimLogger.printLine("Duration: " + SS.getSimulationTime()/3600 + " hour(s) - Poisson: " + SS.getTaskLookUpTable()[0][2] + " - #devices: " + iteMobileDevices);
+					SimLogger.getInstance().simStarted(outputFolder,"SIMRESULT_" + simScenario + "_"  + orchestratorPolicy + "_" + iteMobileDevices + "DEVICES");
 					
 					try
 					{
@@ -131,10 +143,10 @@ public class mainApp {
 						CloudSim.init(num_user, calendar, trace_flag, 0.01);
 						SimLogger.printLine("CloudSim.init reached");
 						// Generate EdgeCloudsim Scenario Factory
-						ScenarioFactory sampleFactory = new SampleScenarioFactory(j,SS.getSimulationTime(), orchestratorPolicy, simScenario);
+						ScenarioFactory sampleFactory = new SampleScenarioFactory(iteMobileDevices,SS.getSimulationTime(), orchestratorPolicy, simScenario);
 						SimLogger.printLine("ScenarioFactory reached");
 						// Generate EdgeCloudSim Simulation Manager
-						SimManager manager = new SimManager(sampleFactory, j, simScenario);
+						SimManager manager = new SimManager(sampleFactory, iteMobileDevices, simScenario);
 						SimLogger.printLine("SimManager reached");
 						// Start simulation
 						manager.startSimulation();

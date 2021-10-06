@@ -34,7 +34,6 @@ import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.edge_server.VmAllocationPolicy_Custom;
 import edu.auburn.pFogSim.Puddle.Puddle;
 //import edu.auburn.pFogSim.Puddle.Puddle;
-import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.diagram.PowerDiagram;
 //import edu.auburn.pFogSim.clustering.FogCluster;
 import edu.auburn.pFogSim.clustering.FogHierCluster;
 import edu.auburn.pFogSim.netsim.Link;
@@ -79,7 +78,6 @@ public class SimManager extends SimEntity {
 	private LoadGeneratorModel loadGeneratorModel;
 	private MobileDeviceManager mobileDeviceManager;
 	private NetworkTopology networkTopology;
-	private ArrayList<PowerDiagram> voronoiDiagramList = new ArrayList<PowerDiagram>();
 	private int[] wapIdList = new int [numOfMobileDevice];
 
 	private static SimManager instance = null;
@@ -166,27 +164,7 @@ public class SimManager extends SimEntity {
 	}
 	
 	
-	/**
-	 * 
-	 * @param diagram
-	 */
-	public void addToVoronoiDiagramList(PowerDiagram diagram)
-	{
-		this.voronoiDiagramList.add(diagram);
-	}
-	
-	
-	/**
-	 * 
-	 * @param level
-	 * @return
-	 */
-	public PowerDiagram getVoronoiDiagramAtLevel(int level)
-	{
-		if(level < voronoiDiagramList.size())
-			return voronoiDiagramList.get(level);
-		return null;
-	}
+
 	
 	
 	/**
@@ -277,7 +255,6 @@ public class SimManager extends SimEntity {
 		}
 		
 		//Get all of the initial wireless access points ids for all the mobile devices
-		//SimLogger.printLine("treeMap.size() = " + mobilityModel.getSize());
 
 		for(int i = 0; i < mobilityModel.getSize(); i++)
 		{
@@ -302,7 +279,6 @@ public class SimManager extends SimEntity {
 		synchronized(this){
 			switch (ev.getTag()) {
 			case CREATE_TASK:
-				//SimLogger.printLine("CREATE_TASK reached");
 				try {
 					EdgeTask edgeTask = (EdgeTask) ev.getData();
 					mobileDeviceManager.submitTask(edgeTask);						
@@ -446,14 +422,6 @@ public class SimManager extends SimEntity {
 	}
 
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public ArrayList<PowerDiagram> getVoronoiDiagram() {
-		// TODO Auto-generated method stub
-		return this.voronoiDiagramList;
-	}
 
 		
 	/**
@@ -488,20 +456,7 @@ public class SimManager extends SimEntity {
 	}
 
 	
-	/**
-	 * @return the voronoiDiagramList
-	 */
-	public ArrayList<PowerDiagram> getVoronoiDiagramList() {
-		return voronoiDiagramList;
-	}
 
-	
-	/**
-	 * @param voronoiDiagramList the voronoiDiagramList to set
-	 */
-	public void setVoronoiDiagramList(ArrayList<PowerDiagram> voronoiDiagramList) {
-		this.voronoiDiagramList = voronoiDiagramList;
-	}
 
 	
 	/**

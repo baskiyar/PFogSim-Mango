@@ -6,8 +6,6 @@
  * which extends from (-1 * (MAX_LAT / 2) to MAX_LAT / 2 to make it MAX_LAT wide and permit
  * negative coordinates to resemble GPS coordinates as much as possible.
  * Devices are placed at a random Wireless Access Point (WAP) and given a random vector to move in.
- * It updates which access point a device is connected to by using the Voronoi Diagram to organize
- * the simulation space.
  * 
  * License:      GPL - http://www.gnu.org/copyleft/gpl.html
  */
@@ -18,13 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.Random;
 
-import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.diagram.PowerDiagram;
-import edu.auburn.pFogSim.Voronoi.src.kn.uni.voronoitreemap.j2d.Site;
+
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NetworkTopology;
 import edu.auburn.pFogSim.netsim.NodeSim;
-import edu.auburn.pFogSim.orchestrator.HAFAOrchestrator;
 import edu.auburn.pFogSim.util.DataInterpreter;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
@@ -40,6 +37,7 @@ import edu.boun.edgecloudsim.utils.SimUtils;
  */
 public class XYVectorMobility extends MobilityModel {
 	private List<TreeMap<Double, Location>> treeMapArray;
+	private List<TreeMap<Double, Location>> userTreeMapArray;
 	private double MAX_WIDTH;
 	private double MIN_WIDTH;
 	private double MAX_HEIGHT;
@@ -87,6 +85,8 @@ public class XYVectorMobility extends MobilityModel {
 
 		
 		treeMapArray = new ArrayList<TreeMap<Double, Location>>();
+		userTreeMapArray = new ArrayList<TreeMap<Double, Location>>();
+
 				
 		//Go through network's list of nodes and pick out just the wireless access points
 		ArrayList<NodeSim> accessPoints = new ArrayList<NodeSim>();
@@ -105,23 +105,38 @@ public class XYVectorMobility extends MobilityModel {
 			int wlan_id = accessPoints.get(randDatacenterId).getWlanId();
 			double x_pos = accessPoints.get(randDatacenterId).getLocation().getXPos();
 			double y_pos = accessPoints.get(randDatacenterId).getLocation().getYPos();
+			double alt = accessPoints.get(randDatacenterId).getLocation().getAltitude();
+            int randDatacenterId2 = SimUtils.getRandomNumber(0, accessPoints.size()-1);
+			int wlan_id2 = accessPoints.get(randDatacenterId2).getWlanId();
+			double x_pos2 = accessPoints.get(randDatacenterId2).getLocation().getXPos();
+			double y_pos2 = accessPoints.get(randDatacenterId2).getLocation().getYPos();
+			double alt2 = accessPoints.get(randDatacenterId2).getLocation().getAltitude();
+			
+
+
 			
 			//start locating user from 10th seconds
-			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos));
-		}
+			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos, alt));
+			userTreeMapArray.get(i).put((double)10, new Location(wlan_id2, x_pos2, y_pos2,alt2));
 
+		}
+		Random rng = new Random(SimSettings.getInstance().getRandomSeed());
 		for(int i=0; i<numberOfMobileDevices; i++) {
 			TreeMap<Double, Location> treeMap = treeMapArray.get(i);
 			//Make random numbers to make the vectors
-			double up, right;
+			double lat_mov, long_mov, alt_mov;
 			if(movingDevices)
 			{
-				up = 5 * (Math.random() - 0.5) * 0.000001; //Approximates movement of 5 meters * (random constant < 1)
-				right = 5 * (Math.random() - 0.5) * 0.000001; //Same for right
+				lat_mov = 5 * (rng.nextDouble()- 0.5) * 0.000001; //Approximates movement of 5 meters * (random constant < 1)
+				long_mov = 5 * (rng.nextDouble() - 0.5) * 0.000001; //Same for right
+				alt_mov = 5 * (rng.nextDouble()-0.5)*0.000001;
+
 			}
 			else {
-				up = 0;
-				right = 0;
+				lat_mov = 0;
+				long_mov = 0;
+				alt_mov = 0;
+
 			}
 			//double up = 0, right = 0;
 			while(treeMap.lastKey() < SimSettings.getInstance().getSimulationTime()) {		
@@ -129,48 +144,28 @@ public class XYVectorMobility extends MobilityModel {
 				if(movingDevices)
 				{
 					double x_pos = treeMap.lastEntry().getValue().getXPos();
-					double y_pos = treeMap.lastEntry().getValue().getYPos();				
+					double y_pos = treeMap.lastEntry().getValue().getYPos();
+					double z_pos = treeMap.lastEntry().getValue().getAltitude();
 					int wlan_id = treeMap.lastEntry().getValue().getServingWlanId();
 					  
-					if(x_pos + right > this.MAX_WIDTH || x_pos + right < this.MIN_WIDTH) right = right * -1;
-					if(y_pos + up > this.MAX_HEIGHT || y_pos + up < this.MIN_HEIGHT) up = up * -1;
+					if(x_pos + lat_mov > this.MAX_WIDTH || x_pos + lat_mov < this.MIN_WIDTH) lat_mov = lat_mov * -1;
+					if(y_pos + long_mov > this.MAX_HEIGHT || y_pos + long_mov < this.MIN_HEIGHT) long_mov = long_mov * -1;
 					double distance = 0, minDistance = Double.MAX_VALUE;
 					NodeSim closestNode = new NodeSim();
 					for(NodeSim node : accessPoints)
 					{
-						distance = measure(node.getLocation().getYPos(), node.getLocation().getXPos(), y_pos, x_pos);
+						distance = DataInterpreter.measure(node.getLocation().getYPos(), node.getLocation().getXPos(), node.getLocation().getAltitude(), y_pos, x_pos, z_pos);
 						if (distance < minDistance) 
 						{
 							minDistance = distance;
 							closestNode = node;
 						}
 					}
-					wlan_id = closestNode.getWlanId();
-	/*				//If we are still in the same polygon, don't change (We haven't moved out of range of the wap)
-					int levelNum = SimManager.getInstance().getVoronoiDiagram().size();
-					//SimLogger.printLine("Size of voronoidiagram list : " + levelNum);
-					PowerDiagram diagram = SimManager.getInstance().getVoronoiDiagramAtLevel(levelNum - 1);
-					diagram.showDiagram();
-					
-					if (SimManager.getInstance().getEdgeOrchestrator() instanceof HAFAOrchestrator) {
-						for(Site site : diagram.getSites())
-						{
-							SimLogger.printLine("\ndiagram.getSites.size() : " + diagram.getSites().size);
-							SimLogger.printLine("x_pos : " + x_pos + "\ny_pos : " + y_pos);
-							SimLogger.printLine("" + site.getPolygon());
-							//if(site.getPolygon() != null && site.getPolygon().contains(x_pos, y_pos))
-							if(site.getPolygon().contains(x_pos, y_pos))
-							{ 
-								//We know that the site.getX and Y pos is location of WAP
-								//Find wlan id to assign
-								wlan_id = (network.findNode(new Location(site.getX(), site.getY()), true)).getWlanId();
-							}
-						}
-					}*/
+					wlan_id = closestNode.getWlanId();				
 					//This first argument kind of dictates the speed at which the device moves, higher it is, slower the devices are
 					//	smaller value in there, the more it updates
 					//As it is now, allows devices to change wlan_ids around 600 times in an hour
-					treeMap.put(treeMap.lastKey()+1, new Location(wlan_id, x_pos + right, y_pos + up));		
+					treeMap.put(treeMap.lastKey()+1, new Location(wlan_id, x_pos + lat_mov, y_pos + long_mov, z_pos+alt_mov));		
 					//SimLogger.printLine("Length = " + treeMap.size());
 				}
 				else {
