@@ -165,6 +165,10 @@ public class SimLogger {
 	}
 	
 	public static void fileInitialize(String outputFolder) throws IOException {
+		File f = new File(outputFolder);
+		if (!f.exists()) {
+			f.mkdirs();
+		}
 		textFile = new File(outputFolder, Long.toString(System.currentTimeMillis()) + "_console.txt");
 		//textFile = new File("_consoleOut" + Long.toString(System.currentTimeMillis()) + ".txt");
 		textFile.createNewFile();
