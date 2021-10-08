@@ -14,7 +14,7 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
     endOfMobileDeviceLoop = getConfiguration(12);
     numOfMobileDevices = (endOfMobileDeviceLoop - startOfMobileDeviceLoop)/stepOfMobileDeviceLoop + 1;
 
-    all_results = zeros(size(scenarioType,2), numOfMobileDevices, numOfSimulations);
+    all_results = zeros(numOfSimulations, size(scenarioType,2), numOfMobileDevices);
     min_results = zeros(size(scenarioType,2), numOfMobileDevices);
     max_results = zeros(size(scenarioType,2), numOfMobileDevices);
     
@@ -25,18 +25,23 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
     for i=1:size(scenarioType,2)
         for j=1:numOfMobileDevices
             mobileDeviceNumber = startOfMobileDeviceLoop + stepOfMobileDeviceLoop * (j-1);
-            allFiles = dir(strcat(folderPath,'*\SIMRESULT_*',char(scenarioType(i)),'*_NEXT_FIT_*',int2str(mobileDeviceNumber),'*DEVICES_*',appType,'*_GENERIC.log'));
+            fileName = strcat('**/*SIMRESULT_*',char(scenarioType(i)),'*_NEXT_FIT_*',int2str(mobileDeviceNumber),'*DEVICES_*',appType,'*_GENERIC.log');
+            oldFolder = cd(folderPath);
+            allFiles = dir(fileName);
+            cd(oldFolder);
             for s=1:numOfSimulations
+                if s>length(allFiles)
+                    error(strcat('Error: SIMRESULT files missing. Iterations expected: ', numOfSimulations, '. Iterations found: ', length(allFiles), '.'))
+                end
                 try
-                    %filePath = strcat(folderPath,'\SIMRESULT_',char(scenarioType(i)),'_NEXT_FIT_',int2str(mobileDeviceNumber),'DEVICES_',appType,'_GENERIC.log')
-                    filePath = strcat(folderPath, '\', allFiles(s).name);
+                    filePath = strcat(folderPath, '/', allFiles(s).name);
                     readData = dlmread(filePath,';',rowOfset,0);
                     value = readData(1,columnOfset);
                     if(calculatePercentage==1)
                 		totalTask = readData(1,1)+readData(1,2);
                         value = (100 * value) / totalTask;
                     end
-                    all_results(i,j,s) = value;
+                    all_results(s,i,j) = value;
                 catch err
                     error('err')
                 end

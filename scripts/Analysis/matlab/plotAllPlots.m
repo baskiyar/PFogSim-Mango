@@ -1,6 +1,9 @@
 function [] = plotAllPlots()
     folderPath = getConfiguration(1);
-    allFiles = dir(strcat(folderPath,'\\*DEVICES_*_GENERIC*'));
+    allFiles = dir(strcat(folderPath,'/*DEVICES_*_GENERIC*'));
+    oldFolder = cd(folderPath);
+    allFiles = dir('**/*DEVICES_*_GENERIC*');
+    cd(oldFolder);
     regex = 'DEVICES_([\w_\s]+)_GENERIC';
     allNames = [allFiles.name];
     allTypesList = regexp(allNames, regex, 'tokens');
