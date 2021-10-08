@@ -79,10 +79,16 @@ classdef configuration
             config.AppTypes = allAppTypes;
             % TODO: Determine number of iterations. Perhaps with
             % length(combos)/(length(allScenarios)*length(allDeviceCounts)*length(allAppTypes))
-            % TODO: Set IncludeErrorBars = 0 if IterationCount = 1; 1 if
-            % IterationCount > 1.
-            % TODO: Set ColorPlot = 0 if IterationCount < 4; 1 if
-            % IterationCount >= 4.
+            if config.IterationCount > 1
+                config.IncludeErrorBars = 1;
+            else
+                config.IncludeErrorBars = 0;
+            end
+            if config.IterationCount > 3
+                config.ColorPlot = 1;
+            else
+                config.ColorPlot = 0;
+            end
         end 
     end
     
