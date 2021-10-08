@@ -5,13 +5,14 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
     if nargin < 7
         yScale = 'linear';
     end
-    folderPath = getConfiguration(1);
-    numOfSimulations = getConfiguration(3);
-    stepOfxAxis = getConfiguration(4);
-    scenarioType = getConfiguration(5);
-    startOfMobileDeviceLoop = getConfiguration(10);
-    stepOfMobileDeviceLoop = getConfiguration(11);
-    endOfMobileDeviceLoop = getConfiguration(12);
+    config = configuration.autoConfig();
+    folderPath = config.FolderPath;
+    numOfSimulations = config.IterationCount;
+    stepOfxAxis = config.XAxisStep;
+    scenarioType = config.SimulationScenarioList;
+    startOfMobileDeviceLoop = config.MinimumMobileDeices;
+    stepOfMobileDeviceLoop = config.MobileDeviceStep;
+    endOfMobileDeviceLoop = config.MaximumMobileDevices;
     numOfMobileDevices = (endOfMobileDeviceLoop - startOfMobileDeviceLoop)/stepOfMobileDeviceLoop + 1;
 
     all_results = zeros(numOfSimulations, size(scenarioType,2), numOfMobileDevices);
@@ -85,43 +86,43 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
     
     
     hFig = figure;
-    set(hFig, 'Position',getConfiguration(7));
+    set(hFig, 'Position', config.PlotWindowCoordinates);
     set(0,'DefaultAxesFontName','Times New Roman');
     set(0,'DefaultTextFontName','Times New Roman');
     set(0,'DefaultAxesFontSize',12);
     set(0,'DefaultTextFontSize',12);
-    if(getConfiguration(20) == 1)
+    if(config.ColorPlot == 1)
         for i=stepOfxAxis:stepOfxAxis:numOfMobileDevices
             xIndex=startOfMobileDeviceLoop+((i-1)*stepOfMobileDeviceLoop);
             
-            markers = getConfiguration(50);
+            markers = config.LineStyleColor;
             for j=1:size(scenarioType,2)
                 if isempty(yScale)
                     yScale = 'linear';
                 end
                 if strcmp(yScale,'log')
-                    semilogy(xIndex, max(1, results(j,i)),char(markers(j)),'MarkerEdgeColor',getConfiguration(20+j),'color',getConfiguration(20+j));  
+                    semilogy(xIndex, max(1, results(j,i)),char(markers(j)),'MarkerEdgeColor',config.LineColors(j,:),'color',config.LineColors(j,:));  
                 elseif strcmp(yScale,'linear')  
-                    plot(xIndex, results(i,j),char(markers(j)),'MarkerFaceColor',getConfiguration(20+j),'color',getConfiguration(20+j));
+                    plot(xIndex, results(i,j),char(markers(j)),'MarkerFaceColor',config.LineColors(j,:),'color',config.LineColors(j,:));
                 end
                 hold on;
             end
         end
         
         for j=1:size(scenarioType,2)
-            if(getConfiguration(19) == 1)
-                errorbar(types, results(j,:), min_results(j,:),max_results(j,:),':k','color',getConfiguration(20+j),'LineWidth',1.5);
+            if(config.IncludeErrorBars == 1)
+                errorbar(types, results(j,:), min_results(j,:),max_results(j,:),':k','color',config.LineColors(j,:),'LineWidth',1.5);
             else
-                plot(types, results(:,j),':k','color',getConfiguration(20+j),'LineWidth',1.5);
+                plot(types, results(:,j),':k','color',config.LineColors(j,:),'LineWidth',1.5);
             end
             hold on;
         end
     
         set(gca,'color','none');
     else
-        markers = getConfiguration(40);
+        markers = config.LineStyleMono;
         for j=1:size(scenarioType,2)
-            if(getConfiguration(19) == 1)
+            if(config.IncludeErrorBars == 1)
                 errorbar(types, results(j,:),min_results(j,:),max_results(j,:),char(markers(j)),'MarkerFaceColor','w','LineWidth',1.4);
             else
                plot(types, results(j,:),char(markers(j)),'MarkerFaceColor','w','LineWidth',1.4);
@@ -130,14 +131,14 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
         end
        
     end
-    lgnd = legend(getConfiguration(6),'Location','best');
-    if(getConfiguration(20) == 1)
+    lgnd = legend(config.ScenarioLabelsList,'Location','best');
+    if(config.ColorPlot == 1)
         set(lgnd,'color','none');
     end
     
     hold off;
     axis square
-    xlabel(getConfiguration(9));
+    xlabel(config.HorizontalAxisLabel);
     set(gca,'XTick', (stepOfxAxis*stepOfMobileDeviceLoop):(stepOfxAxis*stepOfMobileDeviceLoop):endOfMobileDeviceLoop);
     ylabel(yLabel);
     set(gca,'XLim',[startOfMobileDeviceLoop-5 endOfMobileDeviceLoop+5]);

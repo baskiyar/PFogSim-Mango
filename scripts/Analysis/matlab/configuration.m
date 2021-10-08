@@ -8,7 +8,8 @@ classdef configuration
     properties
         FolderPath {mustBeFolder} = pwd
         SimulationTime {mustBePositive} = (60 * 30)
-        IterationCount {mustBeNonnegative} = 1
+        IterationCount {mustBeNonnegative} = 0 % Default to 0 to differentiate defaults from manual settings.
+        IterationCounts {mustBeNumeric} = [0,0] % Values are per-scenario
         SimulationScenarioList {mustBeText} = ''
         ScenarioLabelsList {mustBeText} = ''
         AppTypes {mustBeText} = 'ALL_TYPES'
@@ -17,23 +18,17 @@ classdef configuration
         MinimumMobileDevices {mustBeNonnegative} = 100
         MobileDeviceStep {mustBePositive} = 100
         MaximumMobileDevices {mustBePositive} = 600
-        IncludeErrorBars = 0
-        ColorPlot = 0
-        Line1Color {mustBeNumeric} = [0.8 0 0]
-        Line2Color {mustBeNumeric} = [0 0.15 0.6]
-        Line3Color {mustBeNumeric} = [0 0.23 0]
-        Line4Color {mustBeNumeric} = [0.6 0 0.6]
-        Line5Color {mustBeNumeric} = [0.08 0.08 0.08]
-        Line6Color {mustBeNumeric} = [0 0.8 0.8]
-        Line7Color {mustBeNumeric} = [0.8 0.4 0]
-        Line8Color {mustBeNumeric} = [0.8 0.8 0]
+        IncludeErrorBars = -1   % Default to -1 to differentiate defaults from manual settings.
+        ColorPlot = -1          % Default to -1 to differentiate defaults from manual settings.
+        XAxisStep {mustBePositive} = 1
+        LineColors {mustBeFloat} = [0.8 0 0;0 0.15 0.6;0 0.23 0;0.6 0 0.6;0.08 0.08 0.08;0 0.8 0.8;0.8 0.4 0;0.8 0.8 0]
         LineStyleMono {mustBeText} = {'-k*','-ko','-ks','-kv','-kp','-kd','-kx','-kh'}
         LineStyleColor {mustBeText} = {':k*',':ko',':ks',':kv',':kp',':kd',':kx',':kh'}
     end
     
     methods(Static)
         function config = autoConfig()
-            %AUTOCONFIG Automatically detect default settings.
+            %AUTOCONFIG Automatically configure all settings based on presence of data files.
             %   Default FolderPath assumes simulation data 
             %   is stored in the sim_results folder.
             %   Default IterationCount is the number of copies
@@ -44,65 +39,107 @@ classdef configuration
             %   Plot details should default to something 
             %   appropriate to the data present.
             config = configuration;
-            scriptPath = pwd;
-            while 1
-                splitPath = strsplit(pwd, '\');
-                if contains(splitPath(length(splitPath)), 'PFogSim')
-                    break
-                end
-                cd ../
-            end
-            resultsFolder = ls('sim_results');
-            if ~isempty(resultsFolder)
-                dataPath = strcat(pwd, '/sim_results');
-            end
-            config.FolderPath = dataPath;
-            cd(dataPath)
-            allFiles = dir('**/*SIMRESULT_*_GENERIC*');
-            cd(scriptPath)
-            allNames = [allFiles.name];
-            regex = 'SIMRESULT_(?<scenario>[\w_\s]+)_NEXT_FIT_(?<devices>\d+)DEVICES_(?<appType>[\w \s]+)_GENERIC';
-            combos = regexp(allNames, regex, 'names');
-            scenarios = string({combos.scenario});
-            allScenarios = unique(scenarios(:));
-            config.SimulationScenarioList = allScenarios;
-            config.ScenarioLabelsList = strrep(allScenarios, '_', ' ');
-            devices = string({combos.devices});
-            allDeviceCounts = unique(devices(:));
-            sort(allDeviceCounts);
-            config.MinimumMobileDevices = str2num(allDeviceCounts(1));
-            config.MaximumMobileDevices = str2num(allDeviceCounts(length(allDeviceCounts)));
-            deviceStep = (config.MaximumMobileDevices - config.MinimumMobileDevices)/(length(allDeviceCounts)-1);
-            config.MobileDeviceStep = deviceStep;
-            appTypes = string({combos.appType});
-            allAppTypes = unique(appTypes(:));
-            config.AppTypes = allAppTypes;
-            % TODO: Determine number of iterations. Perhaps with
-            % length(combos)/(length(allScenarios)*length(allDeviceCounts)*length(allAppTypes))
-            if config.IterationCount > 1
-                config.IncludeErrorBars = 1;
-            else
-                config.IncludeErrorBars = 0;
-            end
-            if config.IterationCount > 3
-                config.ColorPlot = 1;
-            else
-                config.ColorPlot = 0;
-            end
+            config = finishConfig(config);
         end 
     end
     
     methods       
-        function obj = untitled(inputArg1,inputArg2)
-            %UNTITLED Construct an instance of this class
-            %   Detailed explanation goes here
-            obj.Property1 = inputArg1 + inputArg2;
-        end
-        
-        function outputArg = method1(obj,inputArg)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
-            outputArg = obj.Property1 + inputArg;
+        function newConfig = finishConfig(oldConfig)
+            %FINISHCONFIG As autoConfig(), but preserve non-defaults.
+            %   For example, if oldConfig.FolderPath is set, then any
+            %   oldConfig properties containing the default values will be
+            %   reconfigured based on the files present in the 
+            %   oldConfig.FolderPath directory.
+            newConfig = configuration;
+            % Most important property is FolderPath, so start there.
+            scriptPath = pwd;
+            if strcmpi(newConfig.FolderPath, oldConfig.FolderPath)
+                while 1
+                    splitPath = strsplit(pwd, '\');
+                    if contains(splitPath(length(splitPath)), 'PFogSim')
+                        break
+                    end
+                    cd ../
+                end
+                resultsFolder = ls('sim_results');
+                if ~isempty(resultsFolder)
+                    dataPath = strcat(pwd, '/sim_results');
+                end
+                newConfig.FolderPath = dataPath;
+            else
+                newConfig.FolderPath = oldConfig.FolderPath;
+            end
+            cd(newConfig.FolderPath);
+            allFiles = dir('**/*SIMRESULT_*_GENERIC*');
+            cd(scriptPath);
+            % Now, use the files in FolderPath to set remaining properties.
+            allNames = [allFiles.name];
+            regex = 'SIMRESULT_(?<scenario>[\w_\s]+)_NEXT_FIT_(?<devices>\d+)DEVICES_(?<appType>[\w \s]+)_GENERIC';
+            combos = regexp(allNames, regex, 'names');
+            scenariosFullList = string({combos.scenario});
+            allScenarios = unique(scenariosFullList(:));
+            if strcmpi(newConfig.SimulationScenarioList, oldConfig.SimulationScenarioList)
+                newConfig.SimulationScenarioList = allScenarios;
+            end
+            if strcmpi(newConfig.ScenarioLabelsList, oldConfig.ScenarioLabelsList)
+                newConfig.ScenarioLabelsList = strrep(newConfig.SimulationScenarioList, '_', ' ');
+            end
+            devices = string({combos.devices});
+            allDeviceCounts = unique(devices(:));
+            sort(allDeviceCounts);
+            if strcmpi(newConfig.MinimumMobileDevices, oldConfig.MinimumMobileDevices)
+                newConfig.MinimumMobileDevices = str2double(allDeviceCounts(1));
+            end
+            if strcmpi(newConfig.MaximumMobileDevices, oldConfig.MaximumMobileDevices)
+                newConfig.MaximumMobileDevices = str2double(allDeviceCounts(length(allDeviceCounts)));
+            end
+            deviceStep = (newConfig.MaximumMobileDevices - newConfig.MinimumMobileDevices)/(length(allDeviceCounts)-1);
+            if strcmpi(newConfig.MobileDeviceStep, oldConfig.MobileDeviceStep)
+                newConfig.MobileDeviceStep = deviceStep;
+            end
+            appTypes = string({combos.appType});
+            allAppTypes = unique(appTypes(:));
+            if strcmpi(newConfig.AppTypes, oldConfig.AppTypes)
+                newConfig.AppTypes = allAppTypes;
+            end
+            %TODO: Change IterationCount functionality to be more granular.
+            %Maybe a separate counter for each scenario type, since those
+            %are run individually and can therefore differ.
+            if newConfig.IterationCount == oldConfig.IterationCount
+                modIterations = mod(length(combos),length(allScenarios)*length(allDeviceCounts)*length(allAppTypes));
+                if modIterations == 0
+                    newConfig.IterationCount = length(combos)/(length(allScenarios)*length(allDeviceCounts)*length(allAppTypes));
+                else
+                    newConfig.IterationCount = 1; 
+                end
+            end
+            %TODO: Restructure plotGenericResult() so that it uses the
+            %IterationCounts property instead of IterationCount. Then
+            %remove the IterationCount property.
+            if newConfig.IterationCounts == oldConfig.IterationCounts
+                scenarioCount = length(newConfig.SimulationScenarioList);
+                countArray = zeros(scenarioCount);
+                filteredArray = combos(arrayfun(@(n) strcmp(n, 'ALL_APPS'), {combos.appType}));
+                filteredArray = filteredArray(arrayfun(@(n) strcmp(n, string(newConfig.MinimumMobileDevices)), {filteredArray.devices}));
+                for i=1:scenarioCount
+                    scenario = newConfig.SimulationScenarioList(i);
+                    countArray(i) = nnz(strcmp({filteredArray.scenario}, scenario));
+                end
+            end
+            if newConfig.IncludeErrorBars == oldConfig.IncludeErrorBars
+                if newConfig.IterationCount > 1
+                    newConfig.IncludeErrorBars = 1;
+                else
+                    newConfig.IncludeErrorBars = 0;
+                end
+            end
+            if newConfig.ColorPlot == oldConfig.ColorPlot
+                if newConfig.IterationCount > 3
+                    newConfig.ColorPlot = 1;
+                else
+                    newConfig.ColorPlot = 0;
+                end
+            end
         end
     end
 end
