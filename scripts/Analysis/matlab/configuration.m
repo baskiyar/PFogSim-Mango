@@ -1,9 +1,11 @@
 classdef configuration
     %CONFIGURATION Access configuration parameters for plotting simulation.
-    %   Update properties in this class or instance to reflect the simulation
-    %   data and the desired plot appearance.
+    %   Contains properties describing the simulation data and the desired
+    %   plot appearance.
     %   Use the autoConfig function to automatically detect configuration
-    %   based on directory structure and contents.
+    %   based on directory structure and contents, or manually set any
+    %   known properties and call the finishConfig function to
+    %   automatically configure remaining properties.
     
     properties
         FolderPath {mustBeFolder} = pwd
@@ -127,7 +129,7 @@ classdef configuration
             % be the number of iterations run for that scenario.
             if newConfig.ScenarioIterationCounts == oldConfig.ScenarioIterationCounts
                 scenarioCount = length(newConfig.SimulationScenarioList);
-                countArray = zeros(scenarioCount);
+                countArray = zeros(scenarioCount, 1);
                 filteredArray = combos(arrayfun(@(n) strcmp(n, 'ALL_APPS'), {combos.appType}));
                 filteredArray = filteredArray(arrayfun(@(n) strcmp(n, string(newConfig.MinimumMobileDevices)), {filteredArray.devices}));
                 for i=1:scenarioCount

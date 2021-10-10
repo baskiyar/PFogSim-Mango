@@ -96,40 +96,37 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
             xIndex=startOfMobileDeviceLoop+((i-1)*stepOfMobileDeviceLoop);
             
             markers = config.LineStyleColor;
-            for j=1:size(scenarioType,2)
+            for j=1:size(scenarioType,1)
                 if isempty(yScale)
                     yScale = 'linear';
                 end
                 if strcmp(yScale,'log')
-                    semilogy(xIndex, max(1, results(j,i)),char(markers(j)),'MarkerEdgeColor',config.LineColors(j,:),'color',config.LineColors(j,:));  
+                    semilogy(xIndex, max(1, results(j,i)),char(markers(j)),'MarkerEdgeColor',config.LineColors(:,j),'color',config.LineColors(:,j));  
                 elseif strcmp(yScale,'linear')  
-                    plot(xIndex, results(i,j),char(markers(j)),'MarkerFaceColor',config.LineColors(j,:),'color',config.LineColors(j,:));
+                    plot(xIndex, results(j,i),char(markers(j)),'MarkerFaceColor',config.LineColors(j,:),'color',config.LineColors(j,:));
                 end
                 hold on;
             end
         end
         
-        for j=1:size(scenarioType,2)
+        for j=1:size(scenarioType,1)
             if(config.IncludeErrorBars == 1)
                 errorbar(types, results(j,:), min_results(j,:),max_results(j,:),':k','color',config.LineColors(j,:),'LineWidth',1.5);
             else
-                plot(types, results(:,j),':k','color',config.LineColors(j,:),'LineWidth',1.5);
+                plot(types, results(j,:),':k','color',config.LineColors(j,:),'LineWidth',1.5);
             end
             hold on;
         end
-    
-        set(gca,'color','none');
     else
         markers = config.LineStyleMono;
         for j=1:size(scenarioType,1)
-            if(config.IncludeErrorBars == 1)
+            if(config.IncludeErrorBars == 1 && config.ScenarioIterationCounts(j) > 1)
                 errorbar(types, results(j,:),min_results(j,:),max_results(j,:),char(markers(j)),'MarkerFaceColor','w','LineWidth',1.4);
             else
                plot(types, results(j,:),char(markers(j)),'MarkerFaceColor','w','LineWidth',1.4);
             end
             hold on;
         end
-       
     end
     lgnd = legend(config.ScenarioLabelsList,'Location','best');
     if(config.ColorPlot == 1)
