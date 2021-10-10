@@ -9,15 +9,15 @@ classdef configuration
         FolderPath {mustBeFolder} = pwd
         SimulationTime {mustBePositive} = (60 * 30)
         IterationCount {mustBeNonnegative} = 0 % Default to 0 to differentiate defaults from manual settings.
-        IterationCounts {mustBeNumeric} = [0,0] % Values are per-scenario
+        ScenarioIterationCounts {mustBeNumeric} = [0,0] % Values are per-scenario
         SimulationScenarioList {mustBeText} = ''
         ScenarioLabelsList {mustBeText} = ''
         AppTypes {mustBeText} = 'ALL_TYPES'
         PlotWindowCoordinates {mustBeNumeric} = [350 60 450 450]
         HorizontalAxisLabel {mustBeText} = 'Number of Mobile Devices'
-        MinimumMobileDevices {mustBeNonnegative} = 100
-        MobileDeviceStep {mustBePositive} = 100
-        MaximumMobileDevices {mustBePositive} = 600
+        MinimumMobileDevices {mustBeNonnegative} = 0
+        MobileDeviceStep {mustBePositive} = 1
+        MaximumMobileDevices {mustBePositive} = 1
         IncludeErrorBars = -1   % Default to -1 to differentiate defaults from manual settings.
         ColorPlot = -1          % Default to -1 to differentiate defaults from manual settings.
         XAxisStep {mustBePositive} = 1
@@ -92,14 +92,14 @@ classdef configuration
             allDeviceCounts = unique(devices(:));
             sort(allDeviceCounts);
             % Update mobile device min, max, and step.
-            if strcmpi(newConfig.MinimumMobileDevices, oldConfig.MinimumMobileDevices)
+            if newConfig.MinimumMobileDevices == oldConfig.MinimumMobileDevices
                 newConfig.MinimumMobileDevices = str2double(allDeviceCounts(1));
             end
-            if strcmpi(newConfig.MaximumMobileDevices, oldConfig.MaximumMobileDevices)
+            if newConfig.MaximumMobileDevices == oldConfig.MaximumMobileDevices
                 newConfig.MaximumMobileDevices = str2double(allDeviceCounts(length(allDeviceCounts)));
             end
             deviceStep = (newConfig.MaximumMobileDevices - newConfig.MinimumMobileDevices)/(length(allDeviceCounts)-1);
-            if strcmpi(newConfig.MobileDeviceStep, oldConfig.MobileDeviceStep)
+            if newConfig.MobileDeviceStep == oldConfig.MobileDeviceStep
                 newConfig.MobileDeviceStep = deviceStep;
             end
             appTypes = string({combos.appType});
@@ -118,14 +118,14 @@ classdef configuration
                 end
             end
             %TODO: Restructure plotGenericResult() so that it uses the
-            %IterationCounts property instead of IterationCount. This will
+            %ScenarioIterationCounts property instead of IterationCount. This will
             %likely require modifications to IncludeErrorBars behavior.
-            %Then remove the IterationCount property. 
+            %Then deprecate the IterationCount property. 
             % 
             % For each simulation scenario, find the number of instances
             % of ALL_APPS files for the minimum device count. This should
             % be the number of iterations run for that scenario.
-            if newConfig.IterationCounts == oldConfig.IterationCounts
+            if newConfig.ScenarioIterationCounts == oldConfig.ScenarioIterationCounts
                 scenarioCount = length(newConfig.SimulationScenarioList);
                 countArray = zeros(scenarioCount);
                 filteredArray = combos(arrayfun(@(n) strcmp(n, 'ALL_APPS'), {combos.appType}));
@@ -134,7 +134,7 @@ classdef configuration
                     scenario = newConfig.SimulationScenarioList(i);
                     countArray(i) = nnz(strcmp({filteredArray.scenario}, scenario));
                 end
-                newConfig.IterationCounts = countArray;
+                newConfig.ScenarioIterationCounts = countArray;
             end
             if newConfig.IncludeErrorBars == oldConfig.IncludeErrorBars
                 if newConfig.IterationCount > 1
