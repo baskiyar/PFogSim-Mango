@@ -10,27 +10,27 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
     numOfSimulations = config.IterationCount;
     stepOfxAxis = config.XAxisStep;
     scenarioType = config.SimulationScenarioList;
-    startOfMobileDeviceLoop = config.MinimumMobileDeices;
+    startOfMobileDeviceLoop = config.MinimumMobileDevices;
     stepOfMobileDeviceLoop = config.MobileDeviceStep;
     endOfMobileDeviceLoop = config.MaximumMobileDevices;
     numOfMobileDevices = (endOfMobileDeviceLoop - startOfMobileDeviceLoop)/stepOfMobileDeviceLoop + 1;
 
-    all_results = zeros(numOfSimulations, size(scenarioType,2), numOfMobileDevices);
-    min_results = zeros(size(scenarioType,2), numOfMobileDevices);
-    max_results = zeros(size(scenarioType,2), numOfMobileDevices);
+    all_results = zeros(size(scenarioType,1), numOfMobileDevices, numOfSimulations);
+    min_results = zeros(size(scenarioType,1), numOfMobileDevices);
+    max_results = zeros(size(scenarioType,1), numOfMobileDevices);
     
     if ~exist('appType','var')
         appType = 'ALL_APPS';
     end
     
-    for i=1:size(scenarioType,2)
-        for j=1:numOfMobileDevices
-            mobileDeviceNumber = startOfMobileDeviceLoop + stepOfMobileDeviceLoop * (j-1);
-            fileName = strcat('**/*SIMRESULT_*',char(scenarioType(i)),'*_NEXT_FIT_*',int2str(mobileDeviceNumber),'*DEVICES_*',appType,'*_GENERIC.log');
-            oldFolder = cd(folderPath);
-            allFiles = dir(fileName);
-            cd(oldFolder);
-            for s=1:numOfSimulations
+    for s=1:numOfSimulations
+        for i=1:size(scenarioType,1)
+            for j=1:numOfMobileDevices
+                mobileDeviceNumber = startOfMobileDeviceLoop + stepOfMobileDeviceLoop * (j-1);
+                fileName = strcat('**/*SIMRESULT_*',char(scenarioType(i)),'*_NEXT_FIT_*',int2str(mobileDeviceNumber),'*DEVICES_*',appType,'*_GENERIC.log');
+                oldFolder = cd(folderPath);
+                allFiles = dir(fileName);
+                cd(oldFolder);
                 if s>length(allFiles)
                     error(strcat('Error: SIMRESULT files missing. Iterations expected: ', numOfSimulations, '. Iterations found: ', length(allFiles), '.'))
                 end
@@ -39,10 +39,10 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
                     readData = dlmread(filePath,';',rowOfset,0);
                     value = readData(1,columnOfset);
                     if(calculatePercentage==1)
-                		totalTask = readData(1,1)+readData(1,2);
+                        totalTask = readData(1,1)+readData(1,2);
                         value = (100 * value) / totalTask;
                     end
-                    all_results(s,i,j) = value;
+                    all_results(i,j,s) = value;
                 catch err
                     error('err')
                 end
@@ -58,7 +58,7 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
     
     results = squeeze(results); %remove singleton dimensions
     
-    for i=1:size(scenarioType,2)
+    for i=1:size(scenarioType,1)
         for j=1:numOfMobileDevices
             x=results(i,j,:);                    % Create Data
             SEM = std(x)/sqrt(length(x));            % Standard Error
@@ -121,7 +121,7 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
         set(gca,'color','none');
     else
         markers = config.LineStyleMono;
-        for j=1:size(scenarioType,2)
+        for j=1:size(scenarioType,1)
             if(config.IncludeErrorBars == 1)
                 errorbar(types, results(j,:),min_results(j,:),max_results(j,:),char(markers(j)),'MarkerFaceColor','w','LineWidth',1.4);
             else

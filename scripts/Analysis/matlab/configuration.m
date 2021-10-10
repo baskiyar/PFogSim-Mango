@@ -74,10 +74,14 @@ classdef configuration
             cd(scriptPath);
             % Now, use the files in FolderPath to set remaining properties.
             allNames = [allFiles.name];
+            %TODO: Find a way to replace NEXT_FIT in the regex to something
+            %more dynamic in case "orchestrator_policies" is changed to
+            %something else in the future.
             regex = 'SIMRESULT_(?<scenario>[\w_\s]+)_NEXT_FIT_(?<devices>\d+)DEVICES_(?<appType>[\w \s]+)_GENERIC';
             combos = regexp(allNames, regex, 'names');
             scenariosFullList = string({combos.scenario});
             allScenarios = unique(scenariosFullList(:));
+            % Update scenario list and series labels.
             if strcmpi(newConfig.SimulationScenarioList, oldConfig.SimulationScenarioList)
                 newConfig.SimulationScenarioList = allScenarios;
             end
@@ -87,6 +91,7 @@ classdef configuration
             devices = string({combos.devices});
             allDeviceCounts = unique(devices(:));
             sort(allDeviceCounts);
+            % Update mobile device min, max, and step.
             if strcmpi(newConfig.MinimumMobileDevices, oldConfig.MinimumMobileDevices)
                 newConfig.MinimumMobileDevices = str2double(allDeviceCounts(1));
             end
@@ -99,12 +104,11 @@ classdef configuration
             end
             appTypes = string({combos.appType});
             allAppTypes = unique(appTypes(:));
+            % Update list of app types.
             if strcmpi(newConfig.AppTypes, oldConfig.AppTypes)
                 newConfig.AppTypes = allAppTypes;
             end
-            %TODO: Change IterationCount functionality to be more granular.
-            %Maybe a separate counter for each scenario type, since those
-            %are run individually and can therefore differ.
+            % Set the IterationCount.
             if newConfig.IterationCount == oldConfig.IterationCount
                 modIterations = mod(length(combos),length(allScenarios)*length(allDeviceCounts)*length(allAppTypes));
                 if modIterations == 0
@@ -114,8 +118,13 @@ classdef configuration
                 end
             end
             %TODO: Restructure plotGenericResult() so that it uses the
-            %IterationCounts property instead of IterationCount. Then
-            %remove the IterationCount property.
+            %IterationCounts property instead of IterationCount. This will
+            %likely require modifications to IncludeErrorBars behavior.
+            %Then remove the IterationCount property. 
+            % 
+            % For each simulation scenario, find the number of instances
+            % of ALL_APPS files for the minimum device count. This should
+            % be the number of iterations run for that scenario.
             if newConfig.IterationCounts == oldConfig.IterationCounts
                 scenarioCount = length(newConfig.SimulationScenarioList);
                 countArray = zeros(scenarioCount);
@@ -125,6 +134,7 @@ classdef configuration
                     scenario = newConfig.SimulationScenarioList(i);
                     countArray(i) = nnz(strcmp({filteredArray.scenario}, scenario));
                 end
+                newConfig.IterationCounts = countArray;
             end
             if newConfig.IncludeErrorBars == oldConfig.IncludeErrorBars
                 if newConfig.IterationCount > 1
@@ -134,7 +144,7 @@ classdef configuration
                 end
             end
             if newConfig.ColorPlot == oldConfig.ColorPlot
-                if newConfig.IterationCount > 3
+                if length(newConfig.SimulationScenarioList) > 3
                     newConfig.ColorPlot = 1;
                 else
                     newConfig.ColorPlot = 0;
