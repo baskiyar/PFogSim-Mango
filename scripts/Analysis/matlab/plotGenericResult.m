@@ -1,4 +1,4 @@
-function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculatePercentage, graphTitle, yScale)
+function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculatePercentage, graphTitle, yScale)
     if nargin < 6
         graphTitle = '';
     end
@@ -147,5 +147,6 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
         graphTitle = strcat(yLabel, ' - ', strrep(appType, '_', ' '));
     end
     title(graphTitle, 'FontSize', 12);
+    plotOutput = hFig;
     exportgraphics(hFig, strcat(folderPath, '\', graphTitle, '.pdf'), 'ContentType', 'vector');
 end
