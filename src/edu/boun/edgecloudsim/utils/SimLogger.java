@@ -970,7 +970,7 @@ public class SimLogger {
 				// Capture failed tasks detailed info
 				String genericResult8 = "";
 				genericResult8 = 
-						Integer.toString(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]) 
+						Integer.toString(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]) + SimSettings.DELIMITER
 						+ Integer.toString(failedTaskDuetoMobility[i]) + SimSettings.DELIMITER
 						+ Integer.toString(rejectedTaskDueToLackofNodeCapacity[i]) + SimSettings.DELIMITER 
 						+ Integer.toString(rejectedTaskDueToLackofNetworkBandwidth[i]) + SimSettings.DELIMITER 
