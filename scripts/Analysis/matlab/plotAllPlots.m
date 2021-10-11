@@ -1,16 +1,7 @@
 function [] = plotAllPlots()
     config = configuration.autoConfig();
-    folderPath = config.FolderPath;
-    oldFolder = cd(folderPath);
-    allFiles = dir('**/*DEVICES_*_GENERIC*');
-    cd(oldFolder);
-    regex = 'DEVICES_([\w_\s]+)_GENERIC';
-    allNames = [allFiles.name];
-    allTypesList = regexp(allNames, regex, 'tokens');
-    allTypes = string(allTypesList);
-    typesList = unique(allTypes(:));
-    for i=1:length(typesList)
-        appType = allTypes(i);
+    for i=1:length(config.AppTypes)
+        appType = config.AppTypes(i);
         plotGenericResult(1, 2, 'Failed Tasks (%)', appType, 1);
         plotGenericResult(1, 5, 'Service Time (sec)', appType, 0);
         plotGenericResult(1, 6, 'Processing Time (sec)', appType, 0);
