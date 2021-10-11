@@ -123,7 +123,11 @@ function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, 
             if(config.IncludeErrorBars == 1 && config.ScenarioIterationCounts(j) > 1)
                 errorbar(types, results(j,:),min_results(j,:),max_results(j,:),char(markers(j)),'MarkerFaceColor','w','LineWidth',1.4);
             else
-               plot(types, results(j,:),char(markers(j)),'MarkerFaceColor','w','LineWidth',1.4);
+                if strcmp(yScale, 'log')
+                    semilogy(types, max(1, results(j,:)), char(markers(j)), 'MarkerFaceColor', 'w', 'LineWidth', 1.4);
+                else
+                    plot(types, results(j,:),char(markers(j)),'MarkerFaceColor','w','LineWidth',1.4);
+                end
             end
             hold on;
         end
