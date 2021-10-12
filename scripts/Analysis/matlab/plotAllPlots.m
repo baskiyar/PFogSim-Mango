@@ -1,4 +1,7 @@
 function [] = plotAllPlots()
+    %PLOTALLPLOTS Automatically detect app types present in output files
+    %and create selected plots for each of them.
+    %   To skip a plot, put a % at the beginning of the line.
     config = configuration.autoConfig();
     for i=1:length(config.AppTypes)
         appType = config.AppTypes(i);
