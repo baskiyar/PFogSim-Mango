@@ -1,7 +1,7 @@
 # pFogSim : A Simulator For Evaluating Dynamic and Layered Fog-Computing Environments
 Last Edit by Roy Harmon on 2021-10-10
 
-## PFogSim-RRH -- Changes so far: 
+## PFogSim Fork -- Changes so far: 
 
 Java:
 - Output folders are automatically created if they don't already exist.
