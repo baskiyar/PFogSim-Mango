@@ -15,7 +15,7 @@ classdef configuration
         SimulationScenarioList {mustBeText} = ''
         ScenarioLabelsList {mustBeText} = ''
         AppTypes {mustBeText} = 'ALL_TYPES'
-        PlotWindowCoordinates {mustBeNumeric} = [350 60 450 450]
+        PlotWindowCoordinates {mustBeNumeric} = [350 60 720 720]
         HorizontalAxisLabel {mustBeText} = 'Number of Mobile Devices'
         MinimumMobileDevices {mustBeNonnegative} = 0
         MobileDeviceStep {mustBePositive} = 1
@@ -151,6 +151,13 @@ classdef configuration
                 else
                     newConfig.ColorPlot = 0;
                 end
+            end
+            if newConfig.PlotWindowCoordinates == oldConfig.PlotWindowCoordinates
+                screenSize = get(0, 'ScreenSize');
+                minDim = 0.9*min(screenSize(3), screenSize(4));
+                coord1 = (screenSize(3)-minDim)/2;
+                coord2 = (screenSize(4)-minDim)/2;
+                newConfig.PlotWindowCoordinates = [coord1, coord2, minDim, minDim];
             end
         end
     end
