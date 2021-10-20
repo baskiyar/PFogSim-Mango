@@ -152,5 +152,4 @@ function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, 
     end
     title(graphTitle, 'FontSize', 12);
     plotOutput = hFig;
-    exportgraphics(hFig, strcat(folderPath, '\', graphTitle, '.pdf'), 'ContentType', 'vector');
 end
