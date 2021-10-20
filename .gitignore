@@ -13,3 +13,11 @@ simresults/ite3/*
 simresults/ite4/*
 simresults/ite5/*
 simresults/ite6/*
+scripts/sample_application/config/node_test.xml
+scripts/sample_application/config/node_test.xml
+scripts/sample_application/links_test.xml
+*.pdf
+scripts/Analysis/matlab/plotGenericResults.m
+*.png
+scripts/Analysis/matlab/prcnt_histgraph.m
+scripts/Analysis/matlab/plotHistFailedTasks.m
