@@ -1,5 +1,19 @@
 # pFogSim : A Simulator For Evaluating Dynamic and Layered Fog-Computing Environments
-Last Edit by Craigory Coppola on 2018-7-19
+Last Edit by Roy Harmon on 2021-10-10
+
+## PFogSim Fork -- Changes so far: 
+
+Java:
+- Output folders are automatically created if they don't already exist.
+- Fixed a missing delimiter on line 973 of src/edu/boun/edgecloudsim/utils/SimLogger.java.
+
+MATLAB:
+- Fixed numerous bugs in plotGenericResult module.
+- Added configuration class with descriptively named properties to replace calls to getConfiguration(#) function.
+- Added validation to configuration properties.
+- Added autoConfig method to configuration class to automatically detect appropriate settings for plotting based on names of files present in sim_results folder.
+- Added plotAllPlots function to easily generate all available plots for all available simulation data with a single button click.
+- The plotGenericResult function's return value is now the figure it creates.
 
 ## **What is pFogSim?**
 

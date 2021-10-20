@@ -165,6 +165,10 @@ public class SimLogger {
 	}
 	
 	public static void fileInitialize(String outputFolder) throws IOException {
+		File f = new File(outputFolder);
+		if (!f.exists()) {
+			f.mkdirs();
+		}
 		textFile = new File(outputFolder, Long.toString(System.currentTimeMillis()) + "_console.txt");
 		//textFile = new File("_consoleOut" + Long.toString(System.currentTimeMillis()) + ".txt");
 		textFile.createNewFile();
@@ -966,7 +970,7 @@ public class SimLogger {
 				// Capture failed tasks detailed info
 				String genericResult8 = "";
 				genericResult8 = 
-						Integer.toString(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]) 
+						Integer.toString(failedTask[numOfAppTypes] + completedTask[numOfAppTypes]) + SimSettings.DELIMITER
 						+ Integer.toString(failedTaskDuetoMobility[i]) + SimSettings.DELIMITER
 						+ Integer.toString(rejectedTaskDueToLackofNodeCapacity[i]) + SimSettings.DELIMITER 
 						+ Integer.toString(rejectedTaskDueToLackofNetworkBandwidth[i]) + SimSettings.DELIMITER 
