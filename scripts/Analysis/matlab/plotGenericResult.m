@@ -36,18 +36,14 @@ function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, 
                 if s>length(allFiles)
                     error(strcat('Error: SIMRESULT files missing. Iterations expected: ', numOfSimulations, '. Iterations found: ', length(allFiles), '.'))
                 end
-%                 try
-                    filePath = strcat(folderPath, '/', allFiles(s).name);
-                    fileData = dlmread(filePath,';',rowOfset,0);
-                    value = fileData(1,columnOfset);
-                    if(calculatePercentage==1)
-                        totalTask = fileData(1,1)+fileData(1,2);
-                        value = (100 * value) / totalTask;
-                    end
-                    all_results(i,j,s) = value;
-%                 catch err
-%                     error('err')
-%                 end
+                filePath = strcat(folderPath, '/', allFiles(s).name);
+                fileData = readmatrix(filePath, 'Delimiter', ';','Range', rowOfset+1);
+                value = fileData(1,columnOfset);
+                if(calculatePercentage==1)
+                    totalTask = fileData(1,1)+fileData(1,2);
+                    value = (100 * value) / totalTask;
+                end
+                all_results(i,j,s) = value;
             end
         end
     end
