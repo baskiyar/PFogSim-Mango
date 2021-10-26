@@ -1,11 +1,13 @@
-function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculatePercentage, graphTitle, yScale)
+function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculatePercentage, config, graphTitle, yScale)
     if nargin < 6
-        graphTitle = '';
+        config = configuration.autoConfig();
     end
     if nargin < 7
+        graphTitle = '';
+    end
+    if nargin < 8
         yScale = 'linear';
     end
-    config = configuration.autoConfig();
     folderPath = config.FolderPath;
     numOfSimulations = config.IterationCount;
     stepOfxAxis = config.XAxisStep;
@@ -34,18 +36,18 @@ function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, 
                 if s>length(allFiles)
                     error(strcat('Error: SIMRESULT files missing. Iterations expected: ', numOfSimulations, '. Iterations found: ', length(allFiles), '.'))
                 end
-                try
+%                 try
                     filePath = strcat(folderPath, '/', allFiles(s).name);
-                    readData = dlmread(filePath,';',rowOfset,0);
-                    value = readData(1,columnOfset);
+                    fileData = dlmread(filePath,';',rowOfset,0);
+                    value = fileData(1,columnOfset);
                     if(calculatePercentage==1)
-                        totalTask = readData(1,1)+readData(1,2);
+                        totalTask = fileData(1,1)+fileData(1,2);
                         value = (100 * value) / totalTask;
                     end
                     all_results(i,j,s) = value;
-                catch err
-                    error('err')
-                end
+%                 catch err
+%                     error('err')
+%                 end
             end
         end
     end
@@ -101,7 +103,7 @@ function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, 
                     yScale = 'linear';
                 end
                 if strcmp(yScale,'log')
-                    semilogy(xIndex, max(1, results(j,i)),char(markers(j)),'MarkerEdgeColor',config.LineColors(:,j),'color',config.LineColors(:,j));  
+                    semilogy(xIndex, max(1, results(j,i)),char(markers(j)),'MarkerEdgeColor',config.LineColors(j,:),'color',config.LineColors(j,:));  
                 elseif strcmp(yScale,'linear')  
                     plot(xIndex, results(j,i),char(markers(j)),'MarkerFaceColor',config.LineColors(j,:),'color',config.LineColors(j,:));
                 end
@@ -151,5 +153,6 @@ function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, 
         graphTitle = strcat(yLabel, ' - ', strrep(appType, '_', ' '));
     end
     title(graphTitle, 'FontSize', 12);
+    annotation('rectangle',[0 0 1 1],'Color','w');
     plotOutput = hFig;
 end
