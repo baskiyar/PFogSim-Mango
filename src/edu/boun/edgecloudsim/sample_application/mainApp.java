@@ -10,7 +10,6 @@
 package edu.boun.edgecloudsim.sample_application;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -98,7 +97,7 @@ public class mainApp {
 		
 		if(SS.getFileLoggingEnabled()){
 			SimLogger.enableFileLog();
-			SimUtils.cleanOutputFolder(outputFolder);
+			outputFolder = SimUtils.createOutputFolder(outputFolder);
 		}
 		SS.setSimulationSpace(DataInterpreter.getSimulationSpace());
 		SS.setMaxLevels(DataInterpreter.getMaxLevels());
