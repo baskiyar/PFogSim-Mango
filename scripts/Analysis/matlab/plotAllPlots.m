@@ -8,11 +8,19 @@ function [] = plotAllPlots()
     % each plot after appending it to the PDF file. If you want to keep
     % them open to manipulate them before saving, maybe put a breakpoint at
     % the beginning of that function.
+
     %   To skip a plot, put a % at the beginning of the line.
+    %   There will be one set of plots for each app type, plus one for ALL_APPS.
+    
     config = configuration.autoConfig();
-    % Plot in color, or comment out the next line.
+    % Use the following lines to manually adjust configuration details if needed.
     config.ColorPlot = 1;
-    figName = strcat(config.FolderPath, '\', datestr(now,'yyyy-mm-dd_HH.MM.SS.FFF'), '.pdf');
+    %config.IncludeErrorBars = 0;
+
+    % The output PDF file will be named according to the date and time.
+    % This will keep it unique for each run.
+    figName = strcat(config.FolderPath, '\', datestr(now,'yyyy-mm-dd_HH-MM-SS'), '.pdf');
+
     for i=1:length(config.AppTypes)
         appType = config.AppTypes(i);
         appendPlot(plotGenericResult(1, 2, 'Failed Tasks (%)', appType, 1, config), figName);

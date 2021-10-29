@@ -14,7 +14,7 @@ classdef configuration
         ScenarioIterationCounts {mustBeNumeric} = [0,0] % Values are per-scenario
         SimulationScenarioList {mustBeText} = ''
         ScenarioLabelsList {mustBeText} = ''
-        AppTypes {mustBeText} = 'ALL_TYPES'
+        AppTypes {mustBeText} = 'ALL_APPS'
         PlotWindowCoordinates {mustBeNumeric} = [350 60 720 720]
         HorizontalAxisLabel {mustBeText} = 'Number of Mobile Devices'
         MinimumMobileDevices {mustBeNonnegative} = 0
