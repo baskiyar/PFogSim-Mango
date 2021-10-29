@@ -12,25 +12,16 @@ package edu.auburn.pFogSim.orchestrator;
  * 
  */
 import edu.boun.edgecloudsim.core.SimManager;
-import edu.boun.edgecloudsim.core.SimSettings;
-import edu.boun.edgecloudsim.edge_client.CpuUtilizationModel_Custom;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.edge_orchestrator.EdgeOrchestrator;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
-import edu.auburn.pFogSim.netsim.NetworkTopology;
 import edu.auburn.pFogSim.netsim.NodeSim;
-import edu.auburn.pFogSim.util.DataInterpreter;
 import edu.auburn.pFogSim.util.MobileDevice;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.boun.edgecloudsim.utils.Location;
-import edu.boun.edgecloudsim.utils.SimLogger;
-//import edu.boun.edgecloudsim.utils.SimLogger;
-import javafx.util.Pair;
 import edu.auburn.pFogSim.Puddle.Puddle;
 import edu.auburn.pFogSim.Radix.BinaryHeap;
-import edu.auburn.pFogSim.Radix.DistRadix;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -43,8 +34,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.cloudbus.cloudsim.Datacenter;
-//import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
-import org.cloudbus.cloudsim.core.CloudSim;
 
 
 /**

@@ -9,17 +9,13 @@ import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
-import edu.auburn.pFogSim.Exceptions.BlackHoleException;
 import edu.auburn.pFogSim.util.DataInterpreter;
-import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
-import edu.boun.edgecloudsim.network.NetworkModel;
 import edu.auburn.pFogSim.netsim.NetworkTopology;
 import edu.auburn.pFogSim.netsim.Router;
 import edu.auburn.pFogSim.netsim.ESBModel;
 
-import java.util.Set;
 import java.util.HashSet;
 
 

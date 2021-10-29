@@ -9,8 +9,6 @@ package edu.auburn.pFogSim.orchestrator;
 import java.util.LinkedList;
 
 import org.cloudbus.cloudsim.Datacenter;
-import org.cloudbus.cloudsim.core.CloudSim;
-
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.MobileDevice;

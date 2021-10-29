@@ -1,8 +1,5 @@
 package edu.auburn.pFogSim.clustering;
 
-//import edu.boun.edgecloudsim.utils.*;
-import javafx.util.Pair;
-
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;

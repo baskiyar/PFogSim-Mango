@@ -4,9 +4,6 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import org.cloudbus.cloudsim.Datacenter;
-import org.cloudbus.cloudsim.core.CloudSim;
-
-import edu.auburn.pFogSim.Radix.DistRadix;
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.MobileDevice;

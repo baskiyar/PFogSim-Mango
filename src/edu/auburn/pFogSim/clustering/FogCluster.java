@@ -5,11 +5,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import org.cloudbus.cloudsim.core.CloudSim;
-
-import javafx.util.Pair;
-//import java.util.HashMap;
-
 //import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;

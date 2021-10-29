@@ -4,7 +4,6 @@
  */
 package edu.auburn.pFogSim.testing;
 
-import javafx.util.Pair;
 import edu.auburn.pFogSim.netsim.*;
 import java.util.*;
 
@@ -23,13 +22,13 @@ public class BasicRouterTest {
 	 */
 	public static void main(String[] args) {
 		//make some coordinates
-		Pair<Integer, Integer> c1 = new Pair<Integer, Integer>(1,1);
-		Pair<Integer, Integer> c2 = new Pair<Integer, Integer>(2,2);
-		Pair<Integer, Integer> c3 = new Pair<Integer, Integer>(3,3);
-		Pair<Integer, Integer> c4 = new Pair<Integer, Integer>(4,4);
-		Pair<Integer, Integer> c5 = new Pair<Integer, Integer>(5,5);
-		Pair<Integer, Integer> c6 = new Pair<Integer, Integer>(5,6);
-		Pair<Integer, Integer> c7 = new Pair<Integer, Integer>(4,7);
+//		Pair<Integer, Integer> c1 = new Pair<Integer, Integer>(1,1);
+//		Pair<Integer, Integer> c2 = new Pair<Integer, Integer>(2,2);
+//		Pair<Integer, Integer> c3 = new Pair<Integer, Integer>(3,3);
+//		Pair<Integer, Integer> c4 = new Pair<Integer, Integer>(4,4);
+//		Pair<Integer, Integer> c5 = new Pair<Integer, Integer>(5,5);
+//		Pair<Integer, Integer> c6 = new Pair<Integer, Integer>(5,6);
+//		Pair<Integer, Integer> c7 = new Pair<Integer, Integer>(4,7);
 		//make some nodes on the coords
 		NodeSim n1 = new NodeSim();
 		NodeSim n2 = new NodeSim();

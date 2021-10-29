@@ -8,8 +8,6 @@ package edu.auburn.pFogSim.netsim;
 
 import edu.auburn.pFogSim.util.DataInterpreter;
 import edu.boun.edgecloudsim.utils.Location;
-import edu.boun.edgecloudsim.utils.SimLogger;
-import javafx.util.Pair;
 
 
 /**

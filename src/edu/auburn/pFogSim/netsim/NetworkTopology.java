@@ -4,8 +4,6 @@
  */
 package edu.auburn.pFogSim.netsim;
 
-import edu.auburn.pFogSim.netsim.Link;
-import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.auburn.pFogSim.Puddle.Puddle;
@@ -14,8 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import javafx.util.Pair;
 
 
 /**

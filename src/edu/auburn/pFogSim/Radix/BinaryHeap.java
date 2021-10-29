@@ -1,20 +1,12 @@
 package edu.auburn.pFogSim.Radix;
 
 
-import java.util.Scanner;
-
-import org.apache.commons.math3.util.Pair;
-
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.util.DataInterpreter;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.edge_server.EdgeHost;
 import edu.boun.edgecloudsim.utils.Location;
-import edu.boun.edgecloudsim.utils.SimLogger;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 

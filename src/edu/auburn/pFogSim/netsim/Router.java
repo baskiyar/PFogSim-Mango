@@ -6,11 +6,8 @@
 package edu.auburn.pFogSim.netsim;
 
 import edu.auburn.pFogSim.Exceptions.BlackHoleException;
-import edu.auburn.pFogSim.netsim.NodeSim;
 //import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.boun.edgecloudsim.utils.Location;
-import edu.boun.edgecloudsim.utils.SimLogger;
-
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.HashSet;

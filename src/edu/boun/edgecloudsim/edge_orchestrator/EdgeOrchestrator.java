@@ -19,15 +19,11 @@ import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import java.util.LinkedList;
 
 import org.cloudbus.cloudsim.Datacenter;
-import org.cloudbus.cloudsim.core.CloudSim;
-
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
-import edu.boun.edgecloudsim.edge_client.CpuUtilizationModel_Custom;
 import edu.boun.edgecloudsim.edge_client.Task;
-import edu.boun.edgecloudsim.utils.SimLogger;
 
 
 /**

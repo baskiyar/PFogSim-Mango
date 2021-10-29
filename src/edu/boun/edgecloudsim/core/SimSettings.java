@@ -28,8 +28,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import edu.boun.edgecloudsim.utils.SimLogger;
 
 //import edu.auburn.pFogSim.netsim.*;

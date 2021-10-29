@@ -13,11 +13,7 @@
 package edu.boun.edgecloudsim.core;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import org.cloudbus.cloudsim.Datacenter;
 //import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.Log;
@@ -32,25 +28,15 @@ import edu.boun.edgecloudsim.edge_server.EdgeServerManager;
 import edu.boun.edgecloudsim.edge_server.EdgeVM;
 //import edu.boun.edgecloudsim.edge_server.EdgeVM;
 import edu.boun.edgecloudsim.edge_server.VmAllocationPolicy_Custom;
-import edu.auburn.pFogSim.Puddle.Puddle;
-//import edu.auburn.pFogSim.Puddle.Puddle;
-//import edu.auburn.pFogSim.clustering.FogCluster;
-import edu.auburn.pFogSim.clustering.FogHierCluster;
-import edu.auburn.pFogSim.netsim.Link;
 import edu.auburn.pFogSim.netsim.NetworkTopology;
-import edu.auburn.pFogSim.netsim.NodeSim;
 import edu.auburn.pFogSim.util.MobileDevice;
-//import edu.auburn.pFogSim.netsim.Router;
-import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.boun.edgecloudsim.edge_client.MobileDeviceManager;
 import edu.boun.edgecloudsim.edge_client.Task;
 import edu.auburn.pFogSim.mobility.MobilityModel;
 import edu.boun.edgecloudsim.task_generator.LoadGeneratorModel;
 import edu.boun.edgecloudsim.network.NetworkModel;
 import edu.boun.edgecloudsim.utils.EdgeTask;
-import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
-import javafx.util.Pair;
 
 
 /**
