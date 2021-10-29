@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.DatacenterBroker;
 import org.cloudbus.cloudsim.Log;
 //import org.cloudbus.cloudsim.Cloudlet;
@@ -105,14 +104,17 @@ public class MobileDeviceManager extends DatacenterBroker {
 		//if(task.getSubmittedLocation().equals(currentLocation))
 		//{
 			SimSettings.CLOUD_TRANSFER isCloud = (task.getAssociatedHostId() == 0)?SimSettings.CLOUD_TRANSFER.CLOUD_DOWNLOAD:SimSettings.CLOUD_TRANSFER.IGNORE;
-			double WlanDelay = networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
+			double WlanDelay;
 			//calculate the dynamic router energy of the path along which the task is transferred
-			double downloadEnergy = EnergyModel.getDownloadEnergy(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
+			double downloadEnergy;
 
 			if (sepa) {
 				WlanDelay = networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getDesMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
 				//if separation, compute downloadEnergy with slightly different parameters 
 				downloadEnergy = EnergyModel.getDownloadEnergy(task.getAssociatedHostId() * -1, task.getDesMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
+			} else {
+				WlanDelay = networkModel.getDownloadDelay(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
+				downloadEnergy = EnergyModel.getDownloadEnergy(task.getAssociatedHostId() * -1, task.getMobileDeviceId(), task.getCloudletOutputSize(), false, task.wifi, isCloud);
 			}
 			//add this download energy to the router dynamic field and the total energy field of the EnergyModel class
 			EnergyModel.appendRouterEnergy(downloadEnergy);
