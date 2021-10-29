@@ -9,7 +9,6 @@ package edu.auburn.pFogSim.netsim;
 import org.cloudbus.cloudsim.core.CloudSim;
 
 import edu.auburn.pFogSim.Exceptions.BlackHoleException;
-import edu.auburn.pFogSim.util.DataInterpreter;
 import edu.auburn.pFogSim.util.MobileDevice;
 import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
@@ -19,10 +18,7 @@ import edu.boun.edgecloudsim.network.NetworkModel;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 
 
 /**
@@ -171,7 +167,7 @@ public class ESBModel extends NetworkModel {
 			dest = networkTopology.findNode(destination, false);
 		}
 	    path = router.findPath(networkTopology, src, dest);
-		delay += getWlanUploadDelay(src.getLocation(), dataSize, CloudSim.clock()) + SimSettings.ROUTER_PROCESSING_DELAY;
+		delay += getWlanUploadDelay(src.getLocation(), dataSize, CloudSim.clock()) + SimSettings.ROUTER_PROCESSING_DELAY; // Time required to send a packet of (dataSize) KB through the (src) location.
 		if (SimSettings.getInstance().traceEnable()) {
 			SimLogger.printLine("**********Task Delay**********");
 			SimLogger.printLine("Start node ID:\t" + src.getWlanId());
@@ -182,11 +178,11 @@ public class ESBModel extends NetworkModel {
 			if (nextHop == null) {
 				break;
 			}
-			if (current.traverse(nextHop) < 0) {
-				SimLogger.printLine("not adjacent");
-			}
-			double proDelay = current.traverse(nextHop);
-			double conDelay = getWlanUploadDelay(nextHop.getLocation(), dataSize, CloudSim.clock() + delay);
+			double proDelay = current.traverse(nextHop); // Returns latency to next node, or -1 if not adjacent. 
+			if (proDelay < 0) {						   	// Under what circumstances would the next hop in the path be non-adjacent?
+				SimLogger.printLine("not adjacent"); 	// Should we break here or take some other appropriate action?
+			}											// If not, we're going to add -1 to the delay. Doesn't that seem like a bad idea?
+			double conDelay = getWlanUploadDelay(nextHop.getLocation(), dataSize, CloudSim.clock() + delay); // Time required to send (dataSize) KB through the (nextHop) location.
 			delay += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
 			if (SimSettings.getInstance().traceEnable()) {
 				SimLogger.printLine("Path node:\t" + current.getWlanId() + "\tPropagation Delay:\t" + proDelay +"\tCongestion delay:\t" + conDelay + "\tTotal accumulative delay:\t" + delay);
@@ -220,7 +216,7 @@ public class ESBModel extends NetworkModel {
 	/**
 	 * 
 	 * @param deviceLocation
-	 * @param time
+	 * @param time // UNUSED!
 	 * @return
 	 */
 	private int getDeviceCount(Location deviceLocation, double time){
@@ -257,8 +253,10 @@ public class ESBModel extends NetworkModel {
 	
 	
 	/**
-	 * Shaik - updated
+	 * Returns the sum of (transfer time for a given chunk of data at specified location's available bandwidth speed)
+	 *  + (delay due to bandwidth consumed by other tasks transmitted through that node)  
 	 * @param loc
+	 * @param dataSize (KB)
 	 * @param time
 	 * @return
 	 */
