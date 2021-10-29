@@ -16,11 +16,9 @@ package edu.boun.edgecloudsim.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,11 +26,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-
-import org.cloudbus.cloudsim.core.CloudSim;
 
 import edu.auburn.pFogSim.netsim.ESBModel;
 import edu.auburn.pFogSim.netsim.NodeSim;
