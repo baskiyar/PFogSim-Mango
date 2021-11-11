@@ -27,6 +27,9 @@ import java.util.LinkedList;
  *
  */
 public class ESBModel extends NetworkModel {
+	private static final int BYTES_PER_KB = 1024;
+	private static final int BITS_PER_BYTE = 8;
+	private static final double ONE_HUNDRED_PERCENT = 100;
 	private double WlanPoissonMean; //seconds
 	private double WanPoissonMean; //seconds
 	private double avgTaskInputSize; //bytes
@@ -81,16 +84,16 @@ public class ESBModel extends NetworkModel {
 		double numOfTaskType = 0;
 		SimSettings SS = SimSettings.getInstance();
 		for (SimSettings.APP_TYPES taskType : SimSettings.APP_TYPES.values()) {
-			double weight = SS.getTaskLookUpTable()[taskType.ordinal()][0]/(double)100;
+			double weight = SS.getTaskLookUpTable()[taskType.ordinal()][SimSettings.AppStat.USAGE_PERCENTAGE.ordinal()]/ONE_HUNDRED_PERCENT;
 			if(weight != 0) {
-				WlanPoissonMean += (SS.getTaskLookUpTable()[taskType.ordinal()][2])*weight;
+				WlanPoissonMean += (SS.getTaskLookUpTable()[taskType.ordinal()][SimSettings.AppStat.POISSON_MEAN.ordinal()])*weight;
 				
-				double percentageOfCloudCommunication = SS.getTaskLookUpTable()[taskType.ordinal()][1];
-				WanPoissonMean += (WlanPoissonMean)*((double)100/percentageOfCloudCommunication)*weight;
+				double percentageOfCloudCommunication = SS.getTaskLookUpTable()[taskType.ordinal()][SimSettings.AppStat.CLOUD_SELECT_PROBABILITY.ordinal()];
+				WanPoissonMean += (WlanPoissonMean)*(ONE_HUNDRED_PERCENT/percentageOfCloudCommunication)*weight;
 				
-				avgTaskInputSize += SS.getTaskLookUpTable()[taskType.ordinal()][5]*weight;
+				avgTaskInputSize += SS.getTaskLookUpTable()[taskType.ordinal()][SimSettings.AppStat.AVG_DATA_UPLOAD.ordinal()]*weight;
 				
-				avgTaskOutputSize += SS.getTaskLookUpTable()[taskType.ordinal()][6]*weight;
+				avgTaskOutputSize += SS.getTaskLookUpTable()[taskType.ordinal()][SimSettings.AppStat.AVG_DATA_DOWNLOAD.ordinal()]*weight;
 				
 				numOfTaskType++;
 			}
@@ -181,6 +184,7 @@ public class ESBModel extends NetworkModel {
 			double proDelay = current.traverse(nextHop); // Returns latency to next node, or -1 if not adjacent. 
 			if (proDelay < 0) {						   	// Under what circumstances would the next hop in the path be non-adjacent?
 				SimLogger.printLine("not adjacent"); 	// Should we break here or take some other appropriate action?
+				continue;
 			}											// If not, we're going to add -1 to the delay. Doesn't that seem like a bad idea?
 			double conDelay = getWlanUploadDelay(nextHop.getLocation(), dataSize, CloudSim.clock() + delay); // Time required to send (dataSize) KB through the (nextHop) location.
 			delay += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
@@ -219,7 +223,7 @@ public class ESBModel extends NetworkModel {
 	 * @param time // UNUSED!
 	 * @return
 	 */
-	private int getDeviceCount(Location deviceLocation, double time){
+	private int getDeviceCount(Location deviceLocation){
 		EdgeHost host = SimManager.getInstance().getLocalServerManager().findHostByLoc(deviceLocation.getXPos(), deviceLocation.getYPos(), deviceLocation.getAltitude());
 		if (host == null)
 			SimLogger.printLine("Null Host");
@@ -237,12 +241,12 @@ public class ESBModel extends NetworkModel {
 	 * @param deviceCount
 	 * @return
 	 */
-	private double calculateESB(double propogationDelay, double bandwidth /*Kbps*/, double PoissonMean, double avgTaskSize /*KB*/, int deviceCount){
+	private double calculateESB(double propogationDelay, double bandwidth /*Kbps*/, double avgTaskSize /*KB*/, int deviceCount){
 		double Bps=0;
 		
-		avgTaskSize = avgTaskSize * (double)1024; //convert from KB to Byte
+		avgTaskSize = avgTaskSize * BYTES_PER_KB; //convert from KB to Byte
 		
-		Bps = bandwidth * (double)1024 / (double)8; //convert from Kbps to Byte per seconds
+		Bps = bandwidth * BYTES_PER_KB / BITS_PER_BYTE; //convert from Kbps to Byte per seconds
 		
 		double result = 0.0;
 		if (deviceCount >= 1)
@@ -262,9 +266,9 @@ public class ESBModel extends NetworkModel {
 	 */
 	private double getWlanUploadDelay(Location loc, double dataSize /*KB*/, double time) {
 		// calculate data transfer time at network node
-		double transferTime = dataSize * 8 / loc.getBW(); 
+		double transferTime = dataSize * BITS_PER_BYTE / loc.getBW(); 
 		// calculate congestion delay at network node
-		double congestionDelay = calculateESB(0, loc.getBW(), WlanPoissonMean, (avgTaskInputSize+avgTaskOutputSize), getDeviceCount(loc, time)); 
+		double congestionDelay = calculateESB(0, loc.getBW(), (avgTaskInputSize+avgTaskOutputSize), getDeviceCount(loc)); 
 		//return the sum
 		return (transferTime + congestionDelay);
 	}

@@ -49,11 +49,14 @@ public class EdgeTask {
     	startTime=_startTime;
     	taskType=_taskType;
     	
-    	inputFileSize = (long)expRngList[_taskType.ordinal()][0].sample();
-    	outputFileSize =(long)expRngList[_taskType.ordinal()][1].sample();
-    	length = (long)expRngList[_taskType.ordinal()][2].sample();
+    	final int inputFileSizeIndex = 0;
+		inputFileSize = (long)expRngList[_taskType.ordinal()][inputFileSizeIndex].sample();
+    	final int outputFileSizeIndex = 1;
+		outputFileSize =(long)expRngList[_taskType.ordinal()][outputFileSizeIndex].sample();
+    	final int lengthIndex = 2;
+		length = (long)expRngList[_taskType.ordinal()][lengthIndex].sample();
     	
-    	pesNumber = (int)SimSettings.getInstance().getTaskLookUpTable()[_taskType.ordinal()][8];
+    	pesNumber = (int)SimSettings.getInstance().getTaskLookUpTable()[_taskType.ordinal()][SimSettings.AppStat.CORES_REQUIRED.ordinal()];
     	
     	wifi = _wifi;
     	sensor =  _sensor;

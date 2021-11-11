@@ -50,6 +50,10 @@ import edu.auburn.pFogSim.orchestrator.HAFAOrchestrator;
  *
  */
 public class EdgeServerManager {
+	private static final int MAX_HAFA_LEVEL = 7;
+	private static final int ALTITUDE_INDEX = 2;
+	private static final int LATITUDE_INDEX = 1;
+	private static final int LONGITUDE_INDEX = 0;
 	private List<Datacenter> localDatacenters;
 	private List<List<EdgeVM>> vmList;
 	private List<EdgeHost> hostList;// we use this for mobile fog nodes, this is NOT a  list of all edgehosts in the network
@@ -452,9 +456,9 @@ public class EdgeServerManager {
 				System.out.print("\nFog level: "+cluster.getLevel()+" Puddle Id: "+i+" Hosts: ");
 				hosts = new ArrayList<EdgeHost>();
 				for (int j = 0; j < cluster.getCluster()[i].length; j++) {//for each host in the puddle
-					x = cluster.getCluster()[i][j][0];
-					y = cluster.getCluster()[i][j][1];
-					a = cluster.getCluster()[i][j][2];
+					x = cluster.getCluster()[i][j][LONGITUDE_INDEX];
+					y = cluster.getCluster()[i][j][LATITUDE_INDEX];
+					a = cluster.getCluster()[i][j][ALTITUDE_INDEX];
 					host = findHostByLoc(x, y, a);
 					if (host != null) {
 						host.setPuddleId(i);
@@ -493,7 +497,7 @@ public class EdgeServerManager {
 			for (int i=0; i<puddles[k].length; i++) {
 
 				// Skip cloud, as it belongs to highest fog layer and does not have a parent.
-				if (puddles[k][i].getLevel() == 7)
+				if (puddles[k][i].getLevel() == MAX_HAFA_LEVEL)
 					continue;
 				
 				// for each puddle, get its parent info
@@ -583,7 +587,7 @@ public class EdgeServerManager {
 			parentLevel = pud.getLevel()+1;
 
 			//Note: HAFA organization should be a single-rooted tree, not a forest.
-			if (parentLevel > 7) {
+			if (parentLevel > MAX_HAFA_LEVEL) {
 				System.out.println("Done.");
 				//System.out.println("Error. Invalid fog level for parent.");
 				return cousinHosts;
