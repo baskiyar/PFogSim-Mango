@@ -15,6 +15,7 @@ import edu.boun.edgecloudsim.utils.Location;
  *
  */
 public class FogHierCluster {
+	private static final int MAX_FOG_LAYERS = 7;
 	private ArrayList<FogCluster> clusterList = new ArrayList<FogCluster>();
 	public int[][] parentCluster;
 	
@@ -33,7 +34,7 @@ public class FogHierCluster {
 		double[] maxDistance = {200, 500, 750, 1250, 1000, 3000, 4000}; // Shaik added - max distance between any two nodes in a given layer is 2 msec.
 		
 		ArrayList<Location> newList = new ArrayList<>();
-		for(int r = 1; r <= 7; r++)
+		for(int r = 1; r <= MAX_FOG_LAYERS; r++)
 			levelMap.put(r, new ArrayList<Location>()); 
 		//Add all nodes to levelMap based on their level values
 		for(NodeSim node : nodes)
@@ -55,7 +56,7 @@ public class FogHierCluster {
 		}
 
 		//Create clusters of nodes at each fog layer & save the configuration in clusterList
-		for(int levelIter = 1; levelIter <= 7; levelIter++)
+		for(int levelIter = 1; levelIter <= MAX_FOG_LAYERS; levelIter++)
 		{
 			//FogCluster fc = new FogCluster(levelMap.get(levelIter), levelIter, clusterCount[levelIter-1]); // Create specified number of clusters in each layer.
 			//FogCluster fc = new FogCluster(levelMap.get(levelIter), levelIter, maxLatency[levelIter-1]); // Clusters defined by maximum latency among members of each cluster.
