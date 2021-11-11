@@ -179,6 +179,19 @@ public class SimSettings {
     // [08] required # of cores
     // [09] vm utilization (%)
     // [10] max latency (milliseconds)
+    public enum AppStat {
+    	USAGE_PERCENTAGE,
+    	CLOUD_SELECT_PROBABILITY,
+    	POISSON_MEAN,
+    	ACTIVE_PERIOD,
+    	IDLE_PERIOD,
+    	AVG_DATA_UPLOAD,
+    	AVG_DATA_DOWNLOAD,
+    	AVG_TASK_LENGTH,
+    	CORES_REQUIRED,
+    	VM_UTILIZATION,
+    	MAX_LATENCY
+    }
     private double[][] taskLookUpTable = new double[APP_TYPES.values().length][12];
     private int MAX_LEVELS;
     private String inputType;

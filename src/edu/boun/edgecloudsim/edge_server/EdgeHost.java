@@ -38,6 +38,7 @@ import edu.boun.edgecloudsim.utils.SimLogger;
  *
  */
 public class EdgeHost extends Host {
+	private static final double ONE_HUNDRED_PERCENT = 100;
 	private Location location;
 	private int level;//puddle level
 	private double costPerBW;// Qian added for centralOrchestrator
@@ -247,8 +248,8 @@ public class EdgeHost extends Host {
 	 *	@return boolean
 	 */
 	public boolean isMIPSCapacitySufficient(MobileDevice mb) {
-		double reqMips = (double)mb.getTaskLengthRequirement();
-		double hostMipsCapacity = this.getPeList().get(0).getMips() * (double)1 / 100.0;
+		double reqMips = mb.getTaskLengthRequirement();
+		double hostMipsCapacity = this.getPeList().get(0).getMips() * 1 / ONE_HUNDRED_PERCENT;
 		
 		if (reqMips < hostMipsCapacity) {
 			return true;
@@ -267,7 +268,7 @@ public class EdgeHost extends Host {
 		long maxMips = this.getTotalMips();
 		Log.printLine("isMIPSAvailable:maxMips: "+maxMips); 
 		long tempLength = reserveMips + mb.getTaskLengthRequirement();
-		if (tempLength < (maxMips * SimSettings.MAX_NODE_MIPS_UTIL_ALLOWED / (double)100) ) {
+		if (tempLength < (maxMips * SimSettings.MAX_NODE_MIPS_UTIL_ALLOWED / ONE_HUNDRED_PERCENT) ) {
 			// Due to large node Mips configurations, allowing only a maximum of 1% utilization, before the requests spill-over to find other node. --Shaik updated 
 			//Note: This limitation is specific to our current test environment
 			return true;
@@ -297,12 +298,12 @@ public class EdgeHost extends Host {
 	 */
 	public boolean isLatencySatisfactory(MobileDevice mb) {
 		
-		double hostProcessingDelay = (double)(mb.getTaskLengthRequirement()) / this.getVmScheduler().getPeCapacity(); 
+		double hostProcessingDelay = (mb.getTaskLengthRequirement()) / this.getVmScheduler().getPeCapacity(); 
 		double acceptableLatency = mb.getLatencyRequirement();
 		double hostNetworkDelay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(mb.getLocation(), this.location);
 		
 		//Consider round trip latency - assuming user is co-located with device, in current test environment.
-		hostNetworkDelay = hostNetworkDelay * 2;
+		hostNetworkDelay += hostNetworkDelay;
 		
 		double totalDelay = hostProcessingDelay + hostNetworkDelay; 
 		
@@ -447,7 +448,7 @@ public class EdgeHost extends Host {
 	 * @return double
 	 */
 	public double getFnMipsUtilization() {
-		return (reserveMips * 100.0 / this.getTotalMips());
+		return (reserveMips * ONE_HUNDRED_PERCENT / this.getTotalMips());
 	}
 	
 	
@@ -456,6 +457,6 @@ public class EdgeHost extends Host {
 	 * @return double
 	 */
 	public double getFnNwUtilization() {
-		return (reserveBW * 100.0 / this.getBw());
+		return (reserveBW * ONE_HUNDRED_PERCENT / this.getBw());
 	}
 }
