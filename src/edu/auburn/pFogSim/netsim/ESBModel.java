@@ -27,6 +27,7 @@ import java.util.LinkedList;
  *
  */
 public class ESBModel extends NetworkModel {
+	private static final String NOT_ADJACENT = "not adjacent";
 	private static final int BYTES_PER_KB = 1024;
 	private static final int BITS_PER_BYTE = 8;
 	private static final double ONE_HUNDRED_PERCENT = 100;
@@ -183,7 +184,7 @@ public class ESBModel extends NetworkModel {
 			}
 			double proDelay = current.traverse(nextHop); // Returns latency to next node, or -1 if not adjacent. 
 			if (proDelay < 0) {						   	// Under what circumstances would the next hop in the path be non-adjacent?
-				SimLogger.printLine("not adjacent"); 	// Should we break here or take some other appropriate action?
+				SimLogger.printLine(NOT_ADJACENT); 	// Should we break here or take some other appropriate action?
 				continue;
 			}											// If not, we're going to add -1 to the delay. Doesn't that seem like a bad idea?
 			double conDelay = getWlanUploadDelay(nextHop.getLocation(), dataSize, CloudSim.clock() + delay); // Time required to send (dataSize) KB through the (nextHop) location.
@@ -462,7 +463,7 @@ public class ESBModel extends NetworkModel {
 				break;
 			}
 			if (current.traverse(nextHop) < 0) {
-				SimLogger.printLine("not adjacent");
+				SimLogger.printLine(NOT_ADJACENT);
 			}
 			double proDelay = current.traverse(nextHop);
 			double conDelay = getWlanUploadDelay(nextHop.getLocation(), (avgTaskInputSize+avgTaskOutputSize), CloudSim.clock() + delay);
@@ -497,7 +498,7 @@ public class ESBModel extends NetworkModel {
 				break;
 			}
 			if (current.traverse(nextHop) < 0) {
-				SimLogger.printLine("not adjacent");
+				SimLogger.printLine(NOT_ADJACENT);
 			}
 			double proDelay = current.traverse(nextHop);
 			double conDelay = getWlanUploadDelay(nextHop.getLocation(), (avgTaskInputSize+avgTaskOutputSize), CloudSim.clock() + delay);
