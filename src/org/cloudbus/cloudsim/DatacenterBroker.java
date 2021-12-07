@@ -324,7 +324,7 @@ public class DatacenterBroker extends SimEntity {
 					sendNow(datacenterId, CloudSimTags.VM_CREATE_ACK, vm);
 					requestedVms++;
 				}*/
-				if (vm.getId() == datacenterId - 4) {
+				if (vm.getId() == datacenterId - 4) { // Where does this 4 come from?
 					sendNow(datacenterId, CloudSimTags.VM_CREATE_ACK, vm);
 					requestedVms++;
 				}

@@ -45,7 +45,7 @@ public class CpuUtilizationModel_Custom implements UtilizationModel {
 	 */
 	@Override
 	public double getUtilization(double time) {
-		return SimSettings.getInstance().getTaskLookUpTable()[taskType.ordinal()][9];
+		return SimSettings.getInstance().getTaskLookUpTable()[taskType.ordinal()][SimSettings.AppStat.VM_UTILIZATION.ordinal()];
 	}
 	
 	
@@ -55,7 +55,7 @@ public class CpuUtilizationModel_Custom implements UtilizationModel {
 	 * @return
 	 */
 	public double predictUtilization(SimSettings.VM_TYPES _vmType){
-		return SimSettings.getInstance().getTaskLookUpTable()[taskType.ordinal()][9];
+		return SimSettings.getInstance().getTaskLookUpTable()[taskType.ordinal()][SimSettings.AppStat.VM_UTILIZATION.ordinal()];
 	}
 
 	

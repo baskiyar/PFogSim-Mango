@@ -10,6 +10,8 @@
 package edu.boun.edgecloudsim.utils;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -91,11 +93,40 @@ public class SimUtils {
 			}
 		}
 		else {
-			SimLogger.printLine("Output folder is not available: " + outputFolder);
-			System.exit(0);
+			dir.mkdirs();
+			SimLogger.printLine("Output folder created: " + outputFolder);
 		}
 	}
 	
+	/**
+     * Create the folder where output files will be saved.
+     * @param outputFolder
+     * @return result output subfolder path
+     */
+	public static String createOutputFolder(String outputFolder){
+		//Create the folder where the result files will be saved
+		String subFolderName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
+		File dir = new File(outputFolder+"/"+subFolderName);
+		if(dir.exists() && dir.isDirectory())
+		{
+//			for (File f: dir.listFiles())
+//			{
+//				if (f.exists() && f.isFile())
+//				{
+//					if(!f.delete())
+//					{
+//						SimLogger.printLine("file cannot be cleared: " + f.getAbsolutePath());
+//						System.exit(0);
+//					}
+//				}
+//			}
+		}
+		else {
+			dir.mkdirs();
+			SimLogger.printLine("Output folder created in " + outputFolder);
+		}
+		return dir.getAbsolutePath();
+	}
 	
 	/**
 	 * 

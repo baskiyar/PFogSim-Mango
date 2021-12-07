@@ -28,6 +28,7 @@ import edu.boun.edgecloudsim.edge_server.EdgeVM;
  */
 public class EdgeByDistanceOrchestrator extends EdgeOrchestrator {
 
+	private static final int MESSAGES_PER_HOST = 2;
 	ArrayList<EdgeHost> hosts;
 	
 	
@@ -54,7 +55,7 @@ public class EdgeByDistanceOrchestrator extends EdgeOrchestrator {
 		}
 		
 		this.avgNumProspectiveHosts = hosts.size();
-		this.avgNumMessages = this.avgNumProspectiveHosts * 2; // For each service request (i.e. per device), each host receives resource availability request & sends response.
+		this.avgNumMessages = this.avgNumProspectiveHosts * MESSAGES_PER_HOST; // For each service request (i.e. per device), each host receives resource availability request & sends response.
 
 	}
 	

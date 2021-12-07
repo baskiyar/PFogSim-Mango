@@ -71,9 +71,6 @@ public class GPSVectorMobility extends MobilityModel {
 		boolean movingDevices = SimSettings.getInstance().areMobileDevicesMoving();
 		treeMapArray = new ArrayList<TreeMap<Double, Location>>();
 		userTreeMapArray = new ArrayList<TreeMap<Double, Location>>();
-		//Qian find key number of node with wlan_id #1071 
-		int keyNumber = 0;
-				
 		//Go through network's list of nodes and pick out just the wireless access points
 		ArrayList<NodeSim> accessPoints = new ArrayList<NodeSim>();
 		for(NodeSim node : network.getNodes())
@@ -128,9 +125,10 @@ public class GPSVectorMobility extends MobilityModel {
 			double lat_movement, long_movement, alt_movement;
 			if(movingDevices)
 			{
-				lat_movement = 5 * (rng.nextDouble() - 0.5) * 0.000001; //Approximates movement of 5 meters * (random constant < 1)
-				long_movement = 5 * (rng.nextDouble() - 0.5) * 0.000001; //Same for right
-				alt_movement = 5 * (rng.nextDouble()-0.5)*0.000001;
+				final int movementMeters = 5;
+				lat_movement = movementMeters * (rng.nextDouble() - 0.5) * 0.000001; //Approximates movement of 5 meters * (random constant < 1)
+				long_movement = movementMeters * (rng.nextDouble() - 0.5) * 0.000001; //Same for right
+				alt_movement = movementMeters * (rng.nextDouble()-0.5)*0.000001;
 			}
 			else {
 				lat_movement = 0;
@@ -141,11 +139,10 @@ public class GPSVectorMobility extends MobilityModel {
 				
 				if(movingDevices) 
 				{
-					Location entry = treeMap.lastEntry().getValue();
 					double x_pos = treeMap.lastEntry().getValue().getXPos();
 					double y_pos = treeMap.lastEntry().getValue().getYPos();				
 					double alt = treeMap.lastEntry().getValue().getAltitude();
-					int wlan_id = treeMap.lastEntry().getValue().getServingWlanId();
+					int wlan_id;// = treeMap.lastEntry().getValue().getServingWlanId();
 					
 					  
 					if(x_pos + long_movement > this.MAX_LONG || x_pos + long_movement < this.MIN_LONG) long_movement = long_movement * -1;

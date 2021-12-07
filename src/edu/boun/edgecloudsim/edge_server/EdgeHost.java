@@ -12,9 +12,13 @@
 
 package edu.boun.edgecloudsim.edge_server;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
@@ -38,6 +42,7 @@ import edu.boun.edgecloudsim.utils.SimLogger;
  *
  */
 public class EdgeHost extends Host {
+	private static final double ONE_HUNDRED_PERCENT = 100;
 	private Location location;
 	private int level;//puddle level
 	private double costPerBW;// Qian added for centralOrchestrator
@@ -247,9 +252,26 @@ public class EdgeHost extends Host {
 	 *	@return boolean
 	 */
 	public boolean isMIPSCapacitySufficient(MobileDevice mb) {
-		double reqMips = (double)mb.getTaskLengthRequirement();
-		double hostMipsCapacity = this.getPeList().get(0).getMips() * (double)1 / 100.0;
-		
+		double reqMips = mb.getTaskLengthRequirement();
+		double hostMipsCapacity = this.getPeList().get(0).getMips() * 1 / ONE_HUNDRED_PERCENT;
+		//Get capacities from config file
+		String propertiesFile = "scripts/sample_application/config/default_config.properties";
+		double capacity = 1;
+		try {
+			InputStream input = new FileInputStream(propertiesFile);
+			// load a properties file
+			Properties prop = new Properties();
+			prop.load(input);
+			String[] percentage_capacities = prop.getProperty("percentage_capacity").split(",");
+			if(percentage_capacities.length > 0) {
+				capacity = Double.parseDouble(percentage_capacities[level - 1]);
+				// Apply capacity
+				hostMipsCapacity *= capacity;
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		// END - Get capacities from config file
 		if (reqMips < hostMipsCapacity) {
 			return true;
 		}
@@ -266,8 +288,26 @@ public class EdgeHost extends Host {
 	public boolean isMIPSAvailable(MobileDevice mb) {
 		long maxMips = this.getTotalMips();
 		Log.printLine("isMIPSAvailable:maxMips: "+maxMips); 
+		//Get capacities from config file
+		String propertiesFile = "scripts/sample_application/config/default_config.properties";
+		double capacity = 1;
+		try {
+			InputStream input = new FileInputStream(propertiesFile);
+			// load a properties file
+			Properties prop = new Properties();
+			prop.load(input);
+			String[] percentage_capacities = prop.getProperty("percentage_capacity").split(",");
+			if(percentage_capacities.length > 0) {
+			     capacity = Double.parseDouble(percentage_capacities[level - 1]);
+			     // Apply capacity
+			     maxMips *= capacity;
+			}	
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		// END - Get capacities from config file
 		long tempLength = reserveMips + mb.getTaskLengthRequirement();
-		if (tempLength < (maxMips * SimSettings.MAX_NODE_MIPS_UTIL_ALLOWED / (double)100) ) {
+		if (tempLength < (maxMips * SimSettings.MAX_NODE_MIPS_UTIL_ALLOWED / ONE_HUNDRED_PERCENT) ) {
 			// Due to large node Mips configurations, allowing only a maximum of 1% utilization, before the requests spill-over to find other node. --Shaik updated 
 			//Note: This limitation is specific to our current test environment
 			return true;
@@ -297,12 +337,12 @@ public class EdgeHost extends Host {
 	 */
 	public boolean isLatencySatisfactory(MobileDevice mb) {
 		
-		double hostProcessingDelay = (double)(mb.getTaskLengthRequirement()) / this.getVmScheduler().getPeCapacity(); 
+		double hostProcessingDelay = (mb.getTaskLengthRequirement()) / this.getVmScheduler().getPeCapacity(); 
 		double acceptableLatency = mb.getLatencyRequirement();
 		double hostNetworkDelay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(mb.getLocation(), this.location);
 		
 		//Consider round trip latency - assuming user is co-located with device, in current test environment.
-		hostNetworkDelay = hostNetworkDelay * 2;
+		hostNetworkDelay += hostNetworkDelay;
 		
 		double totalDelay = hostProcessingDelay + hostNetworkDelay; 
 		
@@ -447,7 +487,7 @@ public class EdgeHost extends Host {
 	 * @return double
 	 */
 	public double getFnMipsUtilization() {
-		return (reserveMips * 100.0 / this.getTotalMips());
+		return (reserveMips * ONE_HUNDRED_PERCENT / this.getTotalMips());
 	}
 	
 	
@@ -456,6 +496,6 @@ public class EdgeHost extends Host {
 	 * @return double
 	 */
 	public double getFnNwUtilization() {
-		return (reserveBW * 100.0 / this.getBw());
+		return (reserveBW * ONE_HUNDRED_PERCENT / this.getBw());
 	}
 }

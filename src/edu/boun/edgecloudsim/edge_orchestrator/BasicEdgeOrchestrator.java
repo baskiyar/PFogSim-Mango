@@ -32,6 +32,8 @@ import edu.boun.edgecloudsim.utils.SimUtils;
  *
  */
 public class BasicEdgeOrchestrator extends EdgeOrchestrator {
+	private static final int MAX_VM_CAPACITY = 101;
+	private static final double ONE_HUNDRED_PERCENT = 100.0;
 	private int numberOfHost; //used by load balancer
 	private int lastSelectedHostIndex; //used by load balancer
 	private int[] lastSelectedVmIndexes; //used by each host individually
@@ -110,7 +112,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		if(policy.equalsIgnoreCase("RANDOM_FIT")){
 			int randomIndex = SimUtils.getRandomNumber(0, vmArray.size()-1);
 			double requiredCapacity = ((CpuUtilizationModel_Custom)task.getUtilizationModelCpu()).predictUtilization(vmArray.get(randomIndex).getVmType());
-			double targetVmCapacity = (double)100 - vmArray.get(randomIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
+			double targetVmCapacity = ONE_HUNDRED_PERCENT - vmArray.get(randomIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
 			if(requiredCapacity <= targetVmCapacity)
 				selectedVM = vmArray.get(randomIndex);
 		}
@@ -118,7 +120,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 			double selectedVmCapacity = 0; //start with min value
 			for(int vmIndex=0; vmIndex<vmArray.size(); vmIndex++){
 				double requiredCapacity = ((CpuUtilizationModel_Custom)task.getUtilizationModelCpu()).predictUtilization(vmArray.get(vmIndex).getVmType());
-				double targetVmCapacity = (double)100 - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
+				double targetVmCapacity = ONE_HUNDRED_PERCENT - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
 				if(requiredCapacity <= targetVmCapacity && targetVmCapacity > selectedVmCapacity){
 					selectedVM = vmArray.get(vmIndex);
 					selectedVmCapacity = targetVmCapacity;
@@ -126,10 +128,10 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 			}
 		}
 		else if(policy.equalsIgnoreCase("BEST_FIT")){
-			double selectedVmCapacity = 101; //start with max value
+			double selectedVmCapacity = MAX_VM_CAPACITY; //start with max value
 			for(int vmIndex=0; vmIndex<vmArray.size(); vmIndex++){
 				double requiredCapacity = ((CpuUtilizationModel_Custom)task.getUtilizationModelCpu()).predictUtilization(vmArray.get(vmIndex).getVmType());
-				double targetVmCapacity = (double)100 - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
+				double targetVmCapacity = ONE_HUNDRED_PERCENT - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
 				if(requiredCapacity <= targetVmCapacity && targetVmCapacity < selectedVmCapacity){
 					selectedVM = vmArray.get(vmIndex);
 					selectedVmCapacity = targetVmCapacity;
@@ -139,7 +141,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 		else if(policy.equalsIgnoreCase("FIRST_FIT")){
 			for(int vmIndex=0; vmIndex<vmArray.size(); vmIndex++){
 				double requiredCapacity = ((CpuUtilizationModel_Custom)task.getUtilizationModelCpu()).predictUtilization(vmArray.get(vmIndex).getVmType());
-				double targetVmCapacity = (double)100 - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
+				double targetVmCapacity = ONE_HUNDRED_PERCENT - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
 				if(requiredCapacity <= targetVmCapacity){
 					selectedVM = vmArray.get(vmIndex);
 					break;
@@ -151,7 +153,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 			while(tries < vmArray.size()){
 				lastSelectedVmIndexes[relatedHostId] = (lastSelectedVmIndexes[relatedHostId]+1) % vmArray.size();
 				double requiredCapacity = ((CpuUtilizationModel_Custom)task.getUtilizationModelCpu()).predictUtilization(vmArray.get(lastSelectedVmIndexes[relatedHostId]).getVmType());
-				double targetVmCapacity = (double)100 - vmArray.get(lastSelectedVmIndexes[relatedHostId]).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
+				double targetVmCapacity = ONE_HUNDRED_PERCENT - vmArray.get(lastSelectedVmIndexes[relatedHostId]).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
 				if(requiredCapacity <= targetVmCapacity){
 					selectedVM = vmArray.get(lastSelectedVmIndexes[relatedHostId]);
 					break;
@@ -178,7 +180,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 			int randomIndex = SimUtils.getRandomNumber(0, vmArray.size()-1);
 			
 			double requiredCapacity = ((CpuUtilizationModel_Custom)task.getUtilizationModelCpu()).predictUtilization(vmArray.get(randomIndex).getVmType());
-			double targetVmCapacity = (double)100 - vmArray.get(randomIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
+			double targetVmCapacity = ONE_HUNDRED_PERCENT - vmArray.get(randomIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
 			if(requiredCapacity <= targetVmCapacity)
 				selectedVM = vmArray.get(randomIndex);
 		}
@@ -188,7 +190,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 				List<EdgeVM> vmArray = SimManager.getInstance().getLocalServerManager().getVmList(hostIndex);
 				for(int vmIndex=0; vmIndex<vmArray.size(); vmIndex++){
 					double requiredCapacity = ((CpuUtilizationModel_Custom)task.getUtilizationModelCpu()).predictUtilization(vmArray.get(vmIndex).getVmType());
-					double targetVmCapacity = (double)100 - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
+					double targetVmCapacity = ONE_HUNDRED_PERCENT - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
 					if(requiredCapacity <= targetVmCapacity && targetVmCapacity > selectedVmCapacity){
 						selectedVM = vmArray.get(vmIndex);
 						selectedVmCapacity = targetVmCapacity;
@@ -197,12 +199,12 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 			}
 		}
 		else if(policy.equalsIgnoreCase("BEST_FIT")){
-			double selectedVmCapacity = 101; //start with max value
+			double selectedVmCapacity = MAX_VM_CAPACITY; //start with max value
 			for(int hostIndex=0; hostIndex<numberOfHost; hostIndex++){
 				List<EdgeVM> vmArray = SimManager.getInstance().getLocalServerManager().getVmList(hostIndex);
 				for(int vmIndex=0; vmIndex<vmArray.size(); vmIndex++){
 					double requiredCapacity = ((CpuUtilizationModel_Custom)task.getUtilizationModelCpu()).predictUtilization(vmArray.get(vmIndex).getVmType());
-					double targetVmCapacity = (double)100 - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
+					double targetVmCapacity = ONE_HUNDRED_PERCENT - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
 					if(requiredCapacity <= targetVmCapacity && targetVmCapacity < selectedVmCapacity){
 						selectedVM = vmArray.get(vmIndex);
 						selectedVmCapacity = targetVmCapacity;
@@ -215,7 +217,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 				List<EdgeVM> vmArray = SimManager.getInstance().getLocalServerManager().getVmList(hostIndex);
 				for(int vmIndex=0; vmIndex<vmArray.size(); vmIndex++){
 					double requiredCapacity = ((CpuUtilizationModel_Custom)task.getUtilizationModelCpu()).predictUtilization(vmArray.get(vmIndex).getVmType());
-					double targetVmCapacity = (double)100 - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
+					double targetVmCapacity = ONE_HUNDRED_PERCENT - vmArray.get(vmIndex).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
 					if(requiredCapacity <= targetVmCapacity){
 						selectedVM = vmArray.get(vmIndex);
 						break;
@@ -233,7 +235,7 @@ public class BasicEdgeOrchestrator extends EdgeOrchestrator {
 				while(tries < vmArray.size()){
 					lastSelectedVmIndexes[lastSelectedHostIndex] = (lastSelectedVmIndexes[lastSelectedHostIndex]+1) % vmArray.size();
 					double requiredCapacity = ((CpuUtilizationModel_Custom)task.getUtilizationModelCpu()).predictUtilization(vmArray.get(lastSelectedVmIndexes[lastSelectedHostIndex]).getVmType());
-					double targetVmCapacity = (double)100 - vmArray.get(lastSelectedVmIndexes[lastSelectedHostIndex]).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
+					double targetVmCapacity = ONE_HUNDRED_PERCENT - vmArray.get(lastSelectedVmIndexes[lastSelectedHostIndex]).getCloudletScheduler().getTotalUtilizationOfCpu(CloudSim.clock());
 					if(requiredCapacity <= targetVmCapacity){
 						selectedVM = vmArray.get(lastSelectedVmIndexes[lastSelectedHostIndex]);
 						break;

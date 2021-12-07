@@ -29,6 +29,8 @@ import java.util.HashSet;
  */
 public class EnergyModel {
 	
+	private static final int NANO_J_PER_J = 1000000000;
+	private static final int BITS_PER_KB = 8000;
 	//All of these private values are values to be logged.
 	//NOTE: totalRouterEnergy and totalFogNodeEnergy denote the total DYNAMIC energy consumption of network and fog nodes (joules)
 	//totalIdleEnergy is total idle energy consumption of fog+network
@@ -121,12 +123,12 @@ public class EnergyModel {
 			int level = current.getLevel();
 			double nJperBit = Double.parseDouble(DataInterpreter.getNodeSpecs()[DataInterpreter.getMAX_LEVELS() - level][15]);
 			//convert dataSize of task to bits, and multiply by nJperBit to get total nanojoules of transfer
-			energy += (dataSize * 8000) * nJperBit; //dataSize is in kilobytes. multiply by 8000 to convert to bits
+			energy += (dataSize * BITS_PER_KB) * nJperBit; //dataSize is in kilobytes. multiply by 8000 to convert to bits
 		}
 		if (SimSettings.getInstance().traceEnable()) {
 			SimLogger.printLine("Target Node ID:\t" + dest.getWlanId());
 		}
-		return energy / 1000000000; //energy in nano joules for download of entire path converted to joules by dividing by 1e+9
+		return energy / NANO_J_PER_J; //energy in nano joules for download of entire path converted to joules by dividing by 1e+9
 	}
 	
 	//uploadEnergy and downloadEnergy are basically the same because nJperBit upload and download are the same.

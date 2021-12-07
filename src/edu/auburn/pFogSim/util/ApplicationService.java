@@ -11,7 +11,6 @@ import edu.boun.edgecloudsim.core.SimSettings;
  */
 public class ApplicationService {
 	private int serviceId;
-	//private int applicationId;
 	private SimSettings.APP_TYPES type;
 	private boolean avaliable;
 	
@@ -24,7 +23,6 @@ public class ApplicationService {
 	 */
 	public ApplicationService(int serviceId, SimSettings.APP_TYPES applicationType) {
 		this.serviceId = serviceId;
-		//this.applicationId = applicationId;
 		this.type = applicationType;
 		avaliable = true;
 	}

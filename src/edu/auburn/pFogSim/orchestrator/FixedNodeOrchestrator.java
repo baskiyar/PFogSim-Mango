@@ -26,6 +26,9 @@ import edu.boun.edgecloudsim.edge_server.EdgeVM;
  */
 public class FixedNodeOrchestrator extends EdgeOrchestrator{
 	
+	private static final int MESSAGES_PER_HOST = 2;
+	private static final int BYTES_PER_KB = 1024;
+	private static final int BITS_PER_BYTE = 8;
 	private static String node = "Datacenter_1";
 	EdgeHost cHost;
 	
@@ -46,10 +49,10 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 	@Override
 	public void initialize() {
 		try {
-			cHost = (EdgeHost)(SimManager.getInstance().getLocalServerManager().findHostById(1));
+			cHost = (SimManager.getInstance().getLocalServerManager().findHostById(1));
 			
 			this.avgNumProspectiveHosts = 1;
-			this.avgNumMessages = this.avgNumProspectiveHosts * 2; // For each service request (i.e. per device), each host receives resource availability request & sends response.
+			this.avgNumMessages = this.avgNumProspectiveHosts * MESSAGES_PER_HOST; // For each service request (i.e. per device), each host receives resource availability request & sends response.
 			
 			}
 			catch (NullPointerException e) {
@@ -117,7 +120,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 	@Override
 	public void assignHost(MobileDevice mobile) {
 		EdgeHost cloudHost = (EdgeHost) cloud.getHostList().get(0);
-		cloudHost = (EdgeHost)cHost; // Shaik added
+		cloudHost = cHost; // Shaik added
 		if (goodHost(cloudHost, mobile)) {
 			LinkedList<NodeSim> path = ((ESBModel)SimManager.getInstance().getNetworkModel()).findPath(cloudHost, mobile);
 			mobile.setPath(path);
@@ -138,10 +141,10 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 				EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(mobile.getLocation().getXPos(), mobile.getLocation().getYPos(), mobile.getLocation().getAltitude());
 				
 				//double bwCost = mobile.getBWRequirement() * k.getCostPerBW(); 
-				double bwCost = (mobile.getBWRequirement()*8 / (double)1024) * k.getCostPerBW(); //mobile.getBWRequirement() in KB * 8b/B ==>Kb / 1024 = Mb; k.getCostPerBW() in $/Mb -- Shaik modified
+				double bwCost = (mobile.getBWRequirement()*BITS_PER_BYTE / BYTES_PER_KB) * k.getCostPerBW(); //mobile.getBWRequirement() in KB * 8b/B ==>Kb / 1024 = Mb; k.getCostPerBW() in $/Mb -- Shaik modified
 
 				//double exCost = (double)mobile.getTaskLengthRequirement() / k.getTotalMips() * k.getCostPerSec();
-				double exCost = (double)mobile.getTaskLengthRequirement() / (k.getPeList().get(0).getMips()) * k.getCostPerSec(); // Shaik modified - May 07, 2019.
+				double exCost = mobile.getTaskLengthRequirement() / (k.getPeList().get(0).getMips()) * k.getCostPerSec(); // Shaik modified - May 07, 2019.
 
 				cost = cost + bwCost;
 				//SimLogger.getInstance().getCentralizeLogPrinter().println("Level:\t" + des.getLevel() + "\tNode:\t" + des.getWlanId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
@@ -152,10 +155,10 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 			}
 			else {
 				//SimLogger.getInstance().getCentralizeLogPrinter().println("**********Path From " + src.getWlanId() + " To " + des.getWlanId() + "**********");
-				for (NodeSim node: tpath) {
-					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(node.getLocation().getXPos(), node.getLocation().getYPos(), node.getLocation().getAltitude());
+				for (NodeSim nodeSim: tpath) {
+					EdgeHost k = SimManager.getInstance().getLocalServerManager().findHostByLoc(nodeSim.getLocation().getXPos(), nodeSim.getLocation().getYPos(), nodeSim.getLocation().getAltitude());
 					//double bwCost = mobile.getBWRequirement() * k.getCostPerBW();
-					double bwCost = (mobile.getBWRequirement()*8 / (double)1024) * k.getCostPerBW(); //mobile.getBWRequirement() in KB * 8b/B ==>Kb / 1024 = Mb; k.getCostPerBW() in $/Mb -- Shaik modified
+					double bwCost = (mobile.getBWRequirement()*BITS_PER_BYTE / BYTES_PER_KB) * k.getCostPerBW(); //mobile.getBWRequirement() in KB * 8b/B ==>Kb / 1024 = Mb; k.getCostPerBW() in $/Mb -- Shaik modified
 
 					cost = cost + bwCost;
 					//SimLogger.getInstance().getCentralizeLogPrinter().println("Level:\t" + node.getLevel() + "\tNode:\t" + node.getWlanId() + "\tBWCost:\t" + bwCost + "\tTotalBWCost:\t" + cost);
@@ -163,7 +166,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 				}				
 				EdgeHost desHost = SimManager.getInstance().getLocalServerManager().findHostByLoc(des.getLocation().getXPos(), des.getLocation().getYPos(), des.getLocation().getAltitude());
 				//double exCost = desHost.getCostPerSec() * ((double)mobile.getTaskLengthRequirement() / desHost.getTotalMips());
-				double exCost = (double)mobile.getTaskLengthRequirement() / (desHost.getPeList().get(0).getMips()) * desHost.getCostPerSec(); // Shaik modified - May 07, 2019.
+				double exCost = mobile.getTaskLengthRequirement() / (desHost.getPeList().get(0).getMips()) * desHost.getCostPerSec(); // Shaik modified - May 07, 2019.
 				cost = cost + exCost;
 				//SimLogger.getInstance().getCentralizeLogPrinter().println("Destination:\t"+ des.getWlanId() + "\tExecuteCost:\t" + exCost + "\tTotalCost:\t" + cost);
 				//SimLogger.getInstance().getCentralizeLogPrinter().println("Service CPU Time:\t" + ((double)mobile.getTaskLengthRequirement() / desHost.getTotalMips()) + "\tMipsCostPerSec:\t" + desHost.getCostPerSec());
@@ -205,7 +208,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 	 * @return
 	 */
 	public double getAvgNumProspectiveHosts() {
-		return ((double)this.avgNumProspectiveHosts);		
+		return (this.avgNumProspectiveHosts);		
 	}
 		
 
@@ -222,7 +225,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 	 * @return
 	 */
 	public double getAvgNumMessages() {
-		return ((double)this.avgNumMessages);		
+		return (this.avgNumMessages);		
 	}
 		
 	
@@ -240,7 +243,7 @@ public class FixedNodeOrchestrator extends EdgeOrchestrator{
 	 * @return
 	 */
 	public double getAvgNumPuddlesSearched() {
-		return ((double)0);		
+		return (0);		
 	}
 	
 	
