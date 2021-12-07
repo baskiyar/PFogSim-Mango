@@ -78,7 +78,8 @@ public class Router {
 			return pathFinder.get(src).get(dest);
 		}
 		router.runDijkstra((Set<NodeSim>) network.getNodes(), src);
-		HashSet<Pair<NodeSim, Pair<Double, NodeSim>>> completedCopy = (HashSet<Pair<NodeSim, Pair<Double, NodeSim>>>) router.completed.clone();
+		HashSet<Pair<NodeSim, Pair<Double, NodeSim>>> completedCopy = new HashSet<>();
+		completedCopy = (HashSet<Pair<NodeSim, Pair<Double, NodeSim>>>) router.completed.clone();
 		for (Pair<NodeSim, Pair<Double, NodeSim>> nodePair : router.verts.keySet()) {
 			NodeSim node = nodePair.getKey();
 			if (!pathFinder.containsKey(src)) {
