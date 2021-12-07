@@ -12,9 +12,13 @@
 
 package edu.boun.edgecloudsim.edge_server;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
@@ -250,7 +254,24 @@ public class EdgeHost extends Host {
 	public boolean isMIPSCapacitySufficient(MobileDevice mb) {
 		double reqMips = mb.getTaskLengthRequirement();
 		double hostMipsCapacity = this.getPeList().get(0).getMips() * 1 / ONE_HUNDRED_PERCENT;
-		
+		//Get capacities from config file
+		String propertiesFile = "scripts/sample_application/config/default_config.properties";
+		double capacity = 1;
+		try {
+			InputStream input = new FileInputStream(propertiesFile);
+			// load a properties file
+			Properties prop = new Properties();
+			prop.load(input);
+			String[] percentage_capacities = prop.getProperty("percentage_capacity").split(",");
+			if(percentage_capacities.length > 0) {
+				capacity = Double.parseDouble(percentage_capacities[level - 1]);
+				// Apply capacity
+				hostMipsCapacity *= capacity;
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		// END - Get capacities from config file
 		if (reqMips < hostMipsCapacity) {
 			return true;
 		}
@@ -267,6 +288,24 @@ public class EdgeHost extends Host {
 	public boolean isMIPSAvailable(MobileDevice mb) {
 		long maxMips = this.getTotalMips();
 		Log.printLine("isMIPSAvailable:maxMips: "+maxMips); 
+		//Get capacities from config file
+		String propertiesFile = "scripts/sample_application/config/default_config.properties";
+		double capacity = 1;
+		try {
+			InputStream input = new FileInputStream(propertiesFile);
+			// load a properties file
+			Properties prop = new Properties();
+			prop.load(input);
+			String[] percentage_capacities = prop.getProperty("percentage_capacity").split(",");
+			if(percentage_capacities.length > 0) {
+			     capacity = Double.parseDouble(percentage_capacities[level - 1]);
+			     // Apply capacity
+			     maxMips *= capacity;
+			}	
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		// END - Get capacities from config file
 		long tempLength = reserveMips + mb.getTaskLengthRequirement();
 		if (tempLength < (maxMips * SimSettings.MAX_NODE_MIPS_UTIL_ALLOWED / ONE_HUNDRED_PERCENT) ) {
 			// Due to large node Mips configurations, allowing only a maximum of 1% utilization, before the requests spill-over to find other node. --Shaik updated 
