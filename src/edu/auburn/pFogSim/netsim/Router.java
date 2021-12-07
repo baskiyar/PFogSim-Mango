@@ -28,6 +28,7 @@ import java.util.TreeMap;
 public class Router {
 	private HashMap<String, LinkedList<NodeSim>> database;
 	
+	private HashMap<NodeSim, HashMap<NodeSim, LinkedList<NodeSim>>> pathFinder = new HashMap<>();
 	
 	/**
 	 * 
@@ -59,10 +60,48 @@ public class Router {
 			LinkedList<NodeSim> better = database.get(route);
 			return database.get(route);
 		}*/
-		Dijkstra router = Router.getAPathFinder();
+		Dijkstra router = getDijkstra();//getAPathFinder();
 		router._dest = dest; 
+		if (pathFinder.containsKey(src) && pathFinder.get(src).containsKey(dest)) {
+			return pathFinder.get(src).get(dest);
+		}
+		if (pathFinder.containsKey(dest) && pathFinder.get(dest).containsKey(src)) {
+			if (!pathFinder.containsKey(src)) {
+				pathFinder.put(src, new HashMap<>());
+			}
+			LinkedList<NodeSim> reversePath = pathFinder.get(dest).get(src);
+			LinkedList<NodeSim> newPath = new LinkedList<>();
+			while (!reversePath.isEmpty()) {
+				newPath.addFirst(reversePath.pollLast());
+			}
+			pathFinder.get(src).put(dest, newPath);
+			return pathFinder.get(src).get(dest);
+		}
 		router.runDijkstra((Set<NodeSim>) network.getNodes(), src);
-		travelQueue = router.getPath(dest);
+		HashSet<Pair<NodeSim, Pair<Double, NodeSim>>> completedCopy = (HashSet<Pair<NodeSim, Pair<Double, NodeSim>>>) router.completed.clone();
+		for (Pair<NodeSim, Pair<Double, NodeSim>> nodePair : router.verts.keySet()) {
+			NodeSim node = nodePair.getKey();
+			if (!pathFinder.containsKey(src)) {
+				pathFinder.put(src, new HashMap<>());
+			}
+			if (!pathFinder.get(src).containsKey(node)) {
+				pathFinder.get(src).put(node, router.getPath(node));
+				router.completed = (HashSet<Pair<NodeSim, Pair<Double, NodeSim>>>) completedCopy.clone();
+			}
+			if (!pathFinder.containsKey(node)) {
+				pathFinder.put(node, new HashMap<>());
+			}
+			if (!pathFinder.get(node).containsKey(src)) {
+				LinkedList<NodeSim> reversePath = pathFinder.get(src).get(node);
+				LinkedList<NodeSim> newPath = new LinkedList<>();
+				while (!reversePath.isEmpty()) {
+					newPath.addFirst(reversePath.pollLast());
+				}
+				pathFinder.get(node).put(src, newPath);
+			}
+		}
+		return pathFinder.get(src).get(dest);
+//		travelQueue = router.getPath(dest);
 		/*path.addAll(travelQueue);
 		database.put(route, new LinkedList<NodeSim>(path));
 		path.pollLast();
@@ -71,7 +110,7 @@ public class Router {
 			database.put(route, new LinkedList<NodeSim>(path));
 			path.pollLast();
 		}*/
-		return travelQueue;
+//		return travelQueue;
 		//return router.getLatency(dest);
 	}
 	
