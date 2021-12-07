@@ -412,167 +412,162 @@ public class DataInterpreter {
 		double hundredGbRouterCost = 646.51/26929152000.0 * 100; // $/Mb numbers taken from cisco ASR 1013 100G router at $646.51 per month
 		// Shaik modified - Multiplied above three costs for routers' data transfer by 1000 to reflect the service provider costs & profit, in addition to router monthly lease fee. 
 		
-		nodeSpecs[MAX_LEVELS - 1][0] = "Cloud";
-		nodeSpecs[MAX_LEVELS - 1][1] = "Linux";
-		nodeSpecs[MAX_LEVELS - 1][2] = "Xen";
-		nodeSpecs[MAX_LEVELS - 1][3] = hundredGbRouterCost + "";
-		nodeSpecs[MAX_LEVELS - 1][4] = "0.00659722" + ""; // Shaik modified to half of city center's cost (low cost due to scale). prev = "0.000014"
-		nodeSpecs[MAX_LEVELS - 1][5] = "0.05";
-		nodeSpecs[MAX_LEVELS - 1][6] = "0.1";
-		nodeSpecs[MAX_LEVELS - 1][7] = "true";
-		nodeSpecs[MAX_LEVELS - 1][8] = Boolean.toString(SimSettings.getInstance().isMOVING_CLOUD());
-		nodeSpecs[MAX_LEVELS - 1][9] = "28672"; // Shaik modified to 1/100th - prev = 2867200
-		//nodeSpecs[MAX_LEVELS - 1][9] = "500";
-		nodeSpecs[MAX_LEVELS - 1][10] = "13056000"; // Shaik modified to 1/100th (52224000) - prev = 4874240000 // same m/c as that as WARD
-		nodeSpecs[MAX_LEVELS - 1][11] = "164926744166400";
-		//nodeSpecs[MAX_LEVELS - 1][11] = "1500";
-		nodeSpecs[MAX_LEVELS - 1][12] = "1046898278400";
-		nodeSpecs[MAX_LEVELS - 1][13] = "104857600"; // Shaik modified to 1/100th - prev = 104857600 // Shaik fixed back to 100% value
-		nodeSpecs[MAX_LEVELS - 1][14] = "11000"; // Cameron and Matthew modified to add idle power (watt) 
-		nodeSpecs[MAX_LEVELS - 1][15] = "12.6"; // Cameron and Matthew modified to add energy for downloads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 1][16] = "12.6"; //	Cameron and Matthew modified to add energy for uploads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 1][17] = "12300"; // Cameron and Matthew modified to add max power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 1][18] = "161.47"; // Cameron and Matthew modified to add idle power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 1][19] = "275"; // Cameron and Matthew modified to add max power consumption (watt)
-		
-		nodeSpecs[MAX_LEVELS - 2][0] = "City Hall";
-		nodeSpecs[MAX_LEVELS - 2][1] = "Linux";
-		nodeSpecs[MAX_LEVELS - 2][2] = "Xen";
-		nodeSpecs[MAX_LEVELS - 2][3] = hundredGbRouterCost + "";
-		nodeSpecs[MAX_LEVELS - 2][4] = "0.01319444"; // Shaik modified - prev = "0.037"
-		nodeSpecs[MAX_LEVELS - 2][5] = "0.05";
-		nodeSpecs[MAX_LEVELS - 2][6] = "0.1";
-		nodeSpecs[MAX_LEVELS - 2][7] = "true";
-		nodeSpecs[MAX_LEVELS - 2][8] = Boolean.toString(SimSettings.getInstance().isMOVING_CITY_HALL());
-		nodeSpecs[MAX_LEVELS - 2][9] = "286"; // Shaik modified to 1/100th - prev = 28672
-		//nodeSpecs[MAX_LEVELS - 2][9] = "500";
-		nodeSpecs[MAX_LEVELS - 2][10] = "1305600"; // Shaik modified to 1/100th (522240) - prev = 48742400 // same m/c as that as WARD
-		nodeSpecs[MAX_LEVELS - 2][11] = "1649267441664";
-		//nodeSpecs[MAX_LEVELS - 2][11] = "1500";
-		nodeSpecs[MAX_LEVELS - 2][12] = "10468982784";
-		nodeSpecs[MAX_LEVELS - 2][13] = "104857600"; // Shaik modified to 1/100th - prev = 104857600 // Shaik fixed back to 100% value
-		nodeSpecs[MAX_LEVELS - 2][14] = "11000"; // Cameron and Matthew modified to add idle power (watt) 
-		nodeSpecs[MAX_LEVELS - 2][15] = "12.6"; // Cameron and Matthew modified to add energy for downloads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 2][16] = "12.6"; // Cameron and Matthew modified to add energy for uploads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 2][17] = "12300"; // Cameron and Matthew modified to add max power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 2][18] = "161.47"; // Cameron and Matthew modified to add idle power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 2][19] = "275"; // Cameron and Matthew modified to add max power consumption (watt)
+		try {
 
-		
-		nodeSpecs[MAX_LEVELS - 3][0] = "University";
-		nodeSpecs[MAX_LEVELS - 3][1] = "Linux";
-		nodeSpecs[MAX_LEVELS - 3][2] = "Xen";
-		nodeSpecs[MAX_LEVELS - 3][3] = tenGbRouterCost + "";
-		nodeSpecs[MAX_LEVELS - 3][4] = "0.01319444"; // Shaik modified - prev = "0.0093"
-		nodeSpecs[MAX_LEVELS - 3][5] = "0.05";
-		nodeSpecs[MAX_LEVELS - 3][6] = "0.1";
-		nodeSpecs[MAX_LEVELS - 3][7] = "true";
-		nodeSpecs[MAX_LEVELS - 3][8] = Boolean.toString(SimSettings.getInstance().isMOVING_UNIVERSITY());
-		nodeSpecs[MAX_LEVELS - 3][9] = "71"; // Shaik modified to 1/100th - prev = 7168
-		//nodeSpecs[MAX_LEVELS - 3][9] = "500";
-		nodeSpecs[MAX_LEVELS - 3][10] = "816000"; // Shaik modified to 1/100th (130560) - prev = 12185600 // same m/c as that as WARD
-		nodeSpecs[MAX_LEVELS - 3][11] = "412316860416";
-		//nodeSpecs[MAX_LEVELS - 3][11] = "1500";
-		nodeSpecs[MAX_LEVELS - 3][12] = "2617245696";
-		nodeSpecs[MAX_LEVELS - 3][13] = "10485760"; // Shaik modified to 1/100th - prev = 10485760 // Shaik fixed back to 100% value
-		nodeSpecs[MAX_LEVELS - 3][14] = "4000"; // Cameron and Matthew modified to add idle power (watt) 
-		nodeSpecs[MAX_LEVELS - 3][15] = "37"; // Cameron and Matthew modified to add energy for downloads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 3][16] = "37"; // Cameron and Matthew modified to add energy for uploads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 3][17] = "4550"; // Cameron and Matthew modified to add max power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 3][18] = "161.47"; // Cameron and Matthew modified to add idle power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 3][19] = "275"; // Cameron and Matthew modified to add max power consumption (watt)
+			String propertiesFile = "scripts/sample_application/config/default_config.properties";
+			InputStream input = new FileInputStream(propertiesFile);
+			Properties prop = new Properties();
+			prop.load(input);
+			nodeSpecs[MAX_LEVELS - 1][0] = prop.getProperty("nodeSpecs_1_0");
+			nodeSpecs[MAX_LEVELS - 1][1] = prop.getProperty("nodeSpecs_1_1");
+			nodeSpecs[MAX_LEVELS - 1][2] = prop.getProperty("nodeSpecs_1_2");
+			nodeSpecs[MAX_LEVELS - 1][3] = hundredGbRouterCost + "";
+			nodeSpecs[MAX_LEVELS - 1][4] = prop.getProperty("nodeSpecs_1_4") + ""; // Shaik modified to half of city center's cost (low cost due to scale). prev = "0.000014"
+			nodeSpecs[MAX_LEVELS - 1][5] = prop.getProperty("nodeSpecs_1_5");
+			nodeSpecs[MAX_LEVELS - 1][6] = prop.getProperty("nodeSpecs_1_6");
+			nodeSpecs[MAX_LEVELS - 1][7] = "true";
+			nodeSpecs[MAX_LEVELS - 1][8] = Boolean.toString(SimSettings.getInstance().isMOVING_CLOUD());
+			nodeSpecs[MAX_LEVELS - 1][9] = prop.getProperty("nodeSpecs_1_9"); // Shaik modified to 1/100th - prev = 2867200
+			nodeSpecs[MAX_LEVELS - 1][10] = prop.getProperty("nodeSpecs_1_10"); // Shaik modified to 1/100th (52224000) - prev = 4874240000 // same m/c as that as WARD
+			nodeSpecs[MAX_LEVELS - 1][11] = prop.getProperty("nodeSpecs_1_11");
+			nodeSpecs[MAX_LEVELS - 1][12] = prop.getProperty("nodeSpecs_1_12");
+			nodeSpecs[MAX_LEVELS - 1][13] = prop.getProperty("nodeSpecs_1_13"); // Shaik modified to 1/100th - prev = 104857600 // Shaik fixed back to 100% value
+			nodeSpecs[MAX_LEVELS - 1][14] = prop.getProperty("nodeSpecs_1_14"); // Cameron and Matthew modified to add idle power (watt)
+			nodeSpecs[MAX_LEVELS - 1][15] = prop.getProperty("nodeSpecs_1_15"); // Cameron and Matthew modified to add energy for downloads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 1][16] = prop.getProperty("nodeSpecs_1_16"); // Cameron and Matthew modified to add energy for uploads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 1][17] = prop.getProperty("nodeSpecs_1_17"); // Cameron and Matthew modified to add max power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 1][18] = prop.getProperty("nodeSpecs_1_18"); // Cameron and Matthew modified to add idle power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 1][19] = prop.getProperty("nodeSpecs_1_19"); // Cameron and Matthew modified to add max power consumption (watt)
 
-		
-		nodeSpecs[MAX_LEVELS - 4][0] = "Ward";
-		nodeSpecs[MAX_LEVELS - 4][1] = "Linux";
-		nodeSpecs[MAX_LEVELS - 4][2] = "Xen";
-		nodeSpecs[MAX_LEVELS - 4][3] = tenGbRouterCost + "";
-		nodeSpecs[MAX_LEVELS - 4][4] = "0.01319444"; // Shaik modified - prev = "0.0336"
-		nodeSpecs[MAX_LEVELS - 4][5] = "0.05";
-		nodeSpecs[MAX_LEVELS - 4][6] = "0.1";
-		nodeSpecs[MAX_LEVELS - 4][7] = "true";
-		nodeSpecs[MAX_LEVELS - 4][8] = Boolean.toString(SimSettings.getInstance().isMOVING_WARD());
-		nodeSpecs[MAX_LEVELS - 4][9] = "7"; // Shaik modified to 1/100th - prev = 768
-		nodeSpecs[MAX_LEVELS - 4][10] = "544000"; // Shaik modified to 1/100th - prev = 1305600
-		nodeSpecs[MAX_LEVELS - 4][11] = "100663296";
-		//nodeSpecs[MAX_LEVELS - 4][11] = "1500";
-		nodeSpecs[MAX_LEVELS - 4][12] = "1677721600";
-		nodeSpecs[MAX_LEVELS - 4][13] = "10485760"; // Shaik modified to 1/100th - prev = 10485760 // Shaik fixed back to 100% value
-		nodeSpecs[MAX_LEVELS - 4][14] = "4000"; // Cameron and Matthew modified to add idle power (watt) 
-		nodeSpecs[MAX_LEVELS - 4][15] = "37"; // Cameron and Matthew modified to add energy for downloads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 4][16] = "37"; // Cameron and Matthew modified to add energy for uploads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 4][17] = "4550"; // Cameron and Matthew modified to add max power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 4][18] = "170.08"; // Cameron and Matthew modified to add idle power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 4][19] = "524.48"; // Cameron and Matthew modified to add max power consumption (watt)
-
-		
-		nodeSpecs[MAX_LEVELS - 5][0] = "Library";
-		nodeSpecs[MAX_LEVELS - 5][1] = "Linux";
-		nodeSpecs[MAX_LEVELS - 5][2] = "Xen";
-		nodeSpecs[MAX_LEVELS - 5][3] = tenGbRouterCost + "";
-		nodeSpecs[MAX_LEVELS - 5][4] = "0.01319444"; // Shaik modified - prev = "0.00016"
-		nodeSpecs[MAX_LEVELS - 5][5] = "0.05";
-		nodeSpecs[MAX_LEVELS - 5][6] = "0.1";
-		nodeSpecs[MAX_LEVELS - 5][7] = "true";
-		nodeSpecs[MAX_LEVELS - 5][8] = Boolean.toString(SimSettings.getInstance().isMOVING_LIBRARY());
-		nodeSpecs[MAX_LEVELS - 5][9] = "2"; // Shaik modified to 1/100th - prev = 192 
-		nodeSpecs[MAX_LEVELS - 5][10] = "326400"; // Shaik modified to 1/100th - prev = 326400 
-		nodeSpecs[MAX_LEVELS - 5][11] = "25165824";
-		//nodeSpecs[MAX_LEVELS - 5][11] = "1500";
-		nodeSpecs[MAX_LEVELS - 5][12] = "167772160";
-		nodeSpecs[MAX_LEVELS - 5][13] = "10485760"; // Shaik modified to 1/100th - prev = 10485760 // Shaik fixed back to 100% value
-		nodeSpecs[MAX_LEVELS - 5][14] = "4000"; // Cameron and Matthew modified to add idle power (watt) 
-		nodeSpecs[MAX_LEVELS - 5][15] = "37"; // Cameron and Matthew modified to add energy for downloads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 5][16] = "37"; // Cameron and Matthew modified to add energy for uploads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 5][17] = "4550"; // Cameron and Matthew modified to add max power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 5][18] = "170.08"; // Cameron and Matthew modified to add idle power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 5][19] = "524.48"; // Cameron and Matthew modified to add max power consumption (watt)
-
-		
-		nodeSpecs[MAX_LEVELS - 6][0] = "Community Center";
-		nodeSpecs[MAX_LEVELS - 6][1] = "Linux";
-		nodeSpecs[MAX_LEVELS - 6][2] = "Xen";
-		nodeSpecs[MAX_LEVELS - 6][3] = oneGbRouterCost + "";
-		nodeSpecs[MAX_LEVELS - 6][4] = "0.01319444"; // Shaik modified - prev = "0.0012"
-		nodeSpecs[MAX_LEVELS - 6][5] = "0.05";
-		nodeSpecs[MAX_LEVELS - 6][6] = "0.1";
-		nodeSpecs[MAX_LEVELS - 6][7] = "true";
-		nodeSpecs[MAX_LEVELS - 6][8] = Boolean.toString(SimSettings.getInstance().isMOVING_COMMUNITY_CENTER());
-		nodeSpecs[MAX_LEVELS - 6][9] = "1"; // Shaik modified to 1/100th - prev = 128
-		nodeSpecs[MAX_LEVELS - 6][10] = "217600"; // Shaik modified to 1/100th - prev = 217600
-		nodeSpecs[MAX_LEVELS - 6][11] = "16384";
-		nodeSpecs[MAX_LEVELS - 6][12] = "167772160";
-		nodeSpecs[MAX_LEVELS - 6][13] = "1048576"; // Shaik modified to 1/100th - prev = 1048576 // Shaik fixed back to 100% value
-		nodeSpecs[MAX_LEVELS - 6][14] = "1589"; // Cameron and Matthew modified to add idle power (watt) 
-		nodeSpecs[MAX_LEVELS - 6][15] = "31.7"; // Cameron and Matthew modified to add energy for downloads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 6][16] = "31.7"; // Cameron and Matthew modified to add energy for uploads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 6][17] = "1766"; // Cameron and Matthew modified to add max power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 6][18] = "71.5"; // Cameron and Matthew modified to add idle power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 6][19] = "230.64"; // Cameron and Matthew modified to add max power consumption (watt)
-
-		
-		nodeSpecs[MAX_LEVELS - 7][0] = "School";
-		nodeSpecs[MAX_LEVELS - 7][1] = "Linux";
-		nodeSpecs[MAX_LEVELS - 7][2] = "Xen";
-		nodeSpecs[MAX_LEVELS - 7][3] = oneGbRouterCost + ""; 
-		nodeSpecs[MAX_LEVELS - 7][4] = "0.01319444"; // Shaik modified - prev = "0.0003"
-		nodeSpecs[MAX_LEVELS - 7][5] = "1";
-		nodeSpecs[MAX_LEVELS - 7][6] = "1";
-		nodeSpecs[MAX_LEVELS - 7][7] = "true";
-		nodeSpecs[MAX_LEVELS - 7][8] = Boolean.toString(SimSettings.getInstance().isMOVING_SCHOOL());
-		nodeSpecs[MAX_LEVELS - 7][9] = "1"; // Shaik modified to 1/100th - prev = 32
-		nodeSpecs[MAX_LEVELS - 7][10] = "54400"; // Shaik modified to 1/100th - prev = 54400 
-		nodeSpecs[MAX_LEVELS - 7][11] = "4096";
-		nodeSpecs[MAX_LEVELS - 7][12] = "41943040";
-		nodeSpecs[MAX_LEVELS - 7][13] = "1048576"; // Shaik modified to 1/100th - prev = 1048576 // Shaik fixed back to 100% value
-		nodeSpecs[MAX_LEVELS - 7][14] = "1589"; // Cameron and Matthew modified to add idle power (watt) 
-		nodeSpecs[MAX_LEVELS - 7][15] = "31.7"; // Cameron and Matthew modified to add energy for downloads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 7][16] = "31.7"; // Cameron and Matthew modified to add energy for uploads (nJ/bit)
-		nodeSpecs[MAX_LEVELS - 7][17] = "1766"; // Cameron and Matthew modified to add max power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 7][18] = "50.72"; // Cameron and Matthew modified to add idle power consumption (watt)
-		nodeSpecs[MAX_LEVELS - 7][19] = "197.22"; // Cameron and Matthew modified to add max power consumption (watt)
-
-
+			nodeSpecs[MAX_LEVELS - 2][0] = prop.getProperty("nodeSpecs_1_0");
+			nodeSpecs[MAX_LEVELS - 2][1] = prop.getProperty("nodeSpecs_1_1");
+			nodeSpecs[MAX_LEVELS - 2][2] = prop.getProperty("nodeSpecs_1_2");
+			nodeSpecs[MAX_LEVELS - 2][3] = hundredGbRouterCost + "";
+			nodeSpecs[MAX_LEVELS - 2][4] = prop.getProperty("nodeSpecs_1_4"); // Shaik modified - prev = "0.037"
+			nodeSpecs[MAX_LEVELS - 2][5] = prop.getProperty("nodeSpecs_1_5");
+			nodeSpecs[MAX_LEVELS - 2][6] = prop.getProperty("nodeSpecs_1_6");
+			nodeSpecs[MAX_LEVELS - 2][7] = prop.getProperty("nodeSpecs_1_7");
+			nodeSpecs[MAX_LEVELS - 2][8] = Boolean.toString(SimSettings.getInstance().isMOVING_CITY_HALL());
+			nodeSpecs[MAX_LEVELS - 2][9] = prop.getProperty("nodeSpecs_1_9"); // Shaik modified to 1/100th - prev = 28672
+			nodeSpecs[MAX_LEVELS - 2][10] = prop.getProperty("nodeSpecs_1_10"); // Shaik modified to 1/100th (522240) - prev = 48742400 // same m/c as that as WARD
+			nodeSpecs[MAX_LEVELS - 2][11] = prop.getProperty("nodeSpecs_1_11");
+			nodeSpecs[MAX_LEVELS - 2][12] = prop.getProperty("nodeSpecs_1_12");
+			nodeSpecs[MAX_LEVELS - 2][13] = prop.getProperty("nodeSpecs_1_13"); // Shaik modified to 1/100th - prev = 104857600 // Shaik fixed back to 100% value
+			nodeSpecs[MAX_LEVELS - 2][14] = prop.getProperty("nodeSpecs_1_14"); // Cameron and Matthew modified to add idle power (watt)
+			nodeSpecs[MAX_LEVELS - 2][15] = prop.getProperty("nodeSpecs_1_15"); // Cameron and Matthew modified to add energy for downloads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 2][16] = prop.getProperty("nodeSpecs_1_16"); // Cameron and Matthew modified to add energy for uploads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 2][17] = prop.getProperty("nodeSpecs_1_17"); // Cameron and Matthew modified to add max power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 2][18] = prop.getProperty("nodeSpecs_1_18"); // Cameron and Matthew modified to add idle power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 2][19] = prop.getProperty("nodeSpecs_1_19"); // Cameron and Matthew modified to add max power consumption (watt)
+			
+			nodeSpecs[MAX_LEVELS - 3][0] = prop.getProperty("nodeSpecs_3_0");
+			nodeSpecs[MAX_LEVELS - 3][1] = prop.getProperty("nodeSpecs_3_1");
+			nodeSpecs[MAX_LEVELS - 3][2] = prop.getProperty("nodeSpecs_3_2");
+			nodeSpecs[MAX_LEVELS - 3][3] = tenGbRouterCost + "";
+			nodeSpecs[MAX_LEVELS - 3][4] = prop.getProperty("nodeSpecs_3_4"); // Shaik modified - prev = "0.0093"
+			nodeSpecs[MAX_LEVELS - 3][5] = prop.getProperty("nodeSpecs_3_5");
+			nodeSpecs[MAX_LEVELS - 3][6] = prop.getProperty("nodeSpecs_3_6");
+			nodeSpecs[MAX_LEVELS - 3][7] = prop.getProperty("nodeSpecs_3_7");
+			nodeSpecs[MAX_LEVELS - 3][8] = Boolean.toString(SimSettings.getInstance().isMOVING_UNIVERSITY());
+			nodeSpecs[MAX_LEVELS - 3][9] = prop.getProperty("nodeSpecs_3_9"); // Shaik modified to 1/100th - prev = 7168
+			nodeSpecs[MAX_LEVELS - 3][10] = prop.getProperty("nodeSpecs_3_10"); // Shaik modified to 1/100th (130560) - prev = 12185600 // same m/c as that as WARD
+			nodeSpecs[MAX_LEVELS - 3][11] =prop.getProperty("nodeSpecs_3_11");
+			nodeSpecs[MAX_LEVELS - 3][12] = prop.getProperty("nodeSpecs_3_12");
+			nodeSpecs[MAX_LEVELS - 3][13] = prop.getProperty("nodeSpecs_3_13"); // Shaik modified to 1/100th - prev = 10485760 // Shaik fixed back to 100% value
+			nodeSpecs[MAX_LEVELS - 3][14] = prop.getProperty("nodeSpecs_3_14"); // Cameron and Matthew modified to add idle power (watt)
+			nodeSpecs[MAX_LEVELS - 3][15] = prop.getProperty("nodeSpecs_3_15"); // Cameron and Matthew modified to add energy for downloads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 3][16] = prop.getProperty("nodeSpecs_3_16"); // Cameron and Matthew modified to add energy for uploads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 3][17] = prop.getProperty("nodeSpecs_3_17"); // Cameron and Matthew modified to add max power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 3][18] = prop.getProperty("nodeSpecs_3_18"); // Cameron and Matthew modified to add idle power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 3][19] =prop.getProperty("nodeSpecs_3_19"); // Cameron and Matthew modified to add max power consumption (watt)
+			
+			nodeSpecs[MAX_LEVELS - 4][0] = prop.getProperty("nodeSpecs_4_0");
+			nodeSpecs[MAX_LEVELS - 4][1] = prop.getProperty("nodeSpecs_4_1");
+			nodeSpecs[MAX_LEVELS - 4][2] = prop.getProperty("nodeSpecs_4_2");
+			nodeSpecs[MAX_LEVELS - 4][3] = tenGbRouterCost + "";
+			nodeSpecs[MAX_LEVELS - 4][4] = prop.getProperty("nodeSpecs_4_4"); // Shaik modified - prev = "0.0336"
+			nodeSpecs[MAX_LEVELS - 4][5] = prop.getProperty("nodeSpecs_4_5");
+			nodeSpecs[MAX_LEVELS - 4][6] = prop.getProperty("nodeSpecs_4_6");
+			nodeSpecs[MAX_LEVELS - 4][7] = prop.getProperty("nodeSpecs_4_7");
+			nodeSpecs[MAX_LEVELS - 4][8] = Boolean.toString(SimSettings.getInstance().isMOVING_WARD());
+			nodeSpecs[MAX_LEVELS - 4][9] = prop.getProperty("nodeSpecs_4_9"); // Shaik modified to 1/100th - prev = 768
+			nodeSpecs[MAX_LEVELS - 4][10] = prop.getProperty("nodeSpecs_4_10"); // Shaik modified to 1/100th - prev = 1305600
+			nodeSpecs[MAX_LEVELS - 4][11] = prop.getProperty("nodeSpecs_4_11");
+			nodeSpecs[MAX_LEVELS - 4][12] = prop.getProperty("nodeSpecs_4_12");
+			nodeSpecs[MAX_LEVELS - 4][13] = prop.getProperty("nodeSpecs_4_13"); // Shaik modified to 1/100th - prev = 10485760 // Shaik fixed back to 100% value
+			nodeSpecs[MAX_LEVELS - 4][14] = prop.getProperty("nodeSpecs_4_14"); // Cameron and Matthew modified to add idle power (watt)
+			nodeSpecs[MAX_LEVELS - 4][15] = prop.getProperty("nodeSpecs_4_15"); // Cameron and Matthew modified to add energy for downloads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 4][16] = prop.getProperty("nodeSpecs_4_16"); // Cameron and Matthew modified to add energy for uploads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 4][17] = prop.getProperty("nodeSpecs_4_17"); // Cameron and Matthew modified to add max power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 4][18] = prop.getProperty("nodeSpecs_4_18"); // Cameron and Matthew modified to add idle power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 4][19] = prop.getProperty("nodeSpecs_4_19"); // Cameron and Matthew modified to add max power consumption (watt)
+			
+			nodeSpecs[MAX_LEVELS - 5][0] = prop.getProperty("nodeSpecs_5_0");
+			nodeSpecs[MAX_LEVELS - 5][1] = prop.getProperty("nodeSpecs_5_1");
+			nodeSpecs[MAX_LEVELS - 5][2] = prop.getProperty("nodeSpecs_5_2");
+			nodeSpecs[MAX_LEVELS - 5][3] = tenGbRouterCost + "";
+			nodeSpecs[MAX_LEVELS - 5][4] = prop.getProperty("nodeSpecs_5_4"); // Shaik modified - prev = "0.00016"
+			nodeSpecs[MAX_LEVELS - 5][5] = prop.getProperty("nodeSpecs_5_5");
+			nodeSpecs[MAX_LEVELS - 5][6] = prop.getProperty("nodeSpecs_5_6");
+			nodeSpecs[MAX_LEVELS - 5][7] = prop.getProperty("nodeSpecs_5_7");
+			nodeSpecs[MAX_LEVELS - 5][8] = Boolean.toString(SimSettings.getInstance().isMOVING_LIBRARY());
+			nodeSpecs[MAX_LEVELS - 5][9] = prop.getProperty("nodeSpecs_5_9"); // Shaik modified to 1/100th - prev = 192
+			nodeSpecs[MAX_LEVELS - 5][10] = prop.getProperty("nodeSpecs_5_10"); // Shaik modified to 1/100th - prev = 326400
+			nodeSpecs[MAX_LEVELS - 5][11] = prop.getProperty("nodeSpecs_5_11");
+			nodeSpecs[MAX_LEVELS - 5][12] = prop.getProperty("nodeSpecs_5_12");
+			nodeSpecs[MAX_LEVELS - 5][13] = prop.getProperty("nodeSpecs_5_13"); // Shaik modified to 1/100th - prev = 10485760 // Shaik fixed back to 100% value
+			nodeSpecs[MAX_LEVELS - 5][14] = prop.getProperty("nodeSpecs_5_14"); // Cameron and Matthew modified to add idle power (watt)
+			nodeSpecs[MAX_LEVELS - 5][15] = prop.getProperty("nodeSpecs_5_15"); // Cameron and Matthew modified to add energy for downloads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 5][16] = prop.getProperty("nodeSpecs_5_16"); // Cameron and Matthew modified to add energy for uploads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 5][17] = prop.getProperty("nodeSpecs_5_17"); // Cameron and Matthew modified to add max power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 5][18] = prop.getProperty("nodeSpecs_5_18"); // Cameron and Matthew modified to add idle power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 5][19] = prop.getProperty("nodeSpecs_5_19"); // Cameron and Matthew modified to add max power consumption (watt)
+			
+			nodeSpecs[MAX_LEVELS - 6][0] = prop.getProperty("nodeSpecs_6_0");
+			nodeSpecs[MAX_LEVELS - 6][1] = prop.getProperty("nodeSpecs_6_1");
+			nodeSpecs[MAX_LEVELS - 6][2] = prop.getProperty("nodeSpecs_6_2");
+			nodeSpecs[MAX_LEVELS - 6][3] = oneGbRouterCost + "";
+			nodeSpecs[MAX_LEVELS - 6][4] = prop.getProperty("nodeSpecs_6_4"); // Shaik modified - prev = "0.0012"
+			nodeSpecs[MAX_LEVELS - 6][5] = prop.getProperty("nodeSpecs_6_5");
+			nodeSpecs[MAX_LEVELS - 6][6] = prop.getProperty("nodeSpecs_6_6");
+			nodeSpecs[MAX_LEVELS - 6][7] = prop.getProperty("nodeSpecs_6_7");
+			nodeSpecs[MAX_LEVELS - 6][8] = Boolean.toString(SimSettings.getInstance().isMOVING_COMMUNITY_CENTER());
+			nodeSpecs[MAX_LEVELS - 6][9] = prop.getProperty("nodeSpecs_6_9"); // Shaik modified to 1/100th - prev = 128
+			nodeSpecs[MAX_LEVELS - 6][10] = prop.getProperty("nodeSpecs_6_10"); // Shaik modified to 1/100th - prev = 217600
+			nodeSpecs[MAX_LEVELS - 6][11] = prop.getProperty("nodeSpecs_6_11");
+			nodeSpecs[MAX_LEVELS - 6][12] = prop.getProperty("nodeSpecs_6_12");
+			nodeSpecs[MAX_LEVELS - 6][13] = prop.getProperty("nodeSpecs_6_13"); // Shaik modified to 1/100th - prev = 1048576 // Shaik fixed back to 100% value
+			nodeSpecs[MAX_LEVELS - 6][14] = prop.getProperty("nodeSpecs_6_14"); // Cameron and Matthew modified to add idle power (watt)
+			nodeSpecs[MAX_LEVELS - 6][15] = prop.getProperty("nodeSpecs_6_15"); // Cameron and Matthew modified to add energy for downloads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 6][16] = prop.getProperty("nodeSpecs_6_16"); // Cameron and Matthew modified to add energy for uploads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 6][17] = prop.getProperty("nodeSpecs_6_17"); // Cameron and Matthew modified to add max power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 6][18] = prop.getProperty("nodeSpecs_6_18"); // Cameron and Matthew modified to add idle power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 6][19] = prop.getProperty("nodeSpecs_6_19"); // Cameron and Matthew modified to add max power consumption (watt)
+			
+			nodeSpecs[MAX_LEVELS - 7][0] = prop.getProperty("nodeSpecs_7_0");
+			nodeSpecs[MAX_LEVELS - 7][1] = prop.getProperty("nodeSpecs_7_1");
+			nodeSpecs[MAX_LEVELS - 7][2] = prop.getProperty("nodeSpecs_7_2");
+			nodeSpecs[MAX_LEVELS - 7][3] = oneGbRouterCost + "";
+			nodeSpecs[MAX_LEVELS - 7][4] = prop.getProperty("nodeSpecs_7_4"); // Shaik modified - prev = "0.0003"
+			nodeSpecs[MAX_LEVELS - 7][5] = prop.getProperty("nodeSpecs_7_5");
+			nodeSpecs[MAX_LEVELS - 7][6] = prop.getProperty("nodeSpecs_7_6");
+			nodeSpecs[MAX_LEVELS - 7][7] = prop.getProperty("nodeSpecs_7_7");
+			nodeSpecs[MAX_LEVELS - 7][8] = Boolean.toString(SimSettings.getInstance().isMOVING_SCHOOL());
+			nodeSpecs[MAX_LEVELS - 7][9] =prop.getProperty("nodeSpecs_7_9"); // Shaik modified to 1/100th - prev = 32
+			nodeSpecs[MAX_LEVELS - 7][10] = prop.getProperty("nodeSpecs_7_10"); // Shaik modified to 1/100th - prev = 54400
+			nodeSpecs[MAX_LEVELS - 7][11] = prop.getProperty("nodeSpecs_7_11");
+			nodeSpecs[MAX_LEVELS - 7][12] = prop.getProperty("nodeSpecs_7_12");
+			nodeSpecs[MAX_LEVELS - 7][13] = prop.getProperty("nodeSpecs_7_13"); // Shaik modified to 1/100th - prev = 1048576 // Shaik fixed back to 100% value
+			nodeSpecs[MAX_LEVELS - 7][14] =prop.getProperty("nodeSpecs_7_14"); // Cameron and Matthew modified to add idle power (watt)
+			nodeSpecs[MAX_LEVELS - 7][15] = prop.getProperty("nodeSpecs_7_15"); // Cameron and Matthew modified to add energy for downloads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 7][16] = prop.getProperty("nodeSpecs_7_16"); // Cameron and Matthew modified to add energy for uploads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 7][17] = prop.getProperty("nodeSpecs_7_17"); // Cameron and Matthew modified to add max power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 7][18] = prop.getProperty("nodeSpecs_7_18"); // Cameron and Matthew modified to add idle power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 7][19] = prop.getProperty("nodeSpecs_7_19"); // Cameron and Matthew modified to add max power consumption (watt)
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	
