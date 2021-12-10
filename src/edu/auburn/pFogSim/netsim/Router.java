@@ -6,6 +6,8 @@
 package edu.auburn.pFogSim.netsim;
 
 import edu.auburn.pFogSim.Exceptions.BlackHoleException;
+//import edu.auburn.pFogSim.netsim.Router.Dijkstra;
+//import edu.auburn.pFogSim.netsim.Router.Dijkstra;
 //import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.boun.edgecloudsim.utils.Location;
 import java.util.LinkedList;
@@ -55,54 +57,51 @@ public class Router {
 			return result;
 		}
 		route = src.toString() + "->" + dest.toString();
-		/*if(database.containsKey(route)) {
-			//SimLogger.printLine("Found Faster Path");
-			LinkedList<NodeSim> better = database.get(route);
-			return database.get(route);
-		}*/
-		Dijkstra router = getDijkstra();//getAPathFinder();
+		Dijkstra router = getDijkstra();
 		router._dest = dest; 
-		if (pathFinder.containsKey(src) && pathFinder.get(src).containsKey(dest)) {
+		if (pathFinder.containsKey(src) && pathFinder.get(src).containsKey(dest) && !pathFinder.get(src).get(dest).isEmpty()) {
 			return pathFinder.get(src).get(dest);
 		}
-		if (pathFinder.containsKey(dest) && pathFinder.get(dest).containsKey(src)) {
-			if (!pathFinder.containsKey(src)) {
-				pathFinder.put(src, new HashMap<>());
-			}
-			LinkedList<NodeSim> reversePath = pathFinder.get(dest).get(src);
-			LinkedList<NodeSim> newPath = new LinkedList<>();
-			while (!reversePath.isEmpty()) {
-				newPath.addFirst(reversePath.pollLast());
-			}
-			pathFinder.get(src).put(dest, newPath);
-			return pathFinder.get(src).get(dest);
-		}
-		router.runDijkstra((Set<NodeSim>) network.getNodes(), src);
-		HashSet<Pair<NodeSim, Pair<Double, NodeSim>>> completedCopy = new HashSet<>();
+		router.runDijkstra(network.getNodes(), src);
+		HashSet<Pair<NodeSim, Pair<Double, NodeSim>>> completedCopy;
 		completedCopy = (HashSet<Pair<NodeSim, Pair<Double, NodeSim>>>) router.completed.clone();
 		for (Pair<NodeSim, Pair<Double, NodeSim>> nodePair : router.verts.keySet()) {
 			NodeSim node = nodePair.getKey();
 			if (!pathFinder.containsKey(src)) {
 				pathFinder.put(src, new HashMap<>());
 			}
-			if (!pathFinder.get(src).containsKey(node)) {
-				pathFinder.get(src).put(node, router.getPath(node));
+			if (!pathFinder.get(src).containsKey(node) || pathFinder.get(src).get(node).isEmpty()) {
+				LinkedList<NodeSim> routePath = router.getPath(node);
+				pathFinder.get(src).put(node, routePath);
 				router.completed = (HashSet<Pair<NodeSim, Pair<Double, NodeSim>>>) completedCopy.clone();
 			}
-			if (!pathFinder.containsKey(node)) {
-				pathFinder.put(node, new HashMap<>());
-			}
-			if (!pathFinder.get(node).containsKey(src)) {
-				LinkedList<NodeSim> reversePath = pathFinder.get(src).get(node);
-				LinkedList<NodeSim> newPath = new LinkedList<>();
-				while (!reversePath.isEmpty()) {
-					newPath.addFirst(reversePath.pollLast());
-				}
-				pathFinder.get(node).put(src, newPath);
-			}
+		}
+		if (pathFinder.get(src).get(dest).isEmpty()) {
+			LinkedList<NodeSim> thisPath = router.getPath(dest);
+			pathFinder.get(src).put(dest, thisPath);
 		}
 		return pathFinder.get(src).get(dest);
-//		travelQueue = router.getPath(dest);
+	}
+	
+	public LinkedList<NodeSim> oldPath(NetworkTopology network, NodeSim src, NodeSim dest ) {
+		LinkedList<NodeSim> travelQueue;
+		LinkedList<NodeSim> path = new LinkedList<NodeSim>();
+		String route;
+		if (src.equals(dest)) {
+			LinkedList<NodeSim> result = new LinkedList<NodeSim>();
+			result.add(dest);
+			return result;
+		}
+		route = src.toString() + "->" + dest.toString();
+		/*if(database.containsKey(route)) {
+			//SimLogger.printLine("Found Faster Path");
+			LinkedList<NodeSim> better = database.get(route);
+			return database.get(route);
+		}*/
+		Dijkstra router = Router.getAPathFinder();
+		router._dest = dest; 
+		router.runDijkstra((Set<NodeSim>) network.getNodes(), src);
+		travelQueue = router.getPath(dest);
 		/*path.addAll(travelQueue);
 		database.put(route, new LinkedList<NodeSim>(path));
 		path.pollLast();
@@ -111,10 +110,9 @@ public class Router {
 			database.put(route, new LinkedList<NodeSim>(path));
 			path.pollLast();
 		}*/
-//		return travelQueue;
+		return travelQueue;
 		//return router.getLatency(dest);
 	}
-	
 	
 	/**
 	 * get a Dijkstra object to run the pathfinding
