@@ -1,11 +1,13 @@
 # pFogSim : A Simulator For Evaluating Dynamic and Layered Fog-Computing Environments
-Last Edit by Roy Harmon on 2021-10-10
+Last Edit by Roy Harmon on 2021-12-19
 
-## PFogSim Fork -- Changes so far: 
+## PFogSim-v3 -- Changes so far: 
 
 Java:
 - Output folders are automatically created if they don't already exist.
-- Fixed a missing delimiter on line 973 of src/edu/boun/edgecloudsim/utils/SimLogger.java.
+- Dijkstra's shortest paths for network nodes are saved when calculated and looked up when needed, rather than being recalculated each time a single path is requested. This removes a massive calculation load from each initialization.
+- Configurable settings have been moved to the "default_config.properties" file.
+- Contents of output folders are no longer deleted each time the simulator is run. Instead, a new subfolder is created to store the new results.
 
 MATLAB:
 - Fixed numerous bugs in plotGenericResult module.
@@ -14,6 +16,7 @@ MATLAB:
 - Added autoConfig method to configuration class to automatically detect appropriate settings for plotting based on names of files present in sim_results folder.
 - Added plotAllPlots function to easily generate all available plots for all available simulation data with a single button click.
 - The plotGenericResult function's return value is now the figure it creates.
+- The plotAllPlots function now stores all generated plots as individual pages in a single PDF file.
 
 ## **What is pFogSim?**
 
@@ -39,22 +42,24 @@ baskisa@auburn.edu
 This research was supported by NSF award OAC 1659845.
 
 ## Student Contributors (at Auburn University)
-1. Shehenaz Shaik  		(AU Graduate Research Assistant) 
-1. Jacob Hall     		(REU Participant)
-1. Clayton Johnson 		(REU Participant)
-1. Qian Wang        		(AU Graduate Student)
-1. Craigory Coppolla 		(REU Participant)
-1. Jordon Cox			(REU Participant)
-1. Matthew Merck		(REU Participant)
-1. Cameron Berry		(REU Participant)
+1. Shehenaz Shaik  		(AU Graduate Research Assistant)
+2. Jacob Hall     		(REU Participant)
+3. Clayton Johnson 		(REU Participant)
+4. Qian Wang        		(AU Graduate Student)
+5. Craigory Coppolla 		(REU Participant)
+6. Jordon Cox			(REU Participant)
+7. Matthew Merck		(REU Participant)
+8. Cameron Berry		(REU Participant)
+9. Roy Harmon			(AU Graduate Student)
+10. Chengyu Tang		(AU Graduate Student)
 
 Prior effort on development of simulator for fog computing environment by extending iFogSim was contributed by following members. That project is incomplete and has been abandoned. 
 
 1. Shehenaz Shaik(AU Graduate Research Assistant)
-1. Jessica Knezha(REU Participant)
-1. Avraham Rynderman(REU Participant)
-1. William McCarthy(REU Participant)
-1. Denver Strong(REU Participant)
+2. Jessica Knezha(REU Participant)
+3. Avraham Rynderman(REU Participant)
+4. William McCarthy(REU Participant)
+5. Denver Strong(REU Participant)
 
 
 ## **Quick Summary**
