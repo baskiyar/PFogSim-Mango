@@ -12,7 +12,10 @@ function [] = plotAllPlots()
     %   To skip a plot, put a % at the beginning of the line.
     %   There will be one set of plots for each app type, plus one for ALL_APPS.
     
-    config = configuration.autoConfig();
+    config = configuration %.autoConfig;
+    %config.IterationCount = 1;
+    config.FolderPath = "C:\Users\Roy\OneDrive - Auburn University\Class\7970\logfiles";
+    config = config.finishConfig();
     % Use the following lines to manually adjust configuration details if needed.
     config.ColorPlot = 1;
     %config.IncludeErrorBars = 0;
@@ -41,9 +44,9 @@ function [] = plotAllPlots()
 		appendPlot(plotGenericResult(4, 2, 'Average Hops', appType, 0, config), figName);
 		appendPlot(plotGenericResult(4, 3, 'Avg. no. of hosts searched', appType, 0, config, '', 'log'), figName);
 		appendPlot(plotGenericResult(4, 4, 'Avg. no. of messages', appType, 0, config, '', 'log'), figName);
-		appendPlot(plotGenericResult(10,1, 'Total Energy', appType, 0, config, '', 'linear'), figName);
-		appendPlot(plotGenericResult(10,2, 'Dynamic Network Energy', appType, 0, config, '', 'linear'), figName);
-		appendPlot(plotGenericResult(10,3, 'Dynamic Fog Node Energy', appType, 0, config, '', 'linear'), figName);
+% 		appendPlot(plotGenericResult(10,1, 'Total Energy', appType, 0, config, '', 'linear'), figName);
+% 		appendPlot(plotGenericResult(10,2, 'Dynamic Network Energy', appType, 0, config, '', 'linear'), figName);
+% 		appendPlot(plotGenericResult(10,3, 'Dynamic Fog Node Energy', appType, 0, config, '', 'linear'), figName);
     end
 end
 
