@@ -36,7 +36,7 @@ function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, 
                 if s>length(allFiles)
                     error(strcat('Error: SIMRESULT files missing. Iterations expected: ', numOfSimulations, '. Iterations found: ', length(allFiles), '.'))
                 end
-                filePath = strcat(folderPath, '/', allFiles(s).name);
+                filePath = strcat(allFiles(s).folder, '/', allFiles(s).name);
                 fileData = readmatrix(filePath, 'Delimiter', ';','Range', rowOfset+1);
                 value = fileData(1,columnOfset);
                 if(calculatePercentage==1)
@@ -51,7 +51,7 @@ function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, 
     if(numOfSimulations == 1)
         results = all_results;
     else
-        results = mean(all_results); %still 3d matrix but 1xMxN format
+        results = mean(all_results, 3); %still 3d matrix but 1xMxN format
     end
     
     results = squeeze(results); %remove singleton dimensions
@@ -118,7 +118,7 @@ function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, 
     else
         markers = config.LineStyleMono;
         for j=1:size(scenarioType,1)
-            if(config.IncludeErrorBars == 1 && config.ScenarioIterationCounts(j) > 1)
+            if(config.IncludeErrorBars == 1 && config.IterationCount > 1)
                 errorbar(types, results(j,:),min_results(j,:),max_results(j,:),char(markers(j)),'MarkerFaceColor','w','LineWidth',1.4);
             else
                 if strcmp(yScale, 'log')
