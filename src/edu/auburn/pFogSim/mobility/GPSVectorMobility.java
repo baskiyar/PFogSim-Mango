@@ -14,6 +14,7 @@ package edu.auburn.pFogSim.mobility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -86,7 +87,7 @@ public class GPSVectorMobility extends MobilityModel {
 			
 			//Picks a random wireless access point to start at
 			//Shaik modified - to set all mobile devices to same host Fog node - int randDatacenterId = SimUtils.getRandomNumber(0, accessPoints.size()-1);
-            int randDatacenterId = SimUtils.getRandomNumber(0, accessPoints.size()-1);
+            /**int randDatacenterId = SimUtils.getRandomNumber(0, accessPoints.size()-1);
             int randDatacenterId2 = SimUtils.getRandomNumber(0, accessPoints.size()-1);
 			int wlan_id = accessPoints.get(randDatacenterId).getWlanId();
 			int wlan_id2 = accessPoints.get(randDatacenterId2).getWlanId();
@@ -95,7 +96,45 @@ public class GPSVectorMobility extends MobilityModel {
 			double alt = accessPoints.get(randDatacenterId).getLocation().getAltitude();
 			double x_pos2 = accessPoints.get(randDatacenterId2).getLocation().getXPos();
 			double y_pos2 = accessPoints.get(randDatacenterId2).getLocation().getYPos();
-			double alt2 = accessPoints.get(randDatacenterId2).getLocation().getAltitude();
+			double alt2 = accessPoints.get(randDatacenterId2).getLocation().getAltitude();**/
+			
+			// added by Bobby, this section limits creation of devices to a range specified by MIN_LAT, MIN_LONG, MAX_LAT, and MAX_LONG
+			/**int randDatacenterId = SimUtils.getRandomNumber(0, accessPoints.size()-1);
+            int randDatacenterId2 = SimUtils.getRandomNumber(0, accessPoints.size()-1);
+			int wlan_id = accessPoints.get(randDatacenterId).getWlanId();
+			int wlan_id2 = accessPoints.get(randDatacenterId2).getWlanId();
+			double x_pos = SimUtils.getRandomDoubleNumber(this.MIN_LONG, this.MAX_LONG);
+			double y_pos = SimUtils.getRandomDoubleNumber(this.MIN_LAT, this.MAX_LAT);
+			double alt = accessPoints.get(randDatacenterId).getLocation().getAltitude();
+			double x_pos2 = SimUtils.getRandomDoubleNumber(this.MIN_LONG, this.MAX_LONG);
+			double y_pos2 = SimUtils.getRandomDoubleNumber(this.MIN_LAT, this.MAX_LAT);
+			double alt2 = accessPoints.get(randDatacenterId2).getLocation().getAltitude();**/
+		
+		// added by Bobby, this section assigns each mobile device to a layer 1 node in a 1-1 ratio
+		int devicesAssigned = 0;
+		ListIterator<NodeSim> itr = accessPoints.listIterator();
+		while (devicesAssigned < numberOfMobileDevices) {
+			if (!itr.hasNext()) {
+				itr = accessPoints.listIterator();
+			}
+			NodeSim node = itr.next();
+			if (node.getLevel() == 1) {
+				treeMapArray.add(devicesAssigned, new TreeMap<Double, Location>());
+				userTreeMapArray.add(devicesAssigned, new TreeMap<Double, Location>());
+				double x_pos = node.getLocation().getXPos();
+				double x_pos2 = node.getLocation().getXPos();
+				double y_pos = node.getLocation().getYPos();
+				double y_pos2 = node.getLocation().getYPos();
+				double alt = node.getLocation().getAltitude();
+				double alt2 = node.getLocation().getAltitude();
+				treeMapArray.get(devicesAssigned).put((double)10, new Location(node.getWlan_id(), x_pos, y_pos, alt));
+				userTreeMapArray.get(devicesAssigned).put((double)10, new Location(node.getWlan_id(), x_pos2, y_pos2,alt2));
+				devicesAssigned++;
+			}
+			else {
+				continue;
+			}
+		}
 			
 			//Qian find device #1071
 			/*int wlan_id = 0;
@@ -111,8 +150,8 @@ public class GPSVectorMobility extends MobilityModel {
 			}
 			*/
 			//start locating user from 10th seconds
-			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos, alt));
-			userTreeMapArray.get(i).put((double)10, new Location(wlan_id2, x_pos2, y_pos2,alt2));
+//			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos, alt));
+//			userTreeMapArray.get(i).put((double)10, new Location(wlan_id2, x_pos2, y_pos2,alt2));
 			
 		}
 		treeMapArray.addAll(userTreeMapArray);
@@ -139,10 +178,11 @@ public class GPSVectorMobility extends MobilityModel {
 				
 				if(movingDevices) 
 				{
+					Location entry = treeMap.lastEntry().getValue();
 					double x_pos = treeMap.lastEntry().getValue().getXPos();
 					double y_pos = treeMap.lastEntry().getValue().getYPos();				
 					double alt = treeMap.lastEntry().getValue().getAltitude();
-					int wlan_id;// = treeMap.lastEntry().getValue().getServingWlanId();
+					int wlan_id = treeMap.lastEntry().getValue().getServingWlanId();
 					
 					  
 					if(x_pos + long_movement > this.MAX_LONG || x_pos + long_movement < this.MIN_LONG) long_movement = long_movement * -1;

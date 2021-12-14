@@ -273,6 +273,35 @@ public class ESBModel extends NetworkModel {
 		//return the sum
 		return (transferTime + congestionDelay);
 	}
+
+	/**
+	 * Ziyan - added 
+	 * @overload getWlanUploadDelay
+	 * @param isClose
+	 * @return 
+	 */
+	
+	private double getWlanUploadDelay(boolean isClose, Location loc, double dataSize /*Kbit*/, double time) {
+		
+		double bandwidth = loc.getBW(); /* Kb */
+		
+		// check if two nodes are close
+		if (isClose) {
+			
+			// the bandwidth should be 100M
+			bandwidth = 819200; 
+
+			System.out.println(loc + "bandwidth updated: " + bandwidth);
+		}
+		// calculate data transfer time at network node
+		//double transferTime = dataSize * 8 / loc.getBW(); 
+		double transferTime = dataSize * 8 / bandwidth; 
+		// calculate congestion delay at network node
+		//double congestionDelay = calculateESB(0, loc.getBW(), WlanPoissonMean, (avgTaskInputSize+avgTaskOutputSize), getDeviceCount(loc, time)); 
+		double congestionDelay = calculateESB(0, bandwidth, (avgTaskInputSize+avgTaskOutputSize), getDeviceCount(loc)); 
+		//return the sum
+		return (transferTime + congestionDelay);
+	}
 	
 	//Qian add for get congestion delay
 	/**

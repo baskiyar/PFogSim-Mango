@@ -79,13 +79,6 @@ public class mainApp {
 			SimLogger.printLine("Simulation setting file, output folder and iteration number are not provided! Using default ones...");
 		}
 
-		//load settings from configuration file
-		SimSettings SS = SimSettings.getInstance();
-		if(SS.initialize(configFile, edgeDevicesFile, applicationsFile, linksFile) == false){
-			SimLogger.printLine("cannot initialize simulation settings!");
-			System.exit(0);
-		}
-		
 		DataInterpreter.initialize();
 		try {
 			DataInterpreter.readFile();
@@ -94,6 +87,13 @@ public class mainApp {
 			e.printStackTrace();
 		}
 		
+		
+		//load settings from configuration file
+		SimSettings SS = SimSettings.getInstance();
+		if(SS.initialize(configFile, edgeDevicesFile, applicationsFile, linksFile) == false){
+			SimLogger.printLine("cannot initialize simulation settings!");
+			System.exit(0);
+		}
 		
 		if(SS.getFileLoggingEnabled()){
 			SimLogger.enableFileLog();
