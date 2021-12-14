@@ -20,8 +20,8 @@ classdef configuration
         MinimumMobileDevices {mustBeNonnegative} = 0
         MobileDeviceStep {mustBePositive} = 1
         MaximumMobileDevices {mustBePositive} = 1
-        IncludeErrorBars = -1   % Default to -1 to differentiate defaults from manual settings.
-        ColorPlot = -1          % Default to -1 to differentiate defaults from manual settings.
+        IncludeErrorBars {mustBeInteger} = -1   % Default to -1 to differentiate defaults from manual settings.
+        ColorPlot {mustBeInteger} = -1          % Default to -1 to differentiate defaults from manual settings.
         XAxisStep {mustBePositive} = 1
         LineColors {mustBeFloat} = [0.8 0 0;0 0.15 0.6;0 0.23 0;0.6 0 0.6;0.08 0.08 0.08;0 0.8 0.8;0.8 0.4 0;0.8 0.8 0]
         LineStyleMono {mustBeText} = {'-k*','-ko','-ks','-kv','-kp','-kd','-kx','-kh'}
