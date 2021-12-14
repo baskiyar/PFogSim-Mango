@@ -12,9 +12,9 @@ function [] = plotAllPlots()
     %   To skip a plot, put a % at the beginning of the line.
     %   There will be one set of plots for each app type, plus one for ALL_APPS.
     
-    config = configuration %.autoConfig;
+    config = configuration;
     %config.IterationCount = 1;
-    config.FolderPath = "C:\Users\Roy\OneDrive - Auburn University\Class\7970\logfiles";
+%     config.FolderPath = "<insert custom file path here>"; % To use a non-default folder, uncomment this line with your folder path.
     config = config.finishConfig();
     % Use the following lines to manually adjust configuration details if needed.
     config.ColorPlot = 1;
@@ -37,13 +37,16 @@ function [] = plotAllPlots()
 		appendPlot(plotGenericResult(2, 5, 'Service Time on Fog (sec)', appType, 0, config), figName);
 		appendPlot(plotGenericResult(2, 6, 'Processing Time on Cloudlet (sec)', appType, 0, config), figName);
 		appendPlot(plotGenericResult(2, 7, 'Average WLAN Delay (sec)', appType, 0, config), figName);
-		appendPlot(plotGenericResult(3, 5, 'Service Time on Cloud (sec)', appType, 0, config), figName);
-		appendPlot(plotGenericResult(3, 6, 'Processing Time on Cloud (sec)', appType, 0, config), figName);
-		appendPlot(plotGenericResult(3, 7, 'Average WAN Delay (sec)', appType, 0, config), figName);
+        % Not entirely sure why, but these next three plots are flat lines.
+% 		appendPlot(plotGenericResult(3, 5, 'Service Time on Cloud (sec)', appType, 0, config), figName);
+% 		appendPlot(plotGenericResult(3, 6, 'Processing Time on Cloud (sec)', appType, 0, config), figName);
+% 		appendPlot(plotGenericResult(3, 7, 'Average WAN Delay (sec)', appType, 0, config), figName);
 		appendPlot(plotGenericResult(4, 1, 'Average Distance (m)', appType, 0, config), figName);
 		appendPlot(plotGenericResult(4, 2, 'Average Hops', appType, 0, config), figName);
 		appendPlot(plotGenericResult(4, 3, 'Avg. no. of hosts searched', appType, 0, config, '', 'log'), figName);
 		appendPlot(plotGenericResult(4, 4, 'Avg. no. of messages', appType, 0, config, '', 'log'), figName);
+        % Not all pFogSim versions output energy metrics, so if you have
+        % the data and need the plots, uncomment them below.
 % 		appendPlot(plotGenericResult(10,1, 'Total Energy', appType, 0, config, '', 'linear'), figName);
 % 		appendPlot(plotGenericResult(10,2, 'Dynamic Network Energy', appType, 0, config, '', 'linear'), figName);
 % 		appendPlot(plotGenericResult(10,3, 'Dynamic Fog Node Energy', appType, 0, config, '', 'linear'), figName);
@@ -51,6 +54,9 @@ function [] = plotAllPlots()
 end
 
 function [] = appendPlot(figurePlot, figureName)
+    %APPENDPLOT If the figureName exists as a PDF, append the figurePlot;
+    %otherwise, create the file with the figurePlot. Then close the plot to
+    %avoid cluttering the screen.
     if isfile(figureName)
         exportgraphics(figurePlot, figureName, 'Append', true);
     else
