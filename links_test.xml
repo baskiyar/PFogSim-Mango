@@ -5197,8 +5197,8 @@
 			<x_pos>-87.56208364</x_pos>
 			<y_pos>41.76155536</y_pos>
 			<altitude>0.0</altitude>		</right>
-		<left_latency>0.006697392361425002</left_latency>
-		<right_latency>0.006697392361425002</right_latency>
+		<left_latency>0.006697392361425001</left_latency>
+		<right_latency>0.006697392361425001</right_latency>
 	</link>
 <link>
 		<name>L13.0_381.0</name>

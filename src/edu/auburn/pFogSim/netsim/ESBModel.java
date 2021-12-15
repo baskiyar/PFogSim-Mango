@@ -31,6 +31,8 @@ public class ESBModel extends NetworkModel {
 	private static final int BYTES_PER_KB = 1024;
 	private static final int BITS_PER_BYTE = 8;
 	private static final double ONE_HUNDRED_PERCENT = 100;
+	private static final double LATENCY_MULTIPLIER = 0.01/1000;	// defined in Link.java
+	private static final double DISTANCE_THRESHOLD	= 20.0;
 	private double WlanPoissonMean; //seconds
 	private double WanPoissonMean; //seconds
 	private double avgTaskInputSize; //bytes
@@ -464,13 +466,17 @@ public class ESBModel extends NetworkModel {
 	
 	
 	/**
-	 * @author Qian
-	 * added for get delay(Congestion + Propagation) between two nodes
-	 * @param one
-	 * @param two
-	 * @return delaty between two EdgeNodes
-	 */
+	 * @author Qian, Ziyan 
+	 * Qian added for get delay(Congestion + Propagation) between two nodes using two locations
+	 * Ziyan modified - use different bandwidths for calculating propagation delay
+	 * @param one - first location
+	 * @param two - second location
+	 * @return delay between two locations
+	*/
 	public double getDelay(EdgeHost one, EdgeHost two) {
+		
+
+			
 		double delay = 0;
 		Location source;
 		Location destination;
@@ -495,7 +501,9 @@ public class ESBModel extends NetworkModel {
 				SimLogger.printLine(NOT_ADJACENT);
 			}
 			double proDelay = current.traverse(nextHop);
-			double conDelay = getWlanUploadDelay(nextHop.getLocation(), (avgTaskInputSize+avgTaskOutputSize), CloudSim.clock() + delay);
+			
+			double distance = proDelay / LATENCY_MULTIPLIER; // in Link.java, proDelay = dist * LATENCY_MULTIPLIER
+			double conDelay = getWlanUploadDelay(distance < DISTANCE_THRESHOLD, nextHop.getLocation(), (avgTaskInputSize+avgTaskOutputSize), CloudSim.clock() + delay); 			// if distance < 20 => isClose == true
 			delay += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
 	    }
 		return delay;
@@ -503,13 +511,14 @@ public class ESBModel extends NetworkModel {
 	
 	
 	/**
-	 * @author Qian
-	 * added for get delay(Congestion + Propagation) between two nodes using two locations
+	 * @author Qian, Ziyan 
+	 * Qian added for get delay(Congestion + Propagation) between two nodes using two locations
+	 * Ziyan modified - use different bandwidths for calculating propagation delay
 	 * @param one - first location
 	 * @param two - second location
 	 * @return delay between two locations
 	 */
-	public double getDleay(Location one, Location two) {
+	public double getDelay(Location one, Location two) {
 		double delay = 0;
 		NodeSim src;
 		NodeSim dest;
@@ -530,7 +539,10 @@ public class ESBModel extends NetworkModel {
 				SimLogger.printLine(NOT_ADJACENT);
 			}
 			double proDelay = current.traverse(nextHop);
-			double conDelay = getWlanUploadDelay(nextHop.getLocation(), (avgTaskInputSize+avgTaskOutputSize), CloudSim.clock() + delay);
+			
+			double distance = proDelay / LATENCY_MULTIPLIER; // in Link.java, proDelay = dist * LATENCY_MULTIPLIER
+
+			double conDelay = getWlanUploadDelay(distance < DISTANCE_THRESHOLD, nextHop.getLocation(), (avgTaskInputSize+avgTaskOutputSize), CloudSim.clock() + delay); 			// if distance < 20 => isClose == true
 			delay += (proDelay + conDelay + SimSettings.ROUTER_PROCESSING_DELAY);
 	    }
 		return delay;

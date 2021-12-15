@@ -339,7 +339,7 @@ public class EdgeHost extends Host {
 		
 		double hostProcessingDelay = (mb.getTaskLengthRequirement()) / this.getVmScheduler().getPeCapacity(); 
 		double acceptableLatency = mb.getLatencyRequirement();
-		double hostNetworkDelay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(mb.getLocation(), this.location);
+		double hostNetworkDelay = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDelay(mb.getLocation(), this.location);
 		
 		//Consider round trip latency - assuming user is co-located with device, in current test environment.
 		hostNetworkDelay += hostNetworkDelay;

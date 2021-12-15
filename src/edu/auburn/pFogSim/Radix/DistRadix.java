@@ -116,7 +116,7 @@ public class DistRadix {
 		int index=0;
 		//latencies = new double[coords.size()];
 		for (Location loc: coords) {
-			latency = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDleay(ref, loc);
+			latency = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDelay(ref, loc);
 			// Shaik *** this may overwrite the previous entry with same latency. hence, entry-value should be a list of locs(of nodes) with same latency, rather than a single loc.
 			//SimLogger.printLine("Latency: " + latency+"  Index: "+index);
 			if (latencyMap.containsKey(latency)) {

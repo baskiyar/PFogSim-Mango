@@ -3,7 +3,7 @@
 <datacenter arch="Cloud" os="Linux" vmm="Xen">
 
 <costPerBw>2.4007811311696707E-6</costPerBw>
-	<costPerSec>0.00659722</costPerSec>
+	<costPerSec>0.00659722 </costPerSec>
 	<costPerMem>0.05</costPerMem>
 	<costPerStorage>0.1</costPerStorage>
 <location>
@@ -30,10 +30,10 @@
 		</VM>
 	</host>
 </datacenter>
-<datacenter arch="City Hall" os="Linux" vmm="Xen">
+<datacenter arch="Cloud" os="Linux" vmm="Xen">
 
 <costPerBw>2.4007811311696707E-6</costPerBw>
-	<costPerSec>0.01319444</costPerSec>
+	<costPerSec>0.00659722 </costPerSec>
 	<costPerMem>0.05</costPerMem>
 	<costPerStorage>0.1</costPerStorage>
 <location>
@@ -47,16 +47,16 @@
 	<dx>0</dx>
 	<dy>0</dy>/n</location>
 <host>
-	<core>286</core>
-	<mips>1305600</mips>
-	<ram>1649267441664</ram>
-	<storage>10468982784</storage>
+	<core>28672</core>
+	<mips>13056000</mips>
+	<ram>164926744166400</ram>
+	<storage>1046898278400</storage>
 
 	<VM vmm="Xen">
-			<core>286</core>
-			<mips>1305600</mips>
-			<ram>1649267441664</ram>
-			<storage>10468982784</storage>
+			<core>28672</core>
+			<mips>13056000</mips>
+			<ram>164926744166400</ram>
+			<storage>1046898278400</storage>
 		</VM>
 	</host>
 </datacenter>
