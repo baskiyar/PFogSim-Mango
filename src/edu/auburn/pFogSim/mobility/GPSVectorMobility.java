@@ -81,9 +81,9 @@ public class GPSVectorMobility extends MobilityModel {
 		}
 				
 		//initialize tree maps and position of mobile devices
-		for(int i=0; i<numberOfMobileDevices; i++) {
-			treeMapArray.add(i, new TreeMap<Double, Location>());
-			userTreeMapArray.add(i, new TreeMap<Double, Location>());
+//		for(int i=0; i<numberOfMobileDevices; i++) {
+//			treeMapArray.add(i, new TreeMap<Double, Location>());
+//			userTreeMapArray.add(i, new TreeMap<Double, Location>());
 			
 			//Picks a random wireless access point to start at
 			//Shaik modified - to set all mobile devices to same host Fog node - int randDatacenterId = SimUtils.getRandomNumber(0, accessPoints.size()-1);
@@ -131,9 +131,6 @@ public class GPSVectorMobility extends MobilityModel {
 				userTreeMapArray.get(devicesAssigned).put((double)10, new Location(node.getWlan_id(), x_pos2, y_pos2,alt2));
 				devicesAssigned++;
 			}
-			else {
-				continue;
-			}
 		}
 			
 			//Qian find device #1071
@@ -153,7 +150,7 @@ public class GPSVectorMobility extends MobilityModel {
 //			treeMapArray.get(i).put((double)10, new Location(wlan_id, x_pos, y_pos, alt));
 //			userTreeMapArray.get(i).put((double)10, new Location(wlan_id2, x_pos2, y_pos2,alt2));
 			
-		}
+//		}
 		treeMapArray.addAll(userTreeMapArray);
 
 		Random rng = new Random(SimSettings.getInstance().getRandomSeed());
