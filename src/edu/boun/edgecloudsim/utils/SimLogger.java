@@ -1244,21 +1244,21 @@ SimSettings.DELIMITER;
 		totalMipsUtil = 0;
 		for (int i = 0; i < fogLayerAvgMipsUtil.length; i++) {
 			//printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)fogLayerAvgNwUtil[i])));
-			printLine("\tLevel " + (i + 1) + ": " + String.format("%.2f", ((double)fogLayerAvgNwUtil[i] / 100)) + " %"); // / 100?
+			printLine("\tLevel " + (i + 1) + ": " + String.format("%.2f", ((double)fogLayerAvgMipsUtil[i] * 100)) + " %"); // / 100?
 			totalMipsUtil += (double)fogLayerAvgMipsUtil[i];
 		}
 
 		printLine("\nAverage fog network utilization per layer:"); // Shaik added
 		totalNwUtil = 0;
 		for (int i = 0; i < fogLayerAvgNwUtil.length; i++) {
-			printLine("\tLevel " + (i + 1) + ": " + String.format("%.6f", ((double)fogLayerAvgNwUtil[i])));
+			printLine("\tLevel " + (i + 1) + ": " + String.format("%.2f", ((double)fogLayerAvgNwUtil[i] * 100)) + " %");
 			totalNwUtil += (double)fogLayerAvgNwUtil[i];
 		}
 		
 		printLine("average Fog server utilization: " 
-				+ String.format("%.2f", (totalMipsUtil / 100) / (double)fogLayerAvgMipsUtil.length) + "%"); // Shaik added
+				+ String.format("%.4f", avgMipsUtilPrcnt) + "%"); // Shaik added // Harmon changed -- EdgeHost.getFnMipsUtilization already multiplies by 100
 		printLine("average Fog network utilization: " 
-				+ String.format("%.2f", (totalNwUtil / 100) / (double)fogLayerAvgNwUtil.length) + "%"); // Shaik added
+				+ String.format("%.4f", avgNwUtilPrcnt) + "%"); // Shaik added // Harmon changed -- EdgeHost.getFnNwUtilization already multiplies by 100
 
 		
 		// clear related collections (map list etc.)
