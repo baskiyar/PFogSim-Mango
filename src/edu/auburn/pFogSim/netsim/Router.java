@@ -62,21 +62,21 @@ public class Router {
 		}*/
 		Dijkstra router = getDijkstra();//getAPathFinder();
 		router._dest = dest; 
-		if (pathFinder.containsKey(src) && pathFinder.get(src).containsKey(dest)) {
+		if (pathFinder.containsKey(src) && pathFinder.get(src).containsKey(dest) && !pathFinder.get(src).get(dest).isEmpty()) {
 			return pathFinder.get(src).get(dest);
 		}
-		if (pathFinder.containsKey(dest) && pathFinder.get(dest).containsKey(src)) {
-			if (!pathFinder.containsKey(src)) {
-				pathFinder.put(src, new HashMap<>());
-			}
-			LinkedList<NodeSim> reversePath = pathFinder.get(dest).get(src);
-			LinkedList<NodeSim> newPath = new LinkedList<>();
-			while (!reversePath.isEmpty()) {
-				newPath.addFirst(reversePath.pollLast());
-			}
-			pathFinder.get(src).put(dest, newPath);
-			return pathFinder.get(src).get(dest);
-		}
+//		if (pathFinder.containsKey(dest) && pathFinder.get(dest).containsKey(src) && !pathFinder.get(dest).get(src).isEmpty()) {
+//			if (!pathFinder.containsKey(src)) {
+//				pathFinder.put(src, new HashMap<>());
+//			}
+//			LinkedList<NodeSim> reversePath = pathFinder.get(dest).get(src);
+//			LinkedList<NodeSim> newPath = new LinkedList<>();
+//			while (!reversePath.isEmpty()) {
+//				newPath.addFirst(reversePath.pollLast());
+//			}
+//			pathFinder.get(src).put(dest, newPath);
+//			return pathFinder.get(src).get(dest);
+//		}
 		router.runDijkstra((Set<NodeSim>) network.getNodes(), src);
 		HashSet<Pair<NodeSim, Pair<Double, NodeSim>>> completedCopy = new HashSet<>();
 		completedCopy = (HashSet<Pair<NodeSim, Pair<Double, NodeSim>>>) router.completed.clone();
@@ -85,21 +85,21 @@ public class Router {
 			if (!pathFinder.containsKey(src)) {
 				pathFinder.put(src, new HashMap<>());
 			}
-			if (!pathFinder.get(src).containsKey(node)) {
+			if (!pathFinder.get(src).containsKey(node) || pathFinder.get(src).get(node).isEmpty()) {
 				pathFinder.get(src).put(node, router.getPath(node));
 				router.completed = (HashSet<Pair<NodeSim, Pair<Double, NodeSim>>>) completedCopy.clone();
 			}
-			if (!pathFinder.containsKey(node)) {
-				pathFinder.put(node, new HashMap<>());
-			}
-			if (!pathFinder.get(node).containsKey(src)) {
-				LinkedList<NodeSim> reversePath = pathFinder.get(src).get(node);
-				LinkedList<NodeSim> newPath = new LinkedList<>();
-				while (!reversePath.isEmpty()) {
-					newPath.addFirst(reversePath.pollLast());
-				}
-				pathFinder.get(node).put(src, newPath);
-			}
+//			if (!pathFinder.containsKey(node)) {
+//				pathFinder.put(node, new HashMap<>());
+//			}
+//			if (!pathFinder.get(node).containsKey(src)) {
+//				LinkedList<NodeSim> reversePath = pathFinder.get(src).get(node);
+//				LinkedList<NodeSim> newPath = new LinkedList<>();
+//				while (!reversePath.isEmpty()) {
+//					newPath.addFirst(reversePath.pollLast());
+//				}
+//				pathFinder.get(node).put(src, newPath);
+//			}
 		}
 		return pathFinder.get(src).get(dest);
 //		travelQueue = router.getPath(dest);
