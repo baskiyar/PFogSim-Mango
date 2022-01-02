@@ -293,7 +293,7 @@ public class ESBModel extends NetworkModel {
 			// the bandwidth should be 100M
 			bandwidth = 819200; 
 
-			System.out.println(loc + "bandwidth updated: " + bandwidth);
+			System.out.println("\n" + loc + "\n" + "bandwidth updated: " + bandwidth);
 		}
 		// calculate data transfer time at network node
 		//double transferTime = dataSize * 8 / loc.getBW(); 
@@ -389,9 +389,11 @@ public class ESBModel extends NetworkModel {
 	
 	public int getHopsBack(Task task, int hostID, boolean sepa) {
 		NodeSim dest = networkTopology.findNode(SimManager.getInstance().getLocalServerManager().findHostById(hostID).getLocation(), false);
-		NodeSim src = networkTopology.findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
+		NodeSim src;
 		if (sepa) {
 			src = networkTopology.findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getDesMobileDeviceId(),CloudSim.clock()), false);
+		} else {
+			src = networkTopology.findNode(SimManager.getInstance().getMobilityModel().getLocation(task.getMobileDeviceId(),CloudSim.clock()), false);
 		}
 		return router.findPath(networkTopology, dest, src).size();
 	}
