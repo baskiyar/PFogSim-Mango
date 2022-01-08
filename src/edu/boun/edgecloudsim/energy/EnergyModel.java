@@ -159,7 +159,7 @@ public class EnergyModel {
 		//After getting all power values, we multiply them by the time in seconds to get energy in joules
 		double idle = totalEnergy * totalTimeSeconds;
 		totalIdleEnergy = idle;
-		System.out.println(nodes.size() + "number");
+//		System.out.println(nodes.size() + "number"); \\Roy Harmon removed this to clean up console output.
 		EnergyModel.totalEnergy += idle;
 	}
 	

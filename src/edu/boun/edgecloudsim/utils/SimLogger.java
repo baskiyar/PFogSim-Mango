@@ -48,6 +48,9 @@ import edu.boun.edgecloudsim.energy.EnergyModel;
  *
  */
 public class SimLogger {
+	private static final String AUTO_GENERATED_FILE = "#auto generated file!";
+
+
 	public static enum TASK_STATUS {
 		CREATED, UPLOADING, PROCESSING, DOWNLOADING, COMPLETED, REJECTED_DUE_TO_VM_CAPACITY, REJECTED_DUE_TO_BANDWIDTH, UNFINISHED_DUE_TO_BANDWIDTH, UNFINISHED_DUE_TO_MOBILITY, ASSIGNED_HOST, REJECTED_DUE_TO_LACK_OF_NODE_CAPACITY, REJECTED_DUE_TO_LACK_OF_NETWORK_BANDWIDTH, REJECTED_DUE_TO_UNACCEPTABLE_LATENCY
 	}
@@ -143,9 +146,10 @@ public class SimLogger {
 	 * @param msg
 	 */
 	public static void printLine(String msg) {
-		if (printLogEnabled)
+		if (printLogEnabled) {
 			System.out.println(msg);
 			ps.println(msg);
+		}
 	}
 
 	
@@ -154,9 +158,10 @@ public class SimLogger {
 	 * @param msg
 	 */
 	public static void print(String msg) {
-		if (printLogEnabled)
+		if (printLogEnabled) {
 			System.out.print(msg);
 			ps.print(msg);
+		}
 	}
 	
 	public static void fileInitialize(String outputFolder) throws IOException {
@@ -502,7 +507,7 @@ public class SimLogger {
 		double[] fogLayerAvgNwUtil = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
 		double[] fogLayerTotalNwUtil = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
 		double[] fogLayerEntryNwCount = {0, 0, 0, 0, 0, 0, 0}; // Shaik added
-		int[]  mipsValue = {43520, 309000, 309000, 913920, 8529920, 29245440, 78336000}; // Ziyan added for computing fog node utilization
+//		int[]  mipsValue = {43520, 309000, 309000, 913920, 8529920, 29245440, 78336000}; // Ziyan added for computing fog node utilization
 
 
 		// open all files and prepare them for write
@@ -592,20 +597,20 @@ public class SimLogger {
 				genericFiles[i] = new File(outputFolder, filePrefix + "_" + fileName);
 				genericFWs[i] = new FileWriter(genericFiles[i], true);
 				genericBWs[i] = new BufferedWriter(genericFWs[i]);
-				appendToFile(genericBWs[i], "#auto generated file!");
+				appendToFile(genericBWs[i], AUTO_GENERATED_FILE);
 			}
 
 			if (SimSettings.getInstance().getDeepFileLoggingEnabled()) {
-				appendToFile(successBW, "#auto generated file!");
-				appendToFile(failBW, "#auto generated file!");
+				appendToFile(successBW, AUTO_GENERATED_FILE);
+				appendToFile(failBW, AUTO_GENERATED_FILE);
 			}
 
-			appendToFile(vmLoadBW, "#auto generated file!");
-			appendToFile(locationBW, "#auto generated file!");
-			appendToFile(distBW, "#auto generated file!");
-			appendToFile(hopBW, "#auto generated file!");
-			appendToFile(distBackBW, "#auto generated file!");
-			appendToFile(hopsBackBW, "#auto generated file!");
+			appendToFile(vmLoadBW, AUTO_GENERATED_FILE);
+			appendToFile(locationBW, AUTO_GENERATED_FILE);
+			appendToFile(distBW, AUTO_GENERATED_FILE);
+			appendToFile(hopBW, AUTO_GENERATED_FILE);
+			appendToFile(distBackBW, AUTO_GENERATED_FILE);
+			appendToFile(hopsBackBW, AUTO_GENERATED_FILE);
 		
 		}
 		

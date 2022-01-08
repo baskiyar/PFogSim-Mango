@@ -118,6 +118,8 @@ public class SimSettings {
     private boolean MOVING_COMMUNITY_CENTER;
     private boolean MOVING_SCHOOL;
     
+    private boolean ASSIGN_DEVICES_LAYER1; // Should mobile devices be assigned to layer 1 nodes at a 1:1 ratio?
+    
     public boolean isMOVING_CLOUD() {
 		return MOVING_CLOUD;
 	}
@@ -152,6 +154,9 @@ public class SimSettings {
 		return MOVING_SCHOOL;
 	}
 
+	public boolean getAssignDevicesLayer1() {
+		return ASSIGN_DEVICES_LAYER1;
+	}
 
 	//Qian selected nodes
     private String[] SELECTED_NODES;
@@ -247,6 +252,7 @@ public class SimSettings {
 			DEEP_FILE_LOG_ENABLED = Boolean.parseBoolean(prop.getProperty("deep_file_log_enabled"));
 			//Qian get trace enable property
 			TRACE_ENABLED = Boolean.parseBoolean(prop.getProperty("trace_enabled"));
+			ASSIGN_DEVICES_LAYER1 = Boolean.parseBoolean(prop.getProperty("assign_devices_layer1"));
 			
 			MIN_NUM_OF_MOBILE_DEVICES = Integer.parseInt(prop.getProperty("min_number_of_mobile_devices"));
 			MAX_NUM_OF_MOBILE_DEVICES = Integer.parseInt(prop.getProperty("max_number_of_mobile_devices"));

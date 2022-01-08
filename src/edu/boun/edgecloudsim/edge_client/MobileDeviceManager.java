@@ -118,7 +118,11 @@ public class MobileDeviceManager extends DatacenterBroker {
 			}
 			//add this download energy to the router dynamic field and the total energy field of the EnergyModel class
 			EnergyModel.appendRouterEnergy(downloadEnergy);
-
+			
+			/* 
+			 * Since all of these arguments (except 'sepa') are specific to the 'task' object, 
+			 * should these functions simply accept a Task instead? - Roy Harmon
+			*/
 			SimLogger.getInstance().addHops(task.getCloudletId(), ((ESBModel) networkModel).getHops(task, task.getAssociatedHostId()));
 			SimLogger.getInstance().addHopsBack(task.getCloudletId(), ((ESBModel) networkModel).getHopsBack(task, task.getAssociatedHostId(), sepa));
 			/*if (((ESBModel) networkModel).getHops(task, task.getAssociatedHostId()) == 0) {
