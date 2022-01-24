@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ArrayList;
-import javafx.util.Pair;
+// import javafx.util.Pair;
 //import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Comparator;
@@ -373,4 +373,37 @@ public class Router {
 	}
 }
 
+class Pair<K,V>{
+	private K key;
+	private V value;
+
+	public Pair(K key, V value){
+		this.key = key;
+		this.value = value;
+	}
+	
+	public K getKey(){
+		return key;
+	}
+
+	public V getValue(){
+		return value;
+	}
+
+	// Final should be ok here, since pairs are intended to be immutable 
+	@Override
+	public final int hashCode() {
+		// TODO check this 
+		return key.hashCode() + 97*value.hashCode(); 
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Pair<?,?>){
+			Pair<?,?> other = (Pair<?,?>) obj;
+			return other.getKey().equals(this.getKey()) && other.getValue().equals(this.getValue());
+		}
+		return false;
+	}
+}
 
