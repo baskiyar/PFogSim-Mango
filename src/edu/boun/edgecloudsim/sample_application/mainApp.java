@@ -139,14 +139,20 @@ public class mainApp {
 						boolean trace_flag = false;  // mean trace events
 				
 						// Initialize the CloudSim library
+						SimLogger.print("Initializing CloudSim...");
 						CloudSim.init(num_user, calendar, trace_flag, 0.01);
-						SimLogger.printLine("CloudSim.init reached");
+						SimLogger.printLine("Done");
+
 						// Generate EdgeCloudsim Scenario Factory
+						SimLogger.print("Creating Scenario Factory...");
 						ScenarioFactory sampleFactory = new SampleScenarioFactory(iteMobileDevices,SS.getSimulationTime(), orchestratorPolicy, simScenario);
-						SimLogger.printLine("ScenarioFactory reached");
+						SimLogger.printLine("Done");
+
 						// Generate EdgeCloudSim Simulation Manager
+						SimLogger.print("Creating SimManager:\n\t");
 						SimManager manager = new SimManager(sampleFactory, iteMobileDevices, simScenario);
-						SimLogger.printLine("SimManager reached");
+						SimLogger.printLine("Done creating SimManager");
+
 						// Start simulation
 						manager.startSimulation();
 					}
@@ -154,7 +160,7 @@ public class mainApp {
 					{
 						SimLogger.printLine("The simulation has been terminated due to an unexpected error");
 						e.printStackTrace();
-						System.exit(0);
+						System.exit(1);
 					}
 					
 					Date ScenarioEndDate = Calendar.getInstance().getTime();
