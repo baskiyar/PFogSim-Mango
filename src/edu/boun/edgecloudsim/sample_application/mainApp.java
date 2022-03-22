@@ -48,7 +48,7 @@ public class mainApp {
 		//enable console output and file output of this application
 		SimLogger.enablePrintLog();
 		
-		int iterationNumber = 1; // index for the list of n scenarios in properties file is from 0..n-1
+		int iterationNumber = SimulationScenarios.CENTRALIZED_ORCHESTRATOR; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
 		String outFolder2 = "";
@@ -169,4 +169,16 @@ public class mainApp {
 		now = df.format(SimulationEndDate);
 		SimLogger.printLine("Simulation finished at " + now +  ". It took " + SimUtils.getTimeDifference(SimulationStartDate,SimulationEndDate));
 	}
+}
+
+class SimulationScenarios {
+	static final int HAFA_ORCHESTRATOR = 0;
+	static final int CENTRALIZED_ORCHESTRATOR = 1;
+	static final int LOCAL_ONLY = 2;
+	static final int CLOUD_ONLY = 3;
+	static final int EDGE_BY_LATENCY = 4;
+	static final int EDGE_BY_DISTANCE = 5;
+	static final int FIXED_NODE = 6;
+	static final int SELECTED_LEVELS = 7;
+	static final int SELECTED_NODES = 8;
 }
