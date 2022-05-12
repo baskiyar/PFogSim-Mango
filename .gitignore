@@ -21,3 +21,9 @@ scripts/Analysis/matlab/plotGenericResults.m
 *.png
 scripts/Analysis/matlab/prcnt_histgraph.m
 scripts/Analysis/matlab/plotHistFailedTasks.m
+src/.DS_Store
+src/edu/auburn/pFogSim/.DS_Store
+src/edu/auburn/.DS_Store
+src/edu/.DS_Store
+bin/.DS_Store
+.DS_Store
