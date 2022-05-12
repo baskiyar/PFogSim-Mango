@@ -24,13 +24,13 @@ import edu.boun.edgecloudsim.core.SimSettings;
 public class DataInterpreter {
 	private static int MAX_LEVELS = 7;
 	private static String[] files= {
-			"Google_Cloud_DC.csv", 
-			"Chicago_CityHall.csv", 
-			"Chicago_Universities.csv", 
-			"Chicago_Wards.csv", 
-			"Chicago_Libraries.csv", 
-			"Chicago_Connect.csv", 
-			"Chicago_Schools.csv"};
+			"data/Google_Cloud_DC.csv", 
+			"data/Chicago_CityHall.csv", 
+			"data/Chicago_Universities.csv", 
+			"data/Chicago_Wards.csv", 
+			"data/Chicago_Libraries.csv", 
+			"data/Chicago_Connect.csv", 
+			"data/Chicago_Schools.csv"};
 	private static String[][] nodeSpecs = new String[MAX_LEVELS][20];// the specs for all layers of the fog devices
 	private static ArrayList<Double[]> nodeList = new ArrayList<Double[]>();
 	private static ArrayList<Double[]> tempList = new ArrayList<Double[]>();
