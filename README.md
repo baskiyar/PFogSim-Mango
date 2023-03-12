@@ -1,5 +1,5 @@
 # pFogSim : A Simulator For Evaluating Dynamic and Layered Fog-Computing Environments
-Last Edit by Roy Harmon on 2021-12-19
+Last Edit by Chengyu Tang on 2023-03-12
 
 ## PFogSim-v3 -- Changes so far: 
 
@@ -67,7 +67,13 @@ Prior effort on development of simulator for fog computing environment by extend
 ![Class Diagram](https://github.com/AgentEnder/pFogSim/blob/master/Class_Interactions.jpg)
  - This may not appear to be straight-forward, however it will make more sense down below
 
-## **How to Run** 
+# **Usage**
+
+## Requirements
+- Java 1.8. Other Java versions are not tested.
+- MATLAB >= 2021b.
+
+## How to Run
 (May have to change some of the files mentioned to tailor for your stuff)
  - Two ways: 
 	- [Scripts](https://github.com/jihall77/pFogSim/tree/master/scripts/sample_application) (Not too different from EdgeCloudSim)
@@ -98,16 +104,20 @@ Prior effort on development of simulator for fog computing environment by extend
 	- [mainApp.java](https://github.com/jihall77/pFogSim/tree/master/src/edu/boun/edgecloudsim/sample_application) (IDEs, we used Eclipse but any will work)
 		- Will output to console
 		- It is the same file given by EdgeCloudSim with some additions
-		- pFogSim/sim_results/ite(#) directory should exist at time of run (or run with appropriate permissions)
-		- pFogSim/sim_results/consoleruns directory should also exist.
-## **Creating Custom Scenarios**
+		- ~~pFogSim/sim_results/ite(#) directory should exist at time of run (or run with appropriate permissions)~~
+		- ~~pFogSim/sim_results/consoleruns directory should also exist.~~ (directories will be automatically created)
+## Creating Custom Scenarios
  - Customizable Files: 
  	- Change DataInterpreter to fit data sets into XML formats
 	- All files that may need to be customized if desired:
 		- node_test.xml, link_test.xml
 		- [config files](https://github.com/jihall77/pFogSim/tree/master/scripts/sample_application/config)
 		- Everything will run appropriately
-## **General Outline + Comments**: 
+
+## Visualization
+Simulation results can be visulized using MATLAB scripts in the [`scripts/Analysis/matlab/`](https://github.com/baskiyar/PFogSim-Mango/tree/master/scripts/Analysis/matlab) directory. It is recommended to use `plotALLPlots.m` to create multiple plots at once. To use this script, change the `config.FolderPath` variable to where the output files are stored or put all the output files into the same directory as the script. Comment and uncomment the corresponding lines according to your needs. It will scan the whole directory and use all `*_GENERIC.log` files to makes the plots. All the plots will be put into one PDF file named `{date}_{time}.pdf` stored in the previously provided directory (`pwd` by default). The file [`doc/available_data_from_output_files`](https://github.com/baskiyar/PFogSim-Mango/tree/master/doc/available_data_from_output_files) provides interpretations of the output files.
+
+# **General Outline + Comments**: 
 There are a ton of function calls not mentioned here that are necessary for the simulator to function, however are unnecessary to discuss in the context of the simulator as a whole.
 In honor of proper coding etiquette:
 ```

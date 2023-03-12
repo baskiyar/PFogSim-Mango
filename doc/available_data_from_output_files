@@ -1,0 +1,72 @@
+Author: Roy Harmon
+
+Data provided by PFogSim in "*GENERIC.log" files:
+
+Row 1:
+Completed tasks
+Failed tasks
+Uncompleted tasks
+Tasks failed due to bandwidth
+Service time (seconds)
+Processing time (seconds)
+Average network delay (seconds)
+Average VM utilization (%)
+Average cost ($)
+Tasks rejected due to VM capacity
+Tasks failed due to mobility
+Average host MIPS utilization (%)
+Average network utilization (%)
+Tasks rejected due to lack of node capacity
+Tasks rejected due to lack of network bandwidth
+Tasks rejected due to lack of unacceptable latency
+Total failed + completed tasks
+
+Row 2:
+Tasks completed on fog nodes
+Tasks failed on fog nodes
+Tasks uncompleted on fog nodes
+Tasks failed due to LAN bandwidth
+Average fog node service time (per task)
+Average fog node processing time (per task)
+Average WLAN delay (per task)
+
+Row 3:
+Tasks completed on cloud
+Tasks failed on cloud
+Tasks uncompleted on cloud
+Tasks failed due to WAN bandwidth
+Average cloud service time (seconds)
+Average cloud processing time (seconds)
+Average WAN delay (seconds)
+
+Row 4:
+Average distance from task to host (m)
+Average network hops from task to host
+Average prospective hosts considered for placement
+Average number of messages exchanged for placement
+Average number of puddles searched for placement
+
+Row 5:
+Number of fog nodes per hierarchy level
+
+Row 6:
+Average MIPS utilization per hierarchy level (%)
+
+Row 7:
+Average network utilization per hierarchy level (%)
+
+Row 8:
+Total failed + completed tasks
+Tasks failed due to mobility
+Tasks rejected due to lack of node capacity
+Tasks rejected due to lack of network bandwidth
+Tasks rejected due to unacceptable latency
+
+Row 9:
+Average distance from host to user (m)
+Average hops from host to user
+
+Row 10:
+Total energy
+Dynamic network energy
+Dynamic fog node energy
