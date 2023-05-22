@@ -47,7 +47,7 @@ Average number of messages exchanged for placement
 Average number of puddles searched for placement
 
 Row 5:
-Number of fog nodes per hierarchy level
+Tasks executed per layer
 
 Row 6:
 Average MIPS utilization per hierarchy level (%)
