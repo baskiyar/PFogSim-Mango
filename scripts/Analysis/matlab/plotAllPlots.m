@@ -30,10 +30,10 @@ function [] = plotAllPlots()
 		appendPlot(plotGenericResult(1, 5, 'Service Time (sec)', appType, 0, config), figName);
 		appendPlot(plotGenericResult(1, 6, 'Processing Time (sec)', appType, 0, config), figName);
 		appendPlot(plotGenericResult(1, 7, 'Average Network Delay (sec)', appType, 0, config), figName);
-		appendPlot(plotGenericResult(1, 8, 'Average VM Utilization (%)', appType, 1, config), figName);
+		appendPlot(plotGenericResult(1, 8, 'Average VM Utilization (%)', appType, 0, config), figName);
 		appendPlot(plotGenericResult(1, 9, 'Average Cost ($)', appType, 0, config), figName);
-		appendPlot(plotGenericResult(1, 12, 'Avg. host util. (%)', appType, 1, config, '', 'linear'), figName);
-		appendPlot(plotGenericResult(1, 13, 'Avg. network util. (%)', appType, 1, config, '', 'linear'), figName);
+		appendPlot(plotGenericResult(1, 12, 'Avg. host util. (%)', appType, 0, config, '', 'linear'), figName);
+		appendPlot(plotGenericResult(1, 13, 'Avg. network util. (%)', appType, 0, config, '', 'linear'), figName);
 		appendPlot(plotGenericResult(2, 5, 'Service Time on Fog (sec)', appType, 0, config), figName);
 		appendPlot(plotGenericResult(2, 6, 'Processing Time on Cloudlet (sec)', appType, 0, config), figName);
 		appendPlot(plotGenericResult(2, 7, 'Average WLAN Delay (sec)', appType, 0, config), figName);
