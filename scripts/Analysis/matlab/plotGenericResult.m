@@ -136,7 +136,7 @@ function plotOutput = plotGenericResult(rowOfset, columnOfset, yLabel, appType, 
     end
     
     hold off;
-    axis square
+    % axis square
     xlabel(config.HorizontalAxisLabel);
     set(gca,'XTick', (stepOfxAxis*stepOfMobileDeviceLoop):(stepOfxAxis*stepOfMobileDeviceLoop):endOfMobileDeviceLoop);
     ylabel(yLabel);

@@ -13,16 +13,21 @@ function [] = plotAllPlots()
     %   There will be one set of plots for each app type, plus one for ALL_APPS.
     
     config = configuration;
-    %config.IterationCount = 1;
-%     config.FolderPath = "<insert custom file path here>"; % To use a non-default folder, uncomment this line with your folder path.
+    % config.IterationCount = 1;
+    % config.FolderPath = "<insert custom file path here>"; % To use a non-default folder, uncomment this line with your folder path.
     config = config.finishConfig();
     % Use the following lines to manually adjust configuration details if needed.
     config.ColorPlot = 1;
-    %config.IncludeErrorBars = 0;
+
+    % By default, the figure resolution is calculated bsaed on the monitor resolution (a squre whose edge equals 90% of the shorter side of the monitor). 
+    % To set a custom figure resolution, uncomment the following line and change to the desired values ([horizontal pixels, vertial pixels]).
+    % config.PlotWindowCoordinates(3:4) = [1200, 900];
+
+    % config.IncludeErrorBars = 0;
 
     % The output PDF file will be named according to the date and time.
     % This will keep it unique for each run.
-    figName = strcat(config.FolderPath, '\', string(datetime('now', 'InputFormat', 'yyyy-MM-dd_HH-mm-ss')), '.pdf');
+    figName = strcat(config.FolderPath, filesep, string(datetime('now', 'InputFormat', 'yyyy-MM-dd_HH-mm-ss')), '.pdf');
 
     for i=1:length(config.AppTypes)
         appType = config.AppTypes(i);

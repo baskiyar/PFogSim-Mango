@@ -3,48 +3,48 @@ Author: Roy Harmon
 Data provided by PFogSim in "*GENERIC.log" files:
 
 Row 1:
-Completed tasks
-Failed tasks
-Uncompleted tasks
-Tasks failed due to bandwidth
-Service time (seconds)
-Processing time (seconds)
-Average network delay (seconds)
-Average VM utilization (%)
-Average cost ($)
-Tasks rejected due to VM capacity
-Tasks failed due to mobility
-Average host MIPS utilization (%)
-Average network utilization (%)
-Tasks rejected due to lack of node capacity
-Tasks rejected due to lack of network bandwidth
-Tasks rejected due to lack of unacceptable latency
-Total failed + completed tasks
+1 Completed tasks
+2 Failed tasks
+3 Uncompleted tasks
+4 Tasks failed due to bandwidth
+5 Service time (seconds)
+6 Processing time (seconds)
+7 Average network delay (seconds)
+8 Average VM utilization (%)
+9 Average cost ($)
+10 Tasks rejected due to VM capacity
+11 Tasks failed due to mobility
+12 Average host MIPS utilization (%)
+13 Average network utilization (%)
+14 Tasks rejected due to lack of node capacity
+15 Tasks rejected due to lack of network bandwidth
+16 Tasks rejected due to lack of unacceptable latency
+17 Total failed + completed tasks
 
 Row 2:
-Tasks completed on fog nodes
-Tasks failed on fog nodes
-Tasks uncompleted on fog nodes
-Tasks failed due to LAN bandwidth
-Average fog node service time (per task)
-Average fog node processing time (per task)
-Average WLAN delay (per task)
+1 Tasks completed on fog nodes
+2 Tasks failed on fog nodes
+3 Tasks uncompleted on fog nodes
+4 Tasks failed due to LAN bandwidth
+5 Average fog node service time (per task)
+6 Average fog node processing time (per task)
+7 Average WLAN delay (per task)
 
 Row 3:
-Tasks completed on cloud
-Tasks failed on cloud
-Tasks uncompleted on cloud
-Tasks failed due to WAN bandwidth
-Average cloud service time (seconds)
-Average cloud processing time (seconds)
-Average WAN delay (seconds)
+1 Tasks completed on cloud
+2 Tasks failed on cloud
+3 Tasks uncompleted on cloud
+4 Tasks failed due to WAN bandwidth
+5 Average cloud service time (seconds)
+6 Average cloud processing time (seconds)
+7 Average WAN delay (seconds)
 
 Row 4:
-Average distance from task to host (m)
-Average network hops from task to host
-Average prospective hosts considered for placement
-Average number of messages exchanged for placement
-Average number of puddles searched for placement
+1 Average distance from task to host (m)
+2 Average network hops from task to host
+3 Average prospective hosts considered for placement
+4 Average number of messages exchanged for placement
+5 Average number of puddles searched for placement
 
 Row 5:
 Tasks executed per layer
@@ -56,17 +56,17 @@ Row 7:
 Average network utilization per hierarchy level (%)
 
 Row 8:
-Total failed + completed tasks
-Tasks failed due to mobility
-Tasks rejected due to lack of node capacity
-Tasks rejected due to lack of network bandwidth
-Tasks rejected due to unacceptable latency
+1 Total failed + completed tasks
+2 Tasks failed due to mobility
+3 Tasks rejected due to lack of node capacity
+4 Tasks rejected due to lack of network bandwidth
+5 Tasks rejected due to unacceptable latency
 
 Row 9:
-Average distance from host to user (m)
-Average hops from host to user
+1 Average distance from host to user (m)
+2 Average hops from host to user
 
 Row 10:
-Total energy
-Dynamic network energy
-Dynamic fog node energy
+1 Total energy
+2 Dynamic network energy
+3 Dynamic fog node energy
