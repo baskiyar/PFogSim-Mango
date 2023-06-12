@@ -174,7 +174,7 @@ public class EdgeServerManager {
 
 		// If HAFA Orchestrator, configure HAFA logical architecture
 		if (SimManager.getInstance().getEdgeOrchestrator() instanceof HAFAOrchestrator) {
-			SimLogger.print("\n\t Creating clusters of fog nodes...");
+			SimLogger.printLine("\n\t Creating clusters of fog nodes...");
 			
 			// Organize fog nodes belonging to each layer into clusters based on predefined criteria.
 			FogHierCluster clusterObject = new FogHierCluster((ArrayList<NodeSim>)nodesForTopography);
@@ -182,7 +182,7 @@ public class EdgeServerManager {
 			//Populate puddles with cluster members; Save configuration in network topology
 			networkTopology.setPuddles(makePuddles(clusterObject));
 			
-			SimLogger.printLine("HAFA Achitecture configuration completed.");
+			SimLogger.printLine("HAFA Architecture configuration completed.");
 
 		}// end HAFA Arch
 		checkUniqueDC();
