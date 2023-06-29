@@ -121,14 +121,13 @@ public class DataInterpreter {
 				if(MIN_LAT == -100000 || temp[2] < MIN_LAT)	MIN_LAT = temp[2];	
 				
 				//Add to output file		    
-			    node.println(String.format("<datacenter arch=\"%s\" os=\"%s\" vmm=\"%s\">\n", nodeSpecs[MAX_LEVELS - i - 1][0], nodeSpecs[MAX_LEVELS - i - 1][1], nodeSpecs[MAX_LEVELS - i - 1][2]));
-			    node.println(String.format("<costPerBw>%s</costPerBw>\n\t<costPerSec>%s</costPerSec>\n\t<costPerMem>%s</costPerMem>\n\t<costPerStorage>%s</costPerStorage>", nodeSpecs[MAX_LEVELS - i - 1][3], nodeSpecs[MAX_LEVELS - i - 1][4], nodeSpecs[MAX_LEVELS - i - 1][5], nodeSpecs[MAX_LEVELS - i - 1][6]));
+			    node.println(String.format("\n<datacenter arch=\"%s\" os=\"%s\" vmm=\"%s\">", nodeSpecs[MAX_LEVELS - i - 1][0], nodeSpecs[MAX_LEVELS - i - 1][1], nodeSpecs[MAX_LEVELS - i - 1][2]));
+			    node.println(String.format("\t<costPerBw>%s</costPerBw>\n\t<costPerSec>%s</costPerSec>\n\t<costPerMem>%s</costPerMem>\n\t<costPerStorage>%s</costPerStorage>", nodeSpecs[MAX_LEVELS - i - 1][3], nodeSpecs[MAX_LEVELS - i - 1][4], nodeSpecs[MAX_LEVELS - i - 1][5], nodeSpecs[MAX_LEVELS - i - 1][6]));
 			    //Qian change level start from 1
-			    node.println(String.format("<location>\n\t<x_pos>%s</x_pos>\n\t<y_pos>%s</y_pos>\n\t<altitude>%s</altitude>\n\t<level>%s</level>\t<wlan_id>%s</wlan_id>\n\t<wap>%s</wap>\n\t<moving>%s</moving>\n\t<bandwidth>%s</bandwidth>\n\t<dx>%s</dx>\n\t<dy>%s</dy>/n</location>", nodeLoc[2], nodeLoc[1],nodeLoc[3], MAX_LEVELS - i, counter, nodeSpecs[MAX_LEVELS - i - 1][7], nodeSpecs[MAX_LEVELS - i - 1][8], nodeSpecs[MAX_LEVELS - i - 1][13], nodeLoc[4], nodeLoc[5]));
-			    node.println(String.format("<host>\n\t<core>%s</core>\n\t<mips>%s</mips>\n\t<ram>%s</ram>\n\t<storage>%s</storage>\n", nodeSpecs[MAX_LEVELS - i - 1][9], nodeSpecs[MAX_LEVELS - i - 1][10], nodeSpecs[MAX_LEVELS - i - 1][11], nodeSpecs[MAX_LEVELS - i - 1][12]));
-			    node.println(String.format("\t<VM vmm=\"%s\">\n\t\t\t<core>%s</core>\n\t\t\t<mips>%s</mips>\n\t\t\t<ram>%s</ram>\n\t\t\t<storage>%s</storage>\n\t\t</VM>\n\t</host>\n</datacenter>", nodeSpecs[MAX_LEVELS - i - 1][2], nodeSpecs[MAX_LEVELS - i - 1][9], nodeSpecs[MAX_LEVELS - i - 1][10], nodeSpecs[MAX_LEVELS - i - 1][11], nodeSpecs[MAX_LEVELS - i - 1][12]));
+			    node.println(String.format("\t<location>\n\t\t<x_pos>%s</x_pos>\n\t\t<y_pos>%s</y_pos>\n\t\t<altitude>%s</altitude>\n\t\t<level>%s</level>\n\t\t<wlan_id>%s</wlan_id>\n\t\t<wap>%s</wap>\n\t\t<moving>%s</moving>\n\t\t<bandwidth>%s</bandwidth>\n\t\t<dx>%s</dx>\n\t\t<dy>%s</dy>\n\t</location>", nodeLoc[2], nodeLoc[1],nodeLoc[3], MAX_LEVELS - i, counter, nodeSpecs[MAX_LEVELS - i - 1][7], nodeSpecs[MAX_LEVELS - i - 1][8], nodeSpecs[MAX_LEVELS - i - 1][13], nodeLoc[4], nodeLoc[5]));
+			    node.println(String.format("\t<host>\n\t\t<core>%s</core>\n\t\t<mips>%s</mips>\n\t\t<ram>%s</ram>\n\t\t<storage>%s</storage>", nodeSpecs[MAX_LEVELS - i - 1][9], nodeSpecs[MAX_LEVELS - i - 1][10], nodeSpecs[MAX_LEVELS - i - 1][11], nodeSpecs[MAX_LEVELS - i - 1][12]));
+			    node.println(String.format("\t\t<VM vmm=\"%s\">\n\t\t\t<core>%s</core>\n\t\t\t<mips>%s</mips>\n\t\t\t<ram>%s</ram>\n\t\t\t<storage>%s</storage>\n\t\t</VM>\n\t</host>\n</datacenter>", nodeSpecs[MAX_LEVELS - i - 1][2], nodeSpecs[MAX_LEVELS - i - 1][9], nodeSpecs[MAX_LEVELS - i - 1][10], nodeSpecs[MAX_LEVELS - i - 1][11], nodeSpecs[MAX_LEVELS - i - 1][12]));
 	
-				
 				//Make link to previous closest node on higher level
 				if(!nodeList.isEmpty())
 				{
@@ -138,7 +137,6 @@ public class DataInterpreter {
 					//Go through all nodes one level up and find the closest
 					for(int j = 0; j < nodeList.size(); j++)
 					{
-
 						distance = measure(nodeList.get(j)[2], nodeList.get(j)[1], nodeList.get(j)[3], temp[2], temp[1], temp[3]);
 						if(distance < minDistance)
 						{
@@ -155,33 +153,26 @@ public class DataInterpreter {
 						}
 						double dis = measure(temp[2], temp[1], temp[3], nodeList.get(index)[2], nodeList.get(index)[1], nodeList.get(index)[3]) / 1000;
 						double latency = dis * 0.01;
-						links.println("<link>\n" + 
+						links.println("\t<link>\n" + 
 					    		"		<name>L" + nodeList.get(index)[0] + "_" + temp[0] + "</name>\n" + 
 					    		"		<left>\n" + 
 					    		"			<x_pos>" + temp[1] + "</x_pos>\n" + 
 					    		"			<y_pos>" + temp[2] + "</y_pos>\n" +
-					    		"			<altitude>" + temp[3] + "</altitude>" +
+					    		"			<altitude>" + temp[3] + "</altitude>\n" +
 					    		"		</left>\n" + 
 					    		"		<right>\n" + 
 					    		"			<x_pos>" + nodeList.get(index)[1] + "</x_pos>\n" + 
 					    		"			<y_pos>" + nodeList.get(index)[2] + "</y_pos>\n" +
-					    		"			<altitude>" + nodeList.get(index)[3] + "</altitude>" +
+					    		"			<altitude>" + nodeList.get(index)[3] + "</altitude>\n" +
 					    		"		</right>\n" + 
 					    		"		<left_latency>" + latency + "</left_latency>\n" + 
 					    		"		<right_latency>" + latency + "</right_latency>\n" + 
 					    		"	</link>");
-						
-						
 					}
 				}
 
-				
-
 				tempList.add(new Double[] {(double)temp[0], (double)temp[1], (double)temp[2], (double)temp[3]});
 				counter++;
-				
-				
-
 			}
 			
 			prevCounter = counter;
@@ -199,7 +190,6 @@ public class DataInterpreter {
 					int index1 = -1, index2 = -1;
 					double distance = 0;
 					
-					
 					//Go through all nodes and find the closest
 					for(int j = 0; j < tempList.size(); j++)
 					{
@@ -213,7 +203,6 @@ public class DataInterpreter {
 							minDistance = distance;
 							index1 = j;
 						}
-
 						else if(distance < secondminDistance && distance != 0)
 						{
 							secondminDistance = distance;
@@ -230,23 +219,21 @@ public class DataInterpreter {
 						}
 						double dis = measure(input[2], input[1], input[3], tempList.get(index1)[2], tempList.get(index1)[1], tempList.get(index1)[3]) / 1000;
 						double latency = dis * 0.01;
-						links.println("<link>\n" + 
+						links.println("\t<link>\n" + 
 					    		"		<name>L" + tempList.get(index1)[0] + "_" + input[0] + "</name>\n" + 
 						   		"		<left>\n" + 
 					    		"			<x_pos>" + input[1] + "</x_pos>\n" + 
 						   		"			<y_pos>" + input[2] + "</y_pos>\n" + 
-					   			"			<altitude>" + input[3] + "</altitude>" +
+					   			"			<altitude>" + input[3] + "</altitude>\n" +
 						   		"		</left>\n" + 
 						   		"		<right>\n" + 
 						    	"			<x_pos>" + tempList.get(index1)[1] + "</x_pos>\n" + 
 						   		"			<y_pos>" + tempList.get(index1)[2] + "</y_pos>\n" + 
-						   		"			<altitude>" + tempList.get(index1)[3] + "</altitude>" +
+						   		"			<altitude>" + tempList.get(index1)[3] + "</altitude>\n" +
 						   		"		</right>\n" + 
 						   		"		<left_latency>"+latency+"</left_latency>\n" + 
 						   		"		<right_latency>"+latency+"</right_latency>\n" + 
 						   		"	</link>");
-						
-
 						}
 					if(index2 >= 0)
 					{
@@ -256,24 +243,22 @@ public class DataInterpreter {
 						}
 						double dis = measure(input[2], input[1], input[3], tempList.get(index2)[2], tempList.get(index2)[1], tempList.get(index2)[3]) / 1000;
 						double latency = dis * 0.01;
-						links.println("<link>\n" + 
+						links.println("\t<link>\n" + 
 					    		"		<name>L" + tempList.get(index2)[0] + "_" + input[0] + "</name>\n" + 
 						   		"		<left>\n" + 
 					    		"			<x_pos>" + input[1] + "</x_pos>\n" + 
 						   		"			<y_pos>" + input[2] + "</y_pos>\n" +
-						   		"			<altitude>" + input[3] + "</altitude>" +
+						   		"			<altitude>" + input[3] + "</altitude>\n" +
 						   		"		</left>\n" + 
 						   		"		<right>\n" + 
 						    	"			<x_pos>" + tempList.get(index2)[1] + "</x_pos>\n" + 
 						   		"			<y_pos>" + tempList.get(index2)[2] + "</y_pos>\n" +
-						   		"			<altitude>" + tempList.get(index2)[3] + "</altitude>" +
+						   		"			<altitude>" + tempList.get(index2)[3] + "</altitude>\n" +
 						   		"		</right>\n" + 
 						   		"		<left_latency>"+latency+"</left_latency>\n" + 
 						   		"		<right_latency>"+latency+"</right_latency>\n" + 
 						   		"	</link>");
-						
-						
-						}
+					}
 				}
 			}
 
@@ -328,7 +313,6 @@ public class DataInterpreter {
 		node.close();
 		links.close();
 
-		
 		return;
 	}
 	

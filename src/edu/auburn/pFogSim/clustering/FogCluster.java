@@ -364,7 +364,7 @@ public class FogCluster {
 		// Calculate proximity matrix i.e. distances between each pair of points.
 		calcProximity();
 		
-		// If there s only one point, then place it in a singleton cluster.
+		// If there is only one point, then place it in a singleton cluster.
 		if (arrayList.size() == 1){
 			setClusterNumber(1);
 			cluster = new Double[clusterNumber][][];
