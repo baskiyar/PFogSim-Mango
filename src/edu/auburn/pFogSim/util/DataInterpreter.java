@@ -427,26 +427,26 @@ public class DataInterpreter {
 			nodeSpecs[MAX_LEVELS - 1][18] = prop.getProperty("nodeSpecs_1_18"); // Cameron and Matthew modified to add idle power consumption (watt)
 			nodeSpecs[MAX_LEVELS - 1][19] = prop.getProperty("nodeSpecs_1_19"); // Cameron and Matthew modified to add max power consumption (watt)
 
-			nodeSpecs[MAX_LEVELS - 2][0] = prop.getProperty("nodeSpecs_1_0");
-			nodeSpecs[MAX_LEVELS - 2][1] = prop.getProperty("nodeSpecs_1_1");
-			nodeSpecs[MAX_LEVELS - 2][2] = prop.getProperty("nodeSpecs_1_2");
+			nodeSpecs[MAX_LEVELS - 2][0] = prop.getProperty("nodeSpecs_2_0");
+			nodeSpecs[MAX_LEVELS - 2][1] = prop.getProperty("nodeSpecs_2_1");
+			nodeSpecs[MAX_LEVELS - 2][2] = prop.getProperty("nodeSpecs_2_2");
 			nodeSpecs[MAX_LEVELS - 2][3] = hundredGbRouterCost + "";
-			nodeSpecs[MAX_LEVELS - 2][4] = prop.getProperty("nodeSpecs_1_4"); // Shaik modified - prev = "0.037"
-			nodeSpecs[MAX_LEVELS - 2][5] = prop.getProperty("nodeSpecs_1_5");
-			nodeSpecs[MAX_LEVELS - 2][6] = prop.getProperty("nodeSpecs_1_6");
-			nodeSpecs[MAX_LEVELS - 2][7] = prop.getProperty("nodeSpecs_1_7");
+			nodeSpecs[MAX_LEVELS - 2][4] = prop.getProperty("nodeSpecs_2_4"); // Shaik modified - prev = "0.037"
+			nodeSpecs[MAX_LEVELS - 2][5] = prop.getProperty("nodeSpecs_2_5");
+			nodeSpecs[MAX_LEVELS - 2][6] = prop.getProperty("nodeSpecs_2_6");
+			nodeSpecs[MAX_LEVELS - 2][7] = prop.getProperty("nodeSpecs_2_7");
 			nodeSpecs[MAX_LEVELS - 2][8] = Boolean.toString(SimSettings.getInstance().isMOVING_CITY_HALL());
-			nodeSpecs[MAX_LEVELS - 2][9] = prop.getProperty("nodeSpecs_1_9"); // Shaik modified to 1/100th - prev = 28672
-			nodeSpecs[MAX_LEVELS - 2][10] = prop.getProperty("nodeSpecs_1_10"); // Shaik modified to 1/100th (522240) - prev = 48742400 // same m/c as that as WARD
-			nodeSpecs[MAX_LEVELS - 2][11] = prop.getProperty("nodeSpecs_1_11");
-			nodeSpecs[MAX_LEVELS - 2][12] = prop.getProperty("nodeSpecs_1_12");
-			nodeSpecs[MAX_LEVELS - 2][13] = prop.getProperty("nodeSpecs_1_13"); // Shaik modified to 1/100th - prev = 104857600 // Shaik fixed back to 100% value
-			nodeSpecs[MAX_LEVELS - 2][14] = prop.getProperty("nodeSpecs_1_14"); // Cameron and Matthew modified to add idle power (watt)
-			nodeSpecs[MAX_LEVELS - 2][15] = prop.getProperty("nodeSpecs_1_15"); // Cameron and Matthew modified to add energy for downloads (nJ/bit)
-			nodeSpecs[MAX_LEVELS - 2][16] = prop.getProperty("nodeSpecs_1_16"); // Cameron and Matthew modified to add energy for uploads (nJ/bit)
-			nodeSpecs[MAX_LEVELS - 2][17] = prop.getProperty("nodeSpecs_1_17"); // Cameron and Matthew modified to add max power consumption (watt)
-			nodeSpecs[MAX_LEVELS - 2][18] = prop.getProperty("nodeSpecs_1_18"); // Cameron and Matthew modified to add idle power consumption (watt)
-			nodeSpecs[MAX_LEVELS - 2][19] = prop.getProperty("nodeSpecs_1_19"); // Cameron and Matthew modified to add max power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 2][9] = prop.getProperty("nodeSpecs_2_9"); // Shaik modified to 1/100th - prev = 28672
+			nodeSpecs[MAX_LEVELS - 2][10] = prop.getProperty("nodeSpecs_2_10"); // Shaik modified to 1/100th (522240) - prev = 48742400 // same m/c as that as WARD
+			nodeSpecs[MAX_LEVELS - 2][11] = prop.getProperty("nodeSpecs_2_11");
+			nodeSpecs[MAX_LEVELS - 2][12] = prop.getProperty("nodeSpecs_2_12");
+			nodeSpecs[MAX_LEVELS - 2][13] = prop.getProperty("nodeSpecs_2_13"); // Shaik modified to 1/100th - prev = 104857600 // Shaik fixed back to 100% value
+			nodeSpecs[MAX_LEVELS - 2][14] = prop.getProperty("nodeSpecs_2_14"); // Cameron and Matthew modified to add idle power (watt)
+			nodeSpecs[MAX_LEVELS - 2][15] = prop.getProperty("nodeSpecs_2_15"); // Cameron and Matthew modified to add energy for downloads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 2][16] = prop.getProperty("nodeSpecs_2_16"); // Cameron and Matthew modified to add energy for uploads (nJ/bit)
+			nodeSpecs[MAX_LEVELS - 2][17] = prop.getProperty("nodeSpecs_2_17"); // Cameron and Matthew modified to add max power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 2][18] = prop.getProperty("nodeSpecs_2_18"); // Cameron and Matthew modified to add idle power consumption (watt)
+			nodeSpecs[MAX_LEVELS - 2][19] = prop.getProperty("nodeSpecs_2_19"); // Cameron and Matthew modified to add max power consumption (watt)
 			
 			nodeSpecs[MAX_LEVELS - 3][0] = prop.getProperty("nodeSpecs_3_0");
 			nodeSpecs[MAX_LEVELS - 3][1] = prop.getProperty("nodeSpecs_3_1");
