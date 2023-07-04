@@ -357,6 +357,19 @@ public class EdgeServerManager {
 		}
 		//SimSettings.PLACE_TYPES placeType = SimUtils.stringToPlace(attractiveness);
 
+		//Make NodeSim object with the input x/y positions and add that to the list of nodes
+			NodeSim newNode;
+			if(moving)
+			{
+				newNode = new NodeSim(x_pos, y_pos, altitude, level, wlan_id, wap, moving, new Location(dx, dy));
+			}
+			else 
+			{
+				newNode = new NodeSim(x_pos, y_pos, altitude, level, wlan_id, wap);
+			}
+			newNode.getLocation().setBW(bw);
+			nodesForTopography.add(newNode);
+
 		NodeList hostNodeList = datacenterElement.getElementsByTagName("host");
 		for (int j = 0; j < hostNodeList.getLength(); j++) {
 			Node hostNode = hostNodeList.item(j);
@@ -379,19 +392,6 @@ public class EdgeServerManager {
 			for(int i=0; i<numOfCores; i++){
 				peList.add(new Pe(i, new PeProvisionerSimple(mips))); // need to store Pe id and MIPS Rating
 			}
-			
-			//Make NodeSim object with the input x/y positions and add that to the list of nodes
-			NodeSim newNode;
-			if(moving)
-			{
-				newNode = new NodeSim(x_pos, y_pos, altitude, level, wlan_id, wap, moving, new Location(dx, dy));
-			}
-			else 
-			{
-				newNode = new NodeSim(x_pos, y_pos, altitude, level, wlan_id, wap);
-			}
-			newNode.getLocation().setBW(bw);
-			nodesForTopography.add(newNode);
 			
 			
 			//4. Create Hosts with its id and list of PEs and add them to the list of machines
