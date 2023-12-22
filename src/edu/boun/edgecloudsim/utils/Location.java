@@ -3,7 +3,7 @@
  * 
  * Description:  Location class used in EdgeCloudSim
  * 
- * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
+ * License:      GPL - http://www.gnu.org/copyleft/gpl.html
  * Copyright (c) 2017, Bogazici University, Istanbul, Turkey
  */
 

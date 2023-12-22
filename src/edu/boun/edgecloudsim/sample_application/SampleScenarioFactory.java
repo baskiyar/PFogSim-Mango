@@ -4,7 +4,7 @@
  * Description:  Sample factory providing the default
  *               instances of required abstract classes 
  * 
- * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
+ * License:      GPL - http://www.gnu.org/copyleft/gpl.html
  * Copyright (c) 2017, Bogazici University, Istanbul, Turkey
  */
 

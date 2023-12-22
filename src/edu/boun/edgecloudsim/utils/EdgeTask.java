@@ -4,7 +4,7 @@
  * Description: 
  * A custom class used in Load Generator Model to store tasks information
  * 
- * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
+ * License:      GPL - http://www.gnu.org/copyleft/gpl.html
  * Copyright (c) 2017, Bogazici University, Istanbul, Turkey
  */
 

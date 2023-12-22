@@ -4,7 +4,7 @@
  * Description: 
  * EdgeHost adds location information over CloudSim's Host class
  *               
- * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
+ * License:      GPL - http://www.gnu.org/copyleft/gpl.html
  * Copyright (c) 2017, Bogazici University, Istanbul, Turkey
  * 
  * Modified by Shehenaz Shaik, Qian Wang

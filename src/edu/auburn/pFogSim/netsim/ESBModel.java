@@ -237,14 +237,14 @@ public class ESBModel extends NetworkModel {
 	/**
 	 * shaik - updated
 	 * calculate congestion delay.
-	 * @param propogationDelay
+	 * @param propagationDelay
 	 * @param bandwidth
 	 * @param PoissonMean
 	 * @param avgTaskSize
 	 * @param deviceCount
 	 * @return
 	 */
-	private double calculateESB(double propogationDelay, double bandwidth /*Kbps*/, double avgTaskSize /*KB*/, int deviceCount){
+	private double calculateESB(double propagationDelay, double bandwidth /*Kbps*/, double avgTaskSize /*KB*/, int deviceCount){
 		double Bps=0;
 		
 		avgTaskSize = avgTaskSize * BYTES_PER_KB; //convert from KB to Byte
@@ -254,7 +254,7 @@ public class ESBModel extends NetworkModel {
 		double result = 0.0;
 		if (deviceCount >= 1)
 			result = (avgTaskSize * (deviceCount-1)) / Bps;
-		result += propogationDelay;
+		result += propagationDelay;
 		return result;
 	}
 	

@@ -9,7 +9,7 @@
  * cloud servers. If you want to use different topology, for example
  * MAN edge server, you should modify the flow defined in this class.
  * 
- * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
+ * License:      GPL - http://www.gnu.org/copyleft/gpl.html
  * Copyright (c) 2017, Bogazici University, Istanbul, Turkey
  */
 
@@ -55,9 +55,9 @@ public class MobileDeviceManager extends DatacenterBroker {
 	private static final int BASE = 100000; //start from base in order not to conflict cloudsim tag!
 	private static final int REQUEST_RECEIVED_BY_CLOUD = BASE + 1;
 	private static final int REQUEST_PROCESSED_BY_CLOUD = BASE + 2;
-	private static final int REQUEST_RECIVED_BY_EDGE_DEVICE = BASE + 3;
+	private static final int REQUEST_RECEIVED_BY_EDGE_DEVICE = BASE + 3;
 	private static final int RESPONSE_RECEIVED_BY_MOBILE_DEVICE = BASE + 4;
-//	private static final int REQUEST_RECIVED_BY_EDGE_ORCHESTRATOR = BASE + 5;
+//	private static final int REQUEST_RECEIVED_BY_EDGE_ORCHESTRATOR = BASE + 5;
 	private int taskIdCounter=0;
 	private ArrayList<MobileDevice> mobileDevices;
 	
@@ -217,7 +217,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 				break;
 			}
 			/*
-			case REQUEST_RECIVED_BY_EDGE_ORCHESTRATOR:
+			case REQUEST_RECEIVED_BY_EDGE_ORCHESTRATOR:
 			{
 				Task task = (Task) ev.getData();
 				double internalDelay = networkModel.getDownloadDelay(
@@ -235,7 +235,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 				break;
 			}
 			*/
-			case REQUEST_RECIVED_BY_EDGE_DEVICE:
+			case REQUEST_RECEIVED_BY_EDGE_DEVICE:
 			{
 				Task task = (Task) ev.getData();
 				
@@ -449,7 +449,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 //			
 //			if(WlanDelay > 0){
 //				networkModel.uploadStarted(task.getMobileDeviceId(), nextHopId, task.getCloudletFileSize());
-//				schedule(getId(), WlanDelay, REQUEST_RECIVED_BY_EDGE_ORCHESTRATOR, task);
+//				schedule(getId(), WlanDelay, REQUEST_RECEIVED_BY_EDGE_ORCHESTRATOR, task);
 //				SimLogger.getInstance().uploadStarted(task.getCloudletId(),WlanDelay);
 //			}
 //			else {
@@ -475,7 +475,7 @@ public class MobileDeviceManager extends DatacenterBroker {
 			
 			if(WlanDelay > 0){
 				networkModel.uploadStarted(currentLocation, nextHopId);
-				schedule(getId(), WlanDelay, REQUEST_RECIVED_BY_EDGE_DEVICE, task);
+				schedule(getId(), WlanDelay, REQUEST_RECEIVED_BY_EDGE_DEVICE, task);
 				SimLogger.getInstance().uploadStarted(task.getCloudletId(),WlanDelay);
 			}
 			else {
@@ -611,10 +611,10 @@ public class MobileDeviceManager extends DatacenterBroker {
 
 	
 	/**
-	 * @return the requestRecivedByEdgeDevice
+	 * @return the requestReceivedByEdgeDevice
 	 */
-	public static int getRequestRecivedByEdgeDevice() {
-		return REQUEST_RECIVED_BY_EDGE_DEVICE;
+	public static int getRequestReceivedByEdgeDevice() {
+		return REQUEST_RECEIVED_BY_EDGE_DEVICE;
 	}
 
 	

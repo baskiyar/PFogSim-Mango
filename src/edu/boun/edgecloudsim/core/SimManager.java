@@ -2,11 +2,11 @@
  * Title:        EdgeCloudSim - Simulation Manager
  * 
  * Description: 
- * SimManager is an singleton class providing many abstract classeses such as
+ * SimManager is an singleton class providing many abstract classes such as
  * Network Model, Mobility Model, Edge Orchestrator to other modules
  * Critical simulation related information would be gathered via this class 
  * 
- * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
+ * License:      GPL - http://www.gnu.org/copyleft/gpl.html
  * Copyright (c) 2017, Bogazici University, Istanbul, Turkey
  */
 

@@ -5,7 +5,7 @@
  * National University of Singapore
  * August 2004
  *
- * Licence: GPL - http://www.gnu.org/copyleft/gpl.html
+ * License: GPL - http://www.gnu.org/copyleft/gpl.html
  * Copyright (c) 2004, The University of Melbourne, Australia and National
  * University of Singapore
  * Packet.java - Interface of a Network Packet.

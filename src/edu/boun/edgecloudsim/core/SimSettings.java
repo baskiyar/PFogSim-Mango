@@ -5,9 +5,9 @@
  * SimSettings provides system wide simulation settings. It is a
  * singleton class and provides all necessary information to other modules.
  * If you need to use another simulation setting variable in your
- * config file, add related getter methot in this class.
+ * config file, add related getter method in this class.
  *               
- * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
+ * License:      GPL - http://www.gnu.org/copyleft/gpl.html
  * Copyright (c) 2017, Bogazici University, Istanbul, Turkey
  */
 
@@ -98,7 +98,7 @@ public class SimSettings {
     private int NUM_OF_EDGE_HOSTS;
     private int NUM_OF_EDGE_VMS;
     
-    private double WAN_PROPOGATION_DELAY; //seconds unit in properties file
+    private double WAN_PROPAGATION_DELAY; //seconds unit in properties file
     private double LAN_INTERNAL_DELAY; //seconds unit in properties file
     private int BANDWITH_WLAN; //Mbps unit in properties file
     private int BANDWITH_WAN; //Mbps unit in properties file
@@ -259,7 +259,7 @@ public class SimSettings {
 			MOBILE_DEVICE_COUNTER_SIZE = Integer.parseInt(prop.getProperty("mobile_device_counter_size"));
 			MOVING_DEVICES = Boolean.parseBoolean(prop.getProperty("moving_devices"));
 			
-			WAN_PROPOGATION_DELAY = Double.parseDouble(prop.getProperty("wan_propogation_delay"));
+			WAN_PROPAGATION_DELAY = Double.parseDouble(prop.getProperty("wan_propagation_delay"));
 			LAN_INTERNAL_DELAY = Double.parseDouble(prop.getProperty("lan_internal_delay"));
 			BANDWITH_WLAN = BITS_PER_KILOBIT * Integer.parseInt(prop.getProperty("wlan_bandwidth"));
 			BANDWITH_WAN = BITS_PER_KILOBIT * Integer.parseInt(prop.getProperty("wan_bandwidth"));
@@ -450,16 +450,16 @@ public class SimSettings {
 	
 	
 	/**
-	 * returns WAN propogation delay (in second unit) from properties file
+	 * returns WAN propagation delay (in second unit) from properties file
 	 */
-	public double getWanPropogationDelay()
+	public double getWanPropagationDelay()
 	{
-		return WAN_PROPOGATION_DELAY;
+		return WAN_PROPAGATION_DELAY;
 	}
 
 	
 	/**
-	 * returns internal LAN propogation delay (in second unit) from properties file
+	 * returns internal LAN propagation delay (in second unit) from properties file
 	 */
 	public double getInternalLanDelay()
 	{
@@ -504,7 +504,7 @@ public class SimSettings {
 
 	
 	/**
-	 * returns the maximunm number of the mobile devices used in the simulation
+	 * returns the maximum number of the mobile devices used in the simulation
 	 */
 	public int getMaxNumOfMobileDev()
 	{
@@ -567,7 +567,7 @@ public class SimSettings {
 
 	
 	/**
-	 * returns simulation screnarios as string
+	 * returns simulation scenarios as string
 	 */
 	public String[] getSimulationScenarios()
 	{
@@ -626,10 +626,10 @@ public class SimSettings {
 	 * @param element
 	 * @param key
 	 */
-	private void isAttribtuePresent(Element element, String key) {
+	private void isAttributePresent(Element element, String key) {
         String value = element.getAttribute(key);
         if (value.isEmpty() || value == null){
-        	throw new IllegalArgumentException("Attribure '" + key + "' is not found in '" + element.getNodeName() +"'");
+        	throw new IllegalArgumentException("Attribute '" + key + "' is not found in '" + element.getNodeName() +"'");
         }
 	}
 
@@ -670,7 +670,7 @@ public class SimSettings {
 				Node appNode = appList.item(i);
 				Element appElement = (Element) appNode;
 				
-				isAttribtuePresent(appElement, "name");
+				isAttributePresent(appElement, "name");
 				SimSettings.APP_TYPES appType = APP_TYPES.valueOf(appElement.getAttribute("name"));
 				
 				String[] elementList = {
@@ -720,9 +720,9 @@ public class SimSettings {
 				Node datacenterNode = datacenterList.item(i);
 	
 				Element datacenterElement = (Element) datacenterNode;
-				isAttribtuePresent(datacenterElement, "arch");
-				isAttribtuePresent(datacenterElement, "os");
-				isAttribtuePresent(datacenterElement, "vmm");
+				isAttributePresent(datacenterElement, "arch");
+				isAttributePresent(datacenterElement, "os");
+				isAttributePresent(datacenterElement, "vmm");
 				isElementPresent(datacenterElement, "costPerBw");
 				isElementPresent(datacenterElement, "costPerSec");
 				isElementPresent(datacenterElement, "costPerMem");
@@ -755,7 +755,7 @@ public class SimSettings {
 						Node vmNode = vmList.item(k);
 						
 						Element vmElement = (Element) vmNode;
-						isAttribtuePresent(vmElement, "vmm");
+						isAttributePresent(vmElement, "vmm");
 						isElementPresent(vmElement, "core");
 						isElementPresent(vmElement, "mips");
 						isElementPresent(vmElement, "ram");
@@ -1269,18 +1269,18 @@ public class SimSettings {
 
 	
 	/**
-	 * @return the wAN_PROPOGATION_DELAY
+	 * @return the wAN_PROPAGATION_DELAY
 	 */
-	public double getWAN_PROPOGATION_DELAY() {
-		return WAN_PROPOGATION_DELAY;
+	public double getWAN_PROPAGATION_DELAY() {
+		return WAN_PROPAGATION_DELAY;
 	}
 
 	
 	/**
-	 * @param wAN_PROPOGATION_DELAY the wAN_PROPOGATION_DELAY to set
+	 * @param wAN_PROPAGATION_DELAY the wAN_PROPAGATION_DELAY to set
 	 */
-	public void setWAN_PROPOGATION_DELAY(double wAN_PROPOGATION_DELAY) {
-		WAN_PROPOGATION_DELAY = wAN_PROPOGATION_DELAY;
+	public void setWAN_PROPAGATION_DELAY(double wAN_PROPAGATION_DELAY) {
+		WAN_PROPAGATION_DELAY = wAN_PROPAGATION_DELAY;
 	}
 
 	

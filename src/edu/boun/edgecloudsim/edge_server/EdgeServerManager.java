@@ -6,7 +6,7 @@
  * It also provides the list of VMs running on the hosts.
  * This information is critical for the edge orchestrator.
  * 
- * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
+ * License:      GPL - http://www.gnu.org/copyleft/gpl.html
  * Copyright (c) 2017, Bogazici University, Istanbul, Turkey
  */
 

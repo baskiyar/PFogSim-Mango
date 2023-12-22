@@ -6,7 +6,7 @@
  * first/next/best/worst/random fit algorithms while assigning
  * requests to the edge devices.
  *               
- * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
+ * License:      GPL - http://www.gnu.org/copyleft/gpl.html
  * Copyright (c) 2017, Bogazici University, Istanbul, Turkey
  */
 
