@@ -52,6 +52,7 @@ This research was supported by NSF award OAC 1659845.
 8. Cameron Berry		(REU Participant)
 9. Roy Harmon			(AU Graduate Student)
 10. Chengyu Tang		(AU Graduate Student)
+11. Mohammad Zuaiter	(AU Graduate Student)
 
 Prior effort on development of simulator for fog computing environment by extending iFogSim was contributed by following members. That project is incomplete and has been abandoned. 
 
