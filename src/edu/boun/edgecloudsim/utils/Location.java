@@ -148,13 +148,6 @@ public class Location implements Comparable {
 	 */
 	public int compareTo(Object _in) {
 		Location in = (Location) _in;
-//		if (xPos == in.getXPos() && yPos == in.getYPos() && altitude ==  in.altitude) {
-//			return 0;
-//		}
-//		else if (xPos > in.getXPos()) {
-//			return 1;
-//		}
-//		else return -1;
 
 		// Changed by Chengyu Tang to prevent errors caused by using TreeSet (e.g., NetworkTopology.validateTopology)
 		if (xPos == in.getXPos()) {
