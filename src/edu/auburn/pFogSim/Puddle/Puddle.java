@@ -314,9 +314,10 @@ public class Puddle {
 				for (EdgeHost node: members) {
 					double minDistance = Double.MAX_VALUE;
 					for (EdgeHost parentNode: up.getMembers()) {
-						double distance = DataInterpreter.measure(
-								node.getLocation().getXPos(), node.getLocation().getYPos(), node.getLocation().getAltitude(), 
-									parentNode.getLocation().getXPos(), parentNode.getLocation().getYPos(), parentNode.getLocation().getAltitude());
+							// Zuaiter Correct swapped latitude/longitude
+							double distance = DataInterpreter.measure(
+								node.getLocation().getYPos(), node.getLocation().getXPos(), node.getLocation().getAltitude(), 
+									parentNode.getLocation().getYPos(), parentNode.getLocation().getXPos(), parentNode.getLocation().getAltitude());
 						if (distance < minDistance) {
 							node.setParent(parentNode);
 						}
