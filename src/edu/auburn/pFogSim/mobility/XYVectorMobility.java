@@ -58,19 +58,6 @@ public class XYVectorMobility extends MobilityModel {
 	
 	/**
 	 * 
-	 * @param y1
-	 * @param x1
-	 * @param y2
-	 * @param x2
-	 * @return
-	 */
-	public double measure(double y1, double x1, double y2, double x2) {
-		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-	}
-	
-	
-	/**
-	 * 
 	 */
 	@Override
 	public void initialize() {
