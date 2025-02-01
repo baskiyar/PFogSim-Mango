@@ -27,7 +27,7 @@ function [] = plotAllPlots()
 
     % The output PDF file will be named according to the date and time.
     % This will keep it unique for each run.
-    figName = strcat(config.FolderPath, filesep, string(datetime('now', 'InputFormat', 'yyyy-MM-dd_HH-mm-ss')), '.pdf');
+    figName = strcat(config.FolderPath, filesep, string(datetime('now', 'Format', 'yyyy-MM-dd_HH-mm-ss')), '.pdf');
 
     for i=1:length(config.AppTypes)
         appType = config.AppTypes(i);
