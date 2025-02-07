@@ -301,14 +301,16 @@ public class MobileDeviceManager extends DatacenterBroker {
 				//Shaik added
 				Location devLoc = task.getSubmittedLocation();
 				Location hostLoc = SimManager.getInstance().getLocalServerManager().findHostById(task.getAssociatedHostId()).getLocation();
-				double hostDistance = DataInterpreter.measure(hostLoc.getYPos(), hostLoc.getXPos(), devLoc.getYPos(), devLoc.getXPos());
+				// Zuaiter Add Altitude to measure
+				double hostDistance = DataInterpreter.measure(hostLoc.getYPos(), hostLoc.getXPos(), hostLoc.getAltitude(), devLoc.getYPos(), devLoc.getXPos(), devLoc.getAltitude());
 				
 				double consumerDistance = hostDistance;
 				if (task.sens && SimSettings.getInstance().getDeviceSeparation()) {
 					int desID = task.getDesMobileDeviceId();
 					GPSVectorMobility mb = ((GPSVectorMobility)SimManager.getInstance().getMobilityModel());
 					Location consumerLoc = mb.getLocation(desID, task.getFinishTime());
-					consumerDistance = DataInterpreter.measure(hostLoc.getYPos(), hostLoc.getXPos(), consumerLoc.getYPos(), consumerLoc.getXPos());
+					// Zuaiter Add Altitude to measure
+					consumerDistance = DataInterpreter.measure(hostLoc.getYPos(), hostLoc.getXPos(), hostLoc.getAltitude(), consumerLoc.getYPos(), consumerLoc.getXPos(), consumerLoc.getAltitude());
 				}
 				
 				SimLogger.getInstance().addHostDistanceLog(task.getCloudletId(), hostDistance);

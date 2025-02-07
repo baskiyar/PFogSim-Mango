@@ -89,7 +89,8 @@ public class BinaryHeap {
     	
     	//Fill out a HeapElement for EdgeHost x
 		Location l = new Location(x.getLocation().getXPos(), x.getLocation().getYPos(), x.getLocation().getAltitude());
-		e.distance = DataInterpreter.measure(ref.getXPos(), ref.getYPos(), ref.getAltitude(), l.getXPos(), l.getYPos(), l.getAltitude());
+		// Zuaiter Correct swapped latitude/longitude
+		e.distance = DataInterpreter.measure(ref.getYPos(), ref.getXPos(), ref.getAltitude(), l.getYPos(), l.getXPos(), l.getAltitude());
 		e.latency = ((ESBModel)SimManager.getInstance().getNetworkModel()).getDelay(ref, l);
 		e.edgeHost = x;
     	

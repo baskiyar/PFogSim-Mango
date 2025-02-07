@@ -7,6 +7,8 @@ package edu.auburn.pFogSim.netsim;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 import edu.auburn.pFogSim.Puddle.Puddle;
+import edu.auburn.pFogSim.util.DataInterpreter;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -200,11 +202,12 @@ public class NetworkTopology {
 			if (wifi && !node.isWifiAcc()) {
 				continue;
 			}
-			if (d == node.getLocation().getXPos() && e == node.getLocation().getYPos() && z == node.getLocation().getAltitude()) {
+			Location nodeLocation = node.getLocation();
+			if (d == nodeLocation.getXPos() && e == nodeLocation.getYPos() && z == nodeLocation.getAltitude()) {
 				closest = node;
 				return closest;
 			}
-			distanceNew = Math.sqrt(Math.pow((double) (d - node.getLocation().getXPos()), 2) + Math.pow((double) (e - node.getLocation().getYPos()), 2));
+			distanceNew = DataInterpreter.measure(nodeLocation.getYPos(), nodeLocation.getXPos(), nodeLocation.getAltitude(), e, d, z);
 			if (distanceNew < distance) {
 				distance = distanceNew;
 				closest = node;
