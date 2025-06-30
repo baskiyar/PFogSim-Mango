@@ -287,6 +287,9 @@ public class ESBModel extends NetworkModel {
 		
 		double bandwidth = loc.getBW(); /* Kb */
 		
+		
+		// Removed due to console spam, uncomment to see closeness data
+		/*
 		// check if two nodes are close
 		if (isClose) {
 			
@@ -295,6 +298,8 @@ public class ESBModel extends NetworkModel {
 
 			System.out.println("\n" + loc + "\n" + "bandwidth updated: " + bandwidth);
 		}
+		*/
+
 		// calculate data transfer time at network node
 		//double transferTime = dataSize * 8 / loc.getBW(); 
 		double transferTime = dataSize * 8 / bandwidth; 

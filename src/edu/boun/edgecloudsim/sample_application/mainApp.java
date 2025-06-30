@@ -48,7 +48,7 @@ public class mainApp {
 		//enable console output and file output of this application
 		SimLogger.enablePrintLog();
 		
-		int iterationNumber = 1; // index for the list of n scenarios in properties file is from 0..n-1
+		int iterationNumber = SimulationScenarios.CENTRALIZED_ORCHESTRATOR; // index for the list of n scenarios in properties file is from 0..n-1
 		String configFile = "";
 		String outputFolder = "";
 		String outFolder2 = "";
@@ -139,14 +139,20 @@ public class mainApp {
 						boolean trace_flag = false;  // mean trace events
 				
 						// Initialize the CloudSim library
+						SimLogger.print("Initializing CloudSim...");
 						CloudSim.init(num_user, calendar, trace_flag, 0.01);
-						SimLogger.printLine("CloudSim.init reached");
+						SimLogger.printLine("Done");
+
 						// Generate EdgeCloudsim Scenario Factory
+						SimLogger.print("Creating Scenario Factory...");
 						ScenarioFactory sampleFactory = new SampleScenarioFactory(iteMobileDevices,SS.getSimulationTime(), orchestratorPolicy, simScenario);
-						SimLogger.printLine("ScenarioFactory reached");
+						SimLogger.printLine("Done");
+
 						// Generate EdgeCloudSim Simulation Manager
+						SimLogger.print("Creating SimManager:\n\t");
 						SimManager manager = new SimManager(sampleFactory, iteMobileDevices, simScenario);
-						SimLogger.printLine("SimManager reached");
+						SimLogger.printLine("Done creating SimManager");
+
 						// Start simulation
 						manager.startSimulation();
 					}
@@ -154,7 +160,7 @@ public class mainApp {
 					{
 						SimLogger.printLine("The simulation has been terminated due to an unexpected error");
 						e.printStackTrace();
-						System.exit(0);
+						System.exit(1);
 					}
 					
 					Date ScenarioEndDate = Calendar.getInstance().getTime();
@@ -169,4 +175,16 @@ public class mainApp {
 		now = df.format(SimulationEndDate);
 		SimLogger.printLine("Simulation finished at " + now +  ". It took " + SimUtils.getTimeDifference(SimulationStartDate,SimulationEndDate));
 	}
+}
+
+class SimulationScenarios {
+	static final int HAFA_ORCHESTRATOR = 0;
+	static final int CENTRALIZED_ORCHESTRATOR = 1;
+	static final int LOCAL_ONLY = 2;
+	static final int CLOUD_ONLY = 3;
+	static final int EDGE_BY_LATENCY = 4;
+	static final int EDGE_BY_DISTANCE = 5;
+	static final int FIXED_NODE = 6;
+	static final int SELECTED_LEVELS = 7;
+	static final int SELECTED_NODES = 8;
 }

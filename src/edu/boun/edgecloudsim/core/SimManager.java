@@ -89,7 +89,7 @@ public class SimManager extends SimEntity {
 		SimLogger.print("Creating tasks...");
 		loadGeneratorModel = scenarioFactory.getLoadGeneratorModel();
 		loadGeneratorModel.initializeModel();
-		SimLogger.printLine("Done, ");
+		SimLogger.printLine("Done.");
 		
 		
 		//Generate network model
@@ -125,17 +125,22 @@ public class SimManager extends SimEntity {
 	 */
 	public void startSimulation() throws Exception{
 		//Starts the simulation
-		SimLogger.print(super.getName()+" is starting...");
+		SimLogger.print("Starting " + super.getName() + ":\n\t");
 		
 		//Start Edge Servers & Generate VMs
+		SimLogger.print("Start Edge Servers & Generate VMs...");
 		edgeServerManager.startDatacenters();
 		edgeServerManager.createVmList(mobileDeviceManager.getId());
+		SimLogger.printLine("Done.");
 		
 		// Initialize service placement approach 
+		SimLogger.print("Initializing Edge Orchestrator...");
 		edgeOrchestrator.initialize();
+		SimLogger.printLine("Done.");
+
 		
 		//Create devices
-		SimLogger.print("\n\tCreating device locations...");
+		SimLogger.print("Creating device locations...");
 		mobilityModel = scenarioFactory.getMobilityModel();
 		mobilityModel.initialize();
 		SimLogger.printLine("Done.");
@@ -252,8 +257,8 @@ public class SimManager extends SimEntity {
 		schedule(getId(), SimSettings.getInstance().getSimulationTime()/100, PRINT_PROGRESS);
 		schedule(getId(), SimSettings.getInstance().getVmLoadLogInterval(), GET_LOAD_LOG);
 		schedule(getId(), SimSettings.getInstance().getSimulationTime(), STOP_SIMULATION);
-		SimLogger.printLine("Done.");
-		SimLogger.printLine("Executing");
+		// SimLogger.printLine("Done.");
+		// SimLogger.printLine("Executing");
 	}
 
 	
@@ -274,7 +279,7 @@ public class SimManager extends SimEntity {
 				}
 				break;
 			case CHECK_ALL_VM:
-				SimLogger.printLine("CHECK_ALL_VM reached");
+				// SimLogger.printLine("CHECK_ALL_VM reached");
 				int totalNumOfVm = SimSettings.getInstance().getNumOfEdgeVMs();
 				if(VmAllocationPolicy_Custom.getCreatedVmNum() != totalNumOfVm) {
 					int vms = 0;
