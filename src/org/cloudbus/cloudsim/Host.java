@@ -557,12 +557,12 @@ public class Host {
 	 * @param failed the failed
 	 * @return <tt>true</tt> if successful, <tt>false</tt> otherwise
 	 */
-	public boolean setFailed(String resName, boolean failed) {
-		// all the PEs are failed (or recovered, depending on fail)
-		this.failed = failed;
-		PeList.setStatusFailed(getPeList(), resName, getId(), failed);
-		return true;
-	}
+//	public boolean setFailed(String resName, boolean failed) {
+//		// all the PEs are failed (or recovered, depending on fail)
+//		this.failed = failed;
+//		PeList.setStatusFailed(getPeList(), resName, getId(), failed);
+//		return true;
+//	}
 
 	/**
 	 * Sets the PEs of this machine to a FAILED status.

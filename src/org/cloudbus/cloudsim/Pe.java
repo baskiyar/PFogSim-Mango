@@ -118,9 +118,9 @@ public class Pe {
 	 * @pre $none
 	 * @post $none
 	 */
-	public void setStatusFree() {
+/*	public void setStatusFree() {
 		setStatus(FREE);
-	}
+	}*/
 
 	/**
 	 * Sets Pe status to busy, meaning it is already executing Cloudlets. This should be used by
@@ -129,9 +129,9 @@ public class Pe {
 	 * @pre $none
 	 * @post $none
 	 */
-	public void setStatusBusy() {
+/*	public void setStatusBusy() {
 		setStatus(BUSY);
-	}
+	}*/
 
 	/**
 	 * Sets this Pe to FAILED.

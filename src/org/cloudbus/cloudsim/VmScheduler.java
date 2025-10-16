@@ -98,9 +98,9 @@ public abstract class VmScheduler {
 	 * @param vm the vm
 	 * @return the pes allocated for vm
 	 */
-	public List<Pe> getPesAllocatedForVM(Vm vm) {
+/*	public List<Pe> getPesAllocatedForVM(Vm vm) {
 		return getPeMap().get(vm.getUid());
-	}
+	}*/
 
 	/**
 	 * Returns the MIPS share of each Pe that is allocated to a given VM.
@@ -228,9 +228,9 @@ public abstract class VmScheduler {
 	 * 
 	 * @return the vms in migration
 	 */
-	public List<String> getVmsMigratingOut() {
+/*	public List<String> getVmsMigratingOut() {
 		return vmsMigratingOut;
-	}
+	}*/
 
 	/**
 	 * Sets the vms in migration.

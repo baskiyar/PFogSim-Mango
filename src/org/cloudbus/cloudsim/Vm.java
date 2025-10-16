@@ -485,9 +485,9 @@ public class Vm {
 	 * 
 	 * @return the current allocated size
 	 */
-	public long getCurrentAllocatedSize() {
+/*	public long getCurrentAllocatedSize() {
 		return currentAllocatedSize;
-	}
+	}*/
 
 	/**
 	 * Sets the current allocated size.
@@ -503,9 +503,9 @@ public class Vm {
 	 * 
 	 * @return the current allocated ram
 	 */
-	public int getCurrentAllocatedRam() {
+/*	public int getCurrentAllocatedRam() {
 		return currentAllocatedRam;
-	}
+	}*/
 
 	/**
 	 * Sets the current allocated ram.
@@ -521,9 +521,9 @@ public class Vm {
 	 * 
 	 * @return the current allocated bw
 	 */
-	public long getCurrentAllocatedBw() {
+/*	public long getCurrentAllocatedBw() {
 		return currentAllocatedBw;
-	}
+	}*/
 
 	/**
 	 * Sets the current allocated bw.
@@ -540,9 +540,9 @@ public class Vm {
 	 * @return the current allocated mips
 	 * @TODO replace returning the field by a call to getCloudletScheduler().getCurrentMipsShare()
 	 */
-	public List<Double> getCurrentAllocatedMips() {
+/*	public List<Double> getCurrentAllocatedMips() {
 		return currentAllocatedMips;
-	}
+	}*/
 
 	/**
 	 * Sets the current allocated mips.
@@ -588,7 +588,7 @@ public class Vm {
 	 * @param requestedMips the requested mips
 	 * @param isInMigration the is in migration
 	 */
-	public void addStateHistoryEntry(
+/*	public void addStateHistoryEntry(
 			double time,
 			double allocatedMips,
 			double requestedMips,
@@ -606,7 +606,7 @@ public class Vm {
 			}
 		}
 		getStateHistory().add(newState);
-	}
+	}*/
 	
 	public void setArch(String in) {
 		arch = in;
